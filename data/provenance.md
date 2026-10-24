@@ -269,5 +269,61 @@ of the provider's price-change history is an assumption.
 
 No capacity counts, interruption labels, workloads, model predictions, or benchmark
 results are present in this real price dataset. Hourly-average diagnostics remain
-retrospective. Train/validation/calibration/test cutoffs are not yet selected;
-the next milestone must use common chronological boundaries across the zones.
+retrospective. Milestone 2 now uses common chronological boundaries across the zones, recorded
+in the training artifacts and below.
+
+## Milestone 2: first chronological model evaluation
+
+Training consumed the checksummed `hourly-prices-001` dataset with SHA-256
+`b286afcaaf18c76736c959f14b46617442bb2ebf44cddb30c45abc12d58669f8`.
+No new AWS calls were made. The three AZ source series remain distinct, and all
+price labels are observed. Feature inputs exclude retrospective hourly averages
+and capacity assumptions.
+
+Common UTC partitions, all relative to `2026-07-27T00:00:00Z`, are:
+
+- Training `[0, 1281)`; 22,512 samples after warmup and six-hour boundary purging.
+- Validation `[1281, 1602)`; 5,670 samples used for model selection.
+- Calibration `[1602, 1815)`; reserved, unused by this training run.
+- Final test `[1815, 2136)`; reserved, not scored by this training run.
+
+The feature encoder fits training examples only. The selected model is available
+for historical deployment from slot 1602 because validation outcomes were used
+to select it. Earlier inference uses explicitly labeled persistence fallback.
+
+Three LightGBM candidates were predefined before validation. Seed 42 selected
+`small-l1`, artifact `lightgbm-delta-v1-3310f6a9f1d7`. Validation MAE is
+`0.0006831376269117395` USD/GPU-hour against persistence's
+`0.0006293827160493826`, an improvement of `-8.540894036584763%`.
+The recommendation is `NAIVE`; no predictive benefit or scheduling savings is
+claimed. Model-selection performance is not final held-out test performance.
+
+The [tracked report](milestone2-validation.json) preserves candidate and group
+results; [Milestone 2 instructions](milestone2.md) explain reproduction and
+integration. Full weights and per-sample predictions remain in ignored
+`models/price-model-001/` and `data/processed/forecast-run-001/`. The package
+versions, feature-code hash, dataset hash, and model/encoder hashes are stored in
+the artifact. No forecast API response schema changed.
+
+## Controlled forecasting improvements
+
+The [experiment design](forecast-experiment-design.json) and
+[complete measured results](forecast-experiment-results.json) record 40 variants
+on the same checksummed observed dataset, seed 42. No additional data was
+collected. Eight setups cross 24-/168-hour features, pooled/separate-horizon
+models, and original/stronger regularization; correction weights produce the
+40 variants. All share the 168-hour eligibility rule and identical evaluation
+cohorts. Three earlier chronological folds select the winner before its later
+development comparison. Protected calibration/test rows are excluded before
+example building and remain unscored.
+
+The frozen winner improved earlier MAE 3.3207% but lost the later check by
+0.0383%; recommendation stays `NAIVE`. Extended-history/separate-horizon/strong
+regularization with a 50% correction improved earlier aggregate MAE 3.1683% and
+later MAE 1.8885%, an exploratory candidate rather than a promoted winner.
+The original later validation period had already been inspected: these are
+development results, not final-test or scheduling-savings claims. See
+[the experiment notes](forecast-experiments.md) for limitations and reproduction.
+The ignored local bundle is `models/price-experiment-001/`; full predictions and
+report are in `data/processed/forecast-experiments-001/`. All 40 outcomes,
+including failures, are retained in the tracked results.

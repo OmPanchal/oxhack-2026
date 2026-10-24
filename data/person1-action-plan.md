@@ -174,6 +174,13 @@ Provide representative forecast outputs with null unknown probabilities and expl
 
 **Outcome:** persistence and trained ML services with chronological evaluation.
 
+**Implementation status:** persistence, causal features, horizon-purged chronological
+partitions, three-candidate LightGBM training, model artifacts, inference fallbacks,
+and validation metrics are implemented. The initial real-data run selected
+`small-l1`, but its validation MAE is 8.54% higher than persistence, so `NAIVE` is
+recommended. Calibration/final test remain reserved and unevaluated. See
+[the Milestone 2 handoff](milestone2.md) and [measured validation report](milestone2-validation.json).
+
 ### Step 5 — Implement persistence first
 
 In [baselines.py](../backend/app/forecasting/baselines.py), predict the latest available price at every requested horizon. Add a trailing-average baseline only after persistence works.

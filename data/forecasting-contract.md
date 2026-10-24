@@ -77,7 +77,8 @@ Use `current_observations` before inference and `validate_forecasts` on output:
   rather than claiming those windows are reliably priced.
 
 These checks are reusable for the persistence and ML services in Milestone 2.
-Neither service is trained or implemented by the contract demonstration.
+Both services are now implemented separately; see [the Milestone 2 handoff](milestone2.md).
+The contract demonstration itself still uses hand-authored predictions.
 
 ## 4. Historical hourly reconstruction and charging
 
@@ -185,7 +186,7 @@ forecasts = FixtureForecastService(path).predict(request)
 The fixture service accepts only that exact demonstration request and returns
 fresh validated objects. It deliberately cannot masquerade as a general forecaster.
 Person 2 can build against the shared response schema now, then replace this
-service with the persistence/ML implementation in Milestone 2.
+service with the persistence/ML implementations described in [Milestone 2](milestone2.md).
 
 Run the Milestone 1 checks from `backend/`:
 

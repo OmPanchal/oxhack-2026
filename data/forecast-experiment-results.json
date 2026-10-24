@@ -1,0 +1,4762 @@
+{
+  "artifactVariant": "base24-pooled-strong-per-horizon-weights",
+  "calibration": {
+    "status": "RESERVED_NOT_USED"
+  },
+  "commonEligibilityLookback": 168,
+  "confirmationStatus": "PREVIOUSLY_INSPECTED_DEVELOPMENT_VALIDATION_NOT_FINAL_TEST",
+  "dataKind": "OBSERVED",
+  "datasetSha256": "b286afcaaf18c76736c959f14b46617442bb2ebf44cddb30c45abc12d58669f8",
+  "design": {
+    "absoluteMaeTolerance": 1e-12,
+    "architectures": [
+      "pooled",
+      "per-horizon"
+    ],
+    "commonEligibilityLookback": 168,
+    "confirmationPolicy": "Freeze the OOF winner before comparing on the original, previously inspected validation period; do not rerank by confirmation",
+    "correctionWeights": [
+      0,
+      0.1,
+      0.25,
+      0.5,
+      1
+    ],
+    "featureProfiles": [
+      "base24",
+      "extended168"
+    ],
+    "includePerHorizonWeights": true,
+    "minimumImprovingFolds": 2,
+    "protectedPeriods": [
+      "calibration",
+      "test"
+    ],
+    "regularization": {
+      "original": {
+        "learning_rate": 0.05,
+        "max_depth": 3,
+        "min_data_in_leaf": 100,
+        "num_boost_round": 120,
+        "num_leaves": 7,
+        "objective": "regression_l1"
+      },
+      "strong": {
+        "lambda_l1": 5,
+        "lambda_l2": 10,
+        "learning_rate": 0.03,
+        "max_depth": 2,
+        "min_data_in_leaf": 200,
+        "num_boost_round": 80,
+        "num_leaves": 3,
+        "objective": "regression_l1"
+      }
+    },
+    "schemaVersion": "forecast-experiment-design-v1",
+    "walkForwardFractionsOfOriginalTraining": [
+      0.4,
+      0.6,
+      0.8,
+      1.0
+    ]
+  },
+  "designSha256": "8d82d3431b8c9f904ac0df88199c3aad47c66a1e060fb26b02b93f9ba361f4d1",
+  "folds": [
+    {
+      "training": {
+        "endSlotExclusive": 512,
+        "name": "fold-1-train",
+        "startSlot": 0
+      },
+      "trainingSummary": {
+        "boundaryRule": "origin >= partition start and origin + 6 < partition end",
+        "firstOriginSlot": 168,
+        "lastOriginSlot": 505,
+        "lastTargetSlot": 511,
+        "originCount": 1013,
+        "partition": "fold-1-train",
+        "sampleCount": 6078,
+        "skippedOriginsWithMissingHistoryOrLabels": 1
+      },
+      "validation": {
+        "endSlotExclusive": 768,
+        "name": "fold-1-validation",
+        "startSlot": 512
+      },
+      "validationSummary": {
+        "boundaryRule": "origin >= partition start and origin + 6 < partition end",
+        "firstOriginSlot": 512,
+        "lastOriginSlot": 761,
+        "lastTargetSlot": 767,
+        "originCount": 750,
+        "partition": "fold-1-validation",
+        "sampleCount": 4500,
+        "skippedOriginsWithMissingHistoryOrLabels": 0
+      }
+    },
+    {
+      "training": {
+        "endSlotExclusive": 768,
+        "name": "fold-2-train",
+        "startSlot": 0
+      },
+      "trainingSummary": {
+        "boundaryRule": "origin >= partition start and origin + 6 < partition end",
+        "firstOriginSlot": 168,
+        "lastOriginSlot": 761,
+        "lastTargetSlot": 767,
+        "originCount": 1781,
+        "partition": "fold-2-train",
+        "sampleCount": 10686,
+        "skippedOriginsWithMissingHistoryOrLabels": 1
+      },
+      "validation": {
+        "endSlotExclusive": 1024,
+        "name": "fold-2-validation",
+        "startSlot": 768
+      },
+      "validationSummary": {
+        "boundaryRule": "origin >= partition start and origin + 6 < partition end",
+        "firstOriginSlot": 768,
+        "lastOriginSlot": 1017,
+        "lastTargetSlot": 1023,
+        "originCount": 750,
+        "partition": "fold-2-validation",
+        "sampleCount": 4500,
+        "skippedOriginsWithMissingHistoryOrLabels": 0
+      }
+    },
+    {
+      "training": {
+        "endSlotExclusive": 1024,
+        "name": "fold-3-train",
+        "startSlot": 0
+      },
+      "trainingSummary": {
+        "boundaryRule": "origin >= partition start and origin + 6 < partition end",
+        "firstOriginSlot": 168,
+        "lastOriginSlot": 1017,
+        "lastTargetSlot": 1023,
+        "originCount": 2549,
+        "partition": "fold-3-train",
+        "sampleCount": 15294,
+        "skippedOriginsWithMissingHistoryOrLabels": 1
+      },
+      "validation": {
+        "endSlotExclusive": 1281,
+        "name": "fold-3-validation",
+        "startSlot": 1024
+      },
+      "validationSummary": {
+        "boundaryRule": "origin >= partition start and origin + 6 < partition end",
+        "firstOriginSlot": 1024,
+        "lastOriginSlot": 1274,
+        "lastTargetSlot": 1280,
+        "originCount": 753,
+        "partition": "fold-3-validation",
+        "sampleCount": 4518,
+        "skippedOriginsWithMissingHistoryOrLabels": 0
+      }
+    }
+  ],
+  "frozenSelection": "base24-pooled-strong-per-horizon-weights",
+  "limitations": [
+    "All results are development/model-selection evidence, not final test performance.",
+    "The original validation period was inspected before these experiments were designed.",
+    "OOF scores select configuration and weights; they are optimistic selection estimates.",
+    "Every variant uses the same 168-hour eligibility rule to avoid cohort bias.",
+    "No scheduling cost or savings benchmark was performed."
+  ],
+  "modelVersion": "lightgbm-experiment-v1-d11afc0109b9",
+  "packageVersions": {
+    "lightgbm": "4.7.0",
+    "numpy": "2.5.4",
+    "scikit-learn": "1.9.1",
+    "scipy": "1.18.1"
+  },
+  "persistenceOutOfFold": {
+    "beatsPersistence": false,
+    "folds": [
+      {
+        "changedTargetCount": 2199,
+        "maeImprovementPct": 0.0,
+        "ml": {
+          "mae": 0.00039466666666666583,
+          "rmse": 0.0007342237019086508,
+          "sampleCount": 4500
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.00039466666666666583,
+          "rmse": 0.0007342237019086508,
+          "sampleCount": 4500
+        },
+        "sampleCount": 4500
+      },
+      {
+        "changedTargetCount": 2154,
+        "maeImprovementPct": 0.0,
+        "ml": {
+          "mae": 0.0004155555555555555,
+          "rmse": 0.0007523681132117295,
+          "sampleCount": 4500
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0004155555555555555,
+          "rmse": 0.0007523681132117295,
+          "sampleCount": 4500
+        },
+        "sampleCount": 4500
+      },
+      {
+        "changedTargetCount": 2029,
+        "maeImprovementPct": 0.0,
+        "ml": {
+          "mae": 0.0002575033200531209,
+          "rmse": 0.0005573883005357648,
+          "sampleCount": 4518
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0002575033200531209,
+          "rmse": 0.0005573883005357648,
+          "sampleCount": 4518
+        },
+        "sampleCount": 4518
+      }
+    ],
+    "improvingFolds": 0,
+    "overall": {
+      "changedTargetCount": 6382,
+      "maeImprovementPct": 0.0,
+      "ml": {
+        "mae": 0.0003557774818760169,
+        "rmse": 0.0006868235484993151,
+        "sampleCount": 13518
+      },
+      "note": "Lower MAE is better",
+      "persistence": {
+        "mae": 0.0003557774818760169,
+        "rmse": 0.0006868235484993151,
+        "sampleCount": 13518
+      },
+      "sampleCount": 13518
+    }
+  },
+  "protectedFromSlot": 1602,
+  "provisionalConfirmationPassed": false,
+  "pythonVersion": "3.12.3",
+  "recommendedForecastMode": "NAIVE",
+  "schemaVersion": "forecast-experiments-v1",
+  "seed": 42,
+  "selectedConfirmation": {
+    "byHorizon": {
+      "1": {
+        "changedTargetCount": 158,
+        "maeImprovementPct": 0.0,
+        "ml": {
+          "mae": 0.00018031746031746033,
+          "rmse": 0.0005188917779736708,
+          "sampleCount": 945
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.00018031746031746033,
+          "rmse": 0.0005188917779736708,
+          "sampleCount": 945
+        },
+        "sampleCount": 945
+      },
+      "2": {
+        "changedTargetCount": 317,
+        "maeImprovementPct": 0.0,
+        "ml": {
+          "mae": 0.00036137566137566137,
+          "rmse": 0.0007341770038729576,
+          "sampleCount": 945
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.00036137566137566137,
+          "rmse": 0.0007341770038729576,
+          "sampleCount": 945
+        },
+        "sampleCount": 945
+      },
+      "3": {
+        "changedTargetCount": 474,
+        "maeImprovementPct": 0.0,
+        "ml": {
+          "mae": 0.0005397883597883598,
+          "rmse": 0.0008972444589116274,
+          "sampleCount": 945
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0005397883597883598,
+          "rmse": 0.0008972444589116274,
+          "sampleCount": 945
+        },
+        "sampleCount": 945
+      },
+      "4": {
+        "changedTargetCount": 608,
+        "maeImprovementPct": -0.1679349504559506,
+        "ml": {
+          "mae": 0.0007216331229023324,
+          "rmse": 0.0010679119542585018,
+          "sampleCount": 945
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0007204232804232804,
+          "rmse": 0.001068639049440651,
+          "sampleCount": 945
+        },
+        "sampleCount": 945
+      },
+      "5": {
+        "changedTargetCount": 715,
+        "maeImprovementPct": -0.16452685371519765,
+        "ml": {
+          "mae": 0.0009004207996003286,
+          "rmse": 0.0012275671053814463,
+          "sampleCount": 945
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0008989417989417989,
+          "rmse": 0.0012296556062788109,
+          "sampleCount": 945
+        },
+        "sampleCount": 945
+      },
+      "6": {
+        "changedTargetCount": 802,
+        "maeImprovementPct": 0.11540961994353777,
+        "ml": {
+          "mae": 0.001074208562997369,
+          "rmse": 0.0013781658920985428,
+          "sampleCount": 945
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0010754497354497354,
+          "rmse": 0.0013805412633797584,
+          "sampleCount": 945
+        },
+        "sampleCount": 945
+      }
+    },
+    "byPool": [
+      {
+        "identity": {
+          "availability_zone": "eu-north-1a",
+          "gpu_type": "NVIDIA T4",
+          "instance_type": "g4dn.xlarge",
+          "product_description": "Linux/UNIX",
+          "region": "eu-north-1",
+          "resource_type": "GPU"
+        },
+        "metrics": {
+          "changedTargetCount": 986,
+          "maeImprovementPct": -0.32248084732386123,
+          "ml": {
+            "mae": 0.0005675916866139861,
+            "rmse": 0.0009199209838076176,
+            "sampleCount": 1890
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0005657671957671956,
+            "rmse": 0.000918092685895155,
+            "sampleCount": 1890
+          },
+          "sampleCount": 1890
+        }
+      },
+      {
+        "identity": {
+          "availability_zone": "eu-north-1b",
+          "gpu_type": "NVIDIA T4",
+          "instance_type": "g4dn.xlarge",
+          "product_description": "Linux/UNIX",
+          "region": "eu-north-1",
+          "resource_type": "GPU"
+        },
+        "metrics": {
+          "changedTargetCount": 986,
+          "maeImprovementPct": 0.19240813612097007,
+          "ml": {
+            "mae": 0.000608192611373701,
+            "rmse": 0.0010050827299435102,
+            "sampleCount": 1890
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0006093650793650795,
+            "rmse": 0.0010091040606850247,
+            "sampleCount": 1890
+          },
+          "sampleCount": 1890
+        }
+      },
+      {
+        "identity": {
+          "availability_zone": "eu-north-1c",
+          "gpu_type": "NVIDIA T4",
+          "instance_type": "g4dn.xlarge",
+          "product_description": "Linux/UNIX",
+          "region": "eu-north-1",
+          "resource_type": "GPU"
+        },
+        "metrics": {
+          "changedTargetCount": 1102,
+          "maeImprovementPct": -0.010071653368930455,
+          "ml": {
+            "mae": 0.0007130876855030685,
+            "rmse": 0.0011061461284021632,
+            "sampleCount": 1890
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0007130158730158729,
+            "rmse": 0.001106995552583276,
+            "sampleCount": 1890
+          },
+          "sampleCount": 1890
+        }
+      }
+    ],
+    "byPriceMovement": {
+      "CHANGED": {
+        "changedTargetCount": 3074,
+        "maeImprovementPct": 0.2325045066810365,
+        "ml": {
+          "mae": 0.001158198713134216,
+          "rmse": 0.0013760475052444548,
+          "sampleCount": 3074
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0011608978529603121,
+          "rmse": 0.0013775927822764211,
+          "sampleCount": 3074
+        },
+        "sampleCount": 3074
+      },
+      "UNCHANGED": {
+        "changedTargetCount": 0,
+        "maeImprovementPct": null,
+        "ml": {
+          "mae": 3.723114261536288e-06,
+          "rmse": 1.4818608823292876e-05,
+          "sampleCount": 2596
+        },
+        "note": "Improvement is undefined when persistence MAE is zero",
+        "persistence": {
+          "mae": 0.0,
+          "rmse": 0.0,
+          "sampleCount": 2596
+        },
+        "sampleCount": 2596
+      }
+    },
+    "byRegion": {
+      "eu-north-1": {
+        "changedTargetCount": 3074,
+        "maeImprovementPct": -0.038335728227566875,
+        "ml": {
+          "mae": 0.0006296239944969186,
+          "rmse": 0.0010132464602881455,
+          "sampleCount": 5670
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0006293827160493826,
+          "rmse": 0.001014334648694131,
+          "sampleCount": 5670
+        },
+        "sampleCount": 5670
+      }
+    },
+    "byResourceType": {
+      "GPU": {
+        "changedTargetCount": 3074,
+        "maeImprovementPct": -0.038335728227566875,
+        "ml": {
+          "mae": 0.0006296239944969186,
+          "rmse": 0.0010132464602881455,
+          "sampleCount": 5670
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0006293827160493826,
+          "rmse": 0.001014334648694131,
+          "sampleCount": 5670
+        },
+        "sampleCount": 5670
+      }
+    },
+    "overall": {
+      "changedTargetCount": 3074,
+      "maeImprovementPct": -0.038335728227566875,
+      "ml": {
+        "mae": 0.0006296239944969186,
+        "rmse": 0.0010132464602881455,
+        "sampleCount": 5670
+      },
+      "note": "Lower MAE is better",
+      "persistence": {
+        "mae": 0.0006293827160493826,
+        "rmse": 0.001014334648694131,
+        "sampleCount": 5670
+      },
+      "sampleCount": 5670
+    }
+  },
+  "selectedOutOfFold": {
+    "beatsPersistence": true,
+    "folds": [
+      {
+        "changedTargetCount": 2199,
+        "maeImprovementPct": 0.6845288493962856,
+        "ml": {
+          "mae": 0.00039196505947438183,
+          "rmse": 0.0007181882695913222,
+          "sampleCount": 4500
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.00039466666666666583,
+          "rmse": 0.0007342237019086508,
+          "sampleCount": 4500
+        },
+        "sampleCount": 4500
+      },
+      {
+        "changedTargetCount": 2154,
+        "maeImprovementPct": 7.499990480585082,
+        "ml": {
+          "mae": 0.0003843889284473464,
+          "rmse": 0.0007032658131148909,
+          "sampleCount": 4500
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0004155555555555555,
+          "rmse": 0.0007523681132117295,
+          "sampleCount": 4500
+        },
+        "sampleCount": 4500
+      },
+      {
+        "changedTargetCount": 2029,
+        "maeImprovementPct": 0.6271563228418008,
+        "ml": {
+          "mae": 0.0002558883716998802,
+          "rmse": 0.0005251781450442946,
+          "sampleCount": 4518
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0002575033200531209,
+          "rmse": 0.0005573883005357648,
+          "sampleCount": 4518
+        },
+        "sampleCount": 4518
+      }
+    ],
+    "improvingFolds": 3,
+    "overall": {
+      "changedTargetCount": 6382,
+      "maeImprovementPct": 3.320651037804309,
+      "ml": {
+        "mae": 0.0003439633532318269,
+        "rmse": 0.0006546190806568303,
+        "sampleCount": 13518
+      },
+      "note": "Lower MAE is better",
+      "persistence": {
+        "mae": 0.0003557774818760169,
+        "rmse": 0.0006868235484993151,
+        "sampleCount": 13518
+      },
+      "sampleCount": 13518
+    }
+  },
+  "selectedWeights": {
+    "1": 0,
+    "2": 0,
+    "3": 0,
+    "4": 1,
+    "5": 0.5,
+    "6": 1
+  },
+  "test": {
+    "status": "RESERVED_NOT_EVALUATED"
+  },
+  "variants": [
+    {
+      "config": {
+        "architecture": "pooled",
+        "featureProfile": "base24",
+        "id": "base24-pooled-strong",
+        "regularization": "strong"
+      },
+      "confirmation": {
+        "changedTargetCount": 3074,
+        "maeImprovementPct": -0.038335728227566875,
+        "ml": {
+          "mae": 0.0006296239944969186,
+          "rmse": 0.0010132464602881455,
+          "sampleCount": 5670
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0006293827160493826,
+          "rmse": 0.001014334648694131,
+          "sampleCount": 5670
+        },
+        "sampleCount": 5670
+      },
+      "correctionWeights": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 1,
+        "5": 0.5,
+        "6": 1
+      },
+      "eligibleForSelection": true,
+      "id": "base24-pooled-strong-per-horizon-weights",
+      "outOfFold": {
+        "beatsPersistence": true,
+        "folds": [
+          {
+            "changedTargetCount": 2199,
+            "maeImprovementPct": 0.6845288493962856,
+            "ml": {
+              "mae": 0.00039196505947438183,
+              "rmse": 0.0007181882695913222,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00039466666666666583,
+              "rmse": 0.0007342237019086508,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2154,
+            "maeImprovementPct": 7.499990480585082,
+            "ml": {
+              "mae": 0.0003843889284473464,
+              "rmse": 0.0007032658131148909,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0004155555555555555,
+              "rmse": 0.0007523681132117295,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2029,
+            "maeImprovementPct": 0.6271563228418008,
+            "ml": {
+              "mae": 0.0002558883716998802,
+              "rmse": 0.0005251781450442946,
+              "sampleCount": 4518
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0002575033200531209,
+              "rmse": 0.0005573883005357648,
+              "sampleCount": 4518
+            },
+            "sampleCount": 4518
+          }
+        ],
+        "improvingFolds": 3,
+        "overall": {
+          "changedTargetCount": 6382,
+          "maeImprovementPct": 3.320651037804309,
+          "ml": {
+            "mae": 0.0003439633532318269,
+            "rmse": 0.0006546190806568303,
+            "sampleCount": 13518
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0003557774818760169,
+            "rmse": 0.0006868235484993151,
+            "sampleCount": 13518
+          },
+          "sampleCount": 13518
+        }
+      }
+    },
+    {
+      "config": {
+        "architecture": "per-horizon",
+        "featureProfile": "extended168",
+        "id": "extended168-per-horizon-strong",
+        "regularization": "strong"
+      },
+      "confirmation": {
+        "changedTargetCount": 3074,
+        "maeImprovementPct": 1.8667332955770652,
+        "ml": {
+          "mae": 0.0006176338193322815,
+          "rmse": 0.0009921777774088453,
+          "sampleCount": 5670
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0006293827160493826,
+          "rmse": 0.001014334648694131,
+          "sampleCount": 5670
+        },
+        "sampleCount": 5670
+      },
+      "correctionWeights": {
+        "1": 0,
+        "2": 0,
+        "3": 1,
+        "4": 0.5,
+        "5": 0.5,
+        "6": 0.5
+      },
+      "eligibleForSelection": true,
+      "id": "extended168-per-horizon-strong-per-horizon-weights",
+      "outOfFold": {
+        "beatsPersistence": true,
+        "folds": [
+          {
+            "changedTargetCount": 2199,
+            "maeImprovementPct": -0.2373086144859979,
+            "ml": {
+              "mae": 0.00039560324466517057,
+              "rmse": 0.000718431058096278,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00039466666666666583,
+              "rmse": 0.0007342237019086508,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2154,
+            "maeImprovementPct": 6.634569835235295,
+            "ml": {
+              "mae": 0.0003879852320180222,
+              "rmse": 0.0007077987138326856,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0004155555555555555,
+              "rmse": 0.0007523681132117295,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2029,
+            "maeImprovementPct": 3.1618551355925035,
+            "ml": {
+              "mae": 0.0002493614381037001,
+              "rmse": 0.0005289364746778252,
+              "sampleCount": 4518
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0002575033200531209,
+              "rmse": 0.0005573883005357648,
+              "sampleCount": 4518
+            },
+            "sampleCount": 4518
+          }
+        ],
+        "improvingFolds": 2,
+        "overall": {
+          "changedTargetCount": 6382,
+          "maeImprovementPct": 3.256890206119513,
+          "ml": {
+            "mae": 0.00034419019991321827,
+            "rmse": 0.0006573397679738857,
+            "sampleCount": 13518
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0003557774818760169,
+            "rmse": 0.0006868235484993151,
+            "sampleCount": 13518
+          },
+          "sampleCount": 13518
+        }
+      }
+    },
+    {
+      "config": {
+        "architecture": "per-horizon",
+        "featureProfile": "extended168",
+        "id": "extended168-per-horizon-strong",
+        "regularization": "strong"
+      },
+      "confirmation": {
+        "changedTargetCount": 3074,
+        "maeImprovementPct": 1.8884614633559147,
+        "ml": {
+          "mae": 0.0006174970659997672,
+          "rmse": 0.0009922522792977456,
+          "sampleCount": 5670
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0006293827160493826,
+          "rmse": 0.001014334648694131,
+          "sampleCount": 5670
+        },
+        "sampleCount": 5670
+      },
+      "correctionWeights": {
+        "1": 0.5,
+        "2": 0.5,
+        "3": 0.5,
+        "4": 0.5,
+        "5": 0.5,
+        "6": 0.5
+      },
+      "eligibleForSelection": true,
+      "id": "extended168-per-horizon-strong-global-0.5",
+      "outOfFold": {
+        "beatsPersistence": true,
+        "folds": [
+          {
+            "changedTargetCount": 2199,
+            "maeImprovementPct": -0.19915210089953084,
+            "ml": {
+              "mae": 0.00039545265362488265,
+              "rmse": 0.000719066152491612,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00039466666666666583,
+              "rmse": 0.0007342237019086508,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2154,
+            "maeImprovementPct": 6.394542319727024,
+            "ml": {
+              "mae": 0.0003889826796935788,
+              "rmse": 0.0007097012661877136,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0004155555555555555,
+              "rmse": 0.0007523681132117295,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2029,
+            "maeImprovementPct": 3.1231050549400554,
+            "ml": {
+              "mae": 0.0002494612208479034,
+              "rmse": 0.0005297004079578228,
+              "sampleCount": 4518
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0002575033200531209,
+              "rmse": 0.0005573883005357648,
+              "sampleCount": 4518
+            },
+            "sampleCount": 4518
+          }
+        ],
+        "improvingFolds": 2,
+        "overall": {
+          "changedTargetCount": 6382,
+          "maeImprovementPct": 3.1682788762858647,
+          "ml": {
+            "mae": 0.0003445054590711573,
+            "rmse": 0.0006584584525066283,
+            "sampleCount": 13518
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0003557774818760169,
+            "rmse": 0.0006868235484993151,
+            "sampleCount": 13518
+          },
+          "sampleCount": 13518
+        }
+      }
+    },
+    {
+      "config": {
+        "architecture": "pooled",
+        "featureProfile": "extended168",
+        "id": "extended168-pooled-strong",
+        "regularization": "strong"
+      },
+      "confirmation": {
+        "changedTargetCount": 3074,
+        "maeImprovementPct": 0.7611062721598576,
+        "ml": {
+          "mae": 0.0006245924447216407,
+          "rmse": 0.0010040704524590374,
+          "sampleCount": 5670
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0006293827160493826,
+          "rmse": 0.001014334648694131,
+          "sampleCount": 5670
+        },
+        "sampleCount": 5670
+      },
+      "correctionWeights": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 1,
+        "5": 0.5,
+        "6": 1
+      },
+      "eligibleForSelection": true,
+      "id": "extended168-pooled-strong-per-horizon-weights",
+      "outOfFold": {
+        "beatsPersistence": true,
+        "folds": [
+          {
+            "changedTargetCount": 2199,
+            "maeImprovementPct": 0.12202047191019669,
+            "ml": {
+              "mae": 0.0003941850925375269,
+              "rmse": 0.0007195357265089747,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00039466666666666583,
+              "rmse": 0.0007342237019086508,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2154,
+            "maeImprovementPct": 6.8121020079606325,
+            "ml": {
+              "mae": 0.00038724748721136355,
+              "rmse": 0.000707950302621004,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0004155555555555555,
+              "rmse": 0.0007523681132117295,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2029,
+            "maeImprovementPct": 1.6367910017485208,
+            "ml": {
+              "mae": 0.00025328852888128773,
+              "rmse": 0.000527346330664889,
+              "sampleCount": 4518
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0002575033200531209,
+              "rmse": 0.0005573883005357648,
+              "sampleCount": 4518
+            },
+            "sampleCount": 4518
+          }
+        ],
+        "improvingFolds": 3,
+        "overall": {
+          "changedTargetCount": 6382,
+          "maeImprovementPct": 3.0896955471437355,
+          "ml": {
+            "mae": 0.0003447850408607535,
+            "rmse": 0.0006573693239134969,
+            "sampleCount": 13518
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0003557774818760169,
+            "rmse": 0.0006868235484993151,
+            "sampleCount": 13518
+          },
+          "sampleCount": 13518
+        }
+      }
+    },
+    {
+      "config": {
+        "architecture": "pooled",
+        "featureProfile": "base24",
+        "id": "base24-pooled-strong",
+        "regularization": "strong"
+      },
+      "confirmation": {
+        "changedTargetCount": 3074,
+        "maeImprovementPct": -0.0776788163985044,
+        "ml": {
+          "mae": 0.0006298716130938265,
+          "rmse": 0.0010134047360105137,
+          "sampleCount": 5670
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0006293827160493826,
+          "rmse": 0.001014334648694131,
+          "sampleCount": 5670
+        },
+        "sampleCount": 5670
+      },
+      "correctionWeights": {
+        "1": 0.5,
+        "2": 0.5,
+        "3": 0.5,
+        "4": 0.5,
+        "5": 0.5,
+        "6": 0.5
+      },
+      "eligibleForSelection": true,
+      "id": "base24-pooled-strong-global-0.5",
+      "outOfFold": {
+        "beatsPersistence": true,
+        "folds": [
+          {
+            "changedTargetCount": 2199,
+            "maeImprovementPct": 0.5128188775999483,
+            "ml": {
+              "mae": 0.0003926427414964047,
+              "rmse": 0.0007181581518720556,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00039466666666666583,
+              "rmse": 0.0007342237019086508,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2154,
+            "maeImprovementPct": 5.06764029326242,
+            "ml": {
+              "mae": 0.0003944966947813317,
+              "rmse": 0.0007189829646452764,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0004155555555555555,
+              "rmse": 0.0007523681132117295,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2029,
+            "maeImprovementPct": 1.6333223421394858,
+            "ml": {
+              "mae": 0.00025329746079494233,
+              "rmse": 0.0005319302646830084,
+              "sampleCount": 4518
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0002575033200531209,
+              "rmse": 0.0005573883005357648,
+              "sampleCount": 4518
+            },
+            "sampleCount": 4518
+          }
+        ],
+        "improvingFolds": 3,
+        "overall": {
+          "changedTargetCount": 6382,
+          "maeImprovementPct": 2.5548843697474415,
+          "ml": {
+            "mae": 0.0003466877786004855,
+            "rmse": 0.0006620714678813623,
+            "sampleCount": 13518
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0003557774818760169,
+            "rmse": 0.0006868235484993151,
+            "sampleCount": 13518
+          },
+          "sampleCount": 13518
+        }
+      }
+    },
+    {
+      "config": {
+        "architecture": "pooled",
+        "featureProfile": "base24",
+        "id": "base24-pooled-strong",
+        "regularization": "strong"
+      },
+      "confirmation": {
+        "changedTargetCount": 3074,
+        "maeImprovementPct": -0.15573263161178108,
+        "ml": {
+          "mae": 0.000630362870315996,
+          "rmse": 0.0010130031583783226,
+          "sampleCount": 5670
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0006293827160493826,
+          "rmse": 0.001014334648694131,
+          "sampleCount": 5670
+        },
+        "sampleCount": 5670
+      },
+      "correctionWeights": {
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4": 1,
+        "5": 1,
+        "6": 1
+      },
+      "eligibleForSelection": false,
+      "id": "base24-pooled-strong-global-1",
+      "outOfFold": {
+        "beatsPersistence": true,
+        "folds": [
+          {
+            "changedTargetCount": 2199,
+            "maeImprovementPct": -1.136884249816834,
+            "ml": {
+              "mae": 0.00039915356983927626,
+              "rmse": 0.0007145349711880867,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00039466666666666583,
+              "rmse": 0.0007342237019086508,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2154,
+            "maeImprovementPct": 8.775846715213614,
+            "ml": {
+              "mae": 0.0003790870369834456,
+              "rmse": 0.0006927737234361742,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0004155555555555555,
+              "rmse": 0.0007523681132117295,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2029,
+            "maeImprovementPct": -1.8848105567635243,
+            "ml": {
+              "mae": 0.0002623567698134987,
+              "rmse": 0.0005214627271917717,
+              "sampleCount": 4518
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0002575033200531209,
+              "rmse": 0.0005573883005357648,
+              "sampleCount": 4518
+            },
+            "sampleCount": 4518
+          }
+        ],
+        "improvingFolds": 1,
+        "overall": {
+          "changedTargetCount": 6382,
+          "maeImprovementPct": 2.5364782151694905,
+          "ml": {
+            "mae": 0.00034675326355375314,
+            "rmse": 0.0006485430579116549,
+            "sampleCount": 13518
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0003557774818760169,
+            "rmse": 0.0006868235484993151,
+            "sampleCount": 13518
+          },
+          "sampleCount": 13518
+        }
+      }
+    },
+    {
+      "config": {
+        "architecture": "pooled",
+        "featureProfile": "extended168",
+        "id": "extended168-pooled-strong",
+        "regularization": "strong"
+      },
+      "confirmation": {
+        "changedTargetCount": 3074,
+        "maeImprovementPct": 0.40569304818703705,
+        "ml": {
+          "mae": 0.0006268293541238795,
+          "rmse": 0.001006799445122662,
+          "sampleCount": 5670
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0006293827160493826,
+          "rmse": 0.001014334648694131,
+          "sampleCount": 5670
+        },
+        "sampleCount": 5670
+      },
+      "correctionWeights": {
+        "1": 0.5,
+        "2": 0.5,
+        "3": 0.5,
+        "4": 0.5,
+        "5": 0.5,
+        "6": 0.5
+      },
+      "eligibleForSelection": true,
+      "id": "extended168-pooled-strong-global-0.5",
+      "outOfFold": {
+        "beatsPersistence": true,
+        "folds": [
+          {
+            "changedTargetCount": 2199,
+            "maeImprovementPct": 0.35854169827255017,
+            "ml": {
+              "mae": 0.0003932516220974835,
+              "rmse": 0.0007171423422420411,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00039466666666666583,
+              "rmse": 0.0007342237019086508,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2154,
+            "maeImprovementPct": 4.658410904134992,
+            "ml": {
+              "mae": 0.0003961972702428168,
+              "rmse": 0.0007201036469253933,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0004155555555555555,
+              "rmse": 0.0007523681132117295,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2029,
+            "maeImprovementPct": 2.269361678945103,
+            "ml": {
+              "mae": 0.000251659638385824,
+              "rmse": 0.0005321306426244281,
+              "sampleCount": 4518
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0002575033200531209,
+              "rmse": 0.0005573883005357648,
+              "sampleCount": 4518
+            },
+            "sampleCount": 4518
+          }
+        ],
+        "improvingFolds": 3,
+        "overall": {
+          "changedTargetCount": 6382,
+          "maeImprovementPct": 2.4926547644507,
+          "ml": {
+            "mae": 0.00034690917752319163,
+            "rmse": 0.0006621641862400048,
+            "sampleCount": 13518
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0003557774818760169,
+            "rmse": 0.0006868235484993151,
+            "sampleCount": 13518
+          },
+          "sampleCount": 13518
+        }
+      }
+    },
+    {
+      "config": {
+        "architecture": "per-horizon",
+        "featureProfile": "extended168",
+        "id": "extended168-per-horizon-original",
+        "regularization": "original"
+      },
+      "confirmation": {
+        "changedTargetCount": 3074,
+        "maeImprovementPct": 2.0365354012511996,
+        "ml": {
+          "mae": 0.0006165651142276806,
+          "rmse": 0.0009917088025019783,
+          "sampleCount": 5670
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0006293827160493826,
+          "rmse": 0.001014334648694131,
+          "sampleCount": 5670
+        },
+        "sampleCount": 5670
+      },
+      "correctionWeights": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0.1,
+        "5": 0.5,
+        "6": 0.5
+      },
+      "eligibleForSelection": true,
+      "id": "extended168-per-horizon-original-per-horizon-weights",
+      "outOfFold": {
+        "beatsPersistence": true,
+        "folds": [
+          {
+            "changedTargetCount": 2199,
+            "maeImprovementPct": 0.04005088942454041,
+            "ml": {
+              "mae": 0.00039450859915640365,
+              "rmse": 0.0007208846557787954,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00039466666666666583,
+              "rmse": 0.0007342237019086508,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2154,
+            "maeImprovementPct": 4.361461429992529,
+            "ml": {
+              "mae": 0.0003974312602798088,
+              "rmse": 0.0007252545192170876,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0004155555555555555,
+              "rmse": 0.0007523681132117295,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2029,
+            "maeImprovementPct": 1.9572445113129322,
+            "ml": {
+              "mae": 0.0002524633504549326,
+              "rmse": 0.0005365286278463942,
+              "sampleCount": 4518
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0002575033200531209,
+              "rmse": 0.0005573883005357648,
+              "sampleCount": 4518
+            },
+            "sampleCount": 4518
+          }
+        ],
+        "improvingFolds": 3,
+        "overall": {
+          "changedTargetCount": 6382,
+          "maeImprovementPct": 2.1840814900331718,
+          "ml": {
+            "mae": 0.0003480070117486567,
+            "rmse": 0.0006665598290056876,
+            "sampleCount": 13518
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0003557774818760169,
+            "rmse": 0.0006868235484993151,
+            "sampleCount": 13518
+          },
+          "sampleCount": 13518
+        }
+      }
+    },
+    {
+      "config": {
+        "architecture": "per-horizon",
+        "featureProfile": "base24",
+        "id": "base24-per-horizon-strong",
+        "regularization": "strong"
+      },
+      "confirmation": {
+        "changedTargetCount": 3074,
+        "maeImprovementPct": -0.4255575754389466,
+        "ml": {
+          "mae": 0.0006320611018760341,
+          "rmse": 0.00101399127573217,
+          "sampleCount": 5670
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0006293827160493826,
+          "rmse": 0.001014334648694131,
+          "sampleCount": 5670
+        },
+        "sampleCount": 5670
+      },
+      "correctionWeights": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0.5,
+        "5": 0.5,
+        "6": 0.5
+      },
+      "eligibleForSelection": true,
+      "id": "base24-per-horizon-strong-per-horizon-weights",
+      "outOfFold": {
+        "beatsPersistence": true,
+        "folds": [
+          {
+            "changedTargetCount": 2199,
+            "maeImprovementPct": -0.2553536693181609,
+            "ml": {
+              "mae": 0.00039567446248157484,
+              "rmse": 0.0007201992301589554,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00039466666666666583,
+              "rmse": 0.0007342237019086508,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2154,
+            "maeImprovementPct": 4.825194226203306,
+            "ml": {
+              "mae": 0.0003955041928822218,
+              "rmse": 0.0007195615104538805,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0004155555555555555,
+              "rmse": 0.0007523681132117295,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2029,
+            "maeImprovementPct": 1.6397811398124515,
+            "ml": {
+              "mae": 0.00025328082917649893,
+              "rmse": 0.0005295162437574944,
+              "sampleCount": 4518
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0002575033200531209,
+              "rmse": 0.0005573883005357648,
+              "sampleCount": 4518
+            },
+            "sampleCount": 4518
+          }
+        ],
+        "improvingFolds": 2,
+        "overall": {
+          "changedTargetCount": 6382,
+          "maeImprovementPct": 2.1785100977978438,
+          "ml": {
+            "mae": 0.00034802683350765697,
+            "rmse": 0.0006623719383955877,
+            "sampleCount": 13518
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0003557774818760169,
+            "rmse": 0.0006868235484993151,
+            "sampleCount": 13518
+          },
+          "sampleCount": 13518
+        }
+      }
+    },
+    {
+      "config": {
+        "architecture": "per-horizon",
+        "featureProfile": "base24",
+        "id": "base24-per-horizon-strong",
+        "regularization": "strong"
+      },
+      "confirmation": {
+        "changedTargetCount": 3074,
+        "maeImprovementPct": -0.44782474332126687,
+        "ml": {
+          "mae": 0.0006322012475820392,
+          "rmse": 0.0010140253224470656,
+          "sampleCount": 5670
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0006293827160493826,
+          "rmse": 0.001014334648694131,
+          "sampleCount": 5670
+        },
+        "sampleCount": 5670
+      },
+      "correctionWeights": {
+        "1": 0.5,
+        "2": 0.5,
+        "3": 0.5,
+        "4": 0.5,
+        "5": 0.5,
+        "6": 0.5
+      },
+      "eligibleForSelection": true,
+      "id": "base24-per-horizon-strong-global-0.5",
+      "outOfFold": {
+        "beatsPersistence": true,
+        "folds": [
+          {
+            "changedTargetCount": 2199,
+            "maeImprovementPct": -0.2851457611624726,
+            "ml": {
+              "mae": 0.00039579204193738706,
+              "rmse": 0.0007193704761312421,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00039466666666666583,
+              "rmse": 0.0007342237019086508,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2154,
+            "maeImprovementPct": 4.825194226203306,
+            "ml": {
+              "mae": 0.0003955041928822218,
+              "rmse": 0.0007195615104538805,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0004155555555555555,
+              "rmse": 0.0007523681132117295,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2029,
+            "maeImprovementPct": 1.4587935852958462,
+            "ml": {
+              "mae": 0.00025374687813826214,
+              "rmse": 0.000526390634017423,
+              "sampleCount": 4518
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0002575033200531209,
+              "rmse": 0.0005573883005357648,
+              "sampleCount": 4518
+            },
+            "sampleCount": 4518
+          }
+        ],
+        "improvingFolds": 2,
+        "overall": {
+          "changedTargetCount": 6382,
+          "maeImprovementPct": 2.123727447978723,
+          "ml": {
+            "mae": 0.0003482217378396884,
+            "rmse": 0.0006612385226981132,
+            "sampleCount": 13518
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0003557774818760169,
+            "rmse": 0.0006868235484993151,
+            "sampleCount": 13518
+          },
+          "sampleCount": 13518
+        }
+      }
+    },
+    {
+      "config": {
+        "architecture": "pooled",
+        "featureProfile": "extended168",
+        "id": "extended168-pooled-strong",
+        "regularization": "strong"
+      },
+      "confirmation": {
+        "changedTargetCount": 3074,
+        "maeImprovementPct": 0.4182845441591744,
+        "ml": {
+          "mae": 0.0006267501054245388,
+          "rmse": 0.0010037776675086347,
+          "sampleCount": 5670
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0006293827160493826,
+          "rmse": 0.001014334648694131,
+          "sampleCount": 5670
+        },
+        "sampleCount": 5670
+      },
+      "correctionWeights": {
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4": 1,
+        "5": 1,
+        "6": 1
+      },
+      "eligibleForSelection": false,
+      "id": "extended168-pooled-strong-global-1",
+      "outOfFold": {
+        "beatsPersistence": true,
+        "folds": [
+          {
+            "changedTargetCount": 2199,
+            "maeImprovementPct": -2.556782890139268,
+            "ml": {
+              "mae": 0.0004047574364730821,
+              "rmse": 0.0007184532890817331,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00039466666666666583,
+              "rmse": 0.0007342237019086508,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2154,
+            "maeImprovementPct": 8.225669748524735,
+            "ml": {
+              "mae": 0.0003813733279339083,
+              "rmse": 0.0006938238196435811,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0004155555555555555,
+              "rmse": 0.0007523681132117295,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2029,
+            "maeImprovementPct": -0.5447373998696491,
+            "ml": {
+              "mae": 0.0002589060369433563,
+              "rmse": 0.0005214088008014211,
+              "sampleCount": 4518
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0002575033200531209,
+              "rmse": 0.0005573883005357648,
+              "sampleCount": 4518
+            },
+            "sampleCount": 4518
+          }
+        ],
+        "improvingFolds": 1,
+        "overall": {
+          "changedTargetCount": 6382,
+          "maeImprovementPct": 2.122387101477436,
+          "ml": {
+            "mae": 0.0003482265064907191,
+            "rmse": 0.0006503407965044597,
+            "sampleCount": 13518
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0003557774818760169,
+            "rmse": 0.0006868235484993151,
+            "sampleCount": 13518
+          },
+          "sampleCount": 13518
+        }
+      }
+    },
+    {
+      "config": {
+        "architecture": "pooled",
+        "featureProfile": "extended168",
+        "id": "extended168-pooled-original",
+        "regularization": "original"
+      },
+      "confirmation": {
+        "changedTargetCount": 3074,
+        "maeImprovementPct": 0.9875162968610249,
+        "ml": {
+          "mae": 0.0006231674591587684,
+          "rmse": 0.0010032270428883801,
+          "sampleCount": 5670
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0006293827160493826,
+          "rmse": 0.001014334648694131,
+          "sampleCount": 5670
+        },
+        "sampleCount": 5670
+      },
+      "correctionWeights": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0.5,
+        "6": 0.5
+      },
+      "eligibleForSelection": true,
+      "id": "extended168-pooled-original-per-horizon-weights",
+      "outOfFold": {
+        "beatsPersistence": true,
+        "folds": [
+          {
+            "changedTargetCount": 2199,
+            "maeImprovementPct": -0.010660119159753472,
+            "ml": {
+              "mae": 0.0003947087386036163,
+              "rmse": 0.0007252332044738785,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00039466666666666583,
+              "rmse": 0.0007342237019086508,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2154,
+            "maeImprovementPct": 4.119293019070799,
+            "ml": {
+              "mae": 0.00039843760456519464,
+              "rmse": 0.0007267069135005571,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0004155555555555555,
+              "rmse": 0.0007523681132117295,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2029,
+            "maeImprovementPct": 2.1652190859067235,
+            "ml": {
+              "mae": 0.00025192780902048726,
+              "rmse": 0.0005361670660213176,
+              "sampleCount": 4518
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0002575033200531209,
+              "rmse": 0.0005573883005357648,
+              "sampleCount": 4518
+            },
+            "sampleCount": 4518
+          }
+        ],
+        "improvingFolds": 2,
+        "overall": {
+          "changedTargetCount": 6382,
+          "maeImprovementPct": 2.1215040251546124,
+          "ml": {
+            "mae": 0.00034822964827742347,
+            "rmse": 0.0006685564775750757,
+            "sampleCount": 13518
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0003557774818760169,
+            "rmse": 0.0006868235484993151,
+            "sampleCount": 13518
+          },
+          "sampleCount": 13518
+        }
+      }
+    },
+    {
+      "config": {
+        "architecture": "per-horizon",
+        "featureProfile": "extended168",
+        "id": "extended168-per-horizon-strong",
+        "regularization": "strong"
+      },
+      "confirmation": {
+        "changedTargetCount": 3074,
+        "maeImprovementPct": 2.905872375156529,
+        "ml": {
+          "mae": 0.0006110936575696937,
+          "rmse": 0.000979769679016591,
+          "sampleCount": 5670
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0006293827160493826,
+          "rmse": 0.001014334648694131,
+          "sampleCount": 5670
+        },
+        "sampleCount": 5670
+      },
+      "correctionWeights": {
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4": 1,
+        "5": 1,
+        "6": 1
+      },
+      "eligibleForSelection": true,
+      "id": "extended168-per-horizon-strong-global-1",
+      "outOfFold": {
+        "beatsPersistence": true,
+        "folds": [
+          {
+            "changedTargetCount": 2199,
+            "maeImprovementPct": -7.81900529438089,
+            "ml": {
+              "mae": 0.000425525674228489,
+              "rmse": 0.0007433727426659455,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00039466666666666583,
+              "rmse": 0.0007342237019086508,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2154,
+            "maeImprovementPct": 10.262852719434191,
+            "ml": {
+              "mae": 0.0003729077009214623,
+              "rmse": 0.000679632165560274,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0004155555555555555,
+              "rmse": 0.0007523681132117295,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2029,
+            "maeImprovementPct": 4.147115922642185,
+            "ml": {
+              "mae": 0.00024682435886586566,
+              "rmse": 0.0005103250565732877,
+              "sampleCount": 4518
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0002575033200531209,
+              "rmse": 0.0005573883005357648,
+              "sampleCount": 4518
+            },
+            "sampleCount": 4518
+          }
+        ],
+        "improvingFolds": 2,
+        "overall": {
+          "changedTargetCount": 6382,
+          "maeImprovementPct": 2.1062369208058014,
+          "ml": {
+            "mae": 0.00034828396519683106,
+            "rmse": 0.0006517354444518659,
+            "sampleCount": 13518
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0003557774818760169,
+            "rmse": 0.0006868235484993151,
+            "sampleCount": 13518
+          },
+          "sampleCount": 13518
+        }
+      }
+    },
+    {
+      "config": {
+        "architecture": "per-horizon",
+        "featureProfile": "extended168",
+        "id": "extended168-per-horizon-strong",
+        "regularization": "strong"
+      },
+      "confirmation": {
+        "changedTargetCount": 3074,
+        "maeImprovementPct": 1.1178127779915734,
+        "ml": {
+          "mae": 0.0006223473956269122,
+          "rmse": 0.0010021266904272565,
+          "sampleCount": 5670
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0006293827160493826,
+          "rmse": 0.001014334648694131,
+          "sampleCount": 5670
+        },
+        "sampleCount": 5670
+      },
+      "correctionWeights": {
+        "1": 0.25,
+        "2": 0.25,
+        "3": 0.25,
+        "4": 0.25,
+        "5": 0.25,
+        "6": 0.25
+      },
+      "eligibleForSelection": true,
+      "id": "extended168-per-horizon-strong-global-0.25",
+      "outOfFold": {
+        "beatsPersistence": true,
+        "folds": [
+          {
+            "changedTargetCount": 2199,
+            "maeImprovementPct": 0.7202450369726408,
+            "ml": {
+              "mae": 0.0003918240995874138,
+              "rmse": 0.0007217155853199011,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00039466666666666583,
+              "rmse": 0.0007342237019086508,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2154,
+            "maeImprovementPct": 3.4957092265607357,
+            "ml": {
+              "mae": 0.00040102894165851424,
+              "rmse": 0.0007295828239685891,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0004155555555555555,
+              "rmse": 0.0007523681132117295,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2029,
+            "maeImprovementPct": 1.860085525826097,
+            "ml": {
+              "mae": 0.00025271353806829115,
+              "rmse": 0.0005425758728624988,
+              "sampleCount": 4518
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0002575033200531209,
+              "rmse": 0.0005573883005357648,
+              "sampleCount": 4518
+            },
+            "sampleCount": 4518
+          }
+        ],
+        "improvingFolds": 3,
+        "overall": {
+          "changedTargetCount": 6382,
+          "maeImprovementPct": 2.075135139534681,
+          "ml": {
+            "mae": 0.00034839461833105603,
+            "rmse": 0.0006700583811158961,
+            "sampleCount": 13518
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0003557774818760169,
+            "rmse": 0.0006868235484993151,
+            "sampleCount": 13518
+          },
+          "sampleCount": 13518
+        }
+      }
+    },
+    {
+      "config": {
+        "architecture": "per-horizon",
+        "featureProfile": "base24",
+        "id": "base24-per-horizon-original",
+        "regularization": "original"
+      },
+      "confirmation": {
+        "changedTargetCount": 3074,
+        "maeImprovementPct": -0.9154304322803732,
+        "ml": {
+          "mae": 0.0006351442769676114,
+          "rmse": 0.0010169287235039215,
+          "sampleCount": 5670
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0006293827160493826,
+          "rmse": 0.001014334648694131,
+          "sampleCount": 5670
+        },
+        "sampleCount": 5670
+      },
+      "correctionWeights": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0.25,
+        "5": 0.25,
+        "6": 0.5
+      },
+      "eligibleForSelection": true,
+      "id": "base24-per-horizon-original-per-horizon-weights",
+      "outOfFold": {
+        "beatsPersistence": true,
+        "folds": [
+          {
+            "changedTargetCount": 2199,
+            "maeImprovementPct": 0.9092471248550843,
+            "ml": {
+              "mae": 0.0003910781713472378,
+              "rmse": 0.000718143640863931,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00039466666666666583,
+              "rmse": 0.0007342237019086508,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2154,
+            "maeImprovementPct": 2.421812701334944,
+            "ml": {
+              "mae": 0.0004054915783300081,
+              "rmse": 0.0007338087384516054,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0004155555555555555,
+              "rmse": 0.0007523681132117295,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2029,
+            "maeImprovementPct": 2.05791507045054,
+            "ml": {
+              "mae": 0.00025220412042283724,
+              "rmse": 0.0005337616118052658,
+              "sampleCount": 4518
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0002575033200531209,
+              "rmse": 0.0005573883005357648,
+              "sampleCount": 4518
+            },
+            "sampleCount": 4518
+          }
+        ],
+        "improvingFolds": 3,
+        "overall": {
+          "changedTargetCount": 6382,
+          "maeImprovementPct": 1.7752299742589697,
+          "ml": {
+            "mae": 0.00034946161337609007,
+            "rmse": 0.0006679476031369021,
+            "sampleCount": 13518
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0003557774818760169,
+            "rmse": 0.0006868235484993151,
+            "sampleCount": 13518
+          },
+          "sampleCount": 13518
+        }
+      }
+    },
+    {
+      "config": {
+        "architecture": "per-horizon",
+        "featureProfile": "extended168",
+        "id": "extended168-per-horizon-original",
+        "regularization": "original"
+      },
+      "confirmation": {
+        "changedTargetCount": 3074,
+        "maeImprovementPct": 1.3425994996173896,
+        "ml": {
+          "mae": 0.0006209326268530253,
+          "rmse": 0.000999475315769774,
+          "sampleCount": 5670
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0006293827160493826,
+          "rmse": 0.001014334648694131,
+          "sampleCount": 5670
+        },
+        "sampleCount": 5670
+      },
+      "correctionWeights": {
+        "1": 0.25,
+        "2": 0.25,
+        "3": 0.25,
+        "4": 0.25,
+        "5": 0.25,
+        "6": 0.25
+      },
+      "eligibleForSelection": true,
+      "id": "extended168-per-horizon-original-global-0.25",
+      "outOfFold": {
+        "beatsPersistence": true,
+        "folds": [
+          {
+            "changedTargetCount": 2199,
+            "maeImprovementPct": 0.9851124805398896,
+            "ml": {
+              "mae": 0.00039077875607680174,
+              "rmse": 0.0007167724695106937,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00039466666666666583,
+              "rmse": 0.0007342237019086508,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2154,
+            "maeImprovementPct": 2.785188935619551,
+            "ml": {
+              "mae": 0.0004039815482008698,
+              "rmse": 0.0007343590560904967,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0004155555555555555,
+              "rmse": 0.0007523681132117295,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2029,
+            "maeImprovementPct": 1.3079253964636983,
+            "ml": {
+              "mae": 0.00025413536873340894,
+              "rmse": 0.0005419143949133192,
+              "sampleCount": 4518
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0002575033200531209,
+              "rmse": 0.0005573883005357648,
+              "sampleCount": 4518
+            },
+            "sampleCount": 4518
+          }
+        ],
+        "improvingFolds": 3,
+        "overall": {
+          "changedTargetCount": 6382,
+          "maeImprovementPct": 1.7631104672710354,
+          "ml": {
+            "mae": 0.0003495047318528675,
+            "rmse": 0.0006698500072010949,
+            "sampleCount": 13518
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0003557774818760169,
+            "rmse": 0.0006868235484993151,
+            "sampleCount": 13518
+          },
+          "sampleCount": 13518
+        }
+      }
+    },
+    {
+      "config": {
+        "architecture": "per-horizon",
+        "featureProfile": "extended168",
+        "id": "extended168-per-horizon-original",
+        "regularization": "original"
+      },
+      "confirmation": {
+        "changedTargetCount": 3074,
+        "maeImprovementPct": 2.259063862010956,
+        "ml": {
+          "mae": 0.000615164558557368,
+          "rmse": 0.0009875042008181379,
+          "sampleCount": 5670
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0006293827160493826,
+          "rmse": 0.001014334648694131,
+          "sampleCount": 5670
+        },
+        "sampleCount": 5670
+      },
+      "correctionWeights": {
+        "1": 0.5,
+        "2": 0.5,
+        "3": 0.5,
+        "4": 0.5,
+        "5": 0.5,
+        "6": 0.5
+      },
+      "eligibleForSelection": true,
+      "id": "extended168-per-horizon-original-global-0.5",
+      "outOfFold": {
+        "beatsPersistence": true,
+        "folds": [
+          {
+            "changedTargetCount": 2199,
+            "maeImprovementPct": -1.5247188876283237,
+            "ml": {
+              "mae": 0.0004006842238765056,
+              "rmse": 0.0007178316418084699,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00039466666666666583,
+              "rmse": 0.0007342237019086508,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2154,
+            "maeImprovementPct": 5.096131455715754,
+            "ml": {
+              "mae": 0.0003943782981729145,
+              "rmse": 0.0007193805209754869,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0004155555555555555,
+              "rmse": 0.0007523681132117295,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2029,
+            "maeImprovementPct": 1.279365488387042,
+            "ml": {
+              "mae": 0.00025420891144491045,
+              "rmse": 0.0005311533922406796,
+              "sampleCount": 4518
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0002575033200531209,
+              "rmse": 0.0005573883005357648,
+              "sampleCount": 4518
+            },
+            "sampleCount": 4518
+          }
+        ],
+        "improvingFolds": 2,
+        "overall": {
+          "changedTargetCount": 6382,
+          "maeImprovementPct": 1.727924249792087,
+          "ml": {
+            "mae": 0.00034962991649138155,
+            "rmse": 0.0006618888713928867,
+            "sampleCount": 13518
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0003557774818760169,
+            "rmse": 0.0006868235484993151,
+            "sampleCount": 13518
+          },
+          "sampleCount": 13518
+        }
+      }
+    },
+    {
+      "config": {
+        "architecture": "per-horizon",
+        "featureProfile": "base24",
+        "id": "base24-per-horizon-strong",
+        "regularization": "strong"
+      },
+      "confirmation": {
+        "changedTargetCount": 3074,
+        "maeImprovementPct": -0.08048712568018387,
+        "ml": {
+          "mae": 0.0006298892881070586,
+          "rmse": 0.0010128371114412854,
+          "sampleCount": 5670
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0006293827160493826,
+          "rmse": 0.001014334648694131,
+          "sampleCount": 5670
+        },
+        "sampleCount": 5670
+      },
+      "correctionWeights": {
+        "1": 0.25,
+        "2": 0.25,
+        "3": 0.25,
+        "4": 0.25,
+        "5": 0.25,
+        "6": 0.25
+      },
+      "eligibleForSelection": true,
+      "id": "base24-per-horizon-strong-global-0.25",
+      "outOfFold": {
+        "beatsPersistence": true,
+        "folds": [
+          {
+            "changedTargetCount": 2199,
+            "maeImprovementPct": 0.7173946693937663,
+            "ml": {
+              "mae": 0.0003918353490381251,
+              "rmse": 0.0007217578385459078,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00039466666666666583,
+              "rmse": 0.0007342237019086508,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2154,
+            "maeImprovementPct": 2.5387952327658883,
+            "ml": {
+              "mae": 0.00040500545092161727,
+              "rmse": 0.0007351314936760981,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0004155555555555555,
+              "rmse": 0.0007523681132117295,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2029,
+            "maeImprovementPct": 1.8730771535950255,
+            "ml": {
+              "mae": 0.0002526800841954572,
+              "rmse": 0.0005384962443400868,
+              "sampleCount": 4518
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0002575033200531209,
+              "rmse": 0.0005573883005357648,
+              "sampleCount": 4518
+            },
+            "sampleCount": 4518
+          }
+        ],
+        "improvingFolds": 3,
+        "overall": {
+          "changedTargetCount": 6382,
+          "maeImprovementPct": 1.7051561480866697,
+          "ml": {
+            "mae": 0.00034971092027030005,
+            "rmse": 0.0006709917755666982,
+            "sampleCount": 13518
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0003557774818760169,
+            "rmse": 0.0006868235484993151,
+            "sampleCount": 13518
+          },
+          "sampleCount": 13518
+        }
+      }
+    },
+    {
+      "config": {
+        "architecture": "per-horizon",
+        "featureProfile": "base24",
+        "id": "base24-per-horizon-original",
+        "regularization": "original"
+      },
+      "confirmation": {
+        "changedTargetCount": 3074,
+        "maeImprovementPct": -0.45318601610427106,
+        "ml": {
+          "mae": 0.0006322349905062957,
+          "rmse": 0.0010132939785695556,
+          "sampleCount": 5670
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0006293827160493826,
+          "rmse": 0.001014334648694131,
+          "sampleCount": 5670
+        },
+        "sampleCount": 5670
+      },
+      "correctionWeights": {
+        "1": 0.25,
+        "2": 0.25,
+        "3": 0.25,
+        "4": 0.25,
+        "5": 0.25,
+        "6": 0.25
+      },
+      "eligibleForSelection": true,
+      "id": "base24-per-horizon-original-global-0.25",
+      "outOfFold": {
+        "beatsPersistence": true,
+        "folds": [
+          {
+            "changedTargetCount": 2199,
+            "maeImprovementPct": 1.235693708597458,
+            "ml": {
+              "mae": 0.00038978979549673454,
+              "rmse": 0.0007188635344692015,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00039466666666666583,
+              "rmse": 0.0007342237019086508,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2154,
+            "maeImprovementPct": 1.8408188178678782,
+            "ml": {
+              "mae": 0.00040790593069019344,
+              "rmse": 0.0007378211002907659,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0004155555555555555,
+              "rmse": 0.0007523681132117295,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2029,
+            "maeImprovementPct": 2.151985764872012,
+            "ml": {
+              "mae": 0.0002519618852615049,
+              "rmse": 0.0005388934661239499,
+              "sampleCount": 4518
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0002575033200531209,
+              "rmse": 0.0005573883005357648,
+              "sampleCount": 4518
+            },
+            "sampleCount": 4518
+          }
+        ],
+        "improvingFolds": 3,
+        "overall": {
+          "changedTargetCount": 6382,
+          "maeImprovementPct": 1.6926318157637317,
+          "ml": {
+            "mae": 0.0003497554790244604,
+            "rmse": 0.0006710467779555114,
+            "sampleCount": 13518
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0003557774818760169,
+            "rmse": 0.0006868235484993151,
+            "sampleCount": 13518
+          },
+          "sampleCount": 13518
+        }
+      }
+    },
+    {
+      "config": {
+        "architecture": "per-horizon",
+        "featureProfile": "base24",
+        "id": "base24-per-horizon-original",
+        "regularization": "original"
+      },
+      "confirmation": {
+        "changedTargetCount": 3074,
+        "maeImprovementPct": -1.5454499881044443,
+        "ml": {
+          "mae": 0.0006391095111596992,
+          "rmse": 0.001019257800791409,
+          "sampleCount": 5670
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0006293827160493826,
+          "rmse": 0.001014334648694131,
+          "sampleCount": 5670
+        },
+        "sampleCount": 5670
+      },
+      "correctionWeights": {
+        "1": 0.5,
+        "2": 0.5,
+        "3": 0.5,
+        "4": 0.5,
+        "5": 0.5,
+        "6": 0.5
+      },
+      "eligibleForSelection": true,
+      "id": "base24-per-horizon-original-global-0.5",
+      "outOfFold": {
+        "beatsPersistence": true,
+        "folds": [
+          {
+            "changedTargetCount": 2199,
+            "maeImprovementPct": -0.1613595828793174,
+            "ml": {
+              "mae": 0.00039530349915376287,
+              "rmse": 0.0007169497178706797,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00039466666666666583,
+              "rmse": 0.0007342237019086508,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2154,
+            "maeImprovementPct": 3.5024194685091867,
+            "ml": {
+              "mae": 0.00040100105687530623,
+              "rmse": 0.0007251065639861948,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0004155555555555555,
+              "rmse": 0.0007523681132117295,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2029,
+            "maeImprovementPct": 1.358867657323426,
+            "ml": {
+              "mae": 0.000254004190720385,
+              "rmse": 0.0005280203565863334,
+              "sampleCount": 4518
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0002575033200531209,
+              "rmse": 0.0005573883005357648,
+              "sampleCount": 4518
+            },
+            "sampleCount": 4518
+          }
+        ],
+        "improvingFolds": 2,
+        "overall": {
+          "changedTargetCount": 6382,
+          "maeImprovementPct": 1.6309428243541,
+          "ml": {
+            "mae": 0.0003499749545646923,
+            "rmse": 0.0006628121569561304,
+            "sampleCount": 13518
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0003557774818760169,
+            "rmse": 0.0006868235484993151,
+            "sampleCount": 13518
+          },
+          "sampleCount": 13518
+        }
+      }
+    },
+    {
+      "config": {
+        "architecture": "pooled",
+        "featureProfile": "base24",
+        "id": "base24-pooled-strong",
+        "regularization": "strong"
+      },
+      "confirmation": {
+        "changedTargetCount": 3074,
+        "maeImprovementPct": -0.03883940819927804,
+        "ml": {
+          "mae": 0.0006296271645716047,
+          "rmse": 0.0010138037219767392,
+          "sampleCount": 5670
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0006293827160493826,
+          "rmse": 0.001014334648694131,
+          "sampleCount": 5670
+        },
+        "sampleCount": 5670
+      },
+      "correctionWeights": {
+        "1": 0.25,
+        "2": 0.25,
+        "3": 0.25,
+        "4": 0.25,
+        "5": 0.25,
+        "6": 0.25
+      },
+      "eligibleForSelection": true,
+      "id": "base24-pooled-strong-global-0.25",
+      "outOfFold": {
+        "beatsPersistence": true,
+        "folds": [
+          {
+            "changedTargetCount": 2199,
+            "maeImprovementPct": 0.5575541885828855,
+            "ml": {
+              "mae": 0.0003924661861357254,
+              "rmse": 0.0007246723306850732,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00039466666666666583,
+              "rmse": 0.0007342237019086508,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2154,
+            "maeImprovementPct": 2.6996667662005702,
+            "ml": {
+              "mae": 0.00040433694032712203,
+              "rmse": 0.0007348347537159612,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0004155555555555555,
+              "rmse": 0.0007523681132117295,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2029,
+            "maeImprovementPct": 1.4536054463191226,
+            "ml": {
+              "mae": 0.0002537602377683762,
+              "rmse": 0.0005428881809114303,
+              "sampleCount": 4518
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0002575033200531209,
+              "rmse": 0.0005573883005357648,
+              "sampleCount": 4518
+            },
+            "sampleCount": 4518
+          }
+        ],
+        "improvingFolds": 3,
+        "overall": {
+          "changedTargetCount": 6382,
+          "maeImprovementPct": 1.6072103938050393,
+          "ml": {
+            "mae": 0.0003500593892084877,
+            "rmse": 0.0006731087796420486,
+            "sampleCount": 13518
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0003557774818760169,
+            "rmse": 0.0006868235484993151,
+            "sampleCount": 13518
+          },
+          "sampleCount": 13518
+        }
+      }
+    },
+    {
+      "config": {
+        "architecture": "pooled",
+        "featureProfile": "extended168",
+        "id": "extended168-pooled-strong",
+        "regularization": "strong"
+      },
+      "confirmation": {
+        "changedTargetCount": 3074,
+        "maeImprovementPct": 0.26977518604270206,
+        "ml": {
+          "mae": 0.0006276847976562398,
+          "rmse": 0.0010100077641428716,
+          "sampleCount": 5670
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0006293827160493826,
+          "rmse": 0.001014334648694131,
+          "sampleCount": 5670
+        },
+        "sampleCount": 5670
+      },
+      "correctionWeights": {
+        "1": 0.25,
+        "2": 0.25,
+        "3": 0.25,
+        "4": 0.25,
+        "5": 0.25,
+        "6": 0.25
+      },
+      "eligibleForSelection": true,
+      "id": "extended168-pooled-strong-global-0.25",
+      "outOfFold": {
+        "beatsPersistence": true,
+        "folds": [
+          {
+            "changedTargetCount": 2199,
+            "maeImprovementPct": 0.5539617701871113,
+            "ml": {
+              "mae": 0.0003924803642136607,
+              "rmse": 0.000723432533046394,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00039466666666666583,
+              "rmse": 0.0007342237019086508,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2154,
+            "maeImprovementPct": 2.4624415000544677,
+            "ml": {
+              "mae": 0.0004053227430997736,
+              "rmse": 0.0007355336000584909,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0004155555555555555,
+              "rmse": 0.0007523681132117295,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2029,
+            "maeImprovementPct": 1.7740801596030626,
+            "ml": {
+              "mae": 0.0002529350047417393,
+              "rmse": 0.0005430419113761602,
+              "sampleCount": 4518
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0002575033200531209,
+              "rmse": 0.0005573883005357648,
+              "sampleCount": 4518
+            },
+            "sampleCount": 4518
+          }
+        ],
+        "improvingFolds": 3,
+        "overall": {
+          "changedTargetCount": 6382,
+          "maeImprovementPct": 1.5911686627513575,
+          "ml": {
+            "mae": 0.0003501164620752798,
+            "rmse": 0.000672960350425161,
+            "sampleCount": 13518
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0003557774818760169,
+            "rmse": 0.0006868235484993151,
+            "sampleCount": 13518
+          },
+          "sampleCount": 13518
+        }
+      }
+    },
+    {
+      "config": {
+        "architecture": "pooled",
+        "featureProfile": "base24",
+        "id": "base24-pooled-original",
+        "regularization": "original"
+      },
+      "confirmation": {
+        "changedTargetCount": 3074,
+        "maeImprovementPct": -0.7153880852106561,
+        "ml": {
+          "mae": 0.0006338852450103751,
+          "rmse": 0.0010154339826694276,
+          "sampleCount": 5670
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0006293827160493826,
+          "rmse": 0.001014334648694131,
+          "sampleCount": 5670
+        },
+        "sampleCount": 5670
+      },
+      "correctionWeights": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0.1,
+        "5": 0.25,
+        "6": 0.5
+      },
+      "eligibleForSelection": true,
+      "id": "base24-pooled-original-per-horizon-weights",
+      "outOfFold": {
+        "beatsPersistence": true,
+        "folds": [
+          {
+            "changedTargetCount": 2199,
+            "maeImprovementPct": 0.3933845696519593,
+            "ml": {
+              "mae": 0.00039311410889843944,
+              "rmse": 0.0007238917553730689,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00039466666666666583,
+              "rmse": 0.0007342237019086508,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2154,
+            "maeImprovementPct": 2.5358838311595973,
+            "ml": {
+              "mae": 0.00040501754941273674,
+              "rmse": 0.0007354178663651444,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0004155555555555555,
+              "rmse": 0.0007523681132117295,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2029,
+            "maeImprovementPct": 1.601304017428025,
+            "ml": {
+              "mae": 0.00025337990904409973,
+              "rmse": 0.0005378340652288506,
+              "sampleCount": 4518
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0002575033200531209,
+              "rmse": 0.0005573883005357648,
+              "sampleCount": 4518
+            },
+            "sampleCount": 4518
+          }
+        ],
+        "improvingFolds": 3,
+        "overall": {
+          "changedTargetCount": 6382,
+          "maeImprovementPct": 1.5186324393575317,
+          "ml": {
+            "mae": 0.00035037452962431834,
+            "rmse": 0.0006716836109907066,
+            "sampleCount": 13518
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0003557774818760169,
+            "rmse": 0.0006868235484993151,
+            "sampleCount": 13518
+          },
+          "sampleCount": 13518
+        }
+      }
+    },
+    {
+      "config": {
+        "architecture": "per-horizon",
+        "featureProfile": "extended168",
+        "id": "extended168-per-horizon-strong",
+        "regularization": "strong"
+      },
+      "confirmation": {
+        "changedTargetCount": 3074,
+        "maeImprovementPct": 0.47963818229822114,
+        "ml": {
+          "mae": 0.0006263639562304242,
+          "rmse": 0.0010091764970677753,
+          "sampleCount": 5670
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0006293827160493826,
+          "rmse": 0.001014334648694131,
+          "sampleCount": 5670
+        },
+        "sampleCount": 5670
+      },
+      "correctionWeights": {
+        "1": 0.1,
+        "2": 0.1,
+        "3": 0.1,
+        "4": 0.1,
+        "5": 0.1,
+        "6": 0.1
+      },
+      "eligibleForSelection": true,
+      "id": "extended168-per-horizon-strong-global-0.1",
+      "outOfFold": {
+        "beatsPersistence": true,
+        "folds": [
+          {
+            "changedTargetCount": 2199,
+            "maeImprovementPct": 0.5130616737536935,
+            "ml": {
+              "mae": 0.00039264178326091793,
+              "rmse": 0.0007280609621688124,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00039466666666666583,
+              "rmse": 0.0007342237019086508,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2154,
+            "maeImprovementPct": 1.404449106460094,
+            "ml": {
+              "mae": 0.00040971928926871023,
+              "rmse": 0.000742921886179905,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0004155555555555555,
+              "rmse": 0.0007523681132117295,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2029,
+            "maeImprovementPct": 0.7794960539482158,
+            "ml": {
+              "mae": 0.0002554960918345212,
+              "rmse": 0.0005512404299148518,
+              "sampleCount": 4518
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0002575033200531209,
+              "rmse": 0.0005573883005357648,
+              "sampleCount": 4518
+            },
+            "sampleCount": 4518
+          }
+        ],
+        "improvingFolds": 3,
+        "overall": {
+          "changedTargetCount": 6382,
+          "maeImprovementPct": 0.9241034371918061,
+          "ml": {
+            "mae": 0.00035248972993724616,
+            "rmse": 0.0006795194827495238,
+            "sampleCount": 13518
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0003557774818760169,
+            "rmse": 0.0006868235484993151,
+            "sampleCount": 13518
+          },
+          "sampleCount": 13518
+        }
+      }
+    },
+    {
+      "config": {
+        "architecture": "per-horizon",
+        "featureProfile": "extended168",
+        "id": "extended168-per-horizon-original",
+        "regularization": "original"
+      },
+      "confirmation": {
+        "changedTargetCount": 3074,
+        "maeImprovementPct": 0.5680153388887983,
+        "ml": {
+          "mae": 0.0006258077256819072,
+          "rmse": 0.0010080519475488625,
+          "sampleCount": 5670
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0006293827160493826,
+          "rmse": 0.001014334648694131,
+          "sampleCount": 5670
+        },
+        "sampleCount": 5670
+      },
+      "correctionWeights": {
+        "1": 0.1,
+        "2": 0.1,
+        "3": 0.1,
+        "4": 0.1,
+        "5": 0.1,
+        "6": 0.1
+      },
+      "eligibleForSelection": true,
+      "id": "extended168-per-horizon-original-global-0.1",
+      "outOfFold": {
+        "beatsPersistence": true,
+        "folds": [
+          {
+            "changedTargetCount": 2199,
+            "maeImprovementPct": 0.8146349187651204,
+            "ml": {
+              "mae": 0.00039145157418727283,
+              "rmse": 0.0007250757451236201,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00039466666666666583,
+              "rmse": 0.0007342237019086508,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2154,
+            "maeImprovementPct": 1.1307593136805858,
+            "ml": {
+              "mae": 0.00041085662240759397,
+              "rmse": 0.0007448140681713914,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0004155555555555555,
+              "rmse": 0.0007523681132117295,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2029,
+            "maeImprovementPct": 0.5844628215006165,
+            "ml": {
+              "mae": 0.00025599830888328067,
+              "rmse": 0.0005506559076320432,
+              "sampleCount": 4518
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0002575033200531209,
+              "rmse": 0.0005573883005357648,
+              "sampleCount": 4518
+            },
+            "sampleCount": 4518
+          }
+        ],
+        "improvingFolds": 3,
+        "overall": {
+          "changedTargetCount": 6382,
+          "maeImprovementPct": 0.8818720794367988,
+          "ml": {
+            "mae": 0.000352639979598429,
+            "rmse": 0.0006789878620833792,
+            "sampleCount": 13518
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0003557774818760169,
+            "rmse": 0.0006868235484993151,
+            "sampleCount": 13518
+          },
+          "sampleCount": 13518
+        }
+      }
+    },
+    {
+      "config": {
+        "architecture": "per-horizon",
+        "featureProfile": "base24",
+        "id": "base24-per-horizon-original",
+        "regularization": "original"
+      },
+      "confirmation": {
+        "changedTargetCount": 3074,
+        "maeImprovementPct": -0.09435777632336943,
+        "ml": {
+          "mae": 0.0006299765875848104,
+          "rmse": 0.0010130759685859701,
+          "sampleCount": 5670
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0006293827160493826,
+          "rmse": 0.001014334648694131,
+          "sampleCount": 5670
+        },
+        "sampleCount": 5670
+      },
+      "correctionWeights": {
+        "1": 0.1,
+        "2": 0.1,
+        "3": 0.1,
+        "4": 0.1,
+        "5": 0.1,
+        "6": 0.1
+      },
+      "eligibleForSelection": true,
+      "id": "base24-per-horizon-original-global-0.1",
+      "outOfFold": {
+        "beatsPersistence": true,
+        "folds": [
+          {
+            "changedTargetCount": 2199,
+            "maeImprovementPct": 0.8214324521495416,
+            "ml": {
+              "mae": 0.000391424746588849,
+              "rmse": 0.0007265039336026095,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00039466666666666583,
+              "rmse": 0.0007342237019086508,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2154,
+            "maeImprovementPct": 0.7409748758120054,
+            "ml": {
+              "mae": 0.00041247639329384785,
+              "rmse": 0.0007463359662370335,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0004155555555555555,
+              "rmse": 0.0007523681132117295,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2029,
+            "maeImprovementPct": 1.0306123857574723,
+            "ml": {
+              "mae": 0.00025484945894291674,
+              "rmse": 0.0005491179401650781,
+              "sampleCount": 4518
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0002575033200531209,
+              "rmse": 0.0005573883005357648,
+              "sampleCount": 4518
+            },
+            "sampleCount": 4518
+          }
+        ],
+        "improvingFolds": 3,
+        "overall": {
+          "changedTargetCount": 6382,
+          "maeImprovementPct": 0.840749678208568,
+          "ml": {
+            "mae": 0.00035278628384200573,
+            "rmse": 0.0006796357738178105,
+            "sampleCount": 13518
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0003557774818760169,
+            "rmse": 0.0006868235484993151,
+            "sampleCount": 13518
+          },
+          "sampleCount": 13518
+        }
+      }
+    },
+    {
+      "config": {
+        "architecture": "per-horizon",
+        "featureProfile": "base24",
+        "id": "base24-per-horizon-strong",
+        "regularization": "strong"
+      },
+      "confirmation": {
+        "changedTargetCount": 3074,
+        "maeImprovementPct": -0.019282856961491797,
+        "ml": {
+          "mae": 0.0006295040790182588,
+          "rmse": 0.001013413627692254,
+          "sampleCount": 5670
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0006293827160493826,
+          "rmse": 0.001014334648694131,
+          "sampleCount": 5670
+        },
+        "sampleCount": 5670
+      },
+      "correctionWeights": {
+        "1": 0.1,
+        "2": 0.1,
+        "3": 0.1,
+        "4": 0.1,
+        "5": 0.1,
+        "6": 0.1
+      },
+      "eligibleForSelection": true,
+      "id": "base24-per-horizon-strong-global-0.1",
+      "outOfFold": {
+        "beatsPersistence": true,
+        "folds": [
+          {
+            "changedTargetCount": 2199,
+            "maeImprovementPct": 0.5211284450785579,
+            "ml": {
+              "mae": 0.00039260994640342246,
+              "rmse": 0.0007280516939774215,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00039466666666666583,
+              "rmse": 0.0007342237019086508,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2154,
+            "maeImprovementPct": 1.0155180931064545,
+            "ml": {
+              "mae": 0.0004113355137019798,
+              "rmse": 0.0007452806193445396,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0004155555555555555,
+              "rmse": 0.0007523681132117295,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2029,
+            "maeImprovementPct": 0.9001206991927185,
+            "ml": {
+              "mae": 0.0002551854793682143,
+              "rmse": 0.0005490563029358662,
+              "sampleCount": 4518
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0002575033200531209,
+              "rmse": 0.0005573883005357648,
+              "sampleCount": 4518
+            },
+            "sampleCount": 4518
+          }
+        ],
+        "improvingFolds": 3,
+        "overall": {
+          "changedTargetCount": 6382,
+          "maeImprovementPct": 0.8050366727677745,
+          "ml": {
+            "mae": 0.00035291334267346523,
+            "rmse": 0.0006797849452769233,
+            "sampleCount": 13518
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0003557774818760169,
+            "rmse": 0.0006868235484993151,
+            "sampleCount": 13518
+          },
+          "sampleCount": 13518
+        }
+      }
+    },
+    {
+      "config": {
+        "architecture": "pooled",
+        "featureProfile": "base24",
+        "id": "base24-pooled-original",
+        "regularization": "original"
+      },
+      "confirmation": {
+        "changedTargetCount": 3074,
+        "maeImprovementPct": -1.6143545863511972,
+        "ml": {
+          "mae": 0.0006395431847916275,
+          "rmse": 0.001013216633690795,
+          "sampleCount": 5670
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0006293827160493826,
+          "rmse": 0.001014334648694131,
+          "sampleCount": 5670
+        },
+        "sampleCount": 5670
+      },
+      "correctionWeights": {
+        "1": 0.25,
+        "2": 0.25,
+        "3": 0.25,
+        "4": 0.25,
+        "5": 0.25,
+        "6": 0.25
+      },
+      "eligibleForSelection": true,
+      "id": "base24-pooled-original-global-0.25",
+      "outOfFold": {
+        "beatsPersistence": true,
+        "folds": [
+          {
+            "changedTargetCount": 2199,
+            "maeImprovementPct": -0.2706079945212267,
+            "ml": {
+              "mae": 0.00039573466621837627,
+              "rmse": 0.0007214835397031417,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00039466666666666583,
+              "rmse": 0.0007342237019086508,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2154,
+            "maeImprovementPct": 1.3308348183965053,
+            "ml": {
+              "mae": 0.00041002519753244115,
+              "rmse": 0.0007395480265692965,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0004155555555555555,
+              "rmse": 0.0007523681132117295,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2029,
+            "maeImprovementPct": 1.1137664401315244,
+            "ml": {
+              "mae": 0.0002546353344921448,
+              "rmse": 0.0005401123026848292,
+              "sampleCount": 4518
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0002575033200531209,
+              "rmse": 0.0005573883005357648,
+              "sampleCount": 4518
+            },
+            "sampleCount": 4518
+          }
+        ],
+        "improvingFolds": 2,
+        "overall": {
+          "changedTargetCount": 6382,
+          "maeImprovementPct": 0.6869499705952475,
+          "ml": {
+            "mae": 0.0003533334685688851,
+            "rmse": 0.0006729404557479414,
+            "sampleCount": 13518
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0003557774818760169,
+            "rmse": 0.0006868235484993151,
+            "sampleCount": 13518
+          },
+          "sampleCount": 13518
+        }
+      }
+    },
+    {
+      "config": {
+        "architecture": "pooled",
+        "featureProfile": "extended168",
+        "id": "extended168-pooled-strong",
+        "regularization": "strong"
+      },
+      "confirmation": {
+        "changedTargetCount": 3074,
+        "maeImprovementPct": 0.10791007441704636,
+        "ml": {
+          "mae": 0.0006287035486921257,
+          "rmse": 0.0010124705017818855,
+          "sampleCount": 5670
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0006293827160493826,
+          "rmse": 0.001014334648694131,
+          "sampleCount": 5670
+        },
+        "sampleCount": 5670
+      },
+      "correctionWeights": {
+        "1": 0.1,
+        "2": 0.1,
+        "3": 0.1,
+        "4": 0.1,
+        "5": 0.1,
+        "6": 0.1
+      },
+      "eligibleForSelection": true,
+      "id": "extended168-pooled-strong-global-0.1",
+      "outOfFold": {
+        "beatsPersistence": true,
+        "folds": [
+          {
+            "changedTargetCount": 2199,
+            "maeImprovementPct": 0.27742280411245995,
+            "ml": {
+              "mae": 0.000393571771333102,
+              "rmse": 0.0007293780362512395,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00039466666666666583,
+              "rmse": 0.0007342237019086508,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2154,
+            "maeImprovementPct": 0.9849766000217035,
+            "ml": {
+              "mae": 0.0004114624305732431,
+              "rmse": 0.0007454716728468659,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0004155555555555555,
+              "rmse": 0.0007523681132117295,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2029,
+            "maeImprovementPct": 0.7166537083982936,
+            "ml": {
+              "mae": 0.0002556579129607115,
+              "rmse": 0.0005512532568105986,
+              "sampleCount": 4518
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0002575033200531209,
+              "rmse": 0.0005573883005357648,
+              "sampleCount": 4518
+            },
+            "sampleCount": 4518
+          }
+        ],
+        "improvingFolds": 3,
+        "overall": {
+          "changedTargetCount": 6382,
+          "maeImprovementPct": 0.6587857251413648,
+          "ml": {
+            "mae": 0.0003534336706121503,
+            "rmse": 0.0006809212860403559,
+            "sampleCount": 13518
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0003557774818760169,
+            "rmse": 0.0006868235484993151,
+            "sampleCount": 13518
+          },
+          "sampleCount": 13518
+        }
+      }
+    },
+    {
+      "config": {
+        "architecture": "pooled",
+        "featureProfile": "base24",
+        "id": "base24-pooled-strong",
+        "regularization": "strong"
+      },
+      "confirmation": {
+        "changedTargetCount": 3074,
+        "maeImprovementPct": -0.015535763279683654,
+        "ml": {
+          "mae": 0.0006294804954582713,
+          "rmse": 0.0010141064572261427,
+          "sampleCount": 5670
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0006293827160493826,
+          "rmse": 0.001014334648694131,
+          "sampleCount": 5670
+        },
+        "sampleCount": 5670
+      },
+      "correctionWeights": {
+        "1": 0.1,
+        "2": 0.1,
+        "3": 0.1,
+        "4": 0.1,
+        "5": 0.1,
+        "6": 0.1
+      },
+      "eligibleForSelection": true,
+      "id": "base24-pooled-strong-global-0.1",
+      "outOfFold": {
+        "beatsPersistence": true,
+        "folds": [
+          {
+            "changedTargetCount": 2199,
+            "maeImprovementPct": 0.22574712645727021,
+            "ml": {
+              "mae": 0.00039377571800758114,
+              "rmse": 0.0007300454706331936,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00039466666666666583,
+              "rmse": 0.0007342237019086508,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2154,
+            "maeImprovementPct": 1.079866706480082,
+            "ml": {
+              "mae": 0.00041106810946418273,
+              "rmse": 0.0007451603228107025,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0004155555555555555,
+              "rmse": 0.0007523681132117295,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2029,
+            "maeImprovementPct": 0.5814421785276532,
+            "ml": {
+              "mae": 0.000256006087139223,
+              "rmse": 0.0005511795505279825,
+              "sampleCount": 4518
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0002575033200531209,
+              "rmse": 0.0005573883005357648,
+              "sampleCount": 4518
+            },
+            "sampleCount": 4518
+          }
+        ],
+        "improvingFolds": 3,
+        "overall": {
+          "changedTargetCount": 6382,
+          "maeImprovementPct": 0.643890603444268,
+          "ml": {
+            "mae": 0.0003534866641010466,
+            "rmse": 0.0006810259913756559,
+            "sampleCount": 13518
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0003557774818760169,
+            "rmse": 0.0006868235484993151,
+            "sampleCount": 13518
+          },
+          "sampleCount": 13518
+        }
+      }
+    },
+    {
+      "config": {
+        "architecture": "pooled",
+        "featureProfile": "base24",
+        "id": "base24-pooled-original",
+        "regularization": "original"
+      },
+      "confirmation": {
+        "changedTargetCount": 3074,
+        "maeImprovementPct": -0.6002601281316666,
+        "ml": {
+          "mae": 0.0006331606495471792,
+          "rmse": 0.0010132842468243922,
+          "sampleCount": 5670
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0006293827160493826,
+          "rmse": 0.001014334648694131,
+          "sampleCount": 5670
+        },
+        "sampleCount": 5670
+      },
+      "correctionWeights": {
+        "1": 0.1,
+        "2": 0.1,
+        "3": 0.1,
+        "4": 0.1,
+        "5": 0.1,
+        "6": 0.1
+      },
+      "eligibleForSelection": true,
+      "id": "base24-pooled-original-global-0.1",
+      "outOfFold": {
+        "beatsPersistence": true,
+        "folds": [
+          {
+            "changedTargetCount": 2199,
+            "maeImprovementPct": 0.1773690761445633,
+            "ml": {
+              "mae": 0.0003939666500461486,
+              "rmse": 0.000727835228406048,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00039466666666666583,
+              "rmse": 0.0007342237019086508,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2154,
+            "maeImprovementPct": 0.5323339273586047,
+            "ml": {
+              "mae": 0.00041334341234630976,
+              "rmse": 0.0007471319909742198,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0004155555555555555,
+              "rmse": 0.0007523681132117295,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2029,
+            "maeImprovementPct": 0.5734465048478644,
+            "ml": {
+              "mae": 0.0002560266762644091,
+              "rmse": 0.0005497447617816726,
+              "sampleCount": 4518
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0002575033200531209,
+              "rmse": 0.0005573883005357648,
+              "sampleCount": 4518
+            },
+            "sampleCount": 4518
+          }
+        ],
+        "improvingFolds": 3,
+        "overall": {
+          "changedTargetCount": 6382,
+          "maeImprovementPct": 0.4111988163041832,
+          "ml": {
+            "mae": 0.0003543145290818659,
+            "rmse": 0.0006805698129468719,
+            "sampleCount": 13518
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0003557774818760169,
+            "rmse": 0.0006868235484993151,
+            "sampleCount": 13518
+          },
+          "sampleCount": 13518
+        }
+      }
+    },
+    {
+      "config": {
+        "architecture": "pooled",
+        "featureProfile": "extended168",
+        "id": "extended168-pooled-original",
+        "regularization": "original"
+      },
+      "confirmation": {
+        "changedTargetCount": 3074,
+        "maeImprovementPct": 0.6451645541873736,
+        "ml": {
+          "mae": 0.0006253221618552502,
+          "rmse": 0.0010064416082261065,
+          "sampleCount": 5670
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0006293827160493826,
+          "rmse": 0.001014334648694131,
+          "sampleCount": 5670
+        },
+        "sampleCount": 5670
+      },
+      "correctionWeights": {
+        "1": 0.25,
+        "2": 0.25,
+        "3": 0.25,
+        "4": 0.25,
+        "5": 0.25,
+        "6": 0.25
+      },
+      "eligibleForSelection": true,
+      "id": "extended168-pooled-original-global-0.25",
+      "outOfFold": {
+        "beatsPersistence": true,
+        "folds": [
+          {
+            "changedTargetCount": 2199,
+            "maeImprovementPct": -1.6930819738418172,
+            "ml": {
+              "mae": 0.0004013486968567615,
+              "rmse": 0.0007199897023607992,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00039466666666666583,
+              "rmse": 0.0007342237019086508,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2154,
+            "maeImprovementPct": 2.1295966615734705,
+            "ml": {
+              "mae": 0.0004067058983174613,
+              "rmse": 0.0007351597271189992,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0004155555555555555,
+              "rmse": 0.0007523681132117295,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2029,
+            "maeImprovementPct": 0.2839273846566502,
+            "ml": {
+              "mae": 0.00025677219761109004,
+              "rmse": 0.0005416746780760131,
+              "sampleCount": 4518
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0002575033200531209,
+              "rmse": 0.0005573883005357648,
+              "sampleCount": 4518
+            },
+            "sampleCount": 4518
+          }
+        ],
+        "improvingFolds": 2,
+        "overall": {
+          "changedTargetCount": 6382,
+          "maeImprovementPct": 0.2715002476210926,
+          "ml": {
+            "mae": 0.0003548115451317434,
+            "rmse": 0.0006712247333565766,
+            "sampleCount": 13518
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0003557774818760169,
+            "rmse": 0.0006868235484993151,
+            "sampleCount": 13518
+          },
+          "sampleCount": 13518
+        }
+      }
+    },
+    {
+      "config": {
+        "architecture": "pooled",
+        "featureProfile": "extended168",
+        "id": "extended168-pooled-original",
+        "regularization": "original"
+      },
+      "confirmation": {
+        "changedTargetCount": 3074,
+        "maeImprovementPct": 0.26685539860411395,
+        "ml": {
+          "mae": 0.0006277031742937236,
+          "rmse": 0.0010109810703977855,
+          "sampleCount": 5670
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0006293827160493826,
+          "rmse": 0.001014334648694131,
+          "sampleCount": 5670
+        },
+        "sampleCount": 5670
+      },
+      "correctionWeights": {
+        "1": 0.1,
+        "2": 0.1,
+        "3": 0.1,
+        "4": 0.1,
+        "5": 0.1,
+        "6": 0.1
+      },
+      "eligibleForSelection": true,
+      "id": "extended168-pooled-original-global-0.1",
+      "outOfFold": {
+        "beatsPersistence": true,
+        "folds": [
+          {
+            "changedTargetCount": 2199,
+            "maeImprovementPct": -0.31691619073930427,
+            "ml": {
+              "mae": 0.0003959174292327836,
+              "rmse": 0.0007267617168120876,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00039466666666666583,
+              "rmse": 0.0007342237019086508,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2154,
+            "maeImprovementPct": 0.8521722162948627,
+            "ml": {
+              "mae": 0.0004120143065678413,
+              "rmse": 0.0007452917520733196,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0004155555555555555,
+              "rmse": 0.0007523681132117295,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2029,
+            "maeImprovementPct": 0.1613243067563756,
+            "ml": {
+              "mae": 0.00025708790460717056,
+              "rmse": 0.00055072309304718,
+              "sampleCount": 4518
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0002575033200531209,
+              "rmse": 0.0005573883005357648,
+              "sampleCount": 4518
+            },
+            "sampleCount": 4518
+          }
+        ],
+        "improvingFolds": 2,
+        "overall": {
+          "changedTargetCount": 6382,
+          "maeImprovementPct": 0.25333796070168874,
+          "ml": {
+            "mae": 0.00035487616245879637,
+            "rmse": 0.0006797801344365661,
+            "sampleCount": 13518
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0003557774818760169,
+            "rmse": 0.0006868235484993151,
+            "sampleCount": 13518
+          },
+          "sampleCount": 13518
+        }
+      }
+    },
+    {
+      "config": {
+        "architecture": "pooled",
+        "featureProfile": "base24",
+        "id": "base24-pooled-original",
+        "regularization": "original"
+      },
+      "confirmation": {
+        "changedTargetCount": 3074,
+        "maeImprovementPct": -3.66060157024207,
+        "ml": {
+          "mae": 0.0006524219096359185,
+          "rmse": 0.0010171201799752687,
+          "sampleCount": 5670
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0006293827160493826,
+          "rmse": 0.001014334648694131,
+          "sampleCount": 5670
+        },
+        "sampleCount": 5670
+      },
+      "correctionWeights": {
+        "1": 0.5,
+        "2": 0.5,
+        "3": 0.5,
+        "4": 0.5,
+        "5": 0.5,
+        "6": 0.5
+      },
+      "eligibleForSelection": true,
+      "id": "base24-pooled-original-global-0.5",
+      "outOfFold": {
+        "beatsPersistence": true,
+        "folds": [
+          {
+            "changedTargetCount": 2199,
+            "maeImprovementPct": -2.6259671968976392,
+            "ml": {
+              "mae": 0.00040503048387042183,
+              "rmse": 0.0007197282611311074,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00039466666666666583,
+              "rmse": 0.0007342237019086508,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2154,
+            "maeImprovementPct": 2.5823359382501594,
+            "ml": {
+              "mae": 0.0004048245151010493,
+              "rmse": 0.0007276534368654804,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0004155555555555555,
+              "rmse": 0.0007523681132117295,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2029,
+            "maeImprovementPct": 0.03537077124711739,
+            "ml": {
+              "mae": 0.0002574122391428312,
+              "rmse": 0.0005292254798017619,
+              "sampleCount": 4518
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0002575033200531209,
+              "rmse": 0.0005573883005357648,
+              "sampleCount": 4518
+            },
+            "sampleCount": 4518
+          }
+        ],
+        "improvingFolds": 2,
+        "overall": {
+          "changedTargetCount": 6382,
+          "maeImprovementPct": 0.042916126358071176,
+          "ml": {
+            "mae": 0.0003556247959623414,
+            "rmse": 0.0006650611489757254,
+            "sampleCount": 13518
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0003557774818760169,
+            "rmse": 0.0006868235484993151,
+            "sampleCount": 13518
+          },
+          "sampleCount": 13518
+        }
+      }
+    },
+    {
+      "config": {
+        "architecture": "pooled",
+        "featureProfile": "extended168",
+        "id": "extended168-pooled-original",
+        "regularization": "original"
+      },
+      "confirmation": {
+        "changedTargetCount": 3074,
+        "maeImprovementPct": 1.0381971026498755,
+        "ml": {
+          "mae": 0.0006228484829267788,
+          "rmse": 0.0010002040807140446,
+          "sampleCount": 5670
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0006293827160493826,
+          "rmse": 0.001014334648694131,
+          "sampleCount": 5670
+        },
+        "sampleCount": 5670
+      },
+      "correctionWeights": {
+        "1": 0.5,
+        "2": 0.5,
+        "3": 0.5,
+        "4": 0.5,
+        "5": 0.5,
+        "6": 0.5
+      },
+      "eligibleForSelection": false,
+      "id": "extended168-pooled-original-global-0.5",
+      "outOfFold": {
+        "beatsPersistence": false,
+        "folds": [
+          {
+            "changedTargetCount": 2199,
+            "maeImprovementPct": -5.715632606250807,
+            "ml": {
+              "mae": 0.00041722436335266897,
+              "rmse": 0.0007207892090922429,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00039466666666666583,
+              "rmse": 0.0007342237019086508,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2154,
+            "maeImprovementPct": 4.054431482280483,
+            "ml": {
+              "mae": 0.0003987071402847455,
+              "rmse": 0.0007196192582802106,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0004155555555555555,
+              "rmse": 0.0007523681132117295,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2029,
+            "maeImprovementPct": -0.22641589623541097,
+            "ml": {
+              "mae": 0.0002580863485030551,
+              "rmse": 0.0005292654628204057,
+              "sampleCount": 4518
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0002575033200531209,
+              "rmse": 0.0005573883005357648,
+              "sampleCount": 4518
+            },
+            "sampleCount": 4518
+          }
+        ],
+        "improvingFolds": 1,
+        "overall": {
+          "changedTargetCount": 6382,
+          "maeImprovementPct": -0.5889692873367119,
+          "ml": {
+            "mae": 0.00035787290197552657,
+            "rmse": 0.0006625394440149998,
+            "sampleCount": 13518
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0003557774818760169,
+            "rmse": 0.0006868235484993151,
+            "sampleCount": 13518
+          },
+          "sampleCount": 13518
+        }
+      }
+    },
+    {
+      "config": {
+        "architecture": "per-horizon",
+        "featureProfile": "base24",
+        "id": "base24-per-horizon-strong",
+        "regularization": "strong"
+      },
+      "confirmation": {
+        "changedTargetCount": 3074,
+        "maeImprovementPct": -1.633807363587993,
+        "ml": {
+          "mae": 0.0006396656172093475,
+          "rmse": 0.0010244004839445237,
+          "sampleCount": 5670
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0006293827160493826,
+          "rmse": 0.001014334648694131,
+          "sampleCount": 5670
+        },
+        "sampleCount": 5670
+      },
+      "correctionWeights": {
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4": 1,
+        "5": 1,
+        "6": 1
+      },
+      "eligibleForSelection": false,
+      "id": "base24-per-horizon-strong-global-1",
+      "outOfFold": {
+        "beatsPersistence": false,
+        "folds": [
+          {
+            "changedTargetCount": 2199,
+            "maeImprovementPct": -8.24180676141169,
+            "ml": {
+              "mae": 0.00042719433068503723,
+              "rmse": 0.0007448097776542558,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00039466666666666583,
+              "rmse": 0.0007342237019086508,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2154,
+            "maeImprovementPct": 8.27289865693718,
+            "ml": {
+              "mae": 0.0003811770655811721,
+              "rmse": 0.0006938583669148566,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0004155555555555555,
+              "rmse": 0.0007523681132117295,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2029,
+            "maeImprovementPct": -6.073661317411744,
+            "ml": {
+              "mae": 0.00027314319959423827,
+              "rmse": 0.0005241584768588661,
+              "sampleCount": 4518
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0002575033200531209,
+              "rmse": 0.0005573883005357648,
+              "sampleCount": 4518
+            },
+            "sampleCount": 4518
+          }
+        ],
+        "improvingFolds": 1,
+        "overall": {
+          "changedTargetCount": 6382,
+          "maeImprovementPct": -1.2960506292825373,
+          "ml": {
+            "mae": 0.0003603885381687166,
+            "rmse": 0.0006608769633557154,
+            "sampleCount": 13518
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0003557774818760169,
+            "rmse": 0.0006868235484993151,
+            "sampleCount": 13518
+          },
+          "sampleCount": 13518
+        }
+      }
+    },
+    {
+      "config": {
+        "architecture": "per-horizon",
+        "featureProfile": "base24",
+        "id": "base24-per-horizon-original",
+        "regularization": "original"
+      },
+      "confirmation": {
+        "changedTargetCount": 3074,
+        "maeImprovementPct": -4.656804093223166,
+        "ml": {
+          "mae": 0.0006586918361324094,
+          "rmse": 0.0010515824406229978,
+          "sampleCount": 5670
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0006293827160493826,
+          "rmse": 0.001014334648694131,
+          "sampleCount": 5670
+        },
+        "sampleCount": 5670
+      },
+      "correctionWeights": {
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4": 1,
+        "5": 1,
+        "6": 1
+      },
+      "eligibleForSelection": false,
+      "id": "base24-per-horizon-original-global-1",
+      "outOfFold": {
+        "beatsPersistence": false,
+        "folds": [
+          {
+            "changedTargetCount": 2199,
+            "maeImprovementPct": -9.78574963940363,
+            "ml": {
+              "mae": 0.0004332877585768454,
+              "rmse": 0.0007531510283774393,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00039466666666666583,
+              "rmse": 0.0007342237019086508,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2154,
+            "maeImprovementPct": 5.954346786758364,
+            "ml": {
+              "mae": 0.0003908119366861374,
+              "rmse": 0.0007055570139076737,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0004155555555555555,
+              "rmse": 0.0007523681132117295,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2029,
+            "maeImprovementPct": -6.887150499636262,
+            "ml": {
+              "mae": 0.0002752379612467394,
+              "rmse": 0.0005306870941441077,
+              "sampleCount": 4518
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0002575033200531209,
+              "rmse": 0.0005573883005357648,
+              "sampleCount": 4518
+            },
+            "sampleCount": 4518
+          }
+        ],
+        "improvingFolds": 1,
+        "overall": {
+          "changedTargetCount": 6382,
+          "maeImprovementPct": -2.9644807584354704,
+          "ml": {
+            "mae": 0.00036632443686907765,
+            "rmse": 0.0006698277891643597,
+            "sampleCount": 13518
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0003557774818760169,
+            "rmse": 0.0006868235484993151,
+            "sampleCount": 13518
+          },
+          "sampleCount": 13518
+        }
+      }
+    },
+    {
+      "config": {
+        "architecture": "per-horizon",
+        "featureProfile": "extended168",
+        "id": "extended168-per-horizon-original",
+        "regularization": "original"
+      },
+      "confirmation": {
+        "changedTargetCount": 3074,
+        "maeImprovementPct": 3.3772497592407578,
+        "ml": {
+          "mae": 0.0006081268897869019,
+          "rmse": 0.0009726275565500084,
+          "sampleCount": 5670
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0006293827160493826,
+          "rmse": 0.001014334648694131,
+          "sampleCount": 5670
+        },
+        "sampleCount": 5670
+      },
+      "correctionWeights": {
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4": 1,
+        "5": 1,
+        "6": 1
+      },
+      "eligibleForSelection": false,
+      "id": "extended168-per-horizon-original-global-1",
+      "outOfFold": {
+        "beatsPersistence": false,
+        "folds": [
+          {
+            "changedTargetCount": 2199,
+            "maeImprovementPct": -14.973325408672174,
+            "ml": {
+              "mae": 0.0004537613909462252,
+              "rmse": 0.0007738505959384691,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00039466666666666583,
+              "rmse": 0.0007342237019086508,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2154,
+            "maeImprovementPct": 7.0947612086811365,
+            "ml": {
+              "mae": 0.00038607288119948057,
+              "rmse": 0.0006992549971148632,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0004155555555555555,
+              "rmse": 0.0007523681132117295,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2029,
+            "maeImprovementPct": -4.522722326659955,
+            "ml": {
+              "mae": 0.00026914948020105404,
+              "rmse": 0.0005248037899453289,
+              "sampleCount": 4518
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0002575033200531209,
+              "rmse": 0.0005573883005357648,
+              "sampleCount": 4518
+            },
+            "sampleCount": 4518
+          }
+        ],
+        "improvingFolds": 1,
+        "overall": {
+          "changedTargetCount": 6382,
+          "maeImprovementPct": -3.8647560237044574,
+          "ml": {
+            "mae": 0.0003695274135378043,
+            "rmse": 0.0006739204490024129,
+            "sampleCount": 13518
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0003557774818760169,
+            "rmse": 0.0006868235484993151,
+            "sampleCount": 13518
+          },
+          "sampleCount": 13518
+        }
+      }
+    },
+    {
+      "config": {
+        "architecture": "pooled",
+        "featureProfile": "base24",
+        "id": "base24-pooled-original",
+        "regularization": "original"
+      },
+      "confirmation": {
+        "changedTargetCount": 3074,
+        "maeImprovementPct": -8.544818389766062,
+        "ml": {
+          "mae": 0.0006831623261123794,
+          "rmse": 0.0010396929967063432,
+          "sampleCount": 5670
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0006293827160493826,
+          "rmse": 0.001014334648694131,
+          "sampleCount": 5670
+        },
+        "sampleCount": 5670
+      },
+      "correctionWeights": {
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4": 1,
+        "5": 1,
+        "6": 1
+      },
+      "eligibleForSelection": false,
+      "id": "base24-pooled-original-global-1",
+      "outOfFold": {
+        "beatsPersistence": false,
+        "folds": [
+          {
+            "changedTargetCount": 2199,
+            "maeImprovementPct": -12.535940014466782,
+            "ml": {
+              "mae": 0.00044414184325709463,
+              "rmse": 0.0007489979760036563,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00039466666666666583,
+              "rmse": 0.0007342237019086508,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2154,
+            "maeImprovementPct": 4.55380930060997,
+            "ml": {
+              "mae": 0.0003966319480174652,
+              "rmse": 0.0007068240301559371,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0004155555555555555,
+              "rmse": 0.0007523681132117295,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2029,
+            "maeImprovementPct": -7.929205091860487,
+            "ml": {
+              "mae": 0.0002779212864184828,
+              "rmse": 0.0005279700819732185,
+              "sampleCount": 4518
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0002575033200531209,
+              "rmse": 0.0005573883005357648,
+              "sampleCount": 4518
+            },
+            "sampleCount": 4518
+          }
+        ],
+        "improvingFolds": 1,
+        "overall": {
+          "changedTargetCount": 6382,
+          "maeImprovementPct": -4.776696319171388,
+          "ml": {
+            "mae": 0.00037277189175722924,
+            "rmse": 0.00066800216745387,
+            "sampleCount": 13518
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0003557774818760169,
+            "rmse": 0.0006868235484993151,
+            "sampleCount": 13518
+          },
+          "sampleCount": 13518
+        }
+      }
+    },
+    {
+      "config": {
+        "architecture": "pooled",
+        "featureProfile": "extended168",
+        "id": "extended168-pooled-original",
+        "regularization": "original"
+      },
+      "confirmation": {
+        "changedTargetCount": 3074,
+        "maeImprovementPct": 1.4724083791552924,
+        "ml": {
+          "mae": 0.0006201156322013163,
+          "rmse": 0.0009928121025332458,
+          "sampleCount": 5670
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0006293827160493826,
+          "rmse": 0.001014334648694131,
+          "sampleCount": 5670
+        },
+        "sampleCount": 5670
+      },
+      "correctionWeights": {
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4": 1,
+        "5": 1,
+        "6": 1
+      },
+      "eligibleForSelection": false,
+      "id": "extended168-pooled-original-global-1",
+      "outOfFold": {
+        "beatsPersistence": false,
+        "folds": [
+          {
+            "changedTargetCount": 2199,
+            "maeImprovementPct": -20.28945582981831,
+            "ml": {
+              "mae": 0.00047474238567501526,
+              "rmse": 0.0007664166392710448,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00039466666666666583,
+              "rmse": 0.0007342237019086508,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2154,
+            "maeImprovementPct": 6.844627442498353,
+            "ml": {
+              "mae": 0.0003871123259611735,
+              "rmse": 0.0006939783855700731,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0004155555555555555,
+              "rmse": 0.0007523681132117295,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2029,
+            "maeImprovementPct": -5.085831239378489,
+            "ml": {
+              "mae": 0.0002705995043468193,
+              "rmse": 0.0005152524416045154,
+              "sampleCount": 4518
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0002575033200531209,
+              "rmse": 0.0005573883005357648,
+              "sampleCount": 4518
+            },
+            "sampleCount": 4518
+          }
+        ],
+        "improvingFolds": 1,
+        "overall": {
+          "changedTargetCount": 6382,
+          "maeImprovementPct": -6.061354077468751,
+          "ml": {
+            "mae": 0.0003773424147804245,
+            "rmse": 0.0006667756055952737,
+            "sampleCount": 13518
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0003557774818760169,
+            "rmse": 0.0006868235484993151,
+            "sampleCount": 13518
+          },
+          "sampleCount": 13518
+        }
+      }
+    }
+  ]
+}

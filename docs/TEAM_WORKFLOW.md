@@ -96,3 +96,16 @@ merging. Update both mirrors, API checks and affected fixtures together.
 5. Integrate replay and forecasting, verify fairness and leakage controls, execute
    one real local Docker task, and rehearse the three-minute demo. These remain
    acceptance work, not accomplishments of this scaffold.
+
+
+### Additive GPU alternatives contract
+
+The Add job multi-select uses `allowedGpuTypes` on Job/JobCreate. Python schemas,
+the TypeScript mirror, and contract checks include this field. Legacy singular
+`gpuType` requests normalize to one allowed model; multiple alternatives keep
+`gpuType` null and must not be interpreted as unrestricted hardware. Person 2:
+implement compatibility as membership in the alternatives list (falling back to
+legacy `gpuType` only when needed). Allocate the requested number of one model,
+not a mixture, and do not duplicate the workload per selected model. CPU requests
+must contain no GPU requirements. Other forecast/market/resource contracts retain
+singular `gpuType` because each observation or forecast describes one model.

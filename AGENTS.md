@@ -149,7 +149,8 @@ type Job = {
   deadlineSlot: number;
   resourceType: ResourceType;
   resourceUnits: number;
-  gpuType?: string;
+  gpuType?: string | null;
+  allowedGpuTypes?: string[];
   allowedRegions: string[];
   maxBudgetUsd: number | null;
   priority: number;
@@ -198,6 +199,17 @@ type Decision = {
 ```
 
 These contracts must be agreed by all developers before independent implementation.
+
+GPU job compatibility supports `allowedGpuTypes`: a list of alternative acceptable
+models for one non-preemptive job, not a request for a mixed-model allocation.
+`resourceUnits` GPUs of one acceptable model are required. Legacy `gpuType` jobs
+remain valid and normalize to a singleton list. With several alternatives,
+`gpuType` is null; CPU jobs have neither a GPU model nor alternatives. An empty
+list with no `gpuType` preserves the legacy unrestricted GPU requirement, while
+the Add job UI requires explicit model selection. The frontend/backend schemas
+and API tests carry this additive field. Person 2 must use the list in optimizer
+hardware checks rather than treating a null singular `gpuType` as unrestricted.
+
 
 ---
 
@@ -551,6 +563,9 @@ Prioritize clear hierarchy, focused views, and comfortable spacing.
    Workloads contains the queue and selected execution plan; Market contains prices
    and forecasts; Replay & execution contains replay controls, execution monitoring,
    and policy comparison. Show only the active view's relevant content.
+   In Add job, use separate Duration (hours) and Complete within (hours) inputs.
+   The completion window includes waiting and execution from submission time;
+   submit the existing arrival/deadline slot fields without requiring a UTC origin.
 3. **Close tab underlines.** The active tab uses Blue Slate text and a 3px underline
    immediately beneath its label. Use approximately 6px vertical button padding.
    Center tabs within the header rather than stretching them to its full height;
@@ -571,6 +586,9 @@ Prioritize clear hierarchy, focused views, and comfortable spacing.
    Use a darker coral (`#a54523`) for readable warning/error text on white. Pair
    statuses with explicit labels rather than relying on color alone. Selected
    buttons use Blue Slate fill with white text; tabs retain their underline style.
+   Hover alone must not turn neutral controls blue. Inputs, dropdowns and boxed
+   buttons gain a subtly thicker inset border on hover without layout movement.
+   GPU/region selectors stay white, and native dropdowns match the form fields.
 6. **IBM Plex Sans.** Use locally served IBM Plex Sans throughout the application,
    including controls, tables, charts, and tooltips. Load weights 400, 500, and 600
    through `@fontsource/ibm-plex-sans`. Use tabular numerals for aligned numerical

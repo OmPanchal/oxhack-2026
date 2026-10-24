@@ -6,7 +6,7 @@ export type Strategy = "FIFO" | "CHEAPEST_NOW" | "OPTIMIZER_WITH_NAIVE_FORECAST"
 export type Job = {
   id: string; name: string; arrivalSlot: number; durationSlots: number;
   deadlineSlot: number; resourceType: ResourceType; resourceUnits: number;
-  gpuType?: string | null; allowedRegions: string[]; maxBudgetUsd: number | null;
+  gpuType?: string | null; allowedGpuTypes?: string[]; allowedRegions: string[]; maxBudgetUsd: number | null;
   priority: number; status: JobStatus; dockerTaskId: string | null;
 };
 export type JobCreate = Omit<Job, "status">;

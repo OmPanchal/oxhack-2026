@@ -25,7 +25,9 @@ body { margin: 0; background: var(--canvas); color: var(--text); font-family: "I
 button, select, input { font: inherit; border-radius: 0; }
 button, select { border: 1px solid var(--slate); background: transparent; color: var(--text); padding: 6px 12px; }
 button { cursor: pointer; }
-button:not(.row-select):not(.text-button):not([role="tab"]):hover:not(:disabled), button[aria-pressed="true"] { background: var(--slate); color: var(--white); border-color: var(--slate); }
+button[aria-pressed="true"]:not(.row-select) { background: var(--slate); color: var(--white); border-color: var(--slate); }
+/* An inset stroke thickens control borders without changing their dimensions. */
+:where(button:not(.row-select):not(.text-button):not([role="tab"]), select, input:not([type="checkbox"]):not([type="radio"])):hover:not(:disabled), .modal-fields :where(input:not([type="checkbox"]), select, .multi-trigger):hover:not(:disabled) { border-color: var(--control-outline, var(--slate)); box-shadow: inset 0 0 0 1px var(--control-outline, var(--slate)); }
 .row-select:hover, .text-button:hover { background: transparent; text-decoration: underline; text-underline-offset: 3px; }
 button:disabled { color: var(--muted); border-color: var(--line); cursor: not-allowed; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
@@ -93,3 +95,57 @@ tbody tr:hover, tr.selected { background: #f2f2f2; }
 @media (max-width: 1100px) { .workload-layout { grid-template-columns: 1fr; } .metric-strip { gap: 16px; } .metric { padding: 16px; } }
 @media (max-width: 1050px) { .topbar { grid-template-columns: 1fr auto; gap: 0 24px; } .tabs { grid-column: 1 / -1; grid-row: 2; } .tabs { padding-bottom: 12px; } .header-controls { grid-column: 2; grid-row: 1; } }
 @media (max-width: 760px) { main { padding: 0 16px 20px; } .metric-strip { grid-template-columns: 1fr 1fr; } .operations-layout { grid-template-columns: 1fr; } .view-context { align-items: flex-start; flex-direction: column; gap: 6px; } .tabs { gap: 24px; } .topbar { column-gap: 16px; } .source-picker { flex-direction: column; align-items: flex-end; gap: 4px; } }
+/* Workload management */
+.view-actions { display: flex; align-items: center; gap: 16px; }
+button.primary-button { background: var(--slate); color: var(--white); border-color: var(--slate); }
+button.primary-button:disabled { background: var(--line); color: var(--slate); border-color: var(--line); }
+.queue-filters { display: flex; gap: 12px; flex-wrap: wrap; padding: 16px; border-bottom: 1px solid var(--line); }
+.queue-filters label, .modal-fields label { display: flex; flex-direction: column; gap: 6px; color: var(--muted); font-size: 12px; }
+.queue-filters .search-field { flex: 1 1 220px; }
+input { min-width: 0; width: 100%; border: 1px solid var(--silver); padding: 8px 10px; color: var(--text); background: var(--white); }
+.queue-filters select { padding: 8px 10px; border-color: var(--silver); }
+.job-name { display: flex; flex-direction: column; gap: 3px; }
+.job-name .muted, .cell-note { display: block; font-size: 11px; }
+.job-details-title { padding: 16px; overflow-wrap: anywhere; }
+.job-details-title h3 { margin: 0 0 4px; font-size: 15px; font-weight: 500; }
+.success-note { border-left: 2px solid var(--slate); padding: 10px 16px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.job-modal { width: min(620px, calc(100vw - 32px)); max-height: calc(100dvh - 48px); padding: 0; margin: auto; border: 1px solid var(--silver); background: var(--white); color: var(--text); overflow-y: auto; }
+.job-modal::backdrop { background: rgb(45 49 66 / .38); }
+.modal-heading { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; padding: 24px; border-bottom: 1px solid var(--line); }
+.modal-heading h2 { font-size: 22px; margin-bottom: 4px; }
+.modal-heading p { font-size: 12px; color: var(--muted); }
+.modal-fields { display: flex; flex-direction: column; gap: 18px; min-width: 0; padding: 24px; border: 0; margin: 0; }
+.modal-fields input, .modal-fields select { font-size: 14px; width: 100%; }
+.modal-fields :is(input:not([type="checkbox"]), select, .multi-trigger) { font-size: 14px; border: 1px solid var(--silver); background-color: var(--white); color: var(--text); padding: 9px 10px; line-height: 1.6; }
+select { appearance: none; background-color: var(--white); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='m1 1 4 4 4-4' fill='none' stroke='%234f5d75' stroke-width='1.5'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; }
+.modal-fields select, .queue-filters select, .source-picker select { padding-right: 32px; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.form-note { color: var(--muted); font-size: 12px; line-height: 1.6; }
+.modal-fields summary { cursor: pointer; color: var(--slate); }
+.advanced-fields { padding-top: 16px; }
+.field-error { color: var(--negative); font-size: 12px; }
+[aria-invalid="true"] { border-color: var(--negative); }
+.modal-actions { border-top: 1px solid var(--line); display: flex; align-items: center; justify-content: flex-end; gap: 12px; padding: 20px 24px; }
+.modal-actions > span { margin-right: auto; max-width: 230px; }
+.job-modal .notice { margin: 0 24px 20px; }
+.attention-list { margin-bottom: 24px; }
+.attention-item { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 16px; border-top: 1px solid var(--line); }
+@media (max-width: 760px) { .view-actions { flex-wrap: wrap; } .form-grid { grid-template-columns: 1fr; } .modal-actions { flex-wrap: wrap; } .modal-actions > span { flex-basis: 100%; max-width: none; } .queue-filters label { flex: 1 1 140px; } }
+/* Searchable region and hardware choices */
+.multi-select { display: flex; flex-direction: column; gap: 6px; }
+.multi-label { color: var(--muted); font-size: 12px; }
+.modal-fields .multi-trigger { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 9px 10px; text-align: left; width: 100%; border-color: var(--silver); }
+.multi-trigger > span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.multi-trigger > span:last-child { flex-shrink: 0; font-size: 11px; }
+
+.multi-choices { border: 1px solid var(--silver); padding: 10px; }
+.multi-actions { display: flex; align-items: center; gap: 14px; padding: 10px 0; font-size: 12px; }
+.multi-actions > span { margin-right: auto; }
+.multi-options { max-height: 180px; overflow-y: auto; overscroll-behavior: contain; }
+.modal-fields .multi-option { display: flex; flex-direction: row; align-items: center; gap: 10px; padding: 8px 4px; color: var(--text); font-size: 14px; cursor: pointer; }
+.modal-fields .multi-option:hover { background: #f6f6f6; }
+.modal-fields .multi-option input { width: 16px; height: 16px; padding: 0; flex: 0 0 16px; accent-color: var(--slate); }
+.multi-option small { display: block; font-size: 11px; color: var(--muted); }
+
+/* Preserve validation color while using the same hover treatment. */
+.modal-fields [aria-invalid="true"] { --control-outline: var(--negative); border-color: var(--negative); }

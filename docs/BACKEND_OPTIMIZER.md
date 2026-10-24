@@ -1,9 +1,10 @@
 # Milestone 3: constrained portfolio optimizer
 
-The optimizer and atomic scheduling service are implemented. This milestone uses
+The optimizer and atomic scheduling service are implemented. This milestone used
 constructed forecast inputs; it does not train models, execute containers, run
-historical replay, or implement autonomous ticks. POST optimize still returns
-501 until Milestone 4 assembles real server-owned market and forecast inputs.
+historical replay, or implement autonomous ticks. POST optimize returned 501 at
+the end of this milestone; BACKEND_RUNTIME.md describes Milestone 4's subsequent
+API/provider wiring and background ticks.
 
 ## Interfaces and ownership
 
@@ -48,7 +49,8 @@ running no jobs:
    optional carbon valuation costs.
 4. Break equal-cost ties by earlier start and alphabetical region, in job order.
 
-The search is exact over enumerated windows with admission and cost bounds.
+The search is exact over enumerated windows with admission and cost bounds, and
+memoizes equivalent occupied-capacity states to avoid redundant permutations.
 The default 250,000-node limit prevents unbounded work; exceeding it raises
 OptimizationLimitError and commits no partial plan. This is suitable for a small
 demo portfolio; larger portfolios may need a solver. Tests are correctness
@@ -73,10 +75,14 @@ checks, not performance or savings benchmarks.
 - Forecasts must have been generated at or before the decision time and cover
   no more than six hours after generation. Market inputs cannot contain future
   rows or FORECAST rows. Conflicting observations/vintages are rejected.
-- Missing complete forecast coverage produces WAIT with no claimed feasible
-  window; this is distinct from proven deadline infeasibility. Milestone 4 needs
-  a documented fallback forecast policy if longer jobs must run despite missing
-  coverage. The optimizer does not invent prices to force a decision.
+- Missing complete forecast coverage normally produces WAIT. At the last safe
+  start, a compatible job with known capacity may instead use an explicit
+  latest-observed-price persistence assumption for uncovered hours. This returns
+  FALLBACK / PERSISTENCE_COVERAGE_FALLBACK, with pricingAssumption in decision
+  details. It handles jobs longer than the forecast horizon without fabricating
+  ML forecast rows. Budgets, capacity, hardware and deadlines remain enforced;
+  unknown AWS capacity still cannot be allocated. This is an estimated price
+  scenario, not guaranteed future pricing or calibrated deadline reliability.
 
 ### Risk scenario, not calibrated ML
 
@@ -104,7 +110,8 @@ today. Do not interpret these assumptions as calibrated real-world probabilities
 - RUN: immediate start in the preferred region.
 - ROUTE: immediate start in another allowed region; no live migration.
 - FALLBACK: at the critical deadline, a more reliable candidate is selected over
-  the cheapest individually feasible candidate. All hard constraints still apply.
+  the cheapest individually feasible candidate, or missing forecast hours use
+  the explicitly labeled persistence assumption. All hard constraints still apply.
 - INFEASIBLE: deadline is already impossible, or known capacity/budget prevents
   execution at the final safe start. No allocation is fabricated.
 

@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from math import prod
 
 from app.api.schemas import Decision, Forecast, OptimizationInput, Reservation
+from app.engine.money import within_budget
 
 Key = tuple[str, str, str | None]
 
@@ -43,6 +44,7 @@ class Candidate:
     availability: float | None
     interruption: float | None
     forecasts: tuple[Forecast, ...]
+    price_fallback: bool = False
 
     @property
     def cost(self):
@@ -63,6 +65,7 @@ class DecisionEvidence:
     cost_breakdown: dict[str, float] | None
     availability_probability: float | None
     interruption_probability: float | None
+    pricing_assumption: str | None = None
 
 
 @dataclass
@@ -96,12 +99,21 @@ class ConstrainedPortfolioOptimizer:
         best_score = None
         best = None
         nodes = 0
+        visited = {}
 
         def search(index, selected, missing, risk, cost):
             nonlocal best_score, best, nodes
             nodes += 1
             if nodes > self.policy.max_search_nodes:
                 raise OptimizationLimitError("Portfolio search limit reached; no plan committed")
+            # Equivalent capacity states have identical remaining choices. Retain
+            # only the best objective prefix instead of exploring permutations.
+            state = index, tuple(sorted((repr(key), value) for key, value in occupied.items() if value))
+            prefix = (tuple(missing), tuple(risk), cost,
+                      tuple((row.start, row.region) if row else (10**30, "") for row in selected))
+            if state in visited and visited[state] <= prefix:
+                return
+            visited[state] = prefix
             # Optimistic admission bound: no later job needs to be dropped.
             lower_missing = tuple(missing + [0] * (len(jobs) - index))
             if best_score is not None and lower_missing > best_score[0]:
@@ -203,14 +215,21 @@ class ConstrainedPortfolioOptimizer:
         enough_units = False
         priced_window = False
         carbon_missing = False
+        unknown_capacity = False
         last_known_slot = max([inputs.current_slot] + [slot for _, slot in forecasts])
         latest = min(self._latest_start(job, inputs), last_known_slot + 1 - job.duration_slots)
+        critical = self._latest_start(job, inputs) == inputs.current_slot
+        if critical:
+            latest = inputs.current_slot
         for region in sorted(set(job.allowed_regions)):
             key = (region, job.resource_type, job.gpu_type)
             observed = market.get(key)
             if observed is None:
                 continue
             matched_hardware = True
+            if observed.available_units is None:
+                unknown_capacity = True
+                continue
             if observed.available_units < job.resource_units:
                 continue
             enough_units = True
@@ -220,11 +239,12 @@ class ConstrainedPortfolioOptimizer:
             for start in range(max(inputs.current_slot, job.arrival_slot), latest + 1):
                 end = start + job.duration_slots
                 rows = [forecasts.get((key, slot)) for slot in range(start, end)]
-                if any(row is None and slot != inputs.current_slot
-                       for slot, row in zip(range(start, end), rows)):
+                missing = any(row is None and slot != inputs.current_slot
+                              for slot, row in zip(range(start, end), rows))
+                if missing and not critical:
                     continue
                 priced_window = True
-                compute = sum(observed.price_usd_per_unit_hour if slot == inputs.current_slot
+                compute = sum(observed.price_usd_per_unit_hour if slot == inputs.current_slot or row is None
                               else row.predicted_price_usd_per_unit_hour
                               for slot, row in zip(range(start, end), rows)) * job.resource_units
                 interruption = None if any(row is None or row.interruption_probability is None for row in rows) else (
@@ -236,12 +256,13 @@ class ConstrainedPortfolioOptimizer:
                     inputs.config.transfer_cost_usd if region != job.allowed_regions[0] else 0,
                     recovery, (observed.carbon_kg_per_unit_hour or 0) * job.resource_units
                     * job.duration_slots * inputs.config.carbon_price_usd_per_kg,
-                    availability, interruption, tuple(row for row in rows if row is not None),
+                    availability, interruption, tuple(row for row in rows if row is not None), missing,
                 )
-                if job.max_budget_usd is None or candidate.cost <= job.max_budget_usd:
+                if within_budget(candidate.cost, job.max_budget_usd):
                     candidates.append(candidate)
         urgent = self._latest_start(job, inputs) - inputs.current_slot <= self.policy.critical_slack_slots
         issue = ("NO_COMPATIBLE_MARKET_DATA" if not matched_hardware else
+                 "CAPACITY_UNKNOWN" if unknown_capacity and not enough_units else
                  "CAPACITY_UNAVAILABLE" if not enough_units else
                  "CARBON_DATA_UNAVAILABLE" if carbon_missing and not priced_window else
                  "FORECAST_COVERAGE_MISSING" if not priced_window else "BUDGET_EXCEEDED")
@@ -265,7 +286,8 @@ class ConstrainedPortfolioOptimizer:
     def _fits(reservation, inputs, market, occupied, total):
         for slot in range(reservation.start_slot, reservation.end_slot):
             used = occupied.get((resource_key(reservation), slot), 0)
-            if used + reservation.resource_units > market[resource_key(reservation)].available_units:
+            capacity = market[resource_key(reservation)].available_units
+            if capacity is None or used + reservation.resource_units > capacity:
                 return False
             limit = inputs.config.portfolio_resource_limit
             if limit is not None and total.get(slot, 0) + reservation.resource_units > limit:
@@ -294,10 +316,11 @@ class ConstrainedPortfolioOptimizer:
         slack = job.deadline_slot - candidate.end - inputs.config.safety_buffer_slots
         urgent = latest - inputs.current_slot <= self.policy.critical_slack_slots
         cheapest = min(choices, key=lambda row: (row.cost, row.start, row.region))
-        fallback = urgent and candidate.reliability_penalty < cheapest.reliability_penalty
+        fallback = candidate.price_fallback or (urgent and candidate.reliability_penalty < cheapest.reliability_penalty)
         action = ("WAIT" if candidate.start > inputs.current_slot else
                   "FALLBACK" if fallback else "ROUTE" if candidate.region != job.allowed_regions[0] else "RUN")
-        reason = ("LOWER_RISK_AT_DEADLINE" if fallback else "LOWEST_COST_FEASIBLE_PORTFOLIO")
+        reason = ("PERSISTENCE_COVERAGE_FALLBACK" if candidate.price_fallback else
+                  "LOWER_RISK_AT_DEADLINE" if fallback else "LOWEST_COST_FEASIBLE_PORTFOLIO")
         versions = sorted({row.model_version for row in candidate.forecasts})
         breakdown = dict(computeUsd=candidate.compute, startupUsd=candidate.startup,
                          transferUsd=candidate.transfer, expectedRecoveryUsd=candidate.recovery,
@@ -309,8 +332,11 @@ class ConstrainedPortfolioOptimizer:
             f"Availability: {candidate.availability}; interruption: {candidate.interruption}. "
             "Future capacity carries forward the latest observed pool, less reservations. "
             "Unknown risk is unpriced; known hourly interruption risk uses a one-restart cost scenario."
+            + (" Missing price hours use an explicit latest-observed-price persistence assumption, not ML predictions."
+               if candidate.price_fallback else "")
         )
         return Decision(**base, action=action, region=candidate.region, planned_start_slot=candidate.start,
                         planned_end_slot=candidate.end, projected_cost_usd=candidate.cost,
                         reason_code=reason, explanation=explanation), DecisionEvidence(
-                            slack, candidate.forecasts, breakdown, candidate.availability, candidate.interruption)
+                            slack, candidate.forecasts, breakdown, candidate.availability, candidate.interruption,
+                            "PERSISTENCE_FOR_MISSING_HOURS" if candidate.price_fallback else None)

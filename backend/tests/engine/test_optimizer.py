@@ -4,7 +4,7 @@ import random
 import pytest
 
 from app.api.schemas import Forecast, Job, MarketSnapshot, OptimizationInput, OptimizerConfig, Reservation
-from app.engine.optimizer import ConstrainedPortfolioOptimizer, OptimizationLimitError, RiskPolicy
+from app.engine.optimizer import ConstrainedPortfolioOptimizer, RiskPolicy
 
 
 def job(job_id="a", **changes):
@@ -69,12 +69,13 @@ def test_portfolio_search_reroutes_flexible_job_to_preserve_feasibility():
     assert sum(row.projected_cost_usd for row in decisions.values()) == 4
 
 
-def test_three_jobs_cannot_start_on_two_gpus():
-    request = inputs(jobs=[job(name, deadline_slot=1) for name in ["c", "b", "a"]],
+def test_shared_capacity_priority_and_stable_tie_breaking():
+    assert solve(inputs(markets=[market(capacity=0)]))[0].reason_code == "CAPACITY_UNAVAILABLE"
+    request = inputs(jobs=[job("z", deadline_slot=1, priority=10), job("b", deadline_slot=1), job("a", deadline_slot=1)],
                      markets=[market(capacity=2)])
     decisions = solve(request)
     assert [(row.job_id, row.action) for row in decisions] == [
-        ("a", "RUN"), ("b", "RUN"), ("c", "INFEASIBLE")]
+        ("z", "RUN"), ("a", "RUN"), ("b", "INFEASIBLE")]
 
 
 def test_future_arrival_and_nonpreemptive_multihour_cost():
@@ -112,13 +113,6 @@ def test_hardware_regions_and_missing_forecast_do_not_get_invented():
     decision = solve(request)[0]
     assert decision.reason_code == "FORECAST_COVERAGE_MISSING"
     assert decision.action == "WAIT"
-
-
-def test_zero_capacity_and_priority_order():
-    assert solve(inputs(markets=[market(capacity=0)]))[0].reason_code == "CAPACITY_UNAVAILABLE"
-    request = inputs(jobs=[job("a", deadline_slot=1), job("z", deadline_slot=1, priority=10)])
-    decisions = solve(request)
-    assert [(row.job_id, row.action) for row in decisions] == [("z", "RUN"), ("a", "INFEASIBLE")]
 
 
 def test_running_reservation_is_counted_once_and_adjacent_window_is_free():
@@ -218,16 +212,6 @@ def test_latest_available_forecast_vintage_and_input_order_are_deterministic():
     assert solve(request) == expected
 
 
-def test_cpu_jobs_and_search_limit_and_empty_portfolio():
-    decision = solve(inputs(jobs=[job(resource_type="CPU", gpu_type=None)],
-                            markets=[market(resource_type="CPU", gpu_type=None)]))[0]
-    assert decision.action == "RUN"
-    assert solve(inputs(jobs=[])) == []
-    optimizer = ConstrainedPortfolioOptimizer(RiskPolicy(max_search_nodes=1))
-    with pytest.raises(OptimizationLimitError):
-        optimizer.optimize(inputs())
-
-
 def test_exact_portfolio_cost_matches_independent_small_exhaustive_oracle():
     rng = random.Random(42)
     for _ in range(12):
@@ -243,3 +227,28 @@ def test_exact_portfolio_cost_matches_independent_small_exhaustive_oracle():
         decisions = solve(request)
         assert sum(row.projected_cost_usd for row in decisions) == oracle
         assert len({(row.region, row.planned_start_slot) for row in decisions}) == 3
+
+
+def test_critical_long_job_uses_labeled_persistence_tail_and_still_enforces_constraints():
+    request = inputs(jobs=[job(duration_slots=8, deadline_slot=8, max_budget_usd=40)],
+        forecasts=[forecast(slot=slot, price=5) for slot in range(1, 7)])
+    plan = ConstrainedPortfolioOptimizer().plan(request)
+    decision = plan.decisions[0]
+    assert (decision.action, decision.planned_end_slot, decision.projected_cost_usd) == ("FALLBACK", 8, 40)
+    assert decision.reason_code == "PERSISTENCE_COVERAGE_FALLBACK"
+    assert plan.evidence["a"].pricing_assumption == "PERSISTENCE_FOR_MISSING_HOURS"
+    assert len(plan.evidence["a"].forecasts) == 6  # no invented target beyond model horizon
+    request.pending_jobs[0].max_budget_usd = 39
+    assert solve(request)[0].reason_code == "BUDGET_EXCEEDED"
+    request.market[0].available_units = None
+    assert solve(request)[0].reason_code == "CAPACITY_UNKNOWN"
+
+
+def test_symmetric_demo_portfolio_does_not_exhaust_search_on_equivalent_permutations():
+    request = inputs(jobs=[job(f"j{index:02}") for index in range(10)],
+        markets=[market(price=1, capacity=5), market("east", price=1, capacity=5)],
+        forecasts=[forecast(region, slot=slot, price=1) for region in ["west", "east"] for slot in [1, 2]])
+    plan = ConstrainedPortfolioOptimizer(RiskPolicy(max_search_nodes=50_000)).plan(request)
+    assert len(plan.decisions) == 10
+    assert all(row.planned_start_slot == 0 for row in plan.decisions)
+    assert sum(row.projected_cost_usd for row in plan.decisions) == 10

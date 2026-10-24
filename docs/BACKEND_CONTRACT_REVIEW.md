@@ -2,6 +2,9 @@
 
 Reviewed 2026-10-24 on `codex/backend`. Owner: Person 2.
 
+Historical Milestone 1 review: subsequent implementation resolves several gaps
+listed below. PRE_M6_AUDIT.md is the current readiness/ownership checklist.
+
 Sources: `AGENTS.md`, `README.md`, `docs/TEAM_WORKFLOW.md`, and
 `data/provenance.md`. This is a proposal for teammate review, not a record of
 team agreement. Existing API contracts are unchanged.

@@ -17,6 +17,29 @@ CREATE TABLE IF NOT EXISTS audit_events (
     event_type TEXT NOT NULL, job_id TEXT NOT NULL REFERENCES jobs(id),
     execution_mode TEXT, payload TEXT NOT NULL
 );
+CREATE TABLE IF NOT EXISTS market_observations (
+    series_key TEXT NOT NULL, slot INTEGER NOT NULL, payload TEXT NOT NULL,
+    PRIMARY KEY (series_key, slot)
+);
+CREATE TABLE IF NOT EXISTS engine_state (
+    id INTEGER PRIMARY KEY CHECK (id = 1), payload TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS dispatch_state (
+    id INTEGER PRIMARY KEY CHECK (id = 1), payload TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS forecast_batches (
+    id INTEGER PRIMARY KEY AUTOINCREMENT, generated_at_slot INTEGER NOT NULL,
+    forecast_mode TEXT NOT NULL, payload TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS decision_details (
+    decision_id INTEGER PRIMARY KEY REFERENCES decisions(id), payload TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS replay_session (
+    id INTEGER PRIMARY KEY CHECK (id = 1), payload TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS local_executions (
+    id TEXT PRIMARY KEY, job_id TEXT NOT NULL UNIQUE REFERENCES jobs(id), payload TEXT NOT NULL
+);
 """
 
 

@@ -35,6 +35,26 @@ const forecasts: Forecast[] = Object.entries(futures).flatMap(([region, prices])
   predictedPriceUsdPerUnitHour: price, priceLowerBound: +(price - .10).toFixed(2), priceUpperBound: +(price + .10).toFixed(2),
   availabilityProbability: null, interruptionProbability: null, modelVersion: "illustrative-not-trained",
 })));
+// Additional hand-authored CPU examples exercise resource filtering, not real capacity.
+for (const [region, base] of [["eu-west-1", .06], ["eu-central-1", .05], ["us-east-1", .07]] as const) {
+  for (let slot = 0; slot <= previewSlot; slot++) market.push({
+    slot, region, resourceType: "CPU", gpuType: null,
+    priceUsdPerUnitHour: +(base + (slot < 4 ? .01 : 0)).toFixed(3),
+    availableUnits: region === "eu-west-1" ? 32 : 16, carbonKgPerUnitHour: null,
+    source: "Hand-authored CPU visual preview", dataKind: "SIMULATED",
+  });
+  for (let horizon = 1; horizon <= 6; horizon++) forecasts.push({
+    generatedAtSlot: previewSlot, targetSlot: previewSlot + horizon, region, resourceType: "CPU", gpuType: null,
+    predictedPriceUsdPerUnitHour: base, priceLowerBound: +(base - .01).toFixed(3), priceUpperBound: +(base + .01).toFixed(3),
+    availabilityProbability: null, interruptionProbability: null, modelVersion: "illustrative-cpu-not-trained",
+  });
+}
+const earlierGpuIssue = forecasts.filter(row => row.resourceType === "GPU" && row.targetSlot <= previewSlot + 5).map(row => ({
+  ...row, generatedAtSlot: previewSlot - 1, modelVersion: "illustrative-earlier-not-trained",
+  predictedPriceUsdPerUnitHour: +(row.predictedPriceUsdPerUnitHour + .05).toFixed(3),
+  priceLowerBound: +(row.priceLowerBound! + .05).toFixed(3), priceUpperBound: +(row.priceUpperBound! + .05).toFixed(3),
+}));
+forecasts.push(...earlierGpuIssue);
 const decisions: Decision[] = [
   { jobId: "WK-001", decidedAtSlot: 8, action: "WAIT", region: "eu-central-1", plannedStartSlot: 10, plannedEndSlot: 12,
     projectedCostUsd: 4.24, reasonCode: "EXAMPLE_LOWER_PRICE_WINDOW", explanation: "Example plan: wait two slots for the illustrated $1.06/unit-hour window. Two GPUs × two hours gives $4.24 projected compute cost. Completion at slot 12 retains two slots before the deadline. Risk is unknown; overhead is excluded.", executionMode: "SIMULATED" },

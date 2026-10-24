@@ -555,8 +555,8 @@ Use the rules below as the source of truth for frontend styling and layout.
 Prioritize clear hierarchy, focused views, and comfortable spacing.
 
 1. **Unified brand and navigation.** Combine the Arbitr wordmark, task tabs, and
-   data-source controls in one header. Use a prominent 36px, semibold wordmark on
-   the left, tabs beside it, and controls on the right. Do not repeat the selected
+   data-source controls in one header. Use a prominent 36px wordmark at its font's
+   native regular weight on the left, tabs beside it, and controls on the right. Do not repeat the selected
    tab's title as a large heading below the header; use a short contextual sentence.
 2. **Focused tabs.** Organize features into Overview, Workloads, Market, and
    Replay & execution. Overview contains portfolio metrics and upcoming workloads;
@@ -589,10 +589,14 @@ Prioritize clear hierarchy, focused views, and comfortable spacing.
    Hover alone must not turn neutral controls blue. Inputs, dropdowns and boxed
    buttons gain a subtly thicker inset border on hover without layout movement.
    GPU/region selectors stay white, and native dropdowns match the form fields.
-6. **IBM Plex Sans.** Use locally served IBM Plex Sans throughout the application,
+6. **Typography.** Use BROKEN PIXELS by FlawlessAndCo only for the Arbitr wordmark,
+   loaded locally through `next/font/local` at its native regular weight. Keep its
+   license notice alongside the font; the demo is for personal/non-commercial preview.
+   Use locally served IBM Plex Sans throughout the rest of the application,
    including controls, tables, charts, and tooltips. Load weights 400, 500, and 600
    through `@fontsource/ibm-plex-sans`. Use tabular numerals for aligned numerical
-   data. Do not reintroduce monospace overrides.
+   data. Use readable body text around 14px, table values around 13px, and secondary
+   labels at least 12px. Do not reintroduce monospace overrides or tiny captions.
 7. **Breathing room.** Keep the main content centered at approximately 1400px maximum
    width, with 32px desktop side margins and 16px on smaller screens. Use 24px panel
    gaps, comfortable 12px/16px table-cell padding, and clear separation between
@@ -605,13 +609,79 @@ Prioritize clear hierarchy, focused views, and comfortable spacing.
    and uncertainty ranges. Clearly label simulated/example data; never present
    sample forecasts, plans, savings, benchmarks, or execution as genuine results.
 10. **Responsive and accessible.** On narrower screens, wrap tabs beneath the brand
-    within the same header, stack panel columns, and allow tables/charts to scroll
-    horizontally. Preserve visible keyboard focus, arrow-key/Home/End tab navigation,
+    within the same header and stack panel columns. Slot charts should fit their
+    container without shrinking labels; dense tables may scroll within their own
+    frame or become labeled regional facts on phones. Preserve visible keyboard focus, arrow-key/Home/End tab navigation,
     readable contrast, and explicit loading/empty/error states.
 
 Keep theme tokens in `frontend/app/globals.css`. Preserve the accepted light theme,
 IBM Plex Sans, tab structure, and spacing when adding features unless the user
 requests a new direction.
+
+### Frontend Interaction and Data Rules
+
+- **Job creation:** use an Add job modal, not a separate page or drawer. Support
+  CPU batch jobs and GPU jobs. Keep Duration (hours) separate from Complete within
+  (hours): the latter includes waiting and execution from submission. Both are
+  positive whole hours, and the completion window must cover the duration.
+- **Deadline mapping:** use the backend's authoritative current scheduling slot.
+  Submit `arrivalSlot = currentSlot` and
+  `deadlineSlot = currentSlot + completeWithinHours`, refreshing the slot immediately
+  before submission. Preserve the full requested window if the slot advances while
+  the form is open. Do not require a UTC origin or reintroduce UTC date pickers.
+  Relative labels advance with scheduling/replay time, not browser wall-clock time.
+- **Region and GPU inputs:** use searchable checkbox multi-selects, with readable
+  region names and IDs, selection summaries, Select all, and Clear. Searching must
+  preserve selections. Initially select all listed regions, but require explicit
+  GPU model selection. CPU submissions strip GPU constraints. Derive real choices
+  from loaded data; extra preview choices must remain explicitly illustrative.
+- **Modal behavior:** contain keyboard focus, restore it on close, and allow Escape
+  to dismiss an open selector before dismissing the modal. Lock duplicate submissions
+  while pending; retain inputs and show useful validation/API errors on failure.
+- **Regional comparison:** compare only the same resource type and exact GPU model,
+  keeping observed and simulated quotes separate. A lowest-current-quote finding
+  requires a quote at the current slot and sufficient reported units. Stale quotes
+  and missing capacity must not be promoted as current opportunities. This finding
+  is descriptive, not an optimizer allocation, reservation, or realized saving.
+- **Forecast inspection:** group issues by both generation slot and model version;
+  never combine different issues into one trajectory. Exclude future-generated
+  predictions and future market observations. Support 1/3/6-hour horizons, region
+  selection, and inspection by chart click, arrow keys, or a slot dropdown. Leave
+  missing observations as gaps. A missing next-hour prediction stays missing rather
+  than being replaced with a cheaper prediction for a later slot.
+- **Provenance and uncertainty:** distinguish quote age from forecast issue age.
+  Show source/model version and supplied bounds. Null risk is Unknown, a genuine
+  zero remains zero, and missing prices/capacity remain unavailable. Do not invent
+  interval coverage, calibration, freshness timestamps, or risk estimates.
+- **Preview isolation:** `frontend/lib/preview.ts` contains hand-authored examples,
+  not trained predictions or execution history. Preview-created jobs stay in page
+  memory and reset on reload; never send them to FastAPI. Explicit backend mode
+  reads/submits real API state and must not silently fall back to examples.
+- **Ownership:** Person 2 is actively developing the backend. Keep frontend work
+  within `frontend/**`; coordinate shared schema/API changes before implementation.
+  Preserve their uncommitted work and do not implement persistence, forecasting,
+  optimization, or execution in the frontend to bypass missing backend features.
+
+### Agent Workflow Preferences and Verification
+
+- The **design-taste-frontend skill is off by default** for this project. Do not
+  activate it, rerun its inspectors, or carry an earlier invocation into a later
+  task unless the user explicitly requests that skill for the current task. This
+  does not prohibit ordinary code review, tests, or requested browser checks.
+- Preserve accepted design decisions when making a targeted change. Do not use a
+  skill or generic design recommendation to replace the user's chosen font, palette,
+  header, tabs, spacing, or hover behavior without a request to change them.
+- Keep user flows in product language. Put backend integration details and test
+  tooling notes in developer documentation rather than filling the UI with them.
+- Use `cd frontend && npm test` for relevant workload/market logic, and
+  `cd frontend && npm run build` when validating frontend compilation/types. Match
+  verification to the change; a documentation-only update needs no application build.
+- Report checks actually completed. A successful build does not establish visual
+  correctness, browser interaction behavior, live cloud execution, or model quality.
+- Keep the BROKEN PIXELS demo license notice beside the asset in
+  `frontend/app/fonts/`. Its use here is a local personal/non-commercial preview;
+  an appropriate designer license is needed for commercial product use. Do not
+  silently substitute another font or purchase a license on the user's behalf.
 
 ### Demo Priorities
 
@@ -704,6 +774,38 @@ No developer should silently modify another developer's owned modules.
 ---
 
 ## 11. Development Milestones
+
+### Frontend Delivery Milestones — Person 3
+
+These milestones track the frontend agreed with the user. "UI complete" means
+implemented and verified against labeled preview data; it does not establish that
+the forecasting, optimizer, persistence, replay, or execution backend is complete.
+Update statuses only when the corresponding behavior has actually been verified.
+
+| Milestone | Current status | Completion criteria |
+| --- | --- | --- |
+| 1. Terminal foundation | Complete | Arbitr wordmark and unified tabs, accepted light theme, IBM Plex Sans UI, responsive panels, consistent controls and keyboard focus. |
+| 2. Portfolio & workload management | UI complete; backend integration pending | Add job modal supports CPU/GPU requirements, searchable GPU/region multi-selects, relative completion windows, budget and priority; queue search/filter/sort and job details work. Real jobs must also survive page refresh and backend restart. |
+| 3. Regional market & forecast inspection | UI complete; real feeds/model output pending | Compare matching regional quotes, capacity and freshness; inspect a region's discrete history, forecast issue, 1/3/6-hour horizon, slot values, bounds, model provenance and supplied risk. Verify against real API observations/predictions before claiming live intelligence. |
+| 4. Explainable scheduling decisions | Basic inspector exists; optimizer integration pending | Display backend WAIT/RUN/ROUTE/FALLBACK/INFEASIBLE actions, selected region/window, projected cost and reasoning; add deadline slack and forecast/risk evidence when the shared contract provides them. Keep predicted and realized outcomes distinct. |
+| 5. Backend integration & persistence | API client and backend mode exist; end-to-end verification pending | Submit jobs using the authoritative current slot; preserve multiple acceptable GPU models; reload persisted jobs; show real forecasts/decisions; handle loading, empty/error states and refresh without silently using examples. |
+| 6. Replay & simulated shocks | Controls are placeholders | Wire reset, single-step and accelerated playback to backend state. Inject clearly labeled simulated shocks and show their effect on forecasts, decisions and job outcomes. A reset must reproduce a known seeded scenario. |
+| 7. Policy comparison & outcomes | Display shell exists; no results connected | Show backend results for FIFO, CHEAPEST_NOW, OPTIMIZER_WITH_NAIVE_FORECAST and OPTIMIZER_WITH_ML, including spend, completions, missed deadlines, failures and unfinished jobs. Disclose different completion counts before claiming savings. |
+| 8. Local execution & three-minute demo | Monitoring shell exists; end-to-end demo pending | Show genuine LOCAL Docker task state, logs, completion/exit code and failures. Verify one real local task, a reliable reset and the complete predict → decide → explain → outcome → baseline comparison flow in three minutes. |
+
+**Next joint integration target:** add a real job, confirm the backend preserves its
+resource alternatives and deadline window, refresh to retrieve it, and verify it
+survives a backend restart. Person 2 owns persistent storage and server scheduling
+state; Person 1 owns genuine forecasting; Person 3 connects and verifies the UI.
+Relative completion windows require a current slot, not a UTC-origin setting.
+
+Proceed with frontend work that does not depend on unfinished backend features,
+but keep preview demonstrations and real integration status separate. Editing,
+cancellation and bulk job actions are later scope unless explicitly requested;
+the current job API supports creation/listing.
+
+The hour-by-hour plan below is the original hackathon target schedule, not a claim
+that its deliverables are already complete.
 
 ### Hours 0–2 — Contracts and Scaffolding
 

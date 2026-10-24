@@ -92,7 +92,7 @@ export default function Home() {
     </header>
     <div className="preview-note"><span className="tag">{preview ? "Simulated preview" : error ? "Backend error" : visible ? "Backend data" : "Connecting"}</span>
       <span>{preview ? "Illustrative data. No model, benchmark or execution has run." : "State provided by FastAPI."}</span></div>
-    <div className="view-context"><p>{currentTab.description}</p><div className="view-actions"><span className="muted">{visible ? `Slot ${currentSlot} · 1h intervals` : "Connecting…"}</span>{visible && (activeTab === "overview" || activeTab === "workloads") && <button className="primary-button" onClick={() => setShowAddJob(true)}>Add job</button>}</div></div>
+    <div className="view-context"><p>{activeTab === "overview" && visible ? `${attentionJobs.length} ${attentionJobs.length === 1 ? "workload needs" : "workloads need"} attention · ${visible.jobs.filter(row => row.status === "PENDING").length} pending` : currentTab.description}</p><div className="view-actions"><span className="muted">{visible ? `Slot ${currentSlot} · 1h intervals` : "Connecting…"}</span>{visible && (activeTab === "overview" || activeTab === "workloads") && <button className="primary-button" onClick={() => setShowAddJob(true)}>Add job</button>}</div></div>
     {notice && <div className="success-note" role="status"><span>{notice}</span><button className="text-button" onClick={() => setNotice(null)}>Dismiss</button></div>}
     {!preview && error && <div role="alert" className="notice error">{error}</div>}
     {!visible && !error && <p className="empty" role="status">Connecting to backend…</p>}
@@ -114,7 +114,7 @@ export default function Home() {
         <JobBlotter jobs={visible.jobs} decisions={visible.decisions} selectedId={selectedId} onSelect={setSelectedId} filters={filters} onFilters={setFilters} currentSlot={currentSlot} />
         <div className="stack"><JobDetails job={job} currentSlot={currentSlot} /><DecisionInspector decision={decision} job={job} preview={preview} /></div>
       </div>}
-      {activeTab === "market" && <MarketChart market={visible.market} forecasts={visible.forecasts} preview={preview} />}
+      {activeTab === "market" && <MarketChart market={visible.market} forecasts={visible.forecasts} preview={preview} currentSlot={currentSlot} />}
       {activeTab === "replay" && <div className="stack"><div className="operations-layout"><ReplayPanel state={visible.replay} /><ExecutionMonitor /></div><PolicyComparison /></div>}
     </div>}
     {showAddJob && visible && <AddJobModal preview={preview} currentSlot={currentSlot} regions={regions} gpuTypes={gpuTypes} onClose={() => setShowAddJob(false)} onSubmit={createJob} />}

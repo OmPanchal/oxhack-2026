@@ -1,44 +1,62 @@
 "use client";
 import { useState } from "react";
 import type { Forecast, MarketSnapshot } from "@/lib/types";
+import { compareRegions, forecastRuns, lowestCurrentQuote, marketResources, plotPoints, price, regionName, resourceKey, resourceLabel, upcomingPoints } from "@/lib/market";
+import type { QuoteKind } from "@/lib/market";
+import { ForecastInspector } from "./ForecastInspector";
+import { SlotPriceChart } from "./SlotPriceChart";
 
-const seriesKey = (row: MarketSnapshot | Forecast) => `${row.region} / ${row.gpuType ?? row.resourceType}`;
-type Point = { slot: number; price: number };
-
-export function MarketChart({ market, forecasts, preview }: { market: MarketSnapshot[]; forecasts: Forecast[]; preview: boolean }) {
-  const keys = [...new Set([...market, ...forecasts].map(seriesKey))];
-  const [selection, setSelection] = useState("");
-  const selected = keys.includes(selection) ? selection : keys[0];
-  const history = market.filter(row => seriesKey(row) === selected).sort((a, b) => a.slot - b.slot);
-  const allPredictions = forecasts.filter(row => seriesKey(row) === selected);
-  const generation = Math.max(...allPredictions.map(row => row.generatedAtSlot));
-  const predictions = allPredictions.filter(row => row.generatedAtSlot === generation).sort((a, b) => a.targetSlot - b.targetSlot);
-  const points = [...history.map(row => ({ slot: row.slot, price: row.priceUsdPerUnitHour })),
-    ...predictions.map(row => ({ slot: row.targetSlot, price: row.predictedPriceUsdPerUnitHour }))];
-  const minSlot = points.length ? Math.min(...points.map(p => p.slot)) : 0;
-  const maxSlot = points.length ? Math.max(...points.map(p => p.slot)) + 1 : 6;
-  const prices = [...points.map(p => p.price), ...predictions.flatMap(row => [row.priceLowerBound, row.priceUpperBound].filter((n): n is number => n !== null))];
-  const lo = prices.length ? Math.max(0, Math.min(...prices) * .9) : 0;
-  const hi = prices.length ? Math.max(lo + .1, Math.max(...prices) * 1.06) : 1;
-  const x = (slot: number) => 52 + (slot - minSlot) / (maxSlot - minSlot) * 812;
-  const y = (price: number) => 208 - (price - lo) / (hi - lo) * 180;
-  const step = (values: Point[]) => values.map((p, i) => i ? `H${x(p.slot)} V${y(p.price)}` : `M${x(p.slot)} ${y(p.price)}`).join(" ") + (values.length ? ` H${x(values[values.length - 1].slot + 1)}` : "");
-  const tickCount = Math.min(8, maxSlot - minSlot + 1);
-  const ticks = Array.from({ length: tickCount }, (_, i) => Math.round(minSlot + (maxSlot - minSlot) * i / Math.max(1, tickCount - 1)));
-  return <section aria-labelledby="market-heading"><div className="panel-heading"><h2 id="market-heading">Regional prices</h2><span className="muted">USD / UNIT-HOUR · 1H SLOTS</span></div>
-    <div className="chart-controls">{keys.map(key => <button key={key} aria-pressed={key === selected} onClick={() => setSelection(key)}>{key}</button>)}</div>
-    <div className="table-scroll">{points.length ? <svg className="chart" viewBox="0 0 900 244" role="img" aria-label={`${selected}: discrete hourly prices and forecast. ${preview ? "Hand-authored simulated example." : "Backend data."}`}>
-      <title>{`${selected} / hourly step prices`}</title>
-      {predictions.length > 0 && <rect x={x(predictions[0].targetSlot)} y="20" width={x(maxSlot) - x(predictions[0].targetSlot)} height="188" fill="var(--range)" fillOpacity=".025" />}
-      {[0, 1, 2, 3, 4].map(i => { const price = lo + (hi - lo) * i / 4; return <g key={i}><line x1="52" x2="864" y1={y(price)} y2={y(price)} stroke="var(--line)" /><text x="44" y={y(price) + 3} textAnchor="end">{price.toFixed(2)}</text></g>; })}
-      {ticks.map(slot => <g key={slot}><line x1={x(slot)} x2={x(slot)} y1="28" y2="208" stroke="var(--line)" /><text x={x(slot)} y="228" textAnchor="middle">T+{String(slot).padStart(2, "0")}</text></g>)}
-      {predictions.map(row => row.priceLowerBound != null && row.priceUpperBound != null && <rect key={row.targetSlot} x={x(row.targetSlot)} y={y(row.priceUpperBound)} width={x(row.targetSlot + 1) - x(row.targetSlot)} height={Math.max(0, y(row.priceLowerBound) - y(row.priceUpperBound))} fill="var(--range)" fillOpacity=".12" />)}
-      <path d={step(history.map(row => ({ slot: row.slot, price: row.priceUsdPerUnitHour })))} fill="none" stroke="var(--history)" strokeWidth="2" />
-      <path d={step(predictions.map(row => ({ slot: row.targetSlot, price: row.predictedPriceUsdPerUnitHour })))} fill="none" stroke="var(--forecast)" strokeWidth="2" strokeDasharray="5 3" />
-      {predictions.length > 0 && <g><line x1={x(predictions[0].targetSlot)} x2={x(predictions[0].targetSlot)} y1="20" y2="208" stroke="var(--muted)" strokeDasharray="3 4" /><text x={x(predictions[0].targetSlot) + 6} y="14">FORECAST →</text></g>}
-    </svg> : <p className="empty">No market or forecast data available.</p>}</div>
-    <div className="chart-legend"><span className="chart-history">━ {preview ? "SIMULATED HISTORY" : "MARKET HISTORY"}</span><span className="chart-forecast">┄ {preview ? "EXAMPLE FORECAST / RANGE" : "FORECAST / PROVIDED BOUNDS"}</span><span className="muted">{preview ? "ILLUSTRATIVE RANGE · NOT CALIBRATED" : "STEP UPDATES / NO INTERPOLATION"}</span></div>
-    <div className="table-scroll"><table><thead><tr><th>REGION / RESOURCE</th><th className="numeric">LATEST SLOT</th><th className="numeric">USD/U-H</th><th className="numeric">AVAILABLE</th><th>PROVENANCE</th></tr></thead>
-      <tbody>{keys.map(key => { const latest = market.filter(row => seriesKey(row) === key).sort((a, b) => b.slot - a.slot)[0]; return latest && <tr key={key}><td>{key}</td><td className="numeric">T+{latest.slot}</td><td className="numeric positive">{latest.priceUsdPerUnitHour.toFixed(3)}</td><td className="numeric">{latest.availableUnits}</td><td className={latest.dataKind === "SIMULATED" ? "attention" : "muted"}>{latest.dataKind}</td></tr>; })}</tbody></table></div>
-  </section>;
+export function MarketChart({ market, forecasts, preview, currentSlot }: { market: MarketSnapshot[]; forecasts: Forecast[]; preview: boolean; currentSlot: number }) {
+  const resources = marketResources(market, forecasts, currentSlot);
+  const [resourceChoice, setResourceChoice] = useState("");
+  const [kind, setKind] = useState<QuoteKind>(preview ? "SIMULATED" : "OBSERVED");
+  const [unitsText, setUnitsText] = useState("1");
+  const [regionChoice, setRegionChoice] = useState("");
+  const [runChoice, setRunChoice] = useState("");
+  const [horizon, setHorizon] = useState(6);
+  const [slotChoice, setSlotChoice] = useState<number | null>(null);
+  const resource = resources.includes(resourceChoice) ? resourceChoice : resources.find(key => JSON.parse(key)[0] === "GPU") ?? resources[0];
+  const units = Number(unitsText), validUnits = Number.isSafeInteger(units) && units > 0;
+  const rows = resource ? compareRegions(market, forecasts, resource, kind, currentSlot) : [];
+  const best = validUnits ? lowestCurrentQuote(rows, currentSlot, units) : null;
+  const region = rows.some(row => row.region === regionChoice) ? regionChoice : best?.region ?? rows[0]?.region;
+  const runs = region && resource ? forecastRuns(forecasts, resource, region, currentSlot) : [];
+  const run = runs.find(row => row.key === runChoice) ?? runs[0];
+  const predictions = upcomingPoints(run, currentSlot, horizon);
+  const history = market.filter(row => row.region === region && resourceKey(row) === resource && row.dataKind === kind && row.slot <= currentSlot && row.slot >= Math.max(0, currentSlot - 5)).sort((a, b) => a.slot - b.slot);
+  const points = plotPoints(history, predictions, currentSlot);
+  const point = points.find(row => row.slot === slotChoice) ?? points.find(row => row.forecast) ?? points[points.length - 1];
+  function selectRegion(value: string) { setRegionChoice(value); setRunChoice(""); setSlotChoice(null); }
+  return <div className="market-workspace">
+    <section aria-labelledby="regional-comparison-title">
+      <div className="panel-heading"><h2 id="regional-comparison-title">Regional comparison</h2><span className="muted">As of slot {currentSlot} · USD / unit-hour</span></div>
+      <div className="market-filters">
+        <label>Resource<select aria-label="Market resource" disabled={!resources.length} value={resource ?? ""} onChange={event => { setResourceChoice(event.target.value); selectRegion(""); }}>{!resources.length && <option value="">No resources received</option>}{resources.map(key => <option key={key} value={key}>{resourceLabel(key)}</option>)}</select></label>
+        <label>Quote data<select aria-label="Quote data kind" value={kind} onChange={event => { setKind(event.target.value as QuoteKind); setSlotChoice(null); }}><option value="OBSERVED">Observed</option><option value="SIMULATED">Simulated</option></select></label>
+        <label className="units-field">Units required<input aria-label="Market units required" type="number" min="1" step="1" value={unitsText} aria-invalid={!validUnits} onChange={event => setUnitsText(event.target.value)} /></label>
+      </div>
+      <p className="comparison-finding" role="status">{!validUnits ? "Enter a positive whole number of units to compare capacity." : best ? <><strong>{regionName(best.region)}</strong> has the lowest current quote that covers {units} {units === 1 ? "unit" : "units"}: <strong>{price(best.quote!.priceUsdPerUnitHour)}</strong> / unit-hour.</> : "No current quote in this view covers the requested capacity."}</p>
+      <div className="table-scroll"><table className="regional-table"><thead><tr><th>Region</th><th className="numeric">Current quote</th><th className="numeric">Available units</th><th className="numeric">Next hour forecast</th><th>Quote age</th><th>Data</th></tr></thead>
+        <tbody>{rows.map(row => { const quote = row.quote; const age = quote ? currentSlot - quote.slot : null; const capacity = quote && validUnits && quote.availableUnits < units; return <tr key={row.region} className={row.region === region ? "selected" : ""}>
+          <td><button className="row-select region-select" aria-pressed={row.region === region} onClick={() => selectRegion(row.region)}>{regionName(row.region)}<span className="cell-note muted">{row.region}</span></button>{best?.region === row.region && <span className="cell-note muted">Lowest current quote</span>}</td>
+          <td className="numeric" data-label="Current quote">{price(quote?.priceUsdPerUnitHour)}</td><td className="numeric" data-label="Available units"><span className={capacity ? "attention" : ""}>{quote?.availableUnits.toLocaleString("en-US") ?? "—"}</span>{capacity && <span className="cell-note attention">Below request</span>}</td>
+          <td className="numeric" data-label="Next hour forecast">{price(row.next?.predictedPriceUsdPerUnitHour)}{row.next && row.issued !== null && row.issued < currentSlot && <span className="cell-note muted">Issue {currentSlot - row.issued}h old</span>}</td>
+          <td data-label="Quote age" className={age !== null && age > 0 ? "attention" : "muted"}>{age === null ? "No quote" : age === 0 ? "Current" : `${age}h old`}</td><td data-label="Data" className="muted">{quote ? quote.dataKind === "OBSERVED" ? "Observed" : "Simulated" : "Unavailable"}</td>
+        </tr>; })}</tbody></table></div>
+      {!rows.length && <p className="empty">No regional quotes or forecasts for this resource. Backend mode never substitutes preview data.</p>}
+      <div className="panel-footer"><span>Only matching resource types and GPU models are compared. Stale quotes are not ranked as current opportunities.</span><span>Capacity is not a reservation.</span></div>
+    </section>
+    {region && resource && <div className="market-inspection-layout">
+      <section aria-labelledby="trajectory-title">
+        <div className="panel-heading"><div><h2 id="trajectory-title">{regionName(region)} · {resourceLabel(resource)}</h2><p className="form-note">{preview ? "Example prices and predictions" : "Quotes and model predictions"} · USD / unit-hour</p></div><span className="muted">{region}</span></div>
+        <div className="forecast-controls"><label>Forecast issue<select aria-label="Forecast issue" disabled={!runs.length} value={run?.key ?? ""} onChange={event => { setRunChoice(event.target.value); setSlotChoice(null); }}>{!runs.length && <option value="">No forecasts received</option>}{runs.map(row => <option key={row.key} value={row.key}>Slot {row.issued} · {row.model}</option>)}</select></label>
+          <label>Look ahead<select aria-label="Forecast horizon" value={horizon} onChange={event => { setHorizon(Number(event.target.value)); setSlotChoice(null); }}><option value="1">1 hour</option><option value="3">3 hours</option><option value="6">6 hours</option></select></label></div>
+        {run && <p className={`forecast-freshness ${run.issued < currentSlot ? "attention" : "muted"}`}>{run.issued === currentSlot ? "Issued at the current slot." : `Forecast issue is ${currentSlot - run.issued}h old.`} {predictions.length} of {horizon} future slots supplied in this window.</p>}
+        {!predictions.length && <p className="forecast-freshness muted">No upcoming forecast points in this window. Available market history remains visible.</p>}
+        <SlotPriceChart history={history} predictions={predictions} points={points} currentSlot={currentSlot} selectedSlot={point?.slot ?? null} onSelect={setSlotChoice} />
+        <div className="panel-footer">{preview ? "Simulated history and hand-authored forecast examples. No trained model is represented." : "Latest six hours of matching quotes; one selected model issue. Missing observations are left as gaps."}</div>
+      </section>
+      <ForecastInspector point={point} points={points} currentSlot={currentSlot} preview={preview} onSelect={setSlotChoice} />
+    </div>}
+  </div>;
 }

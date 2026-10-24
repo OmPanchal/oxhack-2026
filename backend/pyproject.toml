@@ -12,6 +12,7 @@ dependencies = ["fastapi>=0.115,<1", "uvicorn[standard]>=0.30,<1", "pydantic>=2.
 dev = ["pytest>=8,<10", "httpx>=0.27,<1"]
 ml = ["numpy>=1.26,<3", "scikit-learn>=1.5,<2", "lightgbm>=4.5,<5"]
 execution = ["docker>=7,<8"]
+aws = ["boto3>=1.35,<2"]
 
 [tool.setuptools.packages.find]
 include = ["app*"]

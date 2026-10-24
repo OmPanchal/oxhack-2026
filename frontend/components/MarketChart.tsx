@@ -5,6 +5,7 @@ import { compareRegions, forecastRuns, lowestCurrentQuote, marketResources, plot
 import type { QuoteKind } from "@/lib/market";
 import { ForecastInspector } from "./ForecastInspector";
 import { SlotPriceChart } from "./SlotPriceChart";
+import { ValuePulse } from "./ValuePulse";
 
 export function MarketChart({ market, forecasts, preview, currentSlot }: { market: MarketSnapshot[]; forecasts: Forecast[]; preview: boolean; currentSlot: number }) {
   const resources = marketResources(market, forecasts, currentSlot);
@@ -26,6 +27,7 @@ export function MarketChart({ market, forecasts, preview, currentSlot }: { marke
   const history = market.filter(row => row.region === region && resourceKey(row) === resource && row.dataKind === kind && row.slot <= currentSlot && row.slot >= Math.max(0, currentSlot - 5)).sort((a, b) => a.slot - b.slot);
   const points = plotPoints(history, predictions, currentSlot);
   const point = points.find(row => row.slot === slotChoice) ?? points.find(row => row.forecast) ?? points[points.length - 1];
+  const selectedQuote = rows.find(row => row.region === region)?.quote;
   function selectRegion(value: string) { setRegionChoice(value); setRunChoice(""); setSlotChoice(null); }
   return <div className="market-workspace">
     <section aria-labelledby="regional-comparison-title">
@@ -43,12 +45,17 @@ export function MarketChart({ market, forecasts, preview, currentSlot }: { marke
           <td className="numeric" data-label="Next hour forecast">{price(row.next?.predictedPriceUsdPerUnitHour)}{row.next && row.issued !== null && row.issued < currentSlot && <span className="cell-note muted">Issue {currentSlot - row.issued}h old</span>}</td>
           <td data-label="Quote age" className={age !== null && age > 0 ? "attention" : "muted"}>{age === null ? "No quote" : age === 0 ? "Current" : `${age}h old`}</td><td data-label="Data" className="muted">{quote ? quote.dataKind === "OBSERVED" ? "Observed" : "Simulated" : "Unavailable"}</td>
         </tr>; })}</tbody></table></div>
-      {!rows.length && <p className="empty">No regional quotes or forecasts for this resource. Backend mode never substitutes preview data.</p>}
+      {!rows.length && <div className="empty"><h3>No matching regional data</h3><p>Try another resource or quote data selection. Quotes and forecasts appear here when supplied.</p></div>}
       <div className="panel-footer"><span>Only matching resource types and GPU models are compared. Stale quotes are not ranked as current opportunities.</span><span>Capacity is not a reservation.</span></div>
     </section>
     {region && resource && <div className="market-inspection-layout">
       <section aria-labelledby="trajectory-title">
         <div className="panel-heading"><div><h2 id="trajectory-title">{regionName(region)} · {resourceLabel(resource)}</h2><p className="form-note">{preview ? "Example prices and predictions" : "Quotes and model predictions"} · USD / unit-hour</p></div><span className="muted">{region}</span></div>
+        <div className="market-price-lead">
+          <div><p className="price-eyebrow">{selectedQuote ? selectedQuote.slot === currentSlot ? "Current quote" : "Last supplied quote" : "Quote unavailable"}{kind === "SIMULATED" ? " · Simulated" : " · Observed"}</p>
+          <p className="market-price"><ValuePulse value={selectedQuote?.priceUsdPerUnitHour ?? "unavailable"}>{price(selectedQuote?.priceUsdPerUnitHour)}</ValuePulse><span>USD / unit-hour</span></p></div>
+          <div className="quote-context"><p>{selectedQuote ? `Slot ${selectedQuote.slot} · ${currentSlot - selectedQuote.slot}h old` : "No quote supplied for this selection"}</p><p className="muted">{selectedQuote?.source ?? "Forecast values remain separate from quotes."}</p></div>
+        </div>
         <div className="forecast-controls"><label>Forecast issue<select aria-label="Forecast issue" disabled={!runs.length} value={run?.key ?? ""} onChange={event => { setRunChoice(event.target.value); setSlotChoice(null); }}>{!runs.length && <option value="">No forecasts received</option>}{runs.map(row => <option key={row.key} value={row.key}>Slot {row.issued} · {row.model}</option>)}</select></label>
           <label>Look ahead<select aria-label="Forecast horizon" value={horizon} onChange={event => { setHorizon(Number(event.target.value)); setSlotChoice(null); }}><option value="1">1 hour</option><option value="3">3 hours</option><option value="6">6 hours</option></select></label></div>
         {run && <p className={`forecast-freshness ${run.issued < currentSlot ? "attention" : "muted"}`}>{run.issued === currentSlot ? "Issued at the current slot." : `Forecast issue is ${currentSlot - run.issued}h old.`} {predictions.length} of {horizon} future slots supplied in this window.</p>}

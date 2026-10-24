@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
 import { previewData } from "@/lib/preview";
+import { latestDecision } from "@/lib/decisions";
 import type { Job, JobCreate, TerminalData } from "@/lib/types";
 import { AddJobModal } from "@/components/AddJobModal";
 import { JobDetails } from "@/components/JobDetails";
@@ -11,9 +12,8 @@ import { Portfolio } from "@/components/Portfolio";
 import { MarketChart } from "@/components/MarketChart";
 import { JobBlotter } from "@/components/JobBlotter";
 import { DecisionInspector } from "@/components/DecisionInspector";
-import { ReplayPanel } from "@/components/ReplayPanel";
-import { ExecutionMonitor } from "@/components/ExecutionMonitor";
-import { PolicyComparison } from "@/components/PolicyComparison";
+import { ReplayWorkspace } from "@/components/ReplayWorkspace";
+import { WorkloadTimeline } from "@/components/WorkloadTimeline";
 
 const tabs = [
   { id: "overview", label: "Overview", description: "A quick read on your portfolio and upcoming work." },
@@ -72,11 +72,11 @@ export default function Home() {
     setFilters({ query: "", resource: "ALL", status: "ALL", sort: "deadline" });
   }
   const job = visible?.jobs.find(row => row.id === selectedId);
-  const decision = visible?.decisions.find(row => row.jobId === selectedId);
+  const decision = latestDecision(visible?.decisions ?? [], selectedId, currentSlot);
   const currentTab = tabs.find(tab => tab.id === activeTab)!;
   return <main className="rounded-none">
     <header className="topbar">
-      <div className="brand"><h1>Arbitr</h1></div>
+      <div className="brand"><h1>arbitr</h1></div>
     <div className="tabs" role="tablist" aria-label="Terminal views">
       {tabs.map((tab, index) => <button key={tab.id} id={`tab-${tab.id}`} role="tab"
         aria-selected={activeTab === tab.id} aria-controls={`panel-${tab.id}`} tabIndex={activeTab === tab.id ? 0 : -1}
@@ -92,12 +92,12 @@ export default function Home() {
     </header>
     <div className="preview-note"><span className="tag">{preview ? "Simulated preview" : error ? "Backend error" : visible ? "Backend data" : "Connecting"}</span>
       <span>{preview ? "Illustrative data. No model, benchmark or execution has run." : "State provided by FastAPI."}</span></div>
-    <div className="view-context"><p>{activeTab === "overview" && visible ? `${attentionJobs.length} ${attentionJobs.length === 1 ? "workload needs" : "workloads need"} attention · ${visible.jobs.filter(row => row.status === "PENDING").length} pending` : currentTab.description}</p><div className="view-actions"><span className="muted">{visible ? `Slot ${currentSlot} · 1h intervals` : "Connecting…"}</span>{visible && (activeTab === "overview" || activeTab === "workloads") && <button className="primary-button" onClick={() => setShowAddJob(true)}>Add job</button>}</div></div>
+    <div className="view-context"><p>{activeTab === "overview" && visible ? `${attentionJobs.length} ${attentionJobs.length === 1 ? "workload needs" : "workloads need"} attention · ${visible.jobs.filter(row => row.status === "PENDING").length} pending` : currentTab.description}</p><div className="view-actions"><span className="muted">{visible ? activeTab === "replay" && preview ? "Separate preview scenario · 1h slots" : `Slot ${currentSlot} · 1h intervals` : "Connecting…"}</span>{visible && (activeTab === "overview" || activeTab === "workloads") && <button className="primary-button" onClick={() => setShowAddJob(true)}>Add job</button>}</div></div>
     {notice && <div className="success-note" role="status"><span>{notice}</span><button className="text-button" onClick={() => setNotice(null)}>Dismiss</button></div>}
     {!preview && error && <div role="alert" className="notice error">{error}</div>}
     {!visible && !error && <p className="empty" role="status">Connecting to backend…</p>}
     {visible && <div id={`panel-${activeTab}`} role="tabpanel" aria-labelledby={`tab-${activeTab}`}>
-      {activeTab === "overview" && <>
+      {activeTab === "overview" && <div className="view-enter">
         <Portfolio jobs={visible.jobs} preview={preview} currentSlot={currentSlot} />
         {attentionJobs.length > 0 && <section className="attention-list"><div className="panel-heading"><h2>Needs attention</h2><span className="muted">{attentionJobs.length} jobs</span></div>{attentionJobs.map(row => <div className="attention-item" key={row.id}><button className="text-button" onClick={() => inspect(row.id)}>{row.name}</button><span className="attention">{deadlineAttention(row, currentSlot)}</span></div>)}</section>}
         <section><div className="panel-heading"><h2>Upcoming workloads</h2><button className="text-button" onClick={() => setActiveTab("workloads")}>View all workloads →</button></div>
@@ -109,13 +109,14 @@ export default function Home() {
           </tbody></table></div>
           {!visible.jobs.some(row => row.status === "PENDING") && <p className="empty">No pending workloads.</p>}
         </section>
-      </>}
-      {activeTab === "workloads" && <div className="workload-layout">
-        <JobBlotter jobs={visible.jobs} decisions={visible.decisions} selectedId={selectedId} onSelect={setSelectedId} filters={filters} onFilters={setFilters} currentSlot={currentSlot} />
-        <div className="stack"><JobDetails job={job} currentSlot={currentSlot} /><DecisionInspector decision={decision} job={job} preview={preview} /></div>
       </div>}
-      {activeTab === "market" && <MarketChart market={visible.market} forecasts={visible.forecasts} preview={preview} currentSlot={currentSlot} />}
-      {activeTab === "replay" && <div className="stack"><div className="operations-layout"><ReplayPanel state={visible.replay} /><ExecutionMonitor /></div><PolicyComparison /></div>}
+      {activeTab === "workloads" && <div className="workload-layout view-enter">
+        <div className="stack"><JobBlotter jobs={visible.jobs} decisions={visible.decisions} selectedId={selectedId} onSelect={setSelectedId} filters={filters} onFilters={setFilters} currentSlot={currentSlot} />
+        <WorkloadTimeline jobs={visible.jobs} decisions={visible.decisions} currentSlot={currentSlot} selectedId={selectedId} onSelect={setSelectedId} preview={preview} /></div>
+        <div className="stack"><DecisionInspector decision={decision} job={job} preview={preview} currentSlot={currentSlot} /><JobDetails job={job} currentSlot={currentSlot} /></div>
+      </div>}
+      {activeTab === "market" && <div className="view-enter"><MarketChart market={visible.market} forecasts={visible.forecasts} preview={preview} currentSlot={currentSlot} /></div>}
+      <div className={activeTab === "replay" ? "view-enter" : undefined} hidden={activeTab !== "replay"}><ReplayWorkspace key={preview ? "preview" : "backend"} preview={preview} state={visible.replay} active={activeTab === "replay"} /></div>
     </div>}
     {showAddJob && visible && <AddJobModal preview={preview} currentSlot={currentSlot} regions={regions} gpuTypes={gpuTypes} onClose={() => setShowAddJob(false)} onSubmit={createJob} />}
     <footer className="statusbar"><span>{preview ? "Hand-authored preview fixtures" : "FastAPI"}</span><span>Hourly scheduling · No paid cloud provisioning</span></footer>

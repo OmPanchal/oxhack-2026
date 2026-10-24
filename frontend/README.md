@@ -107,3 +107,70 @@ in `lib/preview.ts` to exercise these controls. They are not historical observat
 or trained-model output. Backend mode continues to use `/api/market` and
 `/api/forecasts` and shows empty data without falling back. No backend/schema files
 were changed. Unit checks are in `tests/market.test.mjs`.
+
+## Selected workload execution plan
+
+Select a workload in Workloads to see its action, explanation, region, projected
+cost, planned start/completion and deadline buffer above the job requirements.
+The buffer is a display calculation from the supplied planned end and deadline;
+it is not a feasibility certification. Relative labels use scheduling time.
+The panel selects the latest decision issued at or before the current slot and
+warns when the decision was issued in an earlier slot.
+
+Decision details expose the issue slot, execution mode and reason code. The current
+Decision contract does not link forecast issues, uncertainty bounds or risk inputs,
+so these remain explicitly unavailable rather than being inferred from market
+forecasts. Preview plans remain hand-authored examples; jobs without decisions
+show an empty state. No scheduling, execution or savings calculation is performed.
+
+## Replay & execution preview
+
+Design preview now includes three fixed storyboards: normal conditions, a
+simulated price spike, and a simulated capacity loss/interruption. Next event
+advances to the next supplied snapshot (slots can be skipped); Play advances at
+the selected number of events per second. Reset returns to the first snapshot;
+changing scenario also resets and pauses. Switching tabs pauses playback and
+preserves the selected event. Switching data source resets the preview.
+
+The scenario has its own clock, separate from the portfolio preview. It does not
+schedule added jobs or modify the portfolio, market inspection or forecasts.
+All snapshots, decisions, task states and logs live in `lib/preview.ts` and are
+hand-authored examples. No scheduler, simulator, trained model or Docker task runs.
+The execution monitor shows pending/running/completed/failed examples, nullable
+start/end, nullable exit code, failure reason, stdout and stderr. Failed work is
+explicitly unfinished. Policy metrics remain unavailable; no benchmark is invented.
+
+Backend data shows only its supplied ReplayState, with actions disabled pending
+integration. It never displays storyboard events or execution samples. Existing
+replay API methods remain available for future coordinated integration; mutations
+and detailed execution/event response shapes still require agreement with Person 2.
+The presentation components and local view types in `lib/replay-view.ts` can be
+fed by an adapter once these contracts exist; those types do not amend the API.
+
+## Visual refinement
+
+Market shows a prominent selected-region quote with its supplied source, data kind
+and slot age; stale quotes remain labeled as last supplied quotes. The chart adds
+a Blue Slate crosshair and compact readout with only supplied price bounds. Arrow
+keys plus Home/End inspect available slots; missing observations remain gaps.
+
+Workloads adds a timeline below the queue. Each row has its own labeled slot scale,
+a dashed waiting interval from submission, a neutral planned-execution bar, a
+current-slot marker and coral deadline marker. Only supplied valid plan windows
+are drawn; missing/future/infeasible decisions never acquire a fabricated bar.
+Bars are plans, not execution history or a feasibility certification.
+
+Views fade briefly on entry and existing market values receive a restrained outline
+when they change. Both effects honor reduced-motion settings. Empty states explain
+what is missing in context; policy results remain unavailable. The accepted fonts,
+neutral surfaces and palette are preserved.
+
+### Unified replay layout
+
+Replay controls now share a full-width toolbar above a horizontal event timeline.
+The timeline exposes the current event and allows review of earlier events, pausing
+playback when selected; upcoming event descriptions stay hidden. A compact state
+strip shows the selected snapshot's slot, workload, quote and capacity. Execution
+plan and Task logs use one detail area with keyboard-accessible tabs (arrows,
+Home/End). Policy comparison remains a separate section below. Backend mode uses
+the same layout while keeping unavailable events and execution data empty.

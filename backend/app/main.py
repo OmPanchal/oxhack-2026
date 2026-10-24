@@ -1,22 +1,28 @@
 """Person 2 owns composition and routes. Start: uvicorn app.main:app --reload."""
 import os
+from pathlib import Path
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.schemas import (
     Decision, Forecast, Health, Job, JobCreate, MarketSnapshot, OptimizeRequest,
     ReplayResetRequest, ReplayState, ReplayStepRequest, ShockRequest,
 )
-from app.jobs.store import JobStore
+from app.database import Database
+from app.jobs.store import DecisionStore, JobStore
 
 
-def create_app() -> FastAPI:
+def create_app(database_path: str | Path | None = None) -> FastAPI:
     app = FastAPI(title="Compute Arbitrage Engine", version="0.1.0")
     app.add_middleware(
         CORSMiddleware,
         allow_origins=os.getenv("FRONTEND_ORIGINS", "http://localhost:3000").split(","),
         allow_methods=["GET", "POST"], allow_headers=["Content-Type"],
     )
-    store = JobStore()
+    database = Database(database_path if database_path is not None else os.getenv(
+        "COMPUTE_DB_PATH", str(Path(__file__).resolve().parents[1] / "state" / "engine.sqlite3"),
+    ))
+    store = JobStore(database)
+    decision_store = DecisionStore(database)
 
     def unfinished(feature: str):
         raise HTTPException(501, detail={"code": "NOT_IMPLEMENTED", "feature": feature})
@@ -50,7 +56,7 @@ def create_app() -> FastAPI:
 
     @app.get("/api/decisions", response_model=list[Decision])
     def decisions():
-        return []
+        return decision_store.list()
 
     @app.get("/api/replay/state", response_model=ReplayState)
     def replay_state():

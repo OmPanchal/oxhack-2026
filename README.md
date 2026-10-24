@@ -4,7 +4,9 @@ An autonomous buy-side compute scheduler: forecast prices, allocate a firm's wor
 across regions and time, and minimize expenditure while respecting deadlines,
 capacity, hardware, budgets and execution risk. Carbon is secondary.
 
-This repository is a **development skeleton**, not a completed engine. Read
+This repository is a **work in progress**, not a completed engine. SQLite
+persistence and the constrained portfolio optimizer are implemented. Forecast/API
+integration, replay and execution remain to be built. Read
 [AGENTS.md](AGENTS.md) for the project requirements and
 [docs/TEAM_WORKFLOW.md](docs/TEAM_WORKFLOW.md) before splitting up work.
 
@@ -61,14 +63,26 @@ npm run build
 ## What exists
 
 - Canonical camelCase JSON schemas and forecast/optimizer service protocols.
-- All required API paths; working health and process-local job creation/listing.
-- Empty market, forecast and decision reads; explicit `501` responses for engine,
+- All required API paths; working health and SQLite-backed job creation/listing.
+- Persistent decision history, running reservations, validated job lifecycle
+  updates, and transactional UTC audit events through internal store interfaces.
+- A deterministic portfolio optimizer with region/time choices, shared capacity,
+  hardware, deadline and budget constraints, and decision evidence. An internal
+  scheduling service atomically records PAPER plans or SIMULATED starts.
+- Empty market and forecast reads; explicit `501` responses for optimize,
   evaluation and execution features that have not been implemented.
 - A Next.js/TypeScript/Tailwind terminal shell, component ownership boundaries,
   typed API client, and one shared simulated fixture.
 - API/contract smoke checks and CI for the backend and frontend.
 
-Jobs are held in memory and disappear on restart. Person 2 replaces this with SQLite.
-No model has been trained, no optimizer or replay has run, no benchmarks have been
-produced, and no local or cloud workload has executed. Those are the team's next
-implementation tasks, listed in the handoff guide.
+Jobs and recorded decisions survive restarts. The default database is
+`backend/state/engine.sqlite3` (ignored by Git); set `COMPUTE_DB_PATH` to override
+its location. `GET /api/decisions` reads persisted history, initially empty until
+the scheduling service records decisions. No public status-update endpoint is
+introduced. See [backend persistence](docs/BACKEND_PERSISTENCE.md) for store usage.
+
+The optimizer has been exercised against test scenarios, not a real market
+benchmark. No model has been trained, no historical replay benchmark has been
+produced, and no local or cloud workload has executed. See the
+[optimizer assumptions and integration guide](docs/BACKEND_OPTIMIZER.md) for the
+Milestone 3 implementation and the remaining integration work.

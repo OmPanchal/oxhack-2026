@@ -165,16 +165,15 @@ when they change. Both effects honor reduced-motion settings. Empty states expla
 what is missing in context; policy results remain unavailable. The accepted fonts,
 neutral surfaces and palette are preserved.
 
-### Unified replay layout
+### Replay layout
 
-Replay controls now share a full-width toolbar above a horizontal event timeline.
-The timeline exposes the current event and allows review of earlier events, pausing
-playback when selected; upcoming event descriptions stay hidden. A compact state
-strip shows the selected snapshot's slot, workload, quote and capacity. Execution
-plan and Task logs use one detail area with keyboard-accessible tabs (arrows,
-Home/End). Policy comparison remains a separate section below. Backend mode uses
-the same layout while keeping unavailable events and execution data empty.
+The Replay view shows a compact toolbar and current event, response and outcome.
+Full plan, event history and playback speed expand on demand. Policy comparison
+and Execution are separate keyboard-accessible views. Reviewing an earlier event
+pauses playback, and future event descriptions remain hidden. Backend mode keeps
+unavailable events and execution data empty.
 
+### Compact workload timeline
 
 The workload timeline uses one shared hourly axis with compact execution lanes.
 Supplied windows are sorted deterministically by start/end/ID and reuse a lane
@@ -219,3 +218,12 @@ Within Workloads, Queue and Timeline tabs show one view at a time. The selected
 view, queue filters and workload selection persist when switching views or top-level
 tabs. The inner tabs support arrow keys, Home and End. Creating a job returns to
 Queue; both views retain the same workload-details modal.
+
+### Simplified replay page
+
+Replay & execution now has Replay, Policy comparison, and Execution views. The
+Replay view shows controls and one narrative: current event, supplied scheduler
+response, and workload outcome. Full plan, event history, and playback speed are
+collapsed until requested. Playback pauses when leaving Replay. Policy comparison
+and execution monitoring remain available in their own views, with preview states
+and absent backend results still labeled honestly.

@@ -12,11 +12,11 @@ export function ReplayPanel({ state, scenarios = [], scenarioId, index = 0, play
     <div className="replay-toolbar">
       {scenario && <>
         <label>Scenario<select value={scenarioId} onChange={event => onScenario?.(event.target.value)}>{scenarios.map(row => <option key={row.id} value={row.id}>{row.name}</option>)}</select></label>
-        <label>Playback speed<select value={speed} onChange={event => onSpeed?.(Number(event.target.value))}><option value={1}>1 event / 2 seconds</option><option value={2}>1 event / second</option><option value={4}>2 events / second</option></select></label>
       </>}
       <div className="replay-toolbar-actions"><button onClick={onReset} disabled={!scenario}>Reset</button><button onClick={onStep} disabled={!scenario || done || playing}>Next event</button><button className="primary-button" onClick={onPlay} disabled={!scenario || done} aria-pressed={playing}>{playing ? "Pause" : "Play"}</button></div>
-      <p className="replay-playback-status muted" role="status">{scenario ? `${done ? "Complete" : playing ? "Playing" : "Paused"} · Event ${index + 1} of ${scenario.frames.length}` : `Slot ${state.currentSlot} · Seed ${state.seed}`}</p>
+      <p className="replay-playback-status muted" role="status">{scenario ? `${done ? "Complete" : playing ? "Playing" : "Paused"} · Slot ${state.currentSlot} · ${index + 1}/${scenario.frames.length}` : `Slot ${state.currentSlot} · Seed ${state.seed}`}</p>
     </div>
+    {scenario && <details className="replay-playback-options"><summary>Playback speed</summary><label>Advance events<select aria-label="Playback speed" value={speed} onChange={event => onSpeed?.(Number(event.target.value))}><option value={1}>1 event / 2 seconds</option><option value={2}>1 event / second</option><option value={4}>2 events / second</option></select></label></details>}
     <p className="replay-description">{scenario ? `${scenario.description} Changing scenario restarts the preview.` : "Replay actions are not connected yet. No example events are shown in Backend data."}</p>
   </section>;
 }

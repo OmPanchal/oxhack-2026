@@ -57,7 +57,7 @@ class MarketSnapshot(Contract):
     resource_type: ResourceType
     gpu_type: str | None = None
     price_usd_per_unit_hour: float = Field(ge=0)
-    available_units: int = Field(ge=0)
+    available_units: int | None = Field(default=None, ge=0)
     carbon_kg_per_unit_hour: float | None = Field(default=None, ge=0)
     source: str
     data_kind: Literal["OBSERVED", "FORECAST", "SIMULATED"]

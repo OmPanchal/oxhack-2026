@@ -9,7 +9,7 @@ from app.main import create_app
 FIXTURE = Path(__file__).resolve().parents[3] / "data/scenarios/demo.json"
 
 
-def test_shared_fixture_and_job_api():
+def test_shared_fixture_and_job_api(tmp_path):
     fixture = json.loads(FIXTURE.read_text())
     job = Job.model_validate(fixture["jobs"][0])
     for row in fixture["market"]:
@@ -23,20 +23,21 @@ def test_shared_fixture_and_job_api():
     assert "duration_slots" not in response.json()
     assert client.post("/api/jobs", json=payload).status_code == 409
     assert len(client.get("/api/jobs").json()) == 1
-    assert TestClient(create_app()).get("/api/jobs").json() == []
+    assert TestClient(create_app()).get("/api/jobs").json() == [response.json()]
+    assert TestClient(create_app(tmp_path / "other.sqlite3")).get("/api/jobs").json() == []
+    # Impossible jobs must reach the optimizer; client-supplied lifecycle cannot.
+    payload.update(id="impossible", deadlineSlot=0)
+    assert client.post("/api/jobs", json=payload).status_code == 201
+    assert client.post("/api/jobs", json={**payload, "status": "RUNNING"}).status_code == 422
 
 
-def test_no_fake_optimization_or_execution():
-    client = TestClient(create_app())
-    assert client.post("/api/optimize", json={"currentSlot": 0}).status_code == 501
-    assert client.post("/api/execute/demo-job-1").status_code == 501
-    assert client.get("/api/metrics").status_code == 501
-    assert client.get("/api/replay/state").json()["status"] == "NOT_IMPLEMENTED"
-
-
-def test_forecaster_input_cannot_contain_future_observations():
+@pytest.mark.parametrize("violation", ["future", "prediction"])
+def test_forecaster_input_cannot_contain_unavailable_history(violation):
     fixture = json.loads(FIXTURE.read_text())
-    fixture["market"][0]["slot"] = 1
+    if violation == "future":
+        fixture["market"][0]["slot"] = 1
+    else:
+        fixture["market"][0]["dataKind"] = "FORECAST"
     with pytest.raises(ValidationError):
         ForecastRequest(current_slot=0, history=fixture["market"])
 

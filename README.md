@@ -1,4 +1,4 @@
-# Compute Arbitrage Engine
+# Arbitr
 
 An autonomous buy-side compute scheduler: forecast prices, allocate a firm's workloads
 across regions and time, and minimize expenditure while respecting deadlines,

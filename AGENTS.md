@@ -1,5 +1,5 @@
 
-# AGENTS.md — Compute Arbitrage Engine
+# AGENTS.md — Arbitr
 
 ## 1. Project Mission
 
@@ -535,6 +535,65 @@ Required sections:
 8. Accelerated historical replay
 9. Simulated market shocks
 10. Policy comparison
+
+### Current Frontend Design Specification
+
+The accepted design is a calm, light-mode execution terminal called **Arbitr**.
+Use the rules below as the source of truth for frontend styling and layout.
+Prioritize clear hierarchy, focused views, and comfortable spacing.
+
+1. **Unified brand and navigation.** Combine the Arbitr wordmark, task tabs, and
+   data-source controls in one header. Use a prominent 36px, semibold wordmark on
+   the left, tabs beside it, and controls on the right. Do not repeat the selected
+   tab's title as a large heading below the header; use a short contextual sentence.
+2. **Focused tabs.** Organize features into Overview, Workloads, Market, and
+   Replay & execution. Overview contains portfolio metrics and upcoming workloads;
+   Workloads contains the queue and selected execution plan; Market contains prices
+   and forecasts; Replay & execution contains replay controls, execution monitoring,
+   and policy comparison. Show only the active view's relevant content.
+3. **Close tab underlines.** The active tab uses Blue Slate text and a 3px underline
+   immediately beneath its label. Use approximately 6px vertical button padding.
+   Center tabs within the header rather than stretching them to its full height;
+   never leave a large gap between the label and its underline.
+4. **Neutral light surfaces.** Use a neutral light-gray canvas (`#f6f6f6`), white
+   panels (`#ffffff`), and subtle gray gridlines (`#dedede`). Backgrounds, table rows,
+   and metric tiles remain neutral; do not tint them blue, green, or another accent
+   hue. Keep square corners and flat borders, without decorative shadows/gradients.
+5. **Blue-led palette.** Use the following colors consistently:
+
+   - Jet Black `#2d3142`: headings, metric values, and primary body text.
+   - Blue Slate `#4f5d75`: primary accents, navigation, controls, secondary text,
+     keyboard focus, and historical chart lines.
+   - Silver `#bfc0c0`: secondary borders and restrained details, not body text on white.
+   - White `#ffffff`: panels and text on selected blue buttons.
+   - Coral Glow `#ef8354`: secondary highlights and forecast lines, used sparingly.
+
+   Use a darker coral (`#a54523`) for readable warning/error text on white. Pair
+   statuses with explicit labels rather than relying on color alone. Selected
+   buttons use Blue Slate fill with white text; tabs retain their underline style.
+6. **IBM Plex Sans.** Use locally served IBM Plex Sans throughout the application,
+   including controls, tables, charts, and tooltips. Load weights 400, 500, and 600
+   through `@fontsource/ibm-plex-sans`. Use tabular numerals for aligned numerical
+   data. Do not reintroduce monospace overrides.
+7. **Breathing room.** Keep the main content centered at approximately 1400px maximum
+   width, with 32px desktop side margins and 16px on smaller screens. Use 24px panel
+   gaps, comfortable 12px/16px table-cell padding, and clear separation between
+   header, context, and content. Avoid cramming every feature into one dashboard.
+8. **Simple presentation.** Use clear text controls, straightforward panels and
+   readable tables. Avoid generic icons, decorative illustrations, unnecessary
+   wrappers, numbered panel labels, and repeated headings.
+9. **Discrete charts and honest data.** Draw hourly scheduling data with step lines,
+   never smooth curves. Label slot/price units and distinguish history, forecasts,
+   and uncertainty ranges. Clearly label simulated/example data; never present
+   sample forecasts, plans, savings, benchmarks, or execution as genuine results.
+10. **Responsive and accessible.** On narrower screens, wrap tabs beneath the brand
+    within the same header, stack panel columns, and allow tables/charts to scroll
+    horizontally. Preserve visible keyboard focus, arrow-key/Home/End tab navigation,
+    readable contrast, and explicit loading/empty/error states.
+
+Keep theme tokens in `frontend/app/globals.css`. Preserve the accepted light theme,
+IBM Plex Sans, tab structure, and spacing when adding features unless the user
+requests a new direction.
 
 ### Demo Priorities
 

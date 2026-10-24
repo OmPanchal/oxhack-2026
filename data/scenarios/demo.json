@@ -1,0 +1,46 @@
+{
+  "jobs": [
+    {
+      "id": "demo-job-1",
+      "name": "Example GPU workload",
+      "arrivalSlot": 0,
+      "durationSlots": 2,
+      "deadlineSlot": 6,
+      "resourceType": "GPU",
+      "resourceUnits": 1,
+      "gpuType": "A100",
+      "allowedRegions": [
+        "eu-west-1",
+        "eu-central-1"
+      ],
+      "maxBudgetUsd": 10,
+      "priority": 1,
+      "status": "PENDING",
+      "dockerTaskId": null
+    }
+  ],
+  "market": [
+    {
+      "slot": 0,
+      "region": "eu-west-1",
+      "resourceType": "GPU",
+      "gpuType": "A100",
+      "priceUsdPerUnitHour": 1.2,
+      "availableUnits": 2,
+      "carbonKgPerUnitHour": null,
+      "source": "hand-authored UI fixture; not cloud observations",
+      "dataKind": "SIMULATED"
+    },
+    {
+      "slot": 0,
+      "region": "eu-central-1",
+      "resourceType": "GPU",
+      "gpuType": "A100",
+      "priceUsdPerUnitHour": 1.0,
+      "availableUnits": 2,
+      "carbonKgPerUnitHour": null,
+      "source": "hand-authored UI fixture; not cloud observations",
+      "dataKind": "SIMULATED"
+    }
+  ]
+}

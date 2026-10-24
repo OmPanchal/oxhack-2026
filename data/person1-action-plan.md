@@ -20,6 +20,15 @@ Person 1's deliverable is a reproducible forecasting service providing 1–6-hou
 
 Requirements come from [AGENTS.md](../AGENTS.md) and the [team handoff](../docs/TEAM_WORKFLOW.md).
 
+### Dataset implementation status
+
+- Item 1: real AWS price export imported and checked: 1,085 records for `g4dn.xlarge` in Stockholm, covering 89 days across three Availability Zones. The original three-region target remains unmet.
+- Item 2: real hardware metadata imported and checked: one NVIDIA T4 GPU per instance. Raw-to-normalized prices and manifest checksums match.
+- Item 3: five reproducible simulated input datasets generated, with causal views and independent policy inputs. Replay integration and outcome benchmarks remain Person 2's work.
+- Item 4: authorized-log import, provenance/label validation, cutoff-aware event and exposure summaries, and unknown-risk defaults implemented. The example is simulated; no genuine operational logs or calibrated risk model are available yet.
+
+See [data provenance and commands](provenance.md) and the [simulation integration handoff](scenarios/README.md). Implementation tests do not establish prediction accuracy, scheduling savings, or real cloud execution.
+
 ## Your scope and integration boundary
 
 Implement independently in:
@@ -113,6 +122,14 @@ Do not add weather, electricity-price, or carbon datasets during the initial bui
 ## Milestone 1 — Hours 0–2: contracts and data readiness
 
 **Outcome:** Person 2 can develop against your service while you prepare real data.
+
+**Implementation status:** forecasting contract checks, a callable simulated service
+fixture, hourly reconstruction, source validation, and quality reports are available.
+See [the Milestone 1 handoff](forecasting-contract.md) for commands and conventions.
+The first genuine export has been imported and converted to hourly data; see
+[the collection record](provenance.md#real-collection-001--imported-24-october-2026).
+Teammate confirmation of the documented defaults and expansion beyond one region
+remain open.
 
 ### Step 1 — Freeze forecasting semantics with Person 2
 

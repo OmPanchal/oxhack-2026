@@ -6,6 +6,7 @@ import type { QuoteKind } from "@/lib/market";
 import { ForecastInspector } from "./ForecastInspector";
 import { SlotPriceChart } from "./SlotPriceChart";
 import { ValuePulse } from "./ValuePulse";
+import { MarketModal } from "./MarketModal";
 
 export function MarketChart({ market, forecasts, preview, currentSlot }: { market: MarketSnapshot[]; forecasts: Forecast[]; preview: boolean; currentSlot: number }) {
   const resources = marketResources(market, forecasts, currentSlot);
@@ -16,6 +17,7 @@ export function MarketChart({ market, forecasts, preview, currentSlot }: { marke
   const [runChoice, setRunChoice] = useState("");
   const [horizon, setHorizon] = useState(6);
   const [slotChoice, setSlotChoice] = useState<number | null>(null);
+  const [showDetails, setShowDetails] = useState(false);
   const resource = resources.includes(resourceChoice) ? resourceChoice : resources.find(key => JSON.parse(key)[0] === "GPU") ?? resources[0];
   const units = Number(unitsText), validUnits = Number.isSafeInteger(units) && units > 0;
   const rows = resource ? compareRegions(market, forecasts, resource, kind, currentSlot) : [];
@@ -40,7 +42,7 @@ export function MarketChart({ market, forecasts, preview, currentSlot }: { marke
       <p className="comparison-finding" role="status">{!validUnits ? "Enter a positive whole number of units to compare capacity." : best ? <><strong>{regionName(best.region)}</strong> has the lowest current quote that covers {units} {units === 1 ? "unit" : "units"}: <strong>{price(best.quote!.priceUsdPerUnitHour)}</strong> / unit-hour.</> : "No current quote in this view covers the requested capacity."}</p>
       <div className="table-scroll"><table className="regional-table"><thead><tr><th>Region</th><th className="numeric">Current quote</th><th className="numeric">Available units</th><th className="numeric">Next hour forecast</th><th>Quote age</th><th>Data</th></tr></thead>
         <tbody>{rows.map(row => { const quote = row.quote; const age = quote ? currentSlot - quote.slot : null; const capacity = quote && validUnits && quote.availableUnits < units; return <tr key={row.region} className={row.region === region ? "selected" : ""}>
-          <td><button className="row-select region-select" aria-pressed={row.region === region} onClick={() => selectRegion(row.region)}>{regionName(row.region)}<span className="cell-note muted">{row.region}</span></button>{best?.region === row.region && <span className="cell-note muted">Lowest current quote</span>}</td>
+          <td><button className="row-select region-select" aria-haspopup="dialog" aria-pressed={row.region === region} onClick={() => { selectRegion(row.region); setShowDetails(true); }}>{regionName(row.region)}<span className="cell-note muted">{row.region}</span></button>{best?.region === row.region && <span className="cell-note muted">Lowest current quote</span>}</td>
           <td className="numeric" data-label="Current quote">{price(quote?.priceUsdPerUnitHour)}</td><td className="numeric" data-label="Available units"><span className={capacity ? "attention" : ""}>{quote?.availableUnits.toLocaleString("en-US") ?? "—"}</span>{capacity && <span className="cell-note attention">Below request</span>}</td>
           <td className="numeric" data-label="Next hour forecast">{price(row.next?.predictedPriceUsdPerUnitHour)}{row.next && row.issued !== null && row.issued < currentSlot && <span className="cell-note muted">Issue {currentSlot - row.issued}h old</span>}</td>
           <td data-label="Quote age" className={age !== null && age > 0 ? "attention" : "muted"}>{age === null ? "No quote" : age === 0 ? "Current" : `${age}h old`}</td><td data-label="Data" className="muted">{quote ? quote.dataKind === "OBSERVED" ? "Observed" : "Simulated" : "Unavailable"}</td>
@@ -48,7 +50,7 @@ export function MarketChart({ market, forecasts, preview, currentSlot }: { marke
       {!rows.length && <div className="empty"><h3>No matching regional data</h3><p>Try another resource or quote data selection. Quotes and forecasts appear here when supplied.</p></div>}
       <div className="panel-footer"><span>Only matching resource types and GPU models are compared. Stale quotes are not ranked as current opportunities.</span><span>Capacity is not a reservation.</span></div>
     </section>
-    {region && resource && <div className="market-inspection-layout">
+    {showDetails && region && resource && <MarketModal title={`${regionName(region)} · ${resourceLabel(resource)}`} description={`${region} · ${kind === "SIMULATED" ? "Simulated quotes" : "Observed quotes"} · ${preview ? "Hand-authored preview" : "Backend data"}`} onClose={() => setShowDetails(false)}><div className="market-inspection-layout">
       <section aria-labelledby="trajectory-title">
         <div className="panel-heading"><div><h2 id="trajectory-title">{regionName(region)} · {resourceLabel(resource)}</h2><p className="form-note">{preview ? "Example prices and predictions" : "Quotes and model predictions"} · USD / unit-hour</p></div><span className="muted">{region}</span></div>
         <div className="market-price-lead">
@@ -64,6 +66,7 @@ export function MarketChart({ market, forecasts, preview, currentSlot }: { marke
         <div className="panel-footer">{preview ? "Simulated history and hand-authored forecast examples. No trained model is represented." : "Latest six hours of matching quotes; one selected model issue. Missing observations are left as gaps."}</div>
       </section>
       <ForecastInspector point={point} points={points} currentSlot={currentSlot} preview={preview} onSelect={setSlotChoice} />
-    </div>}
+    </div></MarketModal>}
+
   </div>;
 }

@@ -154,9 +154,9 @@ and slot age; stale quotes remain labeled as last supplied quotes. The chart add
 a Blue Slate crosshair and compact readout with only supplied price bounds. Arrow
 keys plus Home/End inspect available slots; missing observations remain gaps.
 
-Workloads adds a timeline below the queue. Each row has its own labeled slot scale,
-a dashed waiting interval from submission, a neutral planned-execution bar, a
-current-slot marker and coral deadline marker. Only supplied valid plan windows
+Workloads adds a compact timeline below the queue. Planned execution bars share
+one hourly axis and reuse lanes when they do not overlap. A dashed current-slot
+marker and grouped coral deadline dots locate key times. Only supplied valid plan windows
 are drawn; missing/future/infeasible decisions never acquire a fabricated bar.
 Bars are plans, not execution history or a feasibility certification.
 
@@ -174,3 +174,48 @@ strip shows the selected snapshot's slot, workload, quote and capacity. Executio
 plan and Task logs use one detail area with keyboard-accessible tabs (arrows,
 Home/End). Policy comparison remains a separate section below. Backend mode uses
 the same layout while keeping unavailable events and execution data empty.
+
+
+The workload timeline uses one shared hourly axis with compact execution lanes.
+Supplied windows are sorted deterministically by start/end/ID and reuse a lane
+whenever the preceding window ends at or before the next start. Only overlapping
+execution needs another lane; waiting intervals are omitted. Coral deadline dots are
+grouped by slot above the lanes, including jobs with no execution plan. Unplanned
+jobs remain listed separately without acquiring invented execution bars.
+
+Hover or focus on a task/deadline for a hover panel with requirements, supplied
+plan, explanation, cost and deadline buffer. Shared-deadline panels list every
+associated task. Panels remain open while hovered/focused, allow scrolling, and
+close with Escape. Selecting a task or Open full details opens the existing
+modal, including on touch screens. The timeline scrolls within its own frame.
+
+### Workload details modal
+
+Selecting a workload name from the overview, queue, or shared timeline opens its
+execution plan and job requirements in a native modal. The workload queue and
+timeline now use the full content width. Close or Escape dismisses the modal;
+focus returns to the triggering control, background interaction is blocked, and
+page scrolling is locked while open. On narrow screens the plan and requirements
+stack inside the scrollable modal. Missing decisions keep the existing empty state.
+
+### Market inspection modal
+
+Select a region name in the market comparison to open its price chart and slot
+inspection together in a popup. Forecast issue, 1/3/6-hour horizon, chart keyboard
+navigation and slot selection remain inside the modal. Close or Escape dismisses
+it and returns focus to the region button. The native modal contains focus,
+blocks background interaction, locks page scrolling and stacks the two sections
+on narrower screens. Data provenance, gaps and unknown values are unchanged.
+
+Deadline dots replace the visible Due labels and full-height deadline guides.
+Each dot keeps the same exact slot position and groups shared deadlines. Hover,
+keyboard focus, or a tap on a shared dot exposes its tasks and deadline values;
+selecting an individual task still opens its full details. Only the dot is small;
+its keyboard/touch target stays larger.
+
+### Workload views
+
+Within Workloads, Queue and Timeline tabs show one view at a time. The selected
+view, queue filters and workload selection persist when switching views or top-level
+tabs. The inner tabs support arrow keys, Home and End. Creating a job returns to
+Queue; both views retain the same workload-details modal.

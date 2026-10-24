@@ -18,11 +18,11 @@ export function JobBlotter({ jobs, decisions, selectedId, onSelect, filters, onF
     </div>
     <div className="table-scroll"><table><thead><tr><th>Workload</th><th>Hardware</th><th className="numeric">Units</th><th>Time left</th><th>Status</th><th>Plan</th></tr></thead>
       <tbody>{visible.map(job => { const decision = latestDecision(decisions, job.id, currentSlot); const attention = deadlineAttention(job, currentSlot); return <tr key={job.id} className={selectedId === job.id ? "selected" : ""}>
-        <td><button className="row-select job-name" aria-pressed={selectedId === job.id} onClick={() => onSelect(job.id)}>{job.name}<span className="muted">{job.id}</span></button></td>
+        <td><button className="row-select job-name" aria-haspopup="dialog" aria-pressed={selectedId === job.id} onClick={() => onSelect(job.id)}>{job.name}<span className="muted">{job.id}</span></button></td>
         <td>{jobHardware(job)}</td><td className="numeric">{job.resourceUnits}</td><td><span>{job.status === "COMPLETED" || job.status === "FAILED" ? "—" : formatTimeLeft(job.deadlineSlot, currentSlot)}</span>{attention && <span className="cell-note attention">{attention}</span>}</td>
         <td className={job.status === "FAILED" || job.status === "INFEASIBLE" ? "negative" : "muted"}>{job.status}</td>
         <td className={decision?.action === "WAIT" ? "attention" : "positive"}>{decision?.action ?? "Awaiting plan"}</td></tr>; })}</tbody></table></div>
     {!visible.length && <div className="empty"><p>{jobs.length ? "No jobs match these filters." : "No jobs yet. Add your first CPU or GPU workload."}</p>{jobs.length > 0 && <button className="text-button" onClick={reset}>Clear filters</button>}</div>}
-    <div className="panel-footer"><span role="status">Showing {visible.length} of {jobs.length} jobs</span><span>Select a job to inspect its requirements</span></div>
+    <div className="panel-footer"><span role="status">Showing {visible.length} of {jobs.length} jobs</span><span>Select a job to open its plan and details</span></div>
   </section>;
 }

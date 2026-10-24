@@ -328,3 +328,100 @@ input::placeholder { color: var(--muted); opacity: 1; }
   .replay-state-strip dd { font-size: 16px; }
   .replay-workspace .execution-plan .wide-detail { grid-column: 1 / -1; }
 }
+
+/* A single scheduling axis aligns every workload's plan and deadline. */
+.shared-timeline { min-width: 680px; table-layout: fixed; }
+.shared-timeline th:first-child { width: 220px; }
+.shared-timeline .timeline-task { white-space: normal; font-weight: 400; color: var(--jet); }
+.shared-timeline .timeline-task .job-name { max-width: 100%; overflow-wrap: anywhere; }
+.shared-timeline .timeline-task .cell-note { margin-top: 5px; }
+.shared-timeline .shared-axis-cell, .shared-timeline .shared-lane-cell { padding-left: 20px; padding-right: 20px; }
+.shared-axis-caption { display: block; font-size: 12px; margin-bottom: 10px; }
+.shared-axis { position: relative; height: 20px; }
+.shared-axis > span { position: absolute; transform: translateX(-50%); font-size: 12px; }
+.shared-axis > .axis-first { transform: none; }
+.shared-axis > .axis-last { transform: translateX(-100%); }
+.shared-lane { position: relative; height: 48px; }
+.shared-lane > span { position: absolute; }
+.shared-gridline { top: 0; bottom: 0; border-left: 1px solid var(--line); }
+.shared-lane .timeline-wait, .shared-lane .timeline-execution { top: 18px; height: 12px; }
+.shared-lane .timeline-now, .shared-lane .timeline-deadline { top: 0; height: 48px; }
+.shared-timeline tbody tr:last-child th { border-bottom: 0; }
+
+/* Workload inspection opens above the queue, leaving both queue and timeline wide. */
+.workload-modal { width: min(960px, calc(100vw - 32px)); }
+.workload-modal > .modal-heading { position: sticky; top: 0; z-index: 1; background: var(--surface); }
+.workload-modal .modal-heading > div { min-width: 0; overflow-wrap: anywhere; }
+.workload-modal .modal-heading > button { flex-shrink: 0; }
+.workload-modal-content { display: grid; grid-template-columns: 1.1fr 1fr; align-items: start; }
+.workload-modal-content > section { border: 0; }
+.workload-modal-content > section + section { border-left: 1px solid var(--line); }
+.workload-modal .key-values dd { font-size: 13px; overflow-wrap: anywhere; }
+@media (max-width: 760px) {
+  .workload-modal-content { grid-template-columns: 1fr; }
+  .workload-modal-content > section + section { border-left: 0; border-top: 1px solid var(--line); }
+}
+
+/* Regional chart and forecast inspection share a single market dialog. */
+.market-modal { width: min(1200px, calc(100vw - 32px)); }
+.market-modal > .modal-heading { position: sticky; top: 0; z-index: 1; background: var(--surface); }
+.market-modal .modal-heading > div { min-width: 0; overflow-wrap: anywhere; }
+.market-modal .modal-heading > button { flex-shrink: 0; }
+.market-modal .market-inspection-layout { gap: 0; }
+.market-modal .market-inspection-layout > section { border: 0; }
+.market-modal .market-inspection-layout > .forecast-inspector { border-left: 1px solid var(--line); }
+@media (max-width: 1100px) {
+  .market-modal .market-inspection-layout > .forecast-inspector { border-left: 0; border-top: 1px solid var(--line); }
+}
+
+/* Compact interval packing: lanes represent overlap, not individual workloads. */
+.packed-scroll { overflow-x: auto; padding: 12px 32px 16px; }
+.packed-chart { position: relative; }
+.packed-axis { position: relative; height: 68px; color: var(--jet); font-size: 13px; font-weight: 500; border-bottom: 1px solid var(--line); }
+.packed-axis > span { position: absolute; transform: translateX(-50%); white-space: nowrap; text-align: center; }
+.packed-axis > .axis-first { transform: none; }
+.packed-axis > .axis-last { transform: translateX(-100%); }
+.packed-deadlines { position: absolute; top: 44px; left: 0; right: 0; height: 28px; z-index: 2; }
+.packed-deadline { position: absolute; top: 0; transform: translateX(-50%); display: grid; place-items: center; width: 28px; height: 28px; padding: 0; border: 0; background: transparent; }
+.packed-lanes { position: relative; margin-bottom: 26px; }
+.packed-gridline { position: absolute; top: 0; bottom: 0; border-left: 1px solid var(--line); pointer-events: none; }
+.packed-now { position: absolute; top: 0; bottom: 0; border-left: 2px solid var(--slate); pointer-events: none; z-index: 1; }
+.packed-lane { position: relative; height: 46px; }
+.packed-task { position: absolute; top: 4px; height: 38px; padding: 6px 8px; border: 1px solid var(--slate); background: #f2f2f2; font-size: 13px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: left; }
+.packed-task[aria-pressed="true"] { background: var(--slate); color: var(--white); }
+.packed-task:focus-visible, .packed-deadline:focus-visible { z-index: 2; }
+.packed-no-plans { padding: 12px 0; font-size: 13px; color: var(--muted); }
+.packed-unplanned { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 16px; padding: 12px 16px; border-top: 1px solid var(--line); font-size: 12px; }
+.timeline-hover { position: fixed; z-index: 30; width: min(360px, calc(100vw - 32px)); overflow-y: auto; overscroll-behavior: contain; padding: 16px; background: var(--surface); border: 1px solid var(--slate); font-size: 13px; }
+.timeline-hover-job + .timeline-hover-job { border-top: 1px solid var(--line); padding-top: 16px; margin-top: 16px; }
+.timeline-hover h3 { margin: 0 0 4px; font-size: 15px; font-weight: 500; overflow-wrap: anywhere; }
+.timeline-hover p { font-size: 12px; overflow-wrap: anywhere; }
+.timeline-hover p + p { margin-top: 8px; }
+.timeline-hover dl { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 16px; margin: 16px 0; }
+.timeline-hover dt { color: var(--muted); font-size: 12px; }
+.timeline-hover dd { margin: 2px 0 0; overflow-wrap: anywhere; }
+.timeline-hover .text-button { margin-top: 12px; }
+@media (max-width: 760px) {
+  .packed-lane { height: 48px; }
+  .packed-task { height: 44px; top: 2px; }
+  .packed-axis { height: 80px; }
+  .packed-deadlines { top: 36px; height: 44px; }
+  .packed-deadline { width: 44px; height: 44px; }
+}
+
+/* Distinct time cues retain the shared hourly scale. */
+.packed-axis small { display: block; font-size: 12px; font-weight: 400; color: var(--muted); margin-top: 2px; }
+.packed-now > span { position: absolute; top: 100%; margin-top: 4px; left: -1px; transform: translateX(-50%); padding: 0 4px; background: var(--surface); font-size: 12px; color: var(--slate); font-weight: 500; white-space: nowrap; }
+
+/* Deadline dots retain generous focus/touch targets without visual rails. */
+.deadline-dot { display: block; width: 12px; height: 12px; border-radius: 50%; background: var(--coral); border: 1px solid var(--attention); }
+.timeline-legend .deadline-dot-key { width: 8px; height: 8px; border-radius: 50%; }
+.packed-deadline:hover:not(:disabled) { box-shadow: none; }
+.packed-deadline:hover .deadline-dot { outline: 1px solid var(--attention); outline-offset: 2px; }
+
+.workload-view-tabs { align-self: stretch; border-bottom: 1px solid var(--line); padding-bottom: 0; }
+
+.overview-workloads { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 24px; align-items: stretch; }
+.overview-workloads > .attention-list { margin-bottom: 0; }
+.overview-workloads > section:only-child { grid-column: 1 / -1; }
+@media (max-width: 1000px) { .overview-workloads { grid-template-columns: 1fr; } }

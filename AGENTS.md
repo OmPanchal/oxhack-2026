@@ -1,5 +1,5 @@
 
-# AGENTS.md — Compute Arbitrage Engine
+# AGENTS.md — Arbitr
 
 ## 1. Project Mission
 
@@ -149,7 +149,8 @@ type Job = {
   deadlineSlot: number;
   resourceType: ResourceType;
   resourceUnits: number;
-  gpuType?: string;
+  gpuType?: string | null;
+  allowedGpuTypes?: string[];
   allowedRegions: string[];
   maxBudgetUsd: number | null;
   priority: number;
@@ -163,7 +164,7 @@ type MarketSnapshot = {
   resourceType: ResourceType;
   gpuType?: string;
   priceUsdPerUnitHour: number;
-  availableUnits: number;
+  availableUnits: number | null;
   carbonKgPerUnitHour: number | null;
   source: string;
   dataKind: "OBSERVED" | "FORECAST" | "SIMULATED";
@@ -198,6 +199,17 @@ type Decision = {
 ```
 
 These contracts must be agreed by all developers before independent implementation.
+
+GPU job compatibility supports `allowedGpuTypes`: a list of alternative acceptable
+models for one non-preemptive job, not a request for a mixed-model allocation.
+`resourceUnits` GPUs of one acceptable model are required. Legacy `gpuType` jobs
+remain valid and normalize to a singleton list. With several alternatives,
+`gpuType` is null; CPU jobs have neither a GPU model nor alternatives. An empty
+list with no `gpuType` preserves the legacy unrestricted GPU requirement, while
+the Add job UI requires explicit model selection. The frontend/backend schemas
+and API tests carry this additive field. Person 2 must use the list in optimizer
+hardware checks rather than treating a null singular `gpuType` as unrestricted.
+
 
 ---
 
@@ -536,6 +548,141 @@ Required sections:
 9. Simulated market shocks
 10. Policy comparison
 
+### Current Frontend Design Specification
+
+The accepted design is a calm, light-mode execution terminal called **Arbitr**.
+Use the rules below as the source of truth for frontend styling and layout.
+Prioritize clear hierarchy, focused views, and comfortable spacing.
+
+1. **Unified brand and navigation.** Combine the Arbitr wordmark, task tabs, and
+   data-source controls in one header. Use a prominent 36px wordmark at its font's
+   native regular weight on the left, tabs beside it, and controls on the right. Do not repeat the selected
+   tab's title as a large heading below the header; use a short contextual sentence.
+2. **Focused tabs.** Organize features into Overview, Workloads, Market, and
+   Replay & execution. Overview contains portfolio metrics and upcoming workloads;
+   Workloads contains the queue and selected execution plan; Market contains prices
+   and forecasts; Replay & execution contains replay controls, execution monitoring,
+   and policy comparison. Show only the active view's relevant content.
+   In Add job, use separate Duration (hours) and Complete within (hours) inputs.
+   The completion window includes waiting and execution from submission time;
+   submit the existing arrival/deadline slot fields without requiring a UTC origin.
+3. **Close tab underlines.** The active tab uses Blue Slate text and a 3px underline
+   immediately beneath its label. Use approximately 6px vertical button padding.
+   Center tabs within the header rather than stretching them to its full height;
+   never leave a large gap between the label and its underline.
+4. **Neutral light surfaces.** Use a neutral light-gray canvas (`#f6f6f6`), white
+   panels (`#ffffff`), and subtle gray gridlines (`#dedede`). Backgrounds, table rows,
+   and metric tiles remain neutral; do not tint them blue, green, or another accent
+   hue. Keep square corners and flat borders, without decorative shadows/gradients.
+5. **Blue-led palette.** Use the following colors consistently:
+
+   - Jet Black `#2d3142`: headings, metric values, and primary body text.
+   - Blue Slate `#4f5d75`: primary accents, navigation, controls, secondary text,
+     keyboard focus, and historical chart lines.
+   - Silver `#bfc0c0`: secondary borders and restrained details, not body text on white.
+   - White `#ffffff`: panels and text on selected blue buttons.
+   - Coral Glow `#ef8354`: secondary highlights and forecast lines, used sparingly.
+
+   Use a darker coral (`#a54523`) for readable warning/error text on white. Pair
+   statuses with explicit labels rather than relying on color alone. Selected
+   buttons use Blue Slate fill with white text; tabs retain their underline style.
+   Hover alone must not turn neutral controls blue. Inputs, dropdowns and boxed
+   buttons gain a subtly thicker inset border on hover without layout movement.
+   GPU/region selectors stay white, and native dropdowns match the form fields.
+6. **Typography.** Use BROKEN PIXELS by FlawlessAndCo only for the Arbitr wordmark,
+   loaded locally through `next/font/local` at its native regular weight. Keep its
+   license notice alongside the font; the demo is for personal/non-commercial preview.
+   Use locally served IBM Plex Sans throughout the rest of the application,
+   including controls, tables, charts, and tooltips. Load weights 400, 500, and 600
+   through `@fontsource/ibm-plex-sans`. Use tabular numerals for aligned numerical
+   data. Use readable body text around 14px, table values around 13px, and secondary
+   labels at least 12px. Do not reintroduce monospace overrides or tiny captions.
+7. **Breathing room.** Keep the main content centered at approximately 1400px maximum
+   width, with 32px desktop side margins and 16px on smaller screens. Use 24px panel
+   gaps, comfortable 12px/16px table-cell padding, and clear separation between
+   header, context, and content. Avoid cramming every feature into one dashboard.
+8. **Simple presentation.** Use clear text controls, straightforward panels and
+   readable tables. Avoid generic icons, decorative illustrations, unnecessary
+   wrappers, numbered panel labels, and repeated headings.
+9. **Discrete charts and honest data.** Draw hourly scheduling data with step lines,
+   never smooth curves. Label slot/price units and distinguish history, forecasts,
+   and uncertainty ranges. Clearly label simulated/example data; never present
+   sample forecasts, plans, savings, benchmarks, or execution as genuine results.
+10. **Responsive and accessible.** On narrower screens, wrap tabs beneath the brand
+    within the same header and stack panel columns. Slot charts should fit their
+    container without shrinking labels; dense tables may scroll within their own
+    frame or become labeled regional facts on phones. Preserve visible keyboard focus, arrow-key/Home/End tab navigation,
+    readable contrast, and explicit loading/empty/error states.
+
+Keep theme tokens in `frontend/app/globals.css`. Preserve the accepted light theme,
+IBM Plex Sans, tab structure, and spacing when adding features unless the user
+requests a new direction.
+
+### Frontend Interaction and Data Rules
+
+- **Job creation:** use an Add job modal, not a separate page or drawer. Support
+  CPU batch jobs and GPU jobs. Keep Duration (hours) separate from Complete within
+  (hours): the latter includes waiting and execution from submission. Both are
+  positive whole hours, and the completion window must cover the duration.
+- **Deadline mapping:** use the backend's authoritative current scheduling slot.
+  Submit `arrivalSlot = currentSlot` and
+  `deadlineSlot = currentSlot + completeWithinHours`, refreshing the slot immediately
+  before submission. Preserve the full requested window if the slot advances while
+  the form is open. Do not require a UTC origin or reintroduce UTC date pickers.
+  Relative labels advance with scheduling/replay time, not browser wall-clock time.
+- **Region and GPU inputs:** use searchable checkbox multi-selects, with readable
+  region names and IDs, selection summaries, Select all, and Clear. Searching must
+  preserve selections. Initially select all listed regions, but require explicit
+  GPU model selection. CPU submissions strip GPU constraints. Derive real choices
+  from loaded data; extra preview choices must remain explicitly illustrative.
+- **Modal behavior:** contain keyboard focus, restore it on close, and allow Escape
+  to dismiss an open selector before dismissing the modal. Lock duplicate submissions
+  while pending; retain inputs and show useful validation/API errors on failure.
+- **Regional comparison:** compare only the same resource type and exact GPU model,
+  keeping observed and simulated quotes separate. A lowest-current-quote finding
+  requires a quote at the current slot and sufficient reported units. Stale quotes
+  and missing capacity must not be promoted as current opportunities. This finding
+  is descriptive, not an optimizer allocation, reservation, or realized saving.
+- **Forecast inspection:** group issues by both generation slot and model version;
+  never combine different issues into one trajectory. Exclude future-generated
+  predictions and future market observations. Support 1/3/6-hour horizons, region
+  selection, and inspection by chart click, arrow keys, or a slot dropdown. Leave
+  missing observations as gaps. A missing next-hour prediction stays missing rather
+  than being replaced with a cheaper prediction for a later slot.
+- **Provenance and uncertainty:** distinguish quote age from forecast issue age.
+  Show source/model version and supplied bounds. Null risk is Unknown, a genuine
+  zero remains zero, and missing prices/capacity remain unavailable. Do not invent
+  interval coverage, calibration, freshness timestamps, or risk estimates.
+- **Preview isolation:** `frontend/lib/preview.ts` contains hand-authored examples,
+  not trained predictions or execution history. Preview-created jobs stay in page
+  memory and reset on reload; never send them to FastAPI. Explicit backend mode
+  reads/submits real API state and must not silently fall back to examples.
+- **Ownership:** Person 2 is actively developing the backend. Keep frontend work
+  within `frontend/**`; coordinate shared schema/API changes before implementation.
+  Preserve their uncommitted work and do not implement persistence, forecasting,
+  optimization, or execution in the frontend to bypass missing backend features.
+
+### Agent Workflow Preferences and Verification
+
+- The **design-taste-frontend skill is off by default** for this project. Do not
+  activate it, rerun its inspectors, or carry an earlier invocation into a later
+  task unless the user explicitly requests that skill for the current task. This
+  does not prohibit ordinary code review, tests, or requested browser checks.
+- Preserve accepted design decisions when making a targeted change. Do not use a
+  skill or generic design recommendation to replace the user's chosen font, palette,
+  header, tabs, spacing, or hover behavior without a request to change them.
+- Keep user flows in product language. Put backend integration details and test
+  tooling notes in developer documentation rather than filling the UI with them.
+- Use `cd frontend && npm test` for relevant workload/market logic, and
+  `cd frontend && npm run build` when validating frontend compilation/types. Match
+  verification to the change; a documentation-only update needs no application build.
+- Report checks actually completed. A successful build does not establish visual
+  correctness, browser interaction behavior, live cloud execution, or model quality.
+- Keep the BROKEN PIXELS demo license notice beside the asset in
+  `frontend/app/fonts/`. Its use here is a local personal/non-commercial preview;
+  an appropriate designer license is needed for commercial product use. Do not
+  silently substitute another font or purchase a license on the user's behalf.
+
 ### Demo Priorities
 
 Make the optimizer explain its decisions.
@@ -627,6 +774,41 @@ No developer should silently modify another developer's owned modules.
 ---
 
 ## 11. Development Milestones
+
+### Frontend Delivery Milestones — Person 3
+
+These milestones track the frontend agreed with the user. "UI complete" means
+implemented and verified against labeled preview data; it does not establish that
+the forecasting, optimizer, persistence, replay, or execution backend is complete.
+Update statuses only when the corresponding behavior has actually been verified.
+
+| Milestone | Current status | Completion criteria |
+| --- | --- | --- |
+| 1. Terminal foundation | Complete | Arbitr wordmark and unified tabs, accepted light theme, IBM Plex Sans UI, responsive panels, consistent controls and keyboard focus. |
+| 2. Portfolio & workload management | API integration and restart persistence verified with simulated data; browser walkthrough pending | Add job modal supports CPU/GPU requirements, searchable GPU/region multi-selects, relative completion windows, budget and priority; queue search/filter/sort and job details work. Real jobs must also survive page refresh and backend restart. |
+| 3. Regional market & forecast inspection | Live Stockholm AWS quotes verified; ML output and browser walkthrough pending | Compare matching regional quotes, capacity and freshness; inspect a region's discrete history, forecast issue, 1/3/6-hour horizon, slot values, bounds, model provenance and supplied risk. Verify against real API observations/predictions before claiming live intelligence. |
+| 4. Explainable scheduling decisions | Backend decisions/evidence connected; full browser walkthrough pending | Display backend WAIT/RUN/ROUTE/FALLBACK/INFEASIBLE actions, selected region/window, projected cost and reasoning; add deadline slack and forecast/risk evidence when the shared contract provides them. Keep predicted and realized outcomes distinct. |
+| 5. Backend integration & persistence | API proxy, job creation, alternatives and restart persistence verified; browser checks pending | Submit jobs using the authoritative current slot; preserve multiple acceptable GPU models; reload persisted jobs; show real forecasts/decisions; handle loading, empty/error states and refresh without silently using examples. |
+| 6. Replay & simulated shocks | Backend reset/step/shocks connected; seeded API reproducibility verified; browser checks pending | Wire reset, single-step and accelerated playback to backend state. Inject clearly labeled simulated shocks and show their effect on forecasts, decisions and job outcomes. A reset must reproduce a known seeded scenario. |
+| 7. Policy comparison & outcomes | Backend results connected; reproducible saved benchmark pending; ML unavailable | Show backend results for FIFO, CHEAPEST_NOW, OPTIMIZER_WITH_NAIVE_FORECAST and OPTIMIZER_WITH_ML, including spend, completions, missed deadlines, failures and unfinished jobs. Disclose different completion counts before claiming savings. |
+| 8. Local execution & three-minute demo | Execution API/monitoring connected; earlier backend Docker evidence; current UI/Mac run and demo pending | Show genuine LOCAL Docker task state, logs, completion/exit code and failures. Verify one real local task, a reliable reset and the complete predict → decide → explain → outcome → baseline comparison flow in three minutes. |
+
+**Current pre-ML delivery plan:** see [Pre-ML readiness milestones](docs/PRE_ML_MILESTONES.md).
+Live AWS price ingestion is verified for the `arbitr` profile in `eu-north-1`.
+Next: repeatable startup, retained/model-compatible history, explicit capacity
+scenarios, a baseline benchmark and the model handoff contract. Existing API
+integration evidence is recorded in [frontend/INTEGRATION.md](frontend/INTEGRATION.md).
+Earlier backend milestones record genuine LOCAL Docker runs; execution through
+the current frontend on this Mac and browser interaction verification remain outstanding.
+AWS capacity stays unknown; adding ML must not turn price quotes into allocations.
+
+Proceed with frontend work that does not depend on unfinished backend features,
+but keep preview demonstrations and real integration status separate. Editing,
+cancellation and bulk job actions are later scope unless explicitly requested;
+the current job API supports creation/listing.
+
+The hour-by-hour plan below is the original hackathon target schedule, not a claim
+that its deliverables are already complete.
 
 ### Hours 0–2 — Contracts and Scaffolding
 
@@ -769,3 +951,82 @@ Never silently change the project's objective from minimizing compute costs to m
 We built an autonomous compute execution engine that forecasts future GPU prices, estimates execution risk, and schedules a firm's workloads across cloud regions to minimize cost while respecting deadlines.
 
 It's a trading algorithm for buying compute, not an exchange for selling it."
+
+<!-- BEGIN AWS Agent Toolkit rules -->
+
+# AWS Guidance for the new AWS experience
+
+This user has signed up for the new AWS experience. This experience lets you sign into AWS using a social provider and requires the following additional context.
+
+Where this guidance conflicts with the project's own instructions, the project's instructions take precedence.
+
+## Context
+
+### Terminology:
+
+- Say "project" instead of "account" — a project contains an AWS account and settings for sharing with other collaborators
+- Say "team member" instead of "IAM user" — users are invited by email, not created or federated in IAM
+- Say "AWS Settings" when referring to management tasks at [settings.aws.com](https://settings.aws.com/) (project management, billing, team members, spend limits). Users view their actual AWS resources in the AWS Management Console.
+- Say "selected Region" when referring to the user's Region — not "home Region"
+- The user has a managed IAM experience. This includes a managed service control policies (SCP) and resource control policies (RCP) that govern the use of AWS. They will still need to use IAM to create policies to let services work with each other. If there are questions about the SCPs or RCPs, go to the documentation at https://docs.aws.amazon.com/accounts/latest/reference/scps-and-rcps-for-projects.html
+
+### Constraints:
+
+- All projects share a single AWS Region determined by the user's contact address. Resources cannot be created in other Regions
+- When developing:
+  - MUST create all Regional resources in the project's assigned Region
+  - You CAN create AWS WAF and Cloudwatch Logs resources in us-east-1 when there are global resources (like a global WAF instance) that require a connection to dependencies in us-east-1. You should not use these for any other reason, because resources in the selected Region will provide lower cost (due to no cross-Region traffic), increased availability (due to no cross-Region traffic), and easier manageability (due to not needing to look in another Region). When you need to do an inventory of resources, you need to look in both the selected Region and us-east-1 for Cloudwatch Logs or WAF resources.
+  - MUST NOT attempt to create Lambda, API Gateway, or other Regional resources in any other Region
+  - MUST direct users to confirm their Region in AWS Settings > View all projects > Overview > Additional Info > Region. If the user cannot confirm their Region, check in ~/.aws/config
+  - MUST NOT use Lambda@Edge — excluded from both Lambda and CloudFront
+  - MUST NOT use CloudFormation StackSets — no multi-account or multi-Region deployments
+  - MUST NOT attempt cross-Region actions — no cross-Region replication for DynamoDB/S3/RDS, no multi-Region KMS keys
+  - MUST NOT use Route 53 cross-Region routing — geolocation, latency-based, and failover routing policies are not available
+  - CloudFront is a global service and its actions ARE allowed in `us-east-1`. A user can create a CloudFront distribution pointing to their project-region Lambda function URL or API Gateway. However, Lambda and API Gateway themselves MUST NOT be created in `us-east-1` — they must be in the project Region.
+  - Reduced availability in `eu-north-1` specifically: Amazon Rekognition, Amazon Textract, Amazon Personalize, AWS App Runner are not available in that Region.
+- IAM permissions for human access are managed by AWS. Don't assign roles to team members unless absolutely necessary
+- The user may have a spend limit if they are on the paid plan. The limit that pauses their project if it's exceeded. If resources suddenly become inaccessible, ask if they have a spend limit configured. Only project owners can modify a spend limit.
+- When developing:
+  - MUST ask about spend limit status if the user reports sudden "Access Denied" errors on operations that previously worked
+  - MUST direct users to check spend status in AWS Settings > Billing
+  - MUST check if a user has upgraded their account to the paid plan
+  - MUST ask the user if they want to clean up the successfully created resources or keep them to reduce cost
+- The user sets up billing, creates spend limits, and retrieves and pays invoices in AWS Settings. The user creates budgets and optimizes their costs in the AWS Billing and Cost Management console
+- Not all AWS services are available. If a service isn't working, do the following:
+  1. Run the command `aws freetier get-account-plan-state`
+  2. If accountPlanType": "FREE", check the [Free Tier supported services list](https://docs.aws.amazon.com/accounts/latest/reference/supported-services-sign-up-new.html#supported-services-free-tier) next,
+  3. If accountPlanType": "PAID", check the [Paid Tier supported services list](https://docs.aws.amazon.com/accounts/latest/reference/supported-services-sign-up-new.html#supported-services-paid-plan).
+  4. If neither list shows the service, check the [Not supported for this experience list](https://docs.aws.amazon.com/accounts/latest/reference/supported-services-sign-up-new.html#unsupported-services). The user will need to activate advanced features to access this service.
+- Users can activate advanced AWS services and capabilities for their account.
+- Before starting a task, check whether a relevant AWS skill is available. Load the skill with retrieve_skill and prefer its guidance over general knowledge.
+
+### Help level
+
+- help_level (required): LOW, MEDIUM, or HIGH. While a user is building, you MUST ask the user: "How much guidance would you like from me? Low (I only flag security risks), medium (I ask a couple of clarifying questions if something seems off), or high (I explain what I'm doing, suggest alternatives, and flag best practices)."
+
+You CAN update this rule file to save a user's help_level.
+
+Constraints for each level:
+
+**LOW:**
+
+- MUST follow all constraints in this context file
+- MUST execute the user’s request without modification
+- MUST NOT ask clarifying questions unless the action would create a security vulnerability
+- MUST NOT suggest alternatives or improvements
+
+**MEDIUM:**
+
+- MUST execute the user's request
+- MAY ask up to two clarifying questions per task if the request has an ambiguity or a potential issue
+- MUST NOT repeat a question or suggestion the user has already dismissed
+- MUST NOT explain trade-offs or alternatives unless the user asks
+
+**HIGH:**
+
+- MUST explain what each step does and why before executing it
+- MUST suggest alternatives when a better approach exists
+- MUST flag best practices and explain trade-offs
+- MUST still execute the user's choice if they disagree with a suggestion
+
+<!-- END AWS Agent Toolkit rules -->

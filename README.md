@@ -1,4 +1,4 @@
-# Compute Arbitrage Engine
+# Arbitr
 
 An autonomous buy-side compute scheduler: forecast prices, allocate a firm's workloads
 across regions and time, and minimize expenditure while respecting deadlines,
@@ -7,14 +7,17 @@ capacity, hardware, budgets and execution risk. Carbon is secondary.
 This repository is a **work in progress**, not a completed engine. SQLite
 persistence, the portfolio optimizer, forecast/API wiring and background
 replanning, deterministic replay, scoped metrics/comparisons and read-only AWS Spot ingestion are implemented.
-Manual allowlisted local Docker execution is implemented and verified. The trained
-ML provider and frontend integration remain. Persistent dispatch pause/resume is
+Manual allowlisted local Docker execution has earlier backend smoke-test evidence.
+Frontend/backend API integration and live AWS reads in Stockholm are now verified;
+the trained ML provider, current browser walkthrough and complete demo remain. Persistent dispatch pause/resume is
 implemented, and automatic local execution is available with explicit opt-in.
 See [final backend milestone](docs/MILESTONE_8.md) for operation and evidence. Read
 [AGENTS.md](AGENTS.md) for the project requirements and
 [docs/TEAM_WORKFLOW.md](docs/TEAM_WORKFLOW.md) before splitting up work.
-The [current code audit](docs/FINAL_AUDIT.md) records verification, fixes and
-remaining handoffs. The [pre-Milestone-6 audit](docs/PRE_M6_AUDIT.md) and older
+The [pre-ML milestone plan](docs/PRE_ML_MILESTONES.md) tracks current work.
+The [frontend integration audit](frontend/INTEGRATION.md) records API/restart checks
+and live AWS verification. The [backend code audit](docs/FINAL_AUDIT.md) is an earlier
+snapshot with backend fixes and execution evidence. The [pre-Milestone-6 audit](docs/PRE_M6_AUDIT.md) and older
 milestone test counts are historical snapshots.
 
 ## Start the backend
@@ -53,12 +56,31 @@ workloads through POST `/api/jobs`. This default configuration starts no real wo
 1's ForecastService is configured; it never silently uses naive forecasts.
 See [rolling-horizon integration](docs/BACKEND_RUNTIME.md) for wiring and endpoints.
 
-For AWS, install `'.[dev,aws]'`, configure credentials through the normal AWS
-profile/SSO or IAM-role chain, and set `COMPUTE_MARKET_SOURCE=aws` and
-`COMPUTE_AWS_REGIONS=eu-west-1,eu-central-1`. GET `/api/capabilities` returns dynamic
-`allowedGpuTypes`, regions and instance offerings; GET `/api/market/aws/spot`
-returns whole-instance and normalized GPU quotes. Unknown capacity is null and
-blocks allocation. See [AWS integration and frontend handoff](docs/AWS_MARKET.md).
+For live AWS prices on this Mac, use the project profile `arbitr` in Stockholm:
+
+```sh
+# From backend, with your Python environment active:
+python -m pip install -e '.[dev,aws]'
+python -m pip install 'botocore[crt]'
+aws login --region eu-north-1 --profile arbitr
+export AWS_PROFILE=arbitr
+export COMPUTE_MARKET_SOURCE=aws
+export COMPUTE_AWS_REGIONS=eu-north-1
+export COMPUTE_AWS_INSTANCE_TYPES=g4dn.xlarge,g5.xlarge
+python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
+```
+
+Stop any existing backend on port 8000 before starting its replacement. The
+browser-login credential provider needs `botocore[crt]`; the existing `aws` extra
+alone does not install that dependency. No credentials belong in frontend files.
+See [AWS setup and verification](docs/AWS_MARKET.md) for the new project experience,
+status endpoints and renewal. This project's selected region is `eu-north-1`;
+additional-region access has not been verified.
+
+AWS quotes report unknown capacity, so price-only pools cannot be allocated.
+Forecasts currently use persistence, not the unconnected trained model. Replay
+uses separate, explicitly simulated scenarios. The read-only adapter launches no
+cloud resources.
 
 ## Start the frontend
 
@@ -72,12 +94,15 @@ cp .env.local.example .env.local
 npm run dev
 ```
 
-Open http://localhost:3000. The example environment explicitly enables read-only
-**SIMULATED** fixtures. Set `NEXT_PUBLIC_USE_MOCKS=false` and restart Next.js to
-read FastAPI. Without an environment file, backend mode is the default. API errors
-are displayed; there is no silent fallback to mock data. Mutations always target
-FastAPI. Frontend replay controls still require Person 3's integration with the
-implemented backend replay endpoints.
+Open http://127.0.0.1:3000 on the Mac running Next.js. The page starts in
+**Design preview**. Select **Backend data** to use FastAPI and inspect live prices
+in Market. Preview jobs stay in memory and are never submitted to FastAPI.
+
+The example environment configures a same-origin `/api` proxy to port 8000.
+Backend mode polls every five seconds, displays API errors, and never falls back
+to examples. Replay/shock, policy comparison, dispatch and local execution
+controls are connected; current browser interaction verification remains pending.
+See [frontend operation](frontend/README.md).
 
 ## Checks
 
@@ -88,6 +113,7 @@ python -m pytest
 
 ```sh
 cd frontend
+npm test
 npm run typecheck
 npm run build
 ```
@@ -121,8 +147,9 @@ npm run build
 - Persistent pause/resume for new starts, continued monitoring/planning while
   paused and fresh replanning before resume. See [dispatch controls](docs/BACKEND_DISPATCH.md).
 - Explicit `503` for unavailable Docker, market or forecast providers.
-- A Next.js/TypeScript/Tailwind terminal shell, component ownership boundaries,
-  typed API client, and one shared simulated fixture.
+- A Next.js/TypeScript/Tailwind terminal with typed API integration, workload
+  creation/inspection, live market views, replay/shocks, policy comparison, dispatch
+  controls and execution monitoring; labeled preview data stays isolated.
 - API/contract smoke checks and CI for the backend and frontend.
 
 Jobs and recorded decisions survive restarts. The default database is
@@ -132,8 +159,9 @@ the scheduling service records decisions. No public status-update endpoint is
 introduced. See [backend persistence](docs/BACKEND_PERSISTENCE.md) for store usage.
 
 The optimizer/runtime have been exercised against test scenarios, not a real
-market benchmark. No model has been trained, no historical replay benchmark has
-been produced. A genuine local Docker CPU task completed successfully; no cloud
+market benchmark. A trained model is not connected on this branch, and no saved historical
+ML-versus-baseline benchmark has been produced here. Work on other branches is not
+assessed by these statements. A genuine local Docker CPU task completed successfully; no cloud
 workload has executed. See the
 [optimizer assumptions and integration guide](docs/BACKEND_OPTIMIZER.md) for the
 Milestone 3 implementation and the remaining integration work. The
@@ -141,4 +169,4 @@ Milestone 3 implementation and the remaining integration work. The
 event payloads and the reproducibility contract.
 See [metrics and comparison rules](docs/BACKEND_METRICS.md) for Milestone 6 and
 the [Milestone 7 plan](docs/MILESTONE_7_PLAN.md) for completed backend execution and
-pause controls plus the remaining frontend handoff.
+pause controls. Current integration status supersedes its earlier frontend handoff.

@@ -93,11 +93,7 @@ class SchedulingService:
                 continue
             job = by_id[decision.job_id]
             if decision.action in {"RUN", "ROUTE", "FALLBACK"}:
-                reservation = Reservation(
-                    job_id=job.id, region=decision.region, resource_type=job.resource_type,
-                    gpu_type=job.gpu_type, resource_units=job.resource_units,
-                    start_slot=decision.planned_start_slot, end_slot=decision.planned_end_slot,
-                )
+                reservation = plan.allocations[job.id]
                 connection.execute("INSERT INTO reservations (job_id, payload) VALUES (?, ?)",
                                    (job.id, reservation.model_dump_json(by_alias=True)))
                 job.status = "RUNNING"

@@ -221,8 +221,9 @@ class ReplayService:
             pending_jobs=[job for job in run.jobs if job.status == "PENDING"],
             running_jobs=[job for job in run.jobs if job.status == "RUNNING"],
             forecasts=[], market=market, reservations=run.reservations, config=session.config, execution_mode="SIMULATED")
+        allocations = {}
         if run.strategy in {"FIFO", "CHEAPEST_NOW"}:
-            decisions = immediate_policy(inputs, cheapest_now=run.strategy == "CHEAPEST_NOW")
+            decisions = immediate_policy(inputs, cheapest_now=run.strategy == "CHEAPEST_NOW", allocations=allocations)
         else:
             mode = "ML" if run.strategy == "OPTIMIZER_WITH_ML" else "NAIVE"
             try:
@@ -233,7 +234,8 @@ class ReplayService:
                 prior = [row for row in run.forecasts if row.target_slot == slot]
                 run.forecasts = prior + predictions
                 inputs.forecasts = run.forecasts
-                decisions = ConstrainedPortfolioOptimizer().optimize(inputs)
+                plan = ConstrainedPortfolioOptimizer().plan(inputs)
+                decisions, allocations = plan.decisions, plan.allocations
             except Exception as exc:
                 run.status = "UNAVAILABLE" if self.providers.get(mode) is None else "ERROR"
                 run.error = str(exc)
@@ -246,9 +248,7 @@ class ReplayService:
                 self._finish(run, job, slot, "INFEASIBLE", decision.reason_code)
             elif decision.action in {"RUN", "ROUTE", "FALLBACK"}:
                 job.status = "RUNNING"
-                run.reservations.append(Reservation(job_id=job.id, region=decision.region,
-                    resource_type=job.resource_type, gpu_type=job.gpu_type, resource_units=job.resource_units,
-                    start_slot=slot, end_slot=slot + job.duration_slots))
+                run.reservations.append(allocations[job.id])
 
     def _charge(self, run, market, slot, config):
         indexed = {resource_key(row): row for row in market}

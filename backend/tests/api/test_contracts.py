@@ -40,3 +40,52 @@ def test_forecaster_input_cannot_contain_unavailable_history(violation):
         fixture["market"][0]["dataKind"] = "FORECAST"
     with pytest.raises(ValidationError):
         ForecastRequest(current_slot=0, history=fixture["market"])
+
+
+def test_all_required_routes_exist():
+    paths = TestClient(create_app()).get("/openapi.json").json()["paths"]
+    expected = {
+        "/api/health": ["get"], "/api/jobs": ["get", "post"],
+        "/api/market": ["get"], "/api/forecasts": ["get"],
+        "/api/optimize": ["post"], "/api/decisions": ["get"],
+        "/api/replay/reset": ["post"], "/api/replay/step": ["post"],
+        "/api/replay/state": ["get"], "/api/replay/shock": ["post"],
+        "/api/metrics": ["get"], "/api/models/metrics": ["get"],
+        "/api/execute/{jobId}": ["post"],
+    }
+    for path, methods in expected.items():
+        assert all(method in paths[path] for method in methods)
+
+
+def test_multiple_gpu_alternatives_round_trip_as_one_job():
+    payload = json.loads(FIXTURE.read_text())["jobs"][0]
+    payload.pop("status")
+    payload["gpuType"] = None
+    payload["allowedGpuTypes"] = ["A100", "H100", "A100"]
+    client = TestClient(create_app())
+    result = client.post("/api/jobs", json=payload)
+    assert result.status_code == 201
+    assert result.json()["gpuType"] is None
+    assert result.json()["allowedGpuTypes"] == ["A100", "H100"]
+    assert result.json()["resourceUnits"] == payload["resourceUnits"]
+    assert len(client.get("/api/jobs").json()) == 1
+
+
+def test_legacy_single_gpu_and_invalid_alternatives():
+    payload = json.loads(FIXTURE.read_text())["jobs"][0]
+    payload.pop("status")
+    client = TestClient(create_app())
+    response = client.post("/api/jobs", json=payload)
+    assert response.status_code == 201
+    assert response.json()["allowedGpuTypes"] == [payload["gpuType"]]
+    payload["id"] = "another-job"
+    payload["allowedGpuTypes"] = ["H100"]
+    assert client.post("/api/jobs", json=payload).status_code == 422
+    payload["gpuType"] = None
+    payload["allowedGpuTypes"] = [" "]
+    assert client.post("/api/jobs", json=payload).status_code == 422
+    payload["resourceType"] = "CPU"
+    payload["allowedGpuTypes"] = ["A100"]
+    assert client.post("/api/jobs", json=payload).status_code == 422
+    payload["allowedGpuTypes"] = []
+    assert client.post("/api/jobs", json=payload).status_code == 201

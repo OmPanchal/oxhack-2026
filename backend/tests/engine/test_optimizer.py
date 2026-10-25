@@ -252,3 +252,39 @@ def test_symmetric_demo_portfolio_does_not_exhaust_search_on_equivalent_permutat
     assert len(plan.decisions) == 10
     assert all(row.planned_start_slot == 0 for row in plan.decisions)
     assert sum(row.projected_cost_usd for row in plan.decisions) == 10
+
+
+def test_gpu_alternatives_choose_one_model_without_mixing_units():
+    flexible = job(gpu_type=None, allowed_gpu_types=["A100", "H100"], resource_units=2, deadline_slot=1)
+    request = inputs(jobs=[flexible], markets=[market(price=1, capacity=1), market(price=2, capacity=2, gpu_type="H100")])
+    plan = ConstrainedPortfolioOptimizer().plan(request)
+    assert plan.decisions[0].action == "RUN"
+    assert plan.allocations[flexible.id].gpu_type == "H100"
+    assert plan.allocations[flexible.id].resource_units == 2
+    request.market[1].available_units = 1
+    assert solve(request)[0].action == "INFEASIBLE"
+    assert solve(request)[0].reason_code == "CAPACITY_UNAVAILABLE"
+
+
+def test_gpu_alternatives_share_capacity_with_single_model_jobs():
+    flexible = job("a", gpu_type=None, allowed_gpu_types=["A100", "H100"], deadline_slot=1)
+    strict = job("b", gpu_type="A100", deadline_slot=1)
+    plan = ConstrainedPortfolioOptimizer().plan(inputs(jobs=[flexible, strict], markets=[market(price=1), market(price=2, gpu_type="H100")]))
+    assert len(plan.allocations) == 2
+    assert plan.allocations["a"].gpu_type == "H100"
+    assert plan.allocations["b"].gpu_type == "A100"
+
+
+def test_running_alternative_model_reservation_remains_valid():
+    running = job(gpu_type=None, allowed_gpu_types=["A100", "H100"], duration_slots=2, status="RUNNING")
+    reservation = Reservation(job_id=running.id, region="west", resource_type="GPU", gpu_type="H100", resource_units=1, start_slot=0, end_slot=2)
+    request = inputs(jobs=[], running_jobs=[running], reservations=[reservation], markets=[market(gpu_type="H100")])
+    assert solve(request) == []
+    request.reservations[0].gpu_type = "L4"
+    with pytest.raises(ValueError, match="matching active reservations"):
+        solve(request)
+
+
+def test_legacy_unrestricted_gpu_job_can_select_a_named_pool():
+    request = inputs(jobs=[job(gpu_type=None, allowed_gpu_types=[], deadline_slot=1)], markets=[market(gpu_type="H100")])
+    assert ConstrainedPortfolioOptimizer().plan(request).allocations["a"].gpu_type == "H100"

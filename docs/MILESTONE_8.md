@@ -1,5 +1,11 @@
 # Milestone 8 — final backend integration and automatic local execution
 
+> Historical backend milestone snapshot. Later frontend/API integration and live
+> AWS verification supersede its pending-handoff statements. See
+> [current integration evidence](../frontend/INTEGRATION.md) and the
+> [pre-ML plan](PRE_ML_MILESTONES.md). Test counts and Docker evidence below belong
+> to the original run; they have not been repeated for this documentation update.
+
 Backend scope is complete. ML/data and frontend integration remain with their
 owners, as agreed. This does not claim that the whole team demo or a historical
 ML savings benchmark is complete.

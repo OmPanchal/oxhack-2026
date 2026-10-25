@@ -1,5 +1,11 @@
 # Milestone 7: local execution and dispatch pause
 
+> Historical backend milestone snapshot. Later frontend/API integration and live
+> AWS verification supersede its pending-handoff statements. See
+> [current integration evidence](../frontend/INTEGRATION.md) and the
+> [pre-ML plan](PRE_ML_MILESTONES.md). Test counts and Docker evidence below belong
+> to the original run; they have not been repeated for this documentation update.
+
 Approved split: **7a** implements manual local Docker execution and monitoring;
 **7b** adds persistent pause/resume and dispatch controls before autonomous real
 execution. Milestone 7a is implemented and a genuine local run passed; see

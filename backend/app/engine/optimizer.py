@@ -1,5 +1,5 @@
 """Deterministic portfolio search, independent of forecasting, storage and execution."""
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from math import prod
 
 from app.api.schemas import Decision, Forecast, OptimizationInput, Reservation
@@ -10,6 +10,15 @@ Key = tuple[str, str, str | None]
 
 def resource_key(row) -> Key:
     return row.region, row.resource_type, row.gpu_type
+
+
+def hardware_matches(job, row) -> bool:
+    if row.resource_type != job.resource_type:
+        return False
+    if job.resource_type == "CPU":
+        return row.gpu_type is None
+    models = job.allowed_gpu_types or ([job.gpu_type] if job.gpu_type else [])
+    return not models or row.gpu_type in models
 
 
 class OptimizationLimitError(RuntimeError):
@@ -45,6 +54,7 @@ class Candidate:
     interruption: float | None
     forecasts: tuple[Forecast, ...]
     price_fallback: bool = False
+    gpu_type: str | None = None
 
     @property
     def cost(self):
@@ -73,6 +83,7 @@ class OptimizationPlan:
     decisions: list[Decision]
     evidence: dict[str, DecisionEvidence]
     search_nodes: int
+    allocations: dict[str, Reservation] = field(default_factory=dict)
 
 
 class ConstrainedPortfolioOptimizer:
@@ -110,7 +121,7 @@ class ConstrainedPortfolioOptimizer:
             # only the best objective prefix instead of exploring permutations.
             state = index, tuple(sorted((repr(key), value) for key, value in occupied.items() if value))
             prefix = (tuple(missing), tuple(risk), cost,
-                      tuple((row.start, row.region) if row else (10**30, "") for row in selected))
+                      tuple((row.start, row.region, row.gpu_type or "") if row else (10**30, "", "") for row in selected))
             if state in visited and visited[state] <= prefix:
                 return
             visited[state] = prefix
@@ -125,7 +136,7 @@ class ConstrainedPortfolioOptimizer:
                 if lower_risk > best_score[1] or (lower_risk == best_score[1] and lower_cost > best_score[2]):
                     return
             if index == len(jobs):
-                tie = tuple((row.start, row.region) if row else (10**30, "") for row in selected)
+                tie = tuple((row.start, row.region, row.gpu_type or "") if row else (10**30, "", "") for row in selected)
                 score = (tuple(missing), tuple(risk), cost, tie)
                 if best_score is None or score < best_score:
                     best_score, best = score, selected.copy()
@@ -143,12 +154,14 @@ class ConstrainedPortfolioOptimizer:
             search(index + 1, selected + [None], missing + [1], risk + [0], cost)
 
         search(0, [], [], [], 0.0)
-        decisions, evidence = [], {}
+        decisions, evidence, allocations = [], {}, {}
         for job, candidate in zip(jobs, best):
             decision, detail = self._decision(job, candidate, choices[job.id], options[job.id][1], inputs)
             decisions.append(decision)
             evidence[job.id] = detail
-        return OptimizationPlan(decisions, evidence, nodes)
+            if candidate is not None:
+                allocations[job.id] = self._reservation(job, candidate)
+        return OptimizationPlan(decisions, evidence, nodes, allocations)
 
     @staticmethod
     def _latest_start(job, inputs):
@@ -170,7 +183,7 @@ class ConstrainedPortfolioOptimizer:
             row = reservations.get(job.id)
             if (row is None or not row.start_slot <= inputs.current_slot < row.end_slot
                     or row.region not in job.allowed_regions
-                    or row.resource_type != job.resource_type or row.gpu_type != job.gpu_type
+                    or not hardware_matches(job, row)
                     or row.resource_units != job.resource_units
                     or row.end_slot - row.start_slot != job.duration_slots):
                 raise ValueError("Running jobs require matching active reservations")
@@ -221,11 +234,10 @@ class ConstrainedPortfolioOptimizer:
         critical = self._latest_start(job, inputs) == inputs.current_slot
         if critical:
             latest = inputs.current_slot
-        for region in sorted(set(job.allowed_regions)):
-            key = (region, job.resource_type, job.gpu_type)
-            observed = market.get(key)
-            if observed is None:
+        for key, observed in sorted(market.items(), key=lambda item: (item[0][0], item[0][1], item[0][2] or "")):
+            if observed.region not in job.allowed_regions or not hardware_matches(job, observed):
                 continue
+            region = observed.region
             matched_hardware = True
             if observed.available_units is None:
                 unknown_capacity = True
@@ -256,7 +268,7 @@ class ConstrainedPortfolioOptimizer:
                     inputs.config.transfer_cost_usd if region != job.allowed_regions[0] else 0,
                     recovery, (observed.carbon_kg_per_unit_hour or 0) * job.resource_units
                     * job.duration_slots * inputs.config.carbon_price_usd_per_kg,
-                    availability, interruption, tuple(row for row in rows if row is not None), missing,
+                    availability, interruption, tuple(row for row in rows if row is not None), missing, observed.gpu_type,
                 )
                 if within_budget(candidate.cost, job.max_budget_usd):
                     candidates.append(candidate)
@@ -267,12 +279,12 @@ class ConstrainedPortfolioOptimizer:
                  "CARBON_DATA_UNAVAILABLE" if carbon_missing and not priced_window else
                  "FORECAST_COVERAGE_MISSING" if not priced_window else "BUDGET_EXCEEDED")
         return sorted(candidates, key=lambda row: (
-            row.reliability_penalty if urgent else 0, row.cost, row.start, row.region)), issue
+            row.reliability_penalty if urgent else 0, row.cost, row.start, row.region, row.gpu_type or "")), issue
 
     @staticmethod
     def _reservation(job, candidate):
         return Reservation(job_id=job.id, region=candidate.region, resource_type=job.resource_type,
-                           gpu_type=job.gpu_type, resource_units=job.resource_units,
+                           gpu_type=candidate.gpu_type, resource_units=job.resource_units,
                            start_slot=candidate.start, end_slot=candidate.end)
 
     @staticmethod
@@ -315,7 +327,7 @@ class ConstrainedPortfolioOptimizer:
                 slack, (), None, None, None)
         slack = job.deadline_slot - candidate.end - inputs.config.safety_buffer_slots
         urgent = latest - inputs.current_slot <= self.policy.critical_slack_slots
-        cheapest = min(choices, key=lambda row: (row.cost, row.start, row.region))
+        cheapest = min(choices, key=lambda row: (row.cost, row.start, row.region, row.gpu_type or ""))
         fallback = candidate.price_fallback or (urgent and candidate.reliability_penalty < cheapest.reliability_penalty)
         action = ("WAIT" if candidate.start > inputs.current_slot else
                   "FALLBACK" if fallback else "ROUTE" if candidate.region != job.allowed_regions[0] else "RUN")
@@ -326,7 +338,7 @@ class ConstrainedPortfolioOptimizer:
                          transferUsd=candidate.transfer, expectedRecoveryUsd=candidate.recovery,
                          carbonUsd=candidate.carbon)
         explanation = (
-            f"{action}: {candidate.region}, slots [{candidate.start}, {candidate.end}); "
+            f"{action}: {candidate.region}{f' / {candidate.gpu_type}' if candidate.gpu_type else ''}, slots [{candidate.start}, {candidate.end}); "
             f"projected total ${candidate.cost:.4f}; deadline slack {slack} hour(s). "
             f"Forecast models: {', '.join(versions) or 'current observed price only'}. "
             f"Availability: {candidate.availability}; interruption: {candidate.interruption}. "

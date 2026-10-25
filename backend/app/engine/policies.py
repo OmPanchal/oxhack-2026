@@ -1,10 +1,10 @@
 """Immediate-start baselines using only current observations and commitments."""
-from app.api.schemas import Decision, OptimizationInput
-from app.engine.optimizer import resource_key
+from app.api.schemas import Decision, OptimizationInput, Reservation
+from app.engine.optimizer import resource_key, hardware_matches
 from app.engine.money import within_budget
 
 
-def immediate_policy(inputs: OptimizationInput, *, cheapest_now: bool) -> list[Decision]:
+def immediate_policy(inputs: OptimizationInput, *, cheapest_now: bool, allocations: dict[str, Reservation] | None = None) -> list[Decision]:
     market = {resource_key(row): row for row in inputs.market if row.slot == inputs.current_slot}
     occupied = {}
     for row in inputs.reservations:
@@ -21,8 +21,7 @@ def immediate_policy(inputs: OptimizationInput, *, cheapest_now: bool) -> list[D
             continue
         feasible = []
         for key, row in market.items():
-            if (row.region not in job.allowed_regions or row.resource_type != job.resource_type
-                    or row.gpu_type != job.gpu_type or job.arrival_slot > inputs.current_slot):
+            if (row.region not in job.allowed_regions or not hardware_matches(job, row) or job.arrival_slot > inputs.current_slot):
                 continue
             if row.available_units is None or occupied.get(key, 0) + job.resource_units > row.available_units:
                 continue
@@ -38,7 +37,7 @@ def immediate_policy(inputs: OptimizationInput, *, cheapest_now: bool) -> list[D
             if not within_budget(estimate, job.max_budget_usd):
                 continue
             feasible.append((row, estimate))
-        feasible.sort(key=lambda pair: (pair[0].price_usd_per_unit_hour if cheapest_now else 0, pair[0].region))
+        feasible.sort(key=lambda pair: (pair[0].price_usd_per_unit_hour if cheapest_now else 0, pair[0].region, pair[0].gpu_type or ""))
         if not feasible:
             decisions.append(Decision(**base, action="WAIT", reason_code="NO_CURRENT_FEASIBLE_CAPACITY",
                                       explanation="No currently feasible region; no deliberate wait for future prices."))
@@ -47,6 +46,10 @@ def immediate_policy(inputs: OptimizationInput, *, cheapest_now: bool) -> list[D
         key = resource_key(row)
         occupied[key] = occupied.get(key, 0) + job.resource_units
         total += job.resource_units
+        if allocations is not None:
+            allocations[job.id] = Reservation(job_id=job.id, region=row.region, resource_type=job.resource_type,
+                gpu_type=row.gpu_type, resource_units=job.resource_units, start_slot=inputs.current_slot,
+                end_slot=inputs.current_slot + job.duration_slots)
         decisions.append(Decision(**base, action="RUN" if row.region == job.allowed_regions[0] else "ROUTE",
                                   region=row.region, planned_start_slot=inputs.current_slot,
                                   planned_end_slot=inputs.current_slot + job.duration_slots,

@@ -9,13 +9,14 @@ from app.api.market_schemas import AwsSpotPrices, AwsSpotQuote, GpuOffering, Mar
 from app.api.schemas import MarketSnapshot
 from app.engine.forecast_bridge import EngineUnavailable
 from app.market.history import AwsQuoteArchive
+from app.engine.ml_integration import fixed_pool_source, gpu_name
 
 
 class AwsSpotMarket:
     def __init__(self, regions: list[str], *, client_factory: Callable | None = None,
                  instance_types: list[str] | None = None, clock: Callable | None = None,
                  catalog_ttl_seconds: float = 3600, price_ttl_seconds: float = 60,
-                 quote_archive: AwsQuoteArchive | None = None):
+                 quote_archive: AwsQuoteArchive | None = None, pool_selections=None):
         self.regions = sorted(set(region.strip() for region in regions if region.strip()))
         if not self.regions:
             raise ValueError("Configure at least one AWS region")
@@ -31,6 +32,8 @@ class AwsSpotMarket:
         self.price_cache = None
         self.lock = RLock()
         self.quote_archive = quote_archive
+        self.pool_selections = pool_selections
+        self.model_history = None
 
     @staticmethod
     def _boto_client(region):
@@ -195,6 +198,25 @@ class AwsSpotMarket:
         response = self.prices()
         if response.status == "UNAVAILABLE":
             raise EngineUnavailable("AWS_MARKET_UNAVAILABLE", "AWS reads failed; inspect /api/capabilities and /api/market/aws/spot for regional error codes")
+        if self.pool_selections is not None:
+            selected = []
+            for identity in self.pool_selections:
+                for quote in response.quotes:
+                    if (quote.region, quote.instance_type, quote.availability_zone, quote.product_description, gpu_name(quote.gpu_type)) != (
+                            identity.region, identity.instance_type, identity.availability_zone, identity.product_description, gpu_name(identity.gpu_type)):
+                        continue
+                    if int((quote.observed_at_utc - origin_utc).total_seconds() // 3600) != current_slot:
+                        self.price_cache = None
+                        return self.poll_with_origin(current_slot, origin_utc)
+                    if self.model_history is not None:
+                        self.model_history.ensure(identity, quote)
+                    selected.append(MarketSnapshot(slot=current_slot, region=quote.region, resource_type='GPU',
+                        gpu_type=quote.gpu_type, price_usd_per_unit_hour=quote.price_usd_per_gpu_hour,
+                        available_units=None, carbon_kg_per_unit_hour=None, data_kind='OBSERVED',
+                        source=fixed_pool_source(identity) + f'{quote.gpus_per_instance} GPU(s)/WHOLE_INSTANCE; observed {quote.observed_at_utc.isoformat()}; capacity UNKNOWN'))
+            if not selected:
+                raise EngineUnavailable('AWS_MODEL_POOLS_UNAVAILABLE', 'No configured fixed model instance/AZ pool has a current quote')
+            return selected
         cheapest = {}
         for quote in response.quotes:
             # Do not stamp last hour's cached observation into a new hour.

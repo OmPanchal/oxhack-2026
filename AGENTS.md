@@ -786,30 +786,37 @@ Update statuses only when the corresponding behavior has actually been verified.
 | --- | --- | --- |
 | 1. Terminal foundation | Complete | Arbitr wordmark and unified tabs, accepted light theme, IBM Plex Sans UI, responsive panels, consistent controls and keyboard focus. |
 | 2. Portfolio & workload management | API integration and restart persistence verified with simulated data; browser walkthrough pending | Add job modal supports CPU/GPU requirements, searchable GPU/region multi-selects, relative completion windows, budget and priority; queue search/filter/sort and job details work. Real jobs must also survive page refresh and backend restart. |
-| 3. Regional market & forecast inspection | Live Stockholm AWS quotes verified; ML output and browser walkthrough pending | Compare matching regional quotes, capacity and freshness; inspect a region's discrete history, forecast issue, 1/3/6-hour horizon, slot values, bounds, model provenance and supplied risk. Verify against real API observations/predictions before claiming live intelligence. |
+| 3. Regional market & forecast inspection | Live AWS quotes verified; selected ML provider integrated; per-forecast fallback provenance; browser walkthrough pending | Compare matching regional quotes, capacity and freshness; inspect a region's discrete history, forecast issue, 1/3/6-hour horizon, slot values, bounds, model provenance and supplied risk. Verify against real API observations/predictions before claiming live intelligence. |
 | 4. Explainable scheduling decisions | Backend decisions/evidence connected; full browser walkthrough pending | Display backend WAIT/RUN/ROUTE/FALLBACK/INFEASIBLE actions, selected region/window, projected cost and reasoning; add deadline slack and forecast/risk evidence when the shared contract provides them. Keep predicted and realized outcomes distinct. |
 | 5. Backend integration & persistence | API proxy, job creation, alternatives and restart persistence verified; browser checks pending | Submit jobs using the authoritative current slot; preserve multiple acceptable GPU models; reload persisted jobs; show real forecasts/decisions; handle loading, empty/error states and refresh without silently using examples. |
 | 6. Replay & simulated shocks | Backend reset/step/shocks connected; seeded API reproducibility verified; browser checks pending | Wire reset, single-step and accelerated playback to backend state. Inject clearly labeled simulated shocks and show their effect on forecasts, decisions and job outcomes. A reset must reproduce a known seeded scenario. |
-| 7. Policy comparison & outcomes | Backend results connected; reproducible saved benchmark pending; ML unavailable | Show backend results for FIFO, CHEAPEST_NOW, OPTIMIZER_WITH_NAIVE_FORECAST and OPTIMIZER_WITH_ML, including spend, completions, missed deadlines, failures and unfinished jobs. Disclose different completion counts before claiming savings. |
+| 7. Policy comparison & outcomes | Backend results connected; ML provider available with --ml; saved fair benchmark pending | Show backend results for FIFO, CHEAPEST_NOW, OPTIMIZER_WITH_NAIVE_FORECAST and OPTIMIZER_WITH_ML, including spend, completions, missed deadlines, failures and unfinished jobs. Disclose different completion counts before claiming savings. |
 | 8. Local execution & three-minute demo | Execution API/monitoring connected; earlier backend Docker evidence; current UI/Mac run and demo pending | Show genuine LOCAL Docker task state, logs, completion/exit code and failures. Verify one real local task, a reliable reset and the complete predict → decide → explain → outcome → baseline comparison flow in three minutes. |
 
-**Current pre-ML delivery plan:** see [Pre-ML readiness milestones](docs/PRE_ML_MILESTONES.md).
-Live AWS price ingestion is verified for the `arbitr` profile in `eu-north-1`.
-Reliable startup is now verified through `./dev` (`--setup`, `--login`, `--check`);
-see [startup instructions](docs/STARTUP.md). Next: retained/model-compatible history,
-explicit capacity scenarios, a baseline benchmark and the model handoff contract.
-Exact AWS quote archival and a point-in-time hourly/gap export are now implemented;
-see [price-history audit and model handoff](docs/PRICE_HISTORY.md). Model target,
-history requirements and artifacts still need Person 1/2 agreement.
-The `capacity-pressure` replay scenario now demonstrates explicit simulated GPU
-capacity, shortages, recovery and competing workloads; see
-[capacity scenarios](docs/CAPACITY_SCENARIOS.md). Live capacity remains unknown.
-Next: baseline walkthrough/results, current UI/local execution verification and
-the remaining model-input handoff. Existing API
-integration evidence is recorded in [frontend/INTEGRATION.md](frontend/INTEGRATION.md).
-Earlier backend milestones record genuine LOCAL Docker runs; execution through
-the current frontend on this Mac and browser interaction verification remain outstanding.
-AWS capacity stays unknown; adding ML must not turn price quotes into allocations.
+**Current integration status after the ML merge:** selected CPU/GPU LightGBM
+artifacts are present and the persistent engine/replay use a clock/source adapter.
+`./dev --setup --ml` installs the ML extra; `./dev --ml` enables its provider and
+fixed instance/AZ price pools. Persisted mode remains explicit; select ML in engine
+controls. Native inference is available via POST /api/forecasts without replacing
+engine-owned forecasts. GET /api/models/status carries artifact/provenance details;
+GET /api/models/metrics retains its strict held-out evaluation contract.
+
+The model requires 168 prior consecutive hours plus the current observation.
+Live AWS ML mode now automatically backfills missing fixed-pool history and
+recovers rolling-hour/downtime gaps. Receipt provenance is persisted separately
+and backfilled data must never enter earlier replay decisions. See
+[automatic model history](docs/AUTOMATIC_HISTORY.md) and the current README demo milestones.
+Missing history, unsupported pools, pre-availability dates and source mismatch
+produce labeled persistence fallbacks. Do not count those as ML predictions.
+Packaged evaluation is exploratory post-holdout and must not be relabeled as a
+clean disjoint test or evidence of scheduling savings. Live AWS capacity remains
+unknown. The simulated capacity scenario and detailed quote archive remain
+separate from real allocation. Automatic backfill has supplied and verified the required live T4/A10G history.
+Current UI/Docker verification, fresh evaluation, a saved fair benchmark and demo
+rehearsal remain outstanding; track these in the README demo milestone table.
+
+See [README.md](README.md), [model serving](data/forecast-serving.md),
+[startup](docs/STARTUP.md), and [capacity scenarios](docs/CAPACITY_SCENARIOS.md).
 
 Proceed with frontend work that does not depend on unfinished backend features,
 but keep preview demonstrations and real integration status separate. Editing,

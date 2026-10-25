@@ -128,6 +128,7 @@ def main():
     parser.add_argument('--check', action='store_true', help='Check dependencies and AWS credentials without starting servers.')
     parser.add_argument('--profile', default='arbitr')
     parser.add_argument('--region', default='eu-north-1')
+    parser.add_argument('--ml', action='store_true', help='Enable selected LightGBM models and fixed instance/AZ price pools.')
     args = parser.parse_args()
     processes = []
     handles = []
@@ -150,7 +151,8 @@ def main():
         if args.setup:
             if not venv.exists():
                 run([sys.executable, '-m', 'venv', str(ROOT / 'backend/.venv')])
-            run([str(venv), '-m', 'pip', 'install', '-e', '.[dev,aws]', 'botocore[crt]'], cwd=ROOT / 'backend')
+            extras = '.[dev,aws,ml]' if args.ml else '.[dev,aws]'
+            run([str(venv), '-m', 'pip', 'install', '-e', extras, 'botocore[crt]'], cwd=ROOT / 'backend')
             run(['npm', 'ci'], cwd=ROOT / 'frontend')
         python = str(venv) if venv.exists() else sys.executable
         probe = subprocess.run([python, '-c',
@@ -158,6 +160,14 @@ def main():
             capture_output=True, text=True)
         if probe.returncode or not (ROOT / 'frontend/node_modules/next/package.json').exists():
             raise StartupError('Dependencies are missing or Python is below 3.11. Run ./dev --setup (Python 3.11/3.12 recommended).')
+        if args.ml:
+            model_check = subprocess.run([python, '-c',
+                'import os; from app.engine.ml_integration import ModelLoader; ModelLoader(os.getenv("PRICE_FORECAST_CONFIG"), os.getenv("PRICE_MODEL_DIR")).load()'],
+                cwd=ROOT / 'backend', capture_output=True, text=True)
+            if model_check.returncode:
+                if 'libomp' in model_check.stderr:
+                    raise StartupError('LightGBM needs OpenMP on macOS. Run brew install libomp, then ./dev --ml. See docs/STARTUP.md.')
+                raise StartupError('ML artifacts/dependencies failed validation. Run ./dev --setup --ml; check data/forecast-serving.md and any PRICE_MODEL_DIR override.')
         env = aws_environment(args.profile, args.region)
         if args.login:
             run(['aws', 'login', '--region', args.region, '--profile', args.profile], env=env)
@@ -172,6 +182,7 @@ def main():
         backend_env.update(COMPUTE_MARKET_SOURCE='aws', COMPUTE_AWS_REGIONS=args.region,
                            COMPUTE_AWS_INSTANCE_TYPES='g4dn.xlarge,g5.xlarge',
                            COMPUTE_TICK_SECONDS='2', COMPUTE_ALLOW_LOCAL_DISPATCH='0')
+        backend_env['COMPUTE_ENABLE_ML'] = '1' if args.ml else '0'
         frontend_env = env.copy()
         frontend_env.update(API_PROXY_TARGET='http://127.0.0.1:8000',
                             NEXT_PUBLIC_API_BASE_URL='', NEXT_PUBLIC_USE_MOCKS='false')
@@ -196,6 +207,13 @@ def main():
                 quotes = read_json('http://127.0.0.1:3000/api/market/aws/spot')
                 last_codes = sorted({str(e.get('code', 'UNKNOWN')) for d in (cap, quotes) for e in d.get('errors', [])})
                 if live_ready(cap, quotes, args.region):
+                    if args.ml:
+                        status = read_json('http://127.0.0.1:3000/api/models/status')
+                        history = status.get('history') or {}
+                        if not status.get('engineEnabled') or history.get('status') != 'READY':
+                            last_codes = sorted({p.get('errorCode') for p in history.get('pools', []) if p.get('errorCode')}) or ['MODEL_HISTORY_INCOMPLETE']
+                            time.sleep(1)
+                            continue
                     break
             except (OSError, ValueError):
                 pass
@@ -206,6 +224,7 @@ def main():
                                + '. Check .arbitr/backend.log and docs/STARTUP.md; no preview fallback was used.')
         print('\nArbitr ready: http://127.0.0.1:3000\nSelect Backend data → Market.\n'
               'Live prices; check forecast mode in the app; AWS capacity unknown.\n'
+              + ('ML historical inputs ready.\n' if args.ml else '') +
               'Ctrl+C stops both servers. Logs: .arbitr/backend.log and .arbitr/frontend.log', flush=True)
         while True:
             check_processes(processes)

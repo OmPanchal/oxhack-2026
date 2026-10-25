@@ -12,3 +12,4 @@ def isolated_database(tmp_path, monkeypatch):
     monkeypatch.delenv("COMPUTE_AWS_REGIONS", raising=False)
     monkeypatch.delenv("COMPUTE_AWS_INSTANCE_TYPES", raising=False)
     monkeypatch.delenv("COMPUTE_ALLOW_LOCAL_DISPATCH", raising=False)
+    monkeypatch.delenv('COMPUTE_ENABLE_ML', raising=False)

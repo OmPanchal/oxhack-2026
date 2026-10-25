@@ -1,5 +1,14 @@
 # Price history and model handoff
 
+## ML merge update
+
+Selected artifacts and their input requirements are now present from the ML
+branch: 168 prior hours plus the current observation, fixed instance/AZ identity,
+and the model's documented UTC origin. The integration adapts engine/replay clocks
+and GPU labels. ML live mode now selects fixed quote pools; it does not convert
+old regional-index history into that series. See [model serving](../data/forecast-serving.md).
+The original audit below predates that merge; archive/export behavior remains.
+
 ## Audit — 25 October 2026
 
 The scheduler already persists one regional/resource/GPU index value per slot in

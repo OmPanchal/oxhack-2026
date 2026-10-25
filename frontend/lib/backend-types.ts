@@ -1,5 +1,13 @@
 import type { Decision, ExecutionMode, Forecast, Job, JobCreate, ResourceType, Strategy } from "./types";
 
+export type ModelStatus = {
+  status: "READY" | "UNAVAILABLE"; reason?: string; engineEnabled: boolean; engineForecastMode: "NAIVE" | "ML";
+  modelFamily?: string; lookbackHours?: number; originUtc?: string; validationStatus?: string;
+  history?: { status: "READY" | "WARMING" | "PARTIAL"; lookbackHours: number;
+    pools: { region: string; instanceType: string; availabilityZone: string; gpuType: string;
+      status: "READY" | "PARTIAL"; requiredHours: number; availableHours: number; errorCode: string | null }[] } | null;
+};
+
 export type EngineState = {
   currentSlot: number; originUtc: string; forecastMode: "NAIVE" | "ML"; executionMode: ExecutionMode;
   lastTickAtUtc: string | null; lastError: { code: string; message: string } | null;
@@ -37,7 +45,7 @@ export type ReplayCounters = {
 export type ReplayStrategy = { strategy: Strategy; status: "ACTIVE" | "UNAVAILABLE" | "ERROR";
   error: string | null; jobs: Job[]; decisions: Decision[]; forecasts: Forecast[]; metrics: ReplayCounters;
   outcomes: { jobId: string; slot: number; status: "COMPLETED" | "FAILED" | "INFEASIBLE"; reason: string }[];
-  missedDeadlineIds: string[] };
+  missedDeadlineIds: string[]; modelVersionsUsed?: string[] };
 export type ReplayShock = { kind: "PRICE_SPIKE" | "CAPACITY_SHORTAGE" | "INTERRUPTION" | "DEADLINE_PRESSURE" | "JOB_ARRIVAL";
   slot: number; region?: string | null; magnitude: number; dataKind: "SIMULATED"; durationSlots?: number;
   resourceType?: ResourceType | null; gpuType?: string | null; jobId?: string | null; job?: JobCreate | null; eventId: string };

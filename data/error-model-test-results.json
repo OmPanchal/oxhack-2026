@@ -1,0 +1,296 @@
+{
+  "design": {
+    "status": "SAVED_WEIGHTS_NO_REFIT",
+    "datasetSha256": "618ed38329ec8b4934c7fd40a0e77e61b3dcd9d3850b2df87299af5827903a36",
+    "originUtc": "2026-07-28T00:00:00+00:00",
+    "periods": {
+      "designatedTest": [
+        1791,
+        2112
+      ],
+      "forwardDay": [
+        2112,
+        2136
+      ]
+    },
+    "originalTestAlreadyEvaluated": true,
+    "forwardDayStatus": "PREVIOUSLY_UNSCORED_DATE_EXTENSION_SMALL_SAMPLE",
+    "artifactReceipt": {
+      "status": "EXPERIMENTAL_POST_HOLDOUT",
+      "files": [
+        {
+          "path": "models/error-reduction-001/CPU-model.json",
+          "sha256": "38d3c056d9e610e75764e7983be849483c27d8491848fcde42fbf6f019aa93e6"
+        },
+        {
+          "path": "models/error-reduction-001/CPU-scaled-l1-31.txt",
+          "sha256": "d95dcd8147ee3337645a3d06b300fc5c520645d641674792c0c53123b15e1eb7"
+        },
+        {
+          "path": "models/error-reduction-001/GPU-model.json",
+          "sha256": "b96e4389d0bd027f8db47309661e26e88b70a951d8a8ae974a9bfad94ab601eb"
+        },
+        {
+          "path": "models/error-reduction-001/GPU-scaled-l1-31.txt",
+          "sha256": "734be7a557defad2d6e3e7989c252b810568ea2b745faa2853ee241cfc7269c9"
+        }
+      ]
+    },
+    "implementationSha256": "454ff552694906f002e4393bda9560d7a61df892076f2cff922a8d78f17fdc6e"
+  },
+  "resources": {
+    "CPU": {
+      "designatedTest": {
+        "mae": 5.601749845195298e-05,
+        "rmse": 0.00010055048860269699,
+        "persistenceMae": 6.267478229717813e-05,
+        "maeImprovementPct": 10.62194969207717,
+        "sampleCount": 272160,
+        "persistenceRmse": 0.00011222968048390791,
+        "rmseImprovementPct": 10.4065090721572,
+        "fallbackSampleCount": 0,
+        "byHorizon": {
+          "1": {
+            "mae": 1.8094939921455148e-05,
+            "rmse": 5.7147416983382075e-05,
+            "persistenceMae": 1.7935130070546737e-05,
+            "maeImprovementPct": -0.8910437241314018,
+            "sampleCount": 45360
+          },
+          "2": {
+            "mae": 3.5575975324369686e-05,
+            "rmse": 7.98849330007437e-05,
+            "persistenceMae": 3.586874448853616e-05,
+            "maeImprovementPct": 0.8162236184766414,
+            "sampleCount": 45360
+          },
+          "3": {
+            "mae": 5.1530255136325474e-05,
+            "rmse": 9.464032168073037e-05,
+            "persistenceMae": 5.380332341269841e-05,
+            "maeImprovementPct": 4.224772992064752,
+            "sampleCount": 45360
+          },
+          "4": {
+            "mae": 6.518643680084145e-05,
+            "rmse": 0.0001059524478692913,
+            "persistenceMae": 7.169629078483245e-05,
+            "maeImprovementPct": 9.079763977648025,
+            "sampleCount": 45360
+          },
+          "5": {
+            "mae": 7.683777642768718e-05,
+            "rmse": 0.00011718824176584292,
+            "persistenceMae": 8.95083774250441e-05,
+            "maeImprovementPct": 14.15577107066598,
+            "sampleCount": 45360
+          },
+          "6": {
+            "mae": 8.887960710103894e-05,
+            "rmse": 0.00013076382930896476,
+            "persistenceMae": 0.00010723682760141093,
+            "maeImprovementPct": 17.118391984332128,
+            "sampleCount": 45360
+          }
+        },
+        "poolSummary": {
+          "improved": 137,
+          "worsened": 7,
+          "tied": 0
+        },
+        "predictionsSha256": "f60a8fdc1fc645cc706b0cc42ee468370051fc2e2d150e1cfd229411de664e49"
+      },
+      "forwardDay": {
+        "mae": 5.591563281536598e-05,
+        "rmse": 0.00010087188283455884,
+        "persistenceMae": 5.978652263374487e-05,
+        "maeImprovementPct": 6.474519085333242,
+        "sampleCount": 15552,
+        "persistenceRmse": 0.00010804117626642595,
+        "rmseImprovementPct": 6.635704718900759,
+        "fallbackSampleCount": 0,
+        "byHorizon": {
+          "1": {
+            "mae": 1.7445560976589667e-05,
+            "rmse": 5.5100113428780424e-05,
+            "persistenceMae": 1.7286361882716054e-05,
+            "maeImprovementPct": -0.9209519906718366,
+            "sampleCount": 2592
+          },
+          "2": {
+            "mae": 3.437227888399114e-05,
+            "rmse": 7.771795831820194e-05,
+            "persistenceMae": 3.43870563271605e-05,
+            "maeImprovementPct": 0.042973853384742355,
+            "sampleCount": 2592
+          },
+          "3": {
+            "mae": 5.075667279268936e-05,
+            "rmse": 9.39259058858964e-05,
+            "persistenceMae": 5.1422646604938283e-05,
+            "maeImprovementPct": 1.2950982810460254,
+            "sampleCount": 2592
+          },
+          "4": {
+            "mae": 6.519735589104036e-05,
+            "rmse": 0.0001068225040329023,
+            "persistenceMae": 6.829668209876545e-05,
+            "maeImprovementPct": 4.538033345811854,
+            "sampleCount": 2592
+          },
+          "5": {
+            "mae": 7.715600645684686e-05,
+            "rmse": 0.00011818622895306825,
+            "persistenceMae": 8.51900077160494e-05,
+            "maeImprovementPct": 9.430684976553849,
+            "sampleCount": 2592
+          },
+          "6": {
+            "mae": 9.056592189103854e-05,
+            "rmse": 0.00013331769971022895,
+            "persistenceMae": 0.00010213638117283953,
+            "maeImprovementPct": 11.328440609444524,
+            "sampleCount": 2592
+          }
+        },
+        "poolSummary": {
+          "improved": 111,
+          "worsened": 33,
+          "tied": 0
+        },
+        "predictionsSha256": "fc330f7ec4b93c09a3282faeee09687dbeb00e6191ad4cfe1373f88c2939b245"
+      }
+    },
+    "GPU": {
+      "designatedTest": {
+        "mae": 0.004453488674213882,
+        "rmse": 0.012737194144952252,
+        "persistenceMae": 0.004987280609292328,
+        "maeImprovementPct": 10.703065997206608,
+        "sampleCount": 120960,
+        "persistenceRmse": 0.014088982469201036,
+        "rmseImprovementPct": 9.59464835167363,
+        "fallbackSampleCount": 1890,
+        "byHorizon": {
+          "1": {
+            "mae": 0.0014433210843035947,
+            "rmse": 0.00710058650184073,
+            "persistenceMae": 0.0014299497767857143,
+            "maeImprovementPct": -0.9350893111740533,
+            "sampleCount": 20160
+          },
+          "2": {
+            "mae": 0.002806956510550065,
+            "rmse": 0.009897858329501907,
+            "persistenceMae": 0.0028608655753968254,
+            "maeImprovementPct": 1.8843620375026737,
+            "sampleCount": 20160
+          },
+          "3": {
+            "mae": 0.004068994745925131,
+            "rmse": 0.011754825551002115,
+            "persistenceMae": 0.004285735367063492,
+            "maeImprovementPct": 5.05725628334509,
+            "sampleCount": 20160
+          },
+          "4": {
+            "mae": 0.0051700041419502005,
+            "rmse": 0.01344142564885098,
+            "persistenceMae": 0.00570640873015873,
+            "maeImprovementPct": 9.400037984899278,
+            "sampleCount": 20160
+          },
+          "5": {
+            "mae": 0.0061130340020021665,
+            "rmse": 0.014925420937919938,
+            "persistenceMae": 0.007117191220238095,
+            "maeImprovementPct": 14.108897557516187,
+            "sampleCount": 20160
+          },
+          "6": {
+            "mae": 0.007118621560552133,
+            "rmse": 0.016834925677116683,
+            "persistenceMae": 0.00852353298611111,
+            "maeImprovementPct": 16.482735830884288,
+            "sampleCount": 20160
+          }
+        },
+        "poolSummary": {
+          "improved": 63,
+          "worsened": 0,
+          "tied": 1
+        },
+        "predictionsSha256": "ae3c563dbe2c1ff5486a694b6fbbe2fd6eaac45fe43a821d1bc44349ec879e4b"
+      },
+      "forwardDay": {
+        "mae": 0.0037739205644267497,
+        "rmse": 0.012496764490607479,
+        "persistenceMae": 0.004226405164930557,
+        "maeImprovementPct": 10.706134003866662,
+        "sampleCount": 6912,
+        "persistenceRmse": 0.014078871320928393,
+        "rmseImprovementPct": 11.237455007981323,
+        "fallbackSampleCount": 108,
+        "byHorizon": {
+          "1": {
+            "mae": 0.0012577330100585022,
+            "rmse": 0.007265744383791839,
+            "persistenceMae": 0.001229709201388889,
+            "maeImprovementPct": -2.278897209028119,
+            "sampleCount": 1152
+          },
+          "2": {
+            "mae": 0.002408684047586583,
+            "rmse": 0.010069550439920166,
+            "persistenceMae": 0.0024408637152777777,
+            "maeImprovementPct": 1.3183721602224918,
+            "sampleCount": 1152
+          },
+          "3": {
+            "mae": 0.003506404776942618,
+            "rmse": 0.01190439333531263,
+            "persistenceMae": 0.003696842447916666,
+            "maeImprovementPct": 5.151360212317623,
+            "sampleCount": 1152
+          },
+          "4": {
+            "mae": 0.004419047811586681,
+            "rmse": 0.012978801855505191,
+            "persistenceMae": 0.004890104166666668,
+            "maeImprovementPct": 9.632849097386021,
+            "sampleCount": 1152
+          },
+          "5": {
+            "mae": 0.005152723591974329,
+            "rmse": 0.014393116362572006,
+            "persistenceMae": 0.006004785156250002,
+            "maeImprovementPct": 14.189709408484275,
+            "sampleCount": 1152
+          },
+          "6": {
+            "mae": 0.005898930148411783,
+            "rmse": 0.01629423738555168,
+            "persistenceMae": 0.007096126302083334,
+            "maeImprovementPct": 16.871122394200754,
+            "sampleCount": 1152
+          }
+        },
+        "poolSummary": {
+          "improved": 41,
+          "worsened": 22,
+          "tied": 1
+        },
+        "predictionsSha256": "1ca410f30495ce79bcfd10ce4d429019b03b549792a4ec6cdbb971273edbf634"
+      }
+    }
+  },
+  "audit": {
+    "sampleCount": 415584,
+    "allTargetsAndPersistenceMatchObservedSource": true,
+    "designatedTestPredictionsExactlyMatchArchivedSearch": true,
+    "independentMaeRecalculation": true,
+    "packagedInferenceMatchesBatch": true,
+    "noFittingOrSelection": true,
+    "sourceReportSha256": "b364d4a82e3eef9e13bea8b0c7970a8d9ae58e5a355dc0220a267afe62a7915e"
+  }
+}

@@ -1,0 +1,434 @@
+{
+  "calibration": {
+    "status": "RESERVED_NOT_USED"
+  },
+  "candidates": [
+    {
+      "candidateId": "small-l1",
+      "parameters": {
+        "learning_rate": 0.05,
+        "max_depth": 3,
+        "min_data_in_leaf": 100,
+        "num_boost_round": 120,
+        "num_leaves": 7,
+        "objective": "regression_l1"
+      },
+      "validation": {
+        "changedTargetCount": 3074,
+        "maeImprovementPct": -8.540894036584763,
+        "ml": {
+          "mae": 0.0006831376269117395,
+          "rmse": 0.001040400522180316,
+          "sampleCount": 5670
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0006293827160493826,
+          "rmse": 0.001014334648694131,
+          "sampleCount": 5670
+        },
+        "sampleCount": 5670
+      }
+    },
+    {
+      "candidateId": "medium-l1",
+      "parameters": {
+        "learning_rate": 0.05,
+        "max_depth": 5,
+        "min_data_in_leaf": 50,
+        "num_boost_round": 180,
+        "num_leaves": 15,
+        "objective": "regression_l1"
+      },
+      "validation": {
+        "changedTargetCount": 3074,
+        "maeImprovementPct": -25.711303938356675,
+        "ml": {
+          "mae": 0.0007912052191083237,
+          "rmse": 0.0011802757159038557,
+          "sampleCount": 5670
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0006293827160493826,
+          "rmse": 0.001014334648694131,
+          "sampleCount": 5670
+        },
+        "sampleCount": 5670
+      }
+    },
+    {
+      "candidateId": "medium-l2",
+      "parameters": {
+        "learning_rate": 0.03,
+        "max_depth": 5,
+        "min_data_in_leaf": 100,
+        "num_boost_round": 160,
+        "num_leaves": 15,
+        "objective": "regression"
+      },
+      "validation": {
+        "changedTargetCount": 3074,
+        "maeImprovementPct": -41.02021112908653,
+        "ml": {
+          "mae": 0.0008875568349828185,
+          "rmse": 0.0012231569170972401,
+          "sampleCount": 5670
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0006293827160493826,
+          "rmse": 0.001014334648694131,
+          "sampleCount": 5670
+        },
+        "sampleCount": 5670
+      }
+    }
+  ],
+  "dataKind": "OBSERVED",
+  "datasetSha256": "b286afcaaf18c76736c959f14b46617442bb2ebf44cddb30c45abc12d58669f8",
+  "evaluationPeriod": "VALIDATION_MODEL_SELECTION",
+  "limitations": [
+    "Validation selected the model; it is not final held-out test performance.",
+    "No scheduling replay or compute savings have been evaluated.",
+    "Risk probabilities and uncertainty intervals remain unknown.",
+    "Future model use requires matching origin, source pool and feature code.",
+    "API pool selection must preserve AZ and instance identity outside the API schema."
+  ],
+  "metrics": {
+    "byHorizon": {
+      "1": {
+        "changedTargetCount": 158,
+        "maeImprovementPct": -21.753838828103078,
+        "ml": {
+          "mae": 0.00021954343001384937,
+          "rmse": 0.0005210933849640081,
+          "sampleCount": 945
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.00018031746031746033,
+          "rmse": 0.0005188917779736708,
+          "sampleCount": 945
+        },
+        "sampleCount": 945
+      },
+      "2": {
+        "changedTargetCount": 317,
+        "maeImprovementPct": -8.023056969230307,
+        "ml": {
+          "mae": 0.0003903690365607635,
+          "rmse": 0.0007345870705942796,
+          "sampleCount": 945
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.00036137566137566137,
+          "rmse": 0.0007341770038729576,
+          "sampleCount": 945
+        },
+        "sampleCount": 945
+      },
+      "3": {
+        "changedTargetCount": 474,
+        "maeImprovementPct": -6.4808171707391224,
+        "ml": {
+          "mae": 0.0005747710564951749,
+          "rmse": 0.0008992812185736635,
+          "sampleCount": 945
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0005397883597883598,
+          "rmse": 0.0008972444589116274,
+          "sampleCount": 945
+        },
+        "sampleCount": 945
+      },
+      "4": {
+        "changedTargetCount": 608,
+        "maeImprovementPct": -11.516510654597518,
+        "ml": {
+          "mae": 0.0008033909042714284,
+          "rmse": 0.0010927139912012514,
+          "sampleCount": 945
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0007204232804232804,
+          "rmse": 0.001068639049440651,
+          "sampleCount": 945
+        },
+        "sampleCount": 945
+      },
+      "5": {
+        "changedTargetCount": 715,
+        "maeImprovementPct": -8.570491390642124,
+        "ml": {
+          "mae": 0.0009759855284269892,
+          "rmse": 0.0012760924144429404,
+          "sampleCount": 945
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0008989417989417989,
+          "rmse": 0.0012296556062788109,
+          "sampleCount": 945
+        },
+        "sampleCount": 945
+      },
+      "6": {
+        "changedTargetCount": 802,
+        "maeImprovementPct": -5.515466534350982,
+        "ml": {
+          "mae": 0.0011347658057022317,
+          "rmse": 0.0014325852757639931,
+          "sampleCount": 945
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0010754497354497354,
+          "rmse": 0.0013805412633797584,
+          "sampleCount": 945
+        },
+        "sampleCount": 945
+      }
+    },
+    "byPool": [
+      {
+        "identity": {
+          "availability_zone": "eu-north-1a",
+          "gpu_type": "NVIDIA T4",
+          "instance_type": "g4dn.xlarge",
+          "product_description": "Linux/UNIX",
+          "region": "eu-north-1",
+          "resource_type": "GPU"
+        },
+        "metrics": {
+          "changedTargetCount": 986,
+          "maeImprovementPct": -11.74691450781849,
+          "ml": {
+            "mae": 0.0006322273845672502,
+            "rmse": 0.0009739128889050068,
+            "sampleCount": 1890
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0005657671957671956,
+            "rmse": 0.000918092685895155,
+            "sampleCount": 1890
+          },
+          "sampleCount": 1890
+        }
+      },
+      {
+        "identity": {
+          "availability_zone": "eu-north-1b",
+          "gpu_type": "NVIDIA T4",
+          "instance_type": "g4dn.xlarge",
+          "product_description": "Linux/UNIX",
+          "region": "eu-north-1",
+          "resource_type": "GPU"
+        },
+        "metrics": {
+          "changedTargetCount": 986,
+          "maeImprovementPct": -6.509102158549514,
+          "ml": {
+            "mae": 0.0006490292748994788,
+            "rmse": 0.0010045874782587214,
+            "sampleCount": 1890
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0006093650793650795,
+            "rmse": 0.0010091040606850247,
+            "sampleCount": 1890
+          },
+          "sampleCount": 1890
+        }
+      },
+      {
+        "identity": {
+          "availability_zone": "eu-north-1c",
+          "gpu_type": "NVIDIA T4",
+          "instance_type": "g4dn.xlarge",
+          "product_description": "Linux/UNIX",
+          "region": "eu-north-1",
+          "resource_type": "GPU"
+        },
+        "metrics": {
+          "changedTargetCount": 1102,
+          "maeImprovementPct": -7.733397016729398,
+          "ml": {
+            "mae": 0.0007681562212684895,
+            "rmse": 0.00113560443069306,
+            "sampleCount": 1890
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0007130158730158729,
+            "rmse": 0.001106995552583276,
+            "sampleCount": 1890
+          },
+          "sampleCount": 1890
+        }
+      }
+    ],
+    "byPriceMovement": {
+      "CHANGED": {
+        "changedTargetCount": 3074,
+        "maeImprovementPct": -0.6181248554849351,
+        "ml": {
+          "mae": 0.0011680736511362508,
+          "rmse": 0.001405662553321451,
+          "sampleCount": 3074
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0011608978529603121,
+          "rmse": 0.0013775927822764211,
+          "sampleCount": 3074
+        },
+        "sampleCount": 3074
+      },
+      "UNCHANGED": {
+        "changedTargetCount": 0,
+        "maeImprovementPct": null,
+        "ml": {
+          "mae": 0.00010891060901260715,
+          "rmse": 0.0001564228553314497,
+          "sampleCount": 2596
+        },
+        "note": "Improvement is undefined when persistence MAE is zero",
+        "persistence": {
+          "mae": 0.0,
+          "rmse": 0.0,
+          "sampleCount": 2596
+        },
+        "sampleCount": 2596
+      }
+    },
+    "byRegion": {
+      "eu-north-1": {
+        "changedTargetCount": 3074,
+        "maeImprovementPct": -8.540894036584763,
+        "ml": {
+          "mae": 0.0006831376269117395,
+          "rmse": 0.001040400522180316,
+          "sampleCount": 5670
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0006293827160493826,
+          "rmse": 0.001014334648694131,
+          "sampleCount": 5670
+        },
+        "sampleCount": 5670
+      }
+    },
+    "byResourceType": {
+      "GPU": {
+        "changedTargetCount": 3074,
+        "maeImprovementPct": -8.540894036584763,
+        "ml": {
+          "mae": 0.0006831376269117395,
+          "rmse": 0.001040400522180316,
+          "sampleCount": 5670
+        },
+        "note": "Lower MAE is better",
+        "persistence": {
+          "mae": 0.0006293827160493826,
+          "rmse": 0.001014334648694131,
+          "sampleCount": 5670
+        },
+        "sampleCount": 5670
+      }
+    },
+    "overall": {
+      "changedTargetCount": 3074,
+      "maeImprovementPct": -8.540894036584763,
+      "ml": {
+        "mae": 0.0006831376269117395,
+        "rmse": 0.001040400522180316,
+        "sampleCount": 5670
+      },
+      "note": "Lower MAE is better",
+      "persistence": {
+        "mae": 0.0006293827160493826,
+        "rmse": 0.001014334648694131,
+        "sampleCount": 5670
+      },
+      "sampleCount": 5670
+    }
+  },
+  "modelVersion": "lightgbm-delta-v1-3310f6a9f1d7",
+  "packageVersions": {
+    "lightgbm": "4.7.0",
+    "numpy": "2.5.4",
+    "python": "3.12.3",
+    "scikit-learn": "1.9.1",
+    "scipy": "1.18.1"
+  },
+  "partitions": [
+    {
+      "endSlotExclusive": 1281,
+      "endUtcExclusive": "2026-09-18T09:00:00Z",
+      "name": "train",
+      "startSlot": 0,
+      "startUtc": "2026-07-27T00:00:00Z"
+    },
+    {
+      "endSlotExclusive": 1602,
+      "endUtcExclusive": "2026-10-01T18:00:00Z",
+      "name": "validation",
+      "startSlot": 1281,
+      "startUtc": "2026-09-18T09:00:00Z"
+    },
+    {
+      "endSlotExclusive": 1815,
+      "endUtcExclusive": "2026-10-10T15:00:00Z",
+      "name": "calibration",
+      "startSlot": 1602,
+      "startUtc": "2026-10-01T18:00:00Z"
+    },
+    {
+      "endSlotExclusive": 2136,
+      "endUtcExclusive": "2026-10-24T00:00:00Z",
+      "name": "test",
+      "startSlot": 1815,
+      "startUtc": "2026-10-10T15:00:00Z"
+    }
+  ],
+  "recommendedForecastMode": "NAIVE",
+  "sampleUnit": "USD per quoted resource-unit-hour; not capacity weighted",
+  "schemaVersion": "forecast-evaluation-v1",
+  "seed": 42,
+  "selectedCandidate": "small-l1",
+  "selectionRule": "Lowest validation MAE, then RMSE, then candidate ID",
+  "targetMet": false,
+  "test": {
+    "status": "RESERVED_NOT_EVALUATED"
+  },
+  "training": {
+    "boundaryRule": "origin >= partition start and origin + 6 < partition end",
+    "firstOriginSlot": 24,
+    "lastOriginSlot": 1274,
+    "lastTargetSlot": 1280,
+    "originCount": 3752,
+    "partition": "train",
+    "sampleCount": 22512,
+    "skippedOriginsWithMissingHistoryOrLabels": 1
+  },
+  "validation": {
+    "boundaryRule": "origin >= partition start and origin + 6 < partition end",
+    "firstOriginSlot": 1281,
+    "lastOriginSlot": 1595,
+    "lastTargetSlot": 1601,
+    "originCount": 945,
+    "partition": "validation",
+    "sampleCount": 5670,
+    "skippedOriginsWithMissingHistoryOrLabels": 0
+  },
+  "validationFallbackSampleCount": 0,
+  "validationImprovementTargetPct": 5
+}

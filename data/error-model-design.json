@@ -1,0 +1,48 @@
+{
+  "status": "POST_HOLDOUT_DEVELOPMENT_NOT_BLIND",
+  "seed": 42,
+  "trainEnd": 1257,
+  "selection": [
+    1257,
+    1578
+  ],
+  "confirmation": [
+    1791,
+    2112
+  ],
+  "candidates": [
+    {
+      "name": "relative-l1-7",
+      "target": "relative",
+      "leaves": 7
+    },
+    {
+      "name": "relative-l1-31",
+      "target": "relative",
+      "leaves": 31
+    },
+    {
+      "name": "scaled-l1-7",
+      "target": "scaled",
+      "leaves": 7
+    },
+    {
+      "name": "scaled-l1-31",
+      "target": "scaled",
+      "leaves": 31
+    },
+    {
+      "name": "relative-l2-31",
+      "target": "relative",
+      "leaves": 31,
+      "objective": "regression"
+    }
+  ],
+  "weights": [
+    0.5,
+    1.0
+  ],
+  "rounds": 200,
+  "datasetSha256": "618ed38329ec8b4934c7fd40a0e77e61b3dcd9d3850b2df87299af5827903a36",
+  "implementationSha256": "e146323139c180c382b78695706d606003eaf352d3569ccaba89bc663648587f"
+}

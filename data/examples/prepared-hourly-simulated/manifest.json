@@ -1,0 +1,74 @@
+{
+  "dataFile": "hourly-prices.jsonl",
+  "endUtc": "2026-10-24T04:00:00Z",
+  "forecastTarget": "Price effective at target slot start",
+  "hasCapacityObservations": false,
+  "identicalDuplicatesRemoved": 0,
+  "inputEventCount": 5,
+  "inputPriceWindow": {
+    "endTime": "2026-10-24T04:00:00Z",
+    "paginationComplete": true,
+    "startTime": "2026-10-24T00:00:00Z"
+  },
+  "inputSha256": {
+    "fixture": "9714b1ac1fe0080a275cef6c3e22da15a1d8b1858d8e25306b6a4604d9cb5532"
+  },
+  "limitations": [
+    "Complete source price-change history is assumed except declared gaps.",
+    "Event timestamps are assumed to be historical price availability times.",
+    "Hourly averages are retrospective; never use them at the slot start.",
+    "No AZ aggregation, capacity counts, forecasts or model metrics are inferred."
+  ],
+  "originUtc": "2026-10-24T00:00:00Z",
+  "priceKinds": [
+    "SIMULATED"
+  ],
+  "replayChargingDefault": "Slot-start instance price held for the hour; whole-instance allocation",
+  "rowCount": 8,
+  "schemaVersion": "hourly-price-data-v1",
+  "series": [
+    {
+      "allocationGranularityUnits": 1,
+      "availabilityZone": "us-east-1a",
+      "dataKind": "SIMULATED",
+      "declaredGapCount": 0,
+      "eventCount": 3,
+      "firstEvent": "2026-10-23T23:00:00Z",
+      "gpuType": "NVIDIA T4",
+      "instanceType": "g4dn.xlarge",
+      "knownSlotCount": 4,
+      "lastEvent": "2026-10-24T02:00:00Z",
+      "meets60DayCoverageTarget": false,
+      "missingAveragePriceSlots": 0,
+      "missingStartPriceSlots": 0,
+      "productDescription": "Linux/UNIX",
+      "region": "us-east-1",
+      "resourceType": "GPU",
+      "resourceUnitsPerInstance": 1,
+      "unit": "GPU-hour"
+    },
+    {
+      "allocationGranularityUnits": 4,
+      "availabilityZone": "us-west-2a",
+      "dataKind": "SIMULATED",
+      "declaredGapCount": 0,
+      "eventCount": 2,
+      "firstEvent": "2026-10-24T00:00:00Z",
+      "gpuType": null,
+      "instanceType": "m5.xlarge",
+      "knownSlotCount": 4,
+      "lastEvent": "2026-10-24T01:30:00Z",
+      "meets60DayCoverageTarget": false,
+      "missingAveragePriceSlots": 0,
+      "missingStartPriceSlots": 0,
+      "productDescription": "Linux/UNIX",
+      "region": "us-west-2",
+      "resourceType": "CPU",
+      "resourceUnitsPerInstance": 4,
+      "unit": "vCPU-hour"
+    }
+  ],
+  "seriesCount": 2,
+  "sha256": "281b3255e3eae6b64f5a469c91fcd816c1183a18aef8c3570405a0ba001825bf",
+  "slotDurationSeconds": 3600
+}

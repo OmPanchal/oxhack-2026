@@ -1,192 +1,174 @@
 # Arbitr
 
-An autonomous buy-side compute scheduler: forecast prices, allocate a firm's workloads
-across regions and time, and minimize expenditure while respecting deadlines,
-capacity, hardware, budgets and execution risk. Carbon is secondary.
+Arbitr schedules a firm's asynchronous compute workloads to reduce expenditure
+while respecting deadlines, shared capacity, hardware requirements and budgets.
+It is a buy-side scheduler, not a compute marketplace.
 
-This repository is a **work in progress**, not a completed engine. SQLite
-persistence, the portfolio optimizer, forecast/API wiring and background
-replanning, deterministic replay, scoped metrics/comparisons and read-only AWS Spot ingestion are implemented.
-Manual allowlisted local Docker execution has earlier backend smoke-test evidence.
-Frontend/backend API integration and live AWS reads in Stockholm are now verified;
-the trained ML provider, current browser walkthrough and complete demo remain. Persistent dispatch pause/resume is
-implemented, and automatic local execution is available with explicit opt-in.
-See [final backend milestone](docs/MILESTONE_8.md) for operation and evidence. Read
-[AGENTS.md](AGENTS.md) for the project requirements and
-[docs/TEAM_WORKFLOW.md](docs/TEAM_WORKFLOW.md) before splitting up work.
-The [pre-ML milestone plan](docs/PRE_ML_MILESTONES.md) tracks current work.
-The [frontend integration audit](frontend/INTEGRATION.md) records API/restart checks
-and live AWS verification. The [backend code audit](docs/FINAL_AUDIT.md) is an earlier
-snapshot with backend fixes and execution evidence. The [pre-Milestone-6 audit](docs/PRE_M6_AUDIT.md) and older
-milestone test counts are historical snapshots.
+The merged application includes SQLite persistence, a portfolio optimizer,
+read-only AWS Spot ingestion, detailed quote archival, deterministic simulated
+replay, policy accounting, local Docker execution support, a trained LightGBM
+provider and a connected Next.js terminal. Cloud provisioning is not implemented.
 
-## Start everything
+## Run locally
 
-From the repository root on macOS/Linux:
+Python 3.11+ (3.11/3.12 recommended), Node.js 20.9+, and AWS CLI v2.32+ are required
+for the live launcher. From the repository root on macOS/Linux:
 
 ```sh
-./dev
+./dev --setup --ml   # First run: install Python/frontend dependencies and enable ML
+./dev --ml           # Later runs with the selected model enabled
 ```
 
-First-time dependency installation: `./dev --setup`. Expired/missing AWS login:
-`./dev --login`. Check prerequisites without starting servers: `./dev --check`.
-Defaults use profile `arbitr` and region `eu-north-1`. Wait for `Arbitr ready`,
-then open http://127.0.0.1:3000 and select Backend data. Ctrl+C stops both servers.
-See [startup and troubleshooting](docs/STARTUP.md) for logs, port conflicts and
-configuration. The manual backend/frontend commands below remain available.
+On macOS, LightGBM also needs OpenMP. If loading reports `libomp.dylib` missing:
 
-## Start the backend
+```sh
+brew install libomp
+```
 
-Python 3.11+:
+Open http://127.0.0.1:3000, select **Backend data**, then use the engine forecast
+selector to choose **ML**. Existing persisted forecast mode is retained; enabling
+model availability does not silently change the scheduling policy. The Market
+view reports model readiness and actual forecast model versions/fallbacks.
+Ctrl+C stops both servers. Logs are in ignored `.arbitr/`.
+
+Other shortcuts:
+
+```sh
+./dev                 # Live prices and persistence; no ML engine provider
+./dev --login --ml     # Browser reauthentication, then start with ML enabled
+./dev --check --ml     # Validate prerequisites, artifacts and AWS credentials only
+```
+
+The launcher uses profile `arbitr`, region `eu-north-1` and instance types
+`g4dn.xlarge,g5.xlarge`. It does not start paid cloud resources or enable automatic
+Docker dispatch. See [startup troubleshooting](docs/STARTUP.md).
+
+## What the model actually receives
+
+The saved CPU/GPU LightGBM artifacts live in `models/error-reduction-001/`; their
+checksums and feature implementation are validated before use. The integration
+maps the engine's persisted UTC origin to the model's July 28 origin and maps
+AWS names such as `T4` to configured model names such as `NVIDIA T4`, returning
+forecasts under the original API resource key.
+
+With ML enabled, live GPU scheduling snapshots use the configured **fixed
+instance/AZ pools**, rather than the cheapest quote across AZs. The detailed AWS
+quote endpoint still returns all observed quotes. Without ML enabled, the
+existing regional minimum-price index remains the live price source.
+
+The model requires **168 prior consecutive hourly observations plus the current
+observation**, from the matching source pool. With `--ml`, the app automatically
+backfills missing historical prices, saves them, and fills new hours or downtime
+gaps as it runs/restarts. No manual daily download or week-long wait is required.
+Market's Forecast model details report historical-input readiness and pool counts.
+
+Historical samples preserve when they were actually retrieved and are used only
+for current live inference. They do not enter earlier replay decisions or replace
+the runtime's observed market history. See [automatic history](docs/AUTOMATIC_HISTORY.md).
+Missing anchors, unavailable pools and failed fetches remain missing and produce
+explicit `persistence-v1:fallback-...` versions. They are never labeled as trained
+predictions. A regional index is not silently used as fixed-AZ model history.
+
+The source branch's API example demonstrates genuine saved-model inference on
+explicitly SIMULATED inputs; it is not a live-accuracy test. Historical replay
+and evaluation must respect model availability, source identity and observation
+cutoffs. See [model serving and integration](data/forecast-serving.md).
+
+## Forecast routes and provenance
+
+- `GET /api/forecasts`: persisted engine forecasts for its current slot/mode.
+- `POST /api/forecasts?forecastMode=ML|NAIVE`: isolated inference on supplied
+  observations using the documented model clock. It does not change official
+  engine forecasts, live market history, decisions or replay.
+- `GET /api/models/status`: artifact readiness, serving identities/time/history
+  requirements, experimental evaluation metadata and whether the engine is enabled.
+- `GET /api/models/metrics`: the existing strict chronological evaluation contract.
+  The packaged model report is exploratory post-holdout and is not promoted into
+  a clean disjoint held-out evaluation. The original report remains available in
+  model serving status and repository data files.
+
+The experimental model can underperform persistence on some horizons/pools. No
+live scheduling savings or fresh held-out improvement is claimed by this merge.
+
+## Capacity, replay and execution
+
+AWS Spot prices do not expose free GPU counts: `availableUnits` remains null, and
+price-only pools cannot be allocated. ML does not change that limitation.
+
+In **Replay & execution**, select **Capacity pressure · simulated**, reset with
+seed 42, and step/play. All prices and capacity in that scenario are synthetic;
+FIFO, cheapest-now and both optimizer policies see the same realized world.
+ML before its availability date or without enough history is labeled as fallback.
+Policy comparison shows actual model versions, spend and all job outcomes.
+See [capacity scenarios](docs/CAPACITY_SCENARIOS.md).
+
+Allowlisted LOCAL Docker tasks and monitoring are implemented. Earlier backend
+smoke reports document actual CPU containers; current UI/Mac verification is a
+separate demo task. No AWS workload has been launched. Automatic local dispatch
+requires explicit deployment opt-in. See [execution](docs/BACKEND_EXECUTION.md)
+and [dispatch](docs/BACKEND_DISPATCH.md).
+
+Jobs, decisions, forecasts and detailed AWS quote batches survive restart in
+`backend/state/engine.sqlite3`; override with `COMPUTE_DB_PATH`. Live and replay
+portfolios/clocks remain independent. Design preview uses isolated hand-authored
+examples; preview jobs never reach FastAPI. See [frontend operation](frontend/README.md).
+
+## Run services independently
+
+From `backend`, activate a Python environment and install the appropriate extras:
+
+```sh
+python -m pip install -e '.[dev,aws,ml]' 'botocore[crt]'
+AWS_PROFILE=arbitr COMPUTE_ENABLE_ML=1 COMPUTE_MARKET_SOURCE=aws \
+  COMPUTE_AWS_REGIONS=eu-north-1 COMPUTE_AWS_INSTANCE_TYPES=g4dn.xlarge,g5.xlarge \
+  python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
+```
+
+Set `PRICE_FORECAST_CONFIG` or `PRICE_MODEL_DIR` for explicit alternative selected
+artifacts. Missing/invalid artifacts fail ML activation visibly; persistence-only
+operation can still run without the ML extra. No market source is assumed when
+FastAPI is started without configuration. Swagger is at http://127.0.0.1:8000/docs.
+
+From `frontend`, run `npm ci` and `npm run dev`. Its same-origin `/api` proxy targets
+port 8000 by default; `API_PROXY_TARGET` customizes it.
+
+## Verification and remaining work
 
 ```sh
 cd backend
-python3 -m venv .venv
-source .venv/bin/activate
-python -m pip install -e '.[dev]'
-uvicorn app.main:app --reload --port 8000
-```
-
-Open http://localhost:8000/docs for the typed API and http://localhost:8000/api/health
-for process health. The legacy health stage remains SCAFFOLD for compatibility;
-use `/api/engine/state` for runtime state and integration failures.
-Person 1 can install `'.[dev,ml]'`; Person 2 can
-install `'.[dev,execution]'`. These extras are separate so forecasting and Docker
-work do not change each other's dependencies. No Docker daemon is needed to start.
-The ML libraries' Python support may be narrower than the core API; Python 3.11
-or 3.12 is recommended for the shared team environment.
-
-Configure a server-owned market source before optimizing. For the explicitly
-SIMULATED fixture on Windows, run from `backend`:
-
-```powershell
-$env:COMPUTE_MARKET_FILE = (Resolve-Path ..\data\scenarios\demo.json).Path
-.\.venv\Scripts\python.exe -m uvicorn app.main:app --reload --port 8000
-```
-
-The background scheduler polls every two seconds in PAPER mode and uses an
-integration persistence-price provider. It does not load fixture jobs; submit
-workloads through POST `/api/jobs`. This default configuration starts no real work. Set
-`COMPUTE_TICK_SECONDS=0` to disable polling. ML mode returns HTTP 503 until Person
-1's ForecastService is configured; it never silently uses naive forecasts.
-See [rolling-horizon integration](docs/BACKEND_RUNTIME.md) for wiring and endpoints.
-
-For live AWS prices on this Mac, use the project profile `arbitr` in Stockholm:
-
-```sh
-# From backend, with your Python environment active:
-python -m pip install -e '.[dev,aws]'
-python -m pip install 'botocore[crt]'
-aws login --region eu-north-1 --profile arbitr
-export AWS_PROFILE=arbitr
-export COMPUTE_MARKET_SOURCE=aws
-export COMPUTE_AWS_REGIONS=eu-north-1
-export COMPUTE_AWS_INSTANCE_TYPES=g4dn.xlarge,g5.xlarge
-python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
-```
-
-Stop any existing backend on port 8000 before starting its replacement. The
-browser-login credential provider needs `botocore[crt]`; the existing `aws` extra
-alone does not install that dependency. No credentials belong in frontend files.
-See [AWS setup and verification](docs/AWS_MARKET.md) for the new project experience,
-status endpoints and renewal. This project's selected region is `eu-north-1`;
-additional-region access has not been verified.
-
-AWS quotes report unknown capacity, so price-only pools cannot be allocated.
-Forecasts currently use persistence, not the unconnected trained model. Replay
-uses separate, explicitly simulated scenarios. The read-only adapter launches no
-cloud resources.
-
-## Start the frontend
-
-Node.js 20.9+ and npm. The scripts use Next.js with Webpack to avoid
-Turbopack CSS worker port restrictions in sandboxed environments:
-
-```sh
-cd frontend
-npm ci
-cp .env.local.example .env.local
-npm run dev
-```
-
-Open http://127.0.0.1:3000 on the Mac running Next.js. The page starts in
-**Design preview**. Select **Backend data** to use FastAPI and inspect live prices
-in Market. Preview jobs stay in memory and are never submitted to FastAPI.
-
-The example environment configures a same-origin `/api` proxy to port 8000.
-Backend mode polls every five seconds, displays API errors, and never falls back
-to examples. Replay/shock, policy comparison, dispatch and local execution
-controls are connected; current browser interaction verification remains pending.
-See [frontend operation](frontend/README.md).
-
-## Checks
-
-```sh
-cd backend
-python -m pytest
+.venv/bin/python -m pytest -q
 ```
 
 ```sh
 cd frontend
 npm test
-npm run typecheck
 npm run build
 ```
 
-## What exists
+Startup regressions: `python3 -m unittest discover -s scripts -p test_dev.py -v`.
 
-- Canonical camelCase JSON schemas and forecast/optimizer service protocols.
-- All required API paths; working health and SQLite-backed job creation/listing.
-- Persistent decision history, running reservations, validated job lifecycle
-  updates, and transactional UTC audit events through internal store interfaces.
-- A deterministic portfolio optimizer with region/time choices, shared capacity,
-  hardware, deadline and budget constraints, and decision evidence. An internal
-  scheduling service atomically records PAPER plans or SIMULATED starts.
-- Observation ingestion, checked ForecastService integration, a temporary naive
-  persistence provider, working market/forecast/optimize endpoints, persisted
-  decision details and runtime state, and automatic replanning on relevant changes.
-- Read-only AWS EC2 GPU catalog, Availability Zone offerings and Spot prices,
-  cached with explicit partial/error status and unknown capacity handling.
-- Durable exact AWS instance/AZ quote batches and a read-only hourly history/gap
-  export with receipt-time cutoffs. See [price-history audit](docs/PRICE_HISTORY.md).
-- Deterministic replay with FIFO, cheapest-now and the optimizer using naive or
-  injected ML forecasts, independent policy state, seeded simulated shocks,
-  realized hourly charges and visible failed/unfinished work. Missing ML is
-  explicitly UNAVAILABLE rather than substituted.
-- A selectable [Capacity pressure scenario](docs/CAPACITY_SCENARIOS.md) demonstrates
-  explicitly simulated GPU pools, shortages/recovery and competing workloads.
-  Live AWS capacity remains unknown.
-- Official replay cost reconciliation and guarded policy comparisons through
-  `/api/metrics`, separate live projections with `?scope=LIVE`, and an evaluated
-  model-report adapter through `/api/models/metrics`. Missing model reports are
-  explicitly UNAVAILABLE, never fabricated scores.
-- Manual allowlisted Docker execution, persistent container associations/results,
-  duplicate prevention and monitoring. See [local execution](docs/BACKEND_EXECUTION.md).
-- Opt-in automatic LOCAL execution from fresh optimizer decisions, with final
-  plan validation and a verified two-container background run. See [Milestone 8](docs/MILESTONE_8.md).
-- Persistent pause/resume for new starts, continued monitoring/planning while
-  paused and fresh replanning before resume. See [dispatch controls](docs/BACKEND_DISPATCH.md).
-- Explicit `503` for unavailable Docker, market or forecast providers.
-- A Next.js/TypeScript/Tailwind terminal with typed API integration, workload
-  creation/inspection, live market views, replay/shocks, policy comparison, dispatch
-  controls and execution monitoring; labeled preview data stays isolated.
-- API/contract smoke checks and CI for the backend and frontend.
+Verified after automatic history integration on 25 October 2026: backend
+**360 passed, 1 skipped, 53 subtests passed**; frontend **40 passed**; **5 startup tests passed**; frontend
+production build passed. Live AWS backfill produced 168 prior hourly inputs for each T4/A10G pool and
+12 genuine LightGBM forecasts through the frontend proxy. This verifies live
+inference, not predictive accuracy or savings. Existing backend warnings remain.
+Current integration evidence and remaining limitations are recorded in
+[frontend/INTEGRATION.md](frontend/INTEGRATION.md). Earlier backend audits are
+historical snapshots. The [milestone plan](docs/PRE_ML_MILESTONES.md) tracks the
+baseline benchmark, current UI/local execution checks and final demo work.
 
-Jobs and recorded decisions survive restarts. The default database is
-`backend/state/engine.sqlite3` (ignored by Git); set `COMPUTE_DB_PATH` to override
-its location. `GET /api/decisions` reads persisted history, initially empty until
-the scheduling service records decisions. No public status-update endpoint is
-introduced. See [backend persistence](docs/BACKEND_PERSISTENCE.md) for store usage.
+## Remaining demo milestones
 
-The optimizer/runtime have been exercised against test scenarios, not a real
-market benchmark. A trained model is not connected on this branch, and no saved historical
-ML-versus-baseline benchmark has been produced here. Work on other branches is not
-assessed by these statements. A genuine local Docker CPU task completed successfully; no cloud
-workload has executed. See the
-[optimizer assumptions and integration guide](docs/BACKEND_OPTIMIZER.md) for the
-Milestone 3 implementation and the remaining integration work. The
-[replay integration guide](docs/BACKEND_REPLAY.md) describes Milestone 5 endpoints,
-event payloads and the reproducibility contract.
-See [metrics and comparison rules](docs/BACKEND_METRICS.md) for Milestone 6 and
-the [Milestone 7 plan](docs/MILESTONE_7_PLAN.md) for completed backend execution and
-pause controls. Current integration status supersedes its earlier frontend handoff.
+| Milestone | Status / completion check |
+| --- | --- |
+| 1. Automatic live model inputs | Complete for current T4/A10G demo pools: automatic backfill and persisted rolling history; 168/168 prior hours per pool and 12 genuine live forecasts verified. Gap/hour rollover covered by tests; real restart reused saved inputs without new history fetches. |
+| 2. Meaningful ML replay | Pending: matching historical series, warm-up and valid model-availability dates, with clearly simulated capacity. The capacity-pressure fixture alone does not establish ML value. |
+| 3. Saved fair benchmark | Pending: all four policies on identical inputs, with scenario/seed/configuration, spend, completions, failed/infeasible/missed/unfinished jobs and fallback versions saved. Disclose experimental/reused evaluation periods; fresh held-out evaluation is required for new accuracy claims. |
+| 4. Current UI/local execution check | Pending: run an allowlisted Docker CPU task through the current UI and verify logs, completion/exit code and failures. Earlier backend smoke evidence is separate. |
+| 5. Browser walkthrough | Pending: verify model inspection, workload/decision details, replay/reset/shocks, policy comparison and explicit loading/error states. |
+| 6. Three-minute demo rehearsal | Pending: reliable reset → predict → decide → explain → outcome → baseline comparison, plus a backup recording and honest provenance labels. |
+
+Actual AWS provisioning is outside this demo scope. Capacity remains explicitly
+simulated in replay; Docker remains LOCAL. Passing tests does not establish cloud
+capacity, real savings or live model quality. [AGENTS.md](AGENTS.md) defines
+ownership and design rules.

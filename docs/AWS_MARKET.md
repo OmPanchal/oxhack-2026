@@ -115,6 +115,15 @@ backend contract. Forecasting must preserve missing capacity or handle it with
 documented missing-value features; do not convert it into observed zero capacity
 or a calibrated risk estimate.
 
+## Automatic model warm-up
+
+With `./dev --ml`, missing historical model inputs are automatically fetched for
+fixed model instance/AZ pools, reconstructed at hourly boundaries and retained.
+Subsequent hour changes/restarts fetch missing spans only. Live T4/A10G input
+windows and genuine forecasts have been verified; no daily manual download is
+needed. This is separate from observed quote archival and never seeds historical
+replay with later-known data. See [AUTOMATIC_HISTORY.md](AUTOMATIC_HISTORY.md).
+
 ## Durable detailed history
 
 FastAPI now archives freshly fetched exact instance/AZ quote batches in SQLite
@@ -141,7 +150,10 @@ current UTC hour relative to the persisted origin; accelerated or historical
 manual time returns AWS_LIVE_SLOT_MISMATCH rather than relabeling current prices.
 
 The existing region/GPU schema cannot represent an exact AWS instance/AZ
-allocation. For display/forecasting it receives an explicitly labeled PRICE INDEX:
+allocation. With `./dev --ml`, live snapshots instead track the model-selected
+fixed instance/AZ for each GPU key, explicitly named FIXED POOL in source; unknown
+capacity still blocks allocation. The following minimum-index behavior applies
+to persistence-only startup without the selected ML provider. For display/forecasting it receives an explicitly labeled PRICE INDEX:
 the cheapest normalized quote for each region/GPU, with the selected instance,
 AZ and bundle size in source. This index may change underlying SKU/AZ between
 observations; it is not a fixed-instance price series. The detailed quote

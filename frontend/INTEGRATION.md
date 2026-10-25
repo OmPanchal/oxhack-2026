@@ -1,3 +1,21 @@
+# Current ML merge integration
+
+Selected LightGBM artifacts are now present. Use `./dev --ml`, then select ML in
+engine controls. The model provider is linked to the persistent engine and replay;
+clock offsets and GPU aliases are adapted, and live ML uses fixed instance/AZ
+pools. Short history/source mismatch yields named persistence fallbacks. Market
+shows serving readiness; policy comparison reports actual model/fallback versions.
+
+`GET /api/forecasts` remains engine-owned and persistent. Explicit POST inference
+uses supplied observations and the native model clock without mutating live or
+replay state. Native serving metadata is at `/api/models/status`; strict official
+model metrics do not mislabel the exploratory packaged report as held-out evidence.
+See [the current README](../README.md) and [model serving](../data/forecast-serving.md).
+
+The audit below records earlier verification and counts. Its missing-model remarks
+are superseded by this merge; browser interaction and current local execution
+still need their separate verification.
+
 # Frontend/backend integration audit — 25 October 2026
 
 The merged backend's implemented contracts are now consumed by Backend data.
@@ -142,8 +160,9 @@ The temporary scripts/database/results are under
 
 - No browser is connected to the automation session, so modal interactions,
   visual layout, and playback UI timing have not been browser-verified.
-- Genuine ML requires backend provider injection/configuration and its model
-  artifacts. The merged default reports mlConfigured=false and ML replay UNAVAILABLE.
+- Selected ML artifacts and the clock/source integration now exist. Plain startup
+  leaves ML disabled; `./dev --ml` enables it. Genuine live inference additionally
+  requires sufficient matching history. The packaged report is exploratory.
 - Live AWS source configuration and reads are now verified for Stockholm. AWS
   prices still have unknown capacity and are not allocatable opportunities. A
   labeled live-price/simulated-capacity hybrid has not been implemented.
@@ -163,3 +182,69 @@ See [scenario assumptions and checks](../docs/CAPACITY_SCENARIOS.md).
 Recorded checks: backend 184 passed / 1 skipped; frontend logic 40 passed;
 production build passed compilation, types and prerendering. These are separate from the earlier test counts and do not establish a browser
 interaction walkthrough or a new genuine Docker run.
+
+## ML merge verification — 25 October 2026
+
+The original conflict was in `backend/app/main.py`: the ML branch's process-local
+API overlapped the persistent backend composition. Resolution retained SQLite,
+engine/replay/execution endpoints, detailed quote archival and frontend behavior,
+then connected the selected models through `SelectedModelProvider`.
+
+Changed integration contracts:
+
+- Optional factory `forecast_service` injection remains supported. Deployment uses
+  `COMPUTE_ENABLE_ML=1`, supplied by `./dev --ml`; model absence stays explicit.
+- Native model origin maps to engine/replay origin without changing public slots.
+  GPU aliases map back to the caller's API key. Live selected-model pricing uses
+  fixed instance/AZ identity and refuses regional-index history as model input.
+- Explicit POST inference is separate from persisted GET engine forecasts.
+- New `/api/models/status` carries serving provenance; strict `/api/models/metrics`
+  is preserved. The original report is experimental and not promoted into a clean
+  held-out evaluation.
+- Replay accumulates `modelVersionsUsed` so warm-up/fallback predictions remain
+  disclosed after genuine inference begins. Current metrics and the policy UI
+  show the cumulative versions. Older persisted sessions default this list safely.
+
+Verification includes real saved-weight parity after origin/GPU mapping, persisted
+forecasts after reopening the database, decision evidence, source-identity rejection,
+ML replay warm-up and completion, and fixed AZ selection despite a cheaper other AZ.
+The live app reports READY LightGBM artifacts, enabled ML, no engine error and fixed
+Stockholm T4/A10G quotes. A PAPER replan retained explicit source-history fallback;
+old index observations were not reclassified as matching model data.
+Twelve genuine forecasts from the packaged SIMULATED example were verified through
+the actual Next.js proxy without overwriting official live forecasts.
+
+Frontend: 40 tests passed and production compilation/types/prerendering passed.
+Startup: 5 regressions passed; `./dev --check --ml` and live `./dev --ml` passed.
+OpenMP was missing on this Mac and was installed before real-model verification.
+Two offline experiment tests used exact float/JSON byte equality; they now allow
+only 1e-12 absolute floating-point rounding while keeping structure, identities,
+integer counts, selections and protected-period checks exact. No trained weights,
+feature implementation, evaluation report or protected data were changed.
+
+No browser interaction, new Docker run, cloud allocation, live ML accuracy gain or
+scheduler savings is claimed by this merge verification.
+
+Final combined backend rerun: **354 passed, 1 skipped, 53 subtests passed**.
+Existing Starlette/httpx and physical-core-detection warnings remain.
+
+## Automatic live history — 25 October 2026
+
+The live AWS ML source now backfills and persists missing fixed-pool historical
+boundaries, uses 168 prior observations plus the current quote, and repairs the
+rolling window after hour changes/downtime. Runtime history stays separate from
+replay; retrieval timestamps prevent retrospective data from becoming earlier
+known observations. Model status and the Market details disclose input readiness,
+per-pool counts and sanitized failures. `./dev --ml` checks that readiness.
+
+Actual frontend-proxy verification: T4 in eu-north-1a and A10G in eu-north-1b both
+reported 168/168 historical inputs. SQLite retained 336 samples/two source fetches.
+GET /api/forecasts returned 12 genuine saved LightGBM outputs; engine ML mode had
+no last error, and live capacity remained null. This is genuine live inference,
+not just the earlier packaged SIMULATED example. No accuracy/savings claim follows.
+
+Tests: backend 360 passed / 1 skipped / 53 subtests passed; frontend 40 passed;
+startup 5 passed; frontend production build passed. Existing warnings remain.
+
+Real process restart reused all 336 inputs/two source receipts without new
+historical requests and continued returning 12 genuine forecasts.

@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "expanded-price-evaluation-design-v1",
+  "seed": 42,
+  "featureProfile": "extended168",
+  "modelGrouping": "resourceType",
+  "correctionWeight": 0.5,
+  "parameters": {"num_leaves": 3, "max_depth": 2, "min_data_in_leaf": 200, "learning_rate": 0.03, "num_boost_round": 80, "lambda_l1": 5, "lambda_l2": 10},
+  "earlierBoundariesUtc": ["2026-08-17T08:00:00Z", "2026-08-28T00:00:00Z", "2026-09-07T16:00:00Z", "2026-09-18T09:00:00Z"],
+  "laterEndUtcExclusive": "2026-10-01T18:00:00Z",
+  "selectionRule": "No search or model selection: evaluate the fixed incumbent recipe, fitted independently for CPU and GPU units.",
+  "protectedPeriodPolicy": "All labels from 2026-10-01T18:00:00Z onward excluded from fitting and scoring across every pool.",
+  "primaryMetrics": "MAE/RMSE separately for GPU-hour and vCPU-hour; per-pool relative MAE and hardware breakdowns; no combined CPU/GPU dollar error."
+}

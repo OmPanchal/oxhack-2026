@@ -32,11 +32,13 @@ class PersistenceForecastProvider:
 
 
 def predict_checked(provider: ForecastService | None, mode: ForecastMode,
-                    request: ForecastRequest) -> list[Forecast]:
+                    request: ForecastRequest, *, origin_utc=None) -> list[Forecast]:
     if provider is None:
         raise EngineUnavailable("FORECAST_PROVIDER_UNAVAILABLE", f"{mode} forecasting is not configured")
     try:
-        predictions = [Forecast.model_validate(row.model_dump()) for row in provider.predict(request)]
+        aligned = getattr(provider, 'predict_at', None)
+        result = aligned(request, origin_utc) if aligned and origin_utc is not None else provider.predict(request)
+        predictions = [Forecast.model_validate(row.model_dump()) for row in result]
     except Exception as exc:
         raise EngineUnavailable("FORECAST_PROVIDER_FAILED", f"{mode} forecasting failed: {exc}") from exc
     expected = {(resource_key(row), request.current_slot + horizon)

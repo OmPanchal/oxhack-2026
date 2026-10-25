@@ -38,7 +38,10 @@ planning; an actual ML provider is optional and its absence is explicit.
 Profile `arbitr` in `eu-north-1` has verified live T4/A10G quotes. Follow
 [the AWS setup guide](../docs/AWS_MARKET.md) to start the backend with that source;
 starting FastAPI without those settings does not automatically select AWS.
-Forecasts currently use persistence. Unknown Spot capacity prevents live pool
+Use `./dev --ml` to enable the selected LightGBM provider, then choose ML in the
+engine controls. The Market view shows serving readiness and actual forecast
+versions. Short/unsupported histories remain explicitly labeled persistence
+fallbacks. Plain `./dev` uses persistence. Unknown Spot capacity prevents live pool
 allocation; simulated replay remains separate. No cloud provisioning is implemented.
 
 ## Views

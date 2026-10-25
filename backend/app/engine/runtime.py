@@ -288,7 +288,7 @@ class RollingScheduler:
                     planning_version = state["fingerprint"], state["lastTickAtUtc"]
                     history_json = [row.model_dump_json() for row in history]
                 request = ForecastRequest(current_slot=slot, horizon_slots=6, history=history)
-                predictions = predict_checked(self.providers.get(mode), mode, request)
+                predictions = predict_checked(self.providers.get(mode), mode, request, origin_utc=origin)
                 with self.database.transaction() as connection:
                     state = self._load_state(connection)
                     fresh_history = self._history(connection, slot)

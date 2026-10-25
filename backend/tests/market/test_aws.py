@@ -57,6 +57,26 @@ def source(client=None, **changes):
     return AwsSpotMarket(["eu-west-1"], client_factory=lambda region: client, clock=lambda: NOW, **changes)
 
 
+def test_fixed_model_pool_does_not_switch_to_cheaper_other_az():
+    from types import SimpleNamespace
+    ec2 = FakeEc2()
+    offerings = ec2.describe_instance_type_offerings
+    def with_other_az(**params):
+        result = offerings(**params)
+        result['InstanceTypeOfferings'].append({'InstanceType': 'g5.xlarge', 'Location': 'eu-west-1b'})
+        return result
+    ec2.describe_instance_type_offerings = with_other_az
+    ec2.quotes.append(price(value='.01', AvailabilityZone='eu-west-1b'))
+    selection = SimpleNamespace(region='eu-west-1', instance_type='g5.xlarge',
+        availability_zone='eu-west-1a', product_description='Linux/UNIX', gpu_type='NVIDIA A10G')
+    aws = source(ec2, pool_selections=[selection])
+    rows = aws.poll_with_origin(0, NOW.replace(minute=0))
+    assert len(rows) == 1
+    assert rows[0].price_usd_per_unit_hour == 1.6
+    assert rows[0].gpu_type == 'A10G' and rows[0].available_units is None
+    assert rows[0].source.startswith('AWS EC2 OBSERVED FIXED POOL; g5.xlarge; eu-west-1a; Linux/UNIX;')
+
+
 def test_api_archives_refreshed_quotes_and_preserves_them_on_restart(tmp_path):
     from app.database import Database
     from app.market.history import AwsQuoteArchive

@@ -39,7 +39,7 @@ def summarize(session: ReplaySession, run: StrategyRun) -> StrategyMetrics:
             startup_cost_usd=components[1], transfer_cost_usd=components[2], carbon_cost_usd=components[3],
             total_spend_usd=total_usd(components), projected_cost_at_start_usd=start.projected_cost_usd if start else None))
     return StrategyMetrics(strategy=run.strategy, status=run.status, error=run.error,
-        model_versions=sorted({row.model_version for row in run.forecasts}), totals=replay_totals(run),
+        model_versions=sorted(set(run.model_versions_used) | {row.model_version for row in run.forecasts}), totals=replay_totals(run),
         completed_job_ids=sorted(job.id for job in run.jobs if job.status == "COMPLETED"),
         failed_job_ids=sorted(job.id for job in run.jobs if job.status == "FAILED"),
         infeasible_job_ids=sorted(job.id for job in run.jobs if job.status == "INFEASIBLE"),

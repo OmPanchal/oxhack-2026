@@ -97,6 +97,7 @@ class StrategyRun(Contract):
     reservations: list[Reservation] = Field(default_factory=list)
     decisions: list[Decision] = Field(default_factory=list)
     forecasts: list[Forecast] = Field(default_factory=list)
+    model_versions_used: list[str] = Field(default_factory=list)
     charges: list[ReplayCharge] = Field(default_factory=list)
     outcomes: list[ReplayOutcome] = Field(default_factory=list)
     missed_deadline_ids: list[str] = Field(default_factory=list)

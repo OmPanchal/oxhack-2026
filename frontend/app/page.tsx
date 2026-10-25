@@ -137,7 +137,7 @@ export default function Home() {
           {workloadView === "timeline" && <WorkloadTimeline jobs={visible.jobs} decisions={visible.decisions} currentSlot={currentSlot} selectedId={selectedId} onSelect={inspect} preview={preview} />}
         </div>
       </div>}
-      {activeTab === "market" && <div className="view-enter"><MarketChart market={visible.market} forecasts={visible.forecasts} preview={preview} currentSlot={currentSlot} modelMetrics={preview ? undefined : visible.modelMetrics} /></div>}
+      {activeTab === "market" && <div className="view-enter"><MarketChart market={visible.market} forecasts={visible.forecasts} preview={preview} currentSlot={currentSlot} modelMetrics={preview ? undefined : visible.modelMetrics} modelStatus={preview ? undefined : visible.modelStatus} /></div>}
       <div className={activeTab === "replay" ? "view-enter" : undefined} hidden={activeTab !== "replay"}><ReplayWorkspace key={preview ? "preview" : "backend"} preview={preview} state={visible.replay} active={activeTab === "replay"} backendData={preview ? undefined : data ?? undefined} onRefresh={() => setRefresh(n => n + 1)} /></div>
     </div>}
     {showAddJob && visible && <AddJobModal preview={preview} currentSlot={currentSlot} regions={regions} gpuTypes={gpuTypes} tasks={preview ? [] : visible.taskCatalog?.tasks} onClose={() => setShowAddJob(false)} onSubmit={createJob} />}

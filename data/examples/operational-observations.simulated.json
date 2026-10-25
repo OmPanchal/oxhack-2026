@@ -1,0 +1,145 @@
+{
+  "schemaVersion": "operational-observations-v1",
+  "provenance": {
+    "source": "Hand-authored SIMULATED importer example; no real cloud observations",
+    "retrievedAt": "2026-10-24T12:00:00Z",
+    "dataKind": "SIMULATED",
+    "collectionConditions": "Invented requests and executions covering each outcome, selected for software tests. Not a representative operational sample.",
+    "labelDefinitions": {
+      "fulfillment": "Final capacity request result; PARTIAL is terminal partial fulfillment, ERROR is an unrelated request failure, CENSORED is unresolved at observation end.",
+      "interruption": "An explicit simulated provider interruption at execution termination; generic failures and advance warnings do not count.",
+      "censoring": "Observation stops before the final request or execution outcome is known. No later outcome is assigned."
+    },
+    "authorizedForUse": true
+  },
+  "fulfillmentObservations": [
+    {
+      "id": "example-full",
+      "region": "us-east-1",
+      "availabilityZone": "us-east-1a",
+      "instanceType": "g4dn.xlarge",
+      "resourceType": "GPU",
+      "gpuType": "NVIDIA T4",
+      "requestedAt": "2026-10-24T08:00:00Z",
+      "observedUntil": "2026-10-24T08:05:00Z",
+      "recordedAt": "2026-10-24T08:06:00Z",
+      "requestedUnits": 2,
+      "fulfilledUnits": 2,
+      "outcome": "FULFILLED"
+    },
+    {
+      "id": "example-partial",
+      "region": "us-east-1",
+      "availabilityZone": "us-east-1a",
+      "instanceType": "g4dn.xlarge",
+      "resourceType": "GPU",
+      "gpuType": "NVIDIA T4",
+      "requestedAt": "2026-10-24T08:00:00Z",
+      "observedUntil": "2026-10-24T08:05:00Z",
+      "recordedAt": "2026-10-24T08:06:00Z",
+      "requestedUnits": 2,
+      "fulfilledUnits": 1,
+      "outcome": "PARTIAL"
+    },
+    {
+      "id": "example-unavailable",
+      "region": "us-east-1",
+      "availabilityZone": "us-east-1a",
+      "instanceType": "g4dn.xlarge",
+      "resourceType": "GPU",
+      "gpuType": "NVIDIA T4",
+      "requestedAt": "2026-10-24T08:00:00Z",
+      "observedUntil": "2026-10-24T08:05:00Z",
+      "recordedAt": "2026-10-24T08:06:00Z",
+      "requestedUnits": 2,
+      "fulfilledUnits": 0,
+      "outcome": "UNAVAILABLE"
+    },
+    {
+      "id": "example-error",
+      "region": "us-east-1",
+      "availabilityZone": "us-east-1a",
+      "instanceType": "g4dn.xlarge",
+      "resourceType": "GPU",
+      "gpuType": "NVIDIA T4",
+      "requestedAt": "2026-10-24T08:00:00Z",
+      "observedUntil": "2026-10-24T08:05:00Z",
+      "recordedAt": "2026-10-24T08:06:00Z",
+      "requestedUnits": 2,
+      "fulfilledUnits": 0,
+      "outcome": "ERROR"
+    },
+    {
+      "id": "example-pending",
+      "region": "us-east-1",
+      "availabilityZone": "us-east-1a",
+      "instanceType": "g4dn.xlarge",
+      "resourceType": "GPU",
+      "gpuType": "NVIDIA T4",
+      "requestedAt": "2026-10-24T08:00:00Z",
+      "observedUntil": "2026-10-24T08:05:00Z",
+      "recordedAt": "2026-10-24T08:06:00Z",
+      "requestedUnits": 2,
+      "fulfilledUnits": 0,
+      "outcome": "CENSORED"
+    }
+  ],
+  "executionObservations": [
+    {
+      "id": "example-completed",
+      "region": "us-east-1",
+      "availabilityZone": "us-east-1a",
+      "instanceType": "g4dn.xlarge",
+      "resourceType": "GPU",
+      "gpuType": "NVIDIA T4",
+      "startedAt": "2026-10-24T07:00:00Z",
+      "observedUntil": "2026-10-24T09:00:00Z",
+      "recordedAt": "2026-10-24T09:01:00Z",
+      "resourceUnits": 1,
+      "outcome": "COMPLETED",
+      "interruptedAt": null
+    },
+    {
+      "id": "example-interrupted",
+      "region": "us-east-1",
+      "availabilityZone": "us-east-1a",
+      "instanceType": "g4dn.xlarge",
+      "resourceType": "GPU",
+      "gpuType": "NVIDIA T4",
+      "startedAt": "2026-10-24T09:00:00Z",
+      "observedUntil": "2026-10-24T10:00:00Z",
+      "recordedAt": "2026-10-24T10:01:00Z",
+      "resourceUnits": 1,
+      "outcome": "INTERRUPTED",
+      "interruptedAt": "2026-10-24T10:00:00Z"
+    },
+    {
+      "id": "example-failed",
+      "region": "us-east-1",
+      "availabilityZone": "us-east-1a",
+      "instanceType": "g4dn.xlarge",
+      "resourceType": "GPU",
+      "gpuType": "NVIDIA T4",
+      "startedAt": "2026-10-24T10:00:00Z",
+      "observedUntil": "2026-10-24T10:30:00Z",
+      "recordedAt": "2026-10-24T10:31:00Z",
+      "resourceUnits": 1,
+      "outcome": "FAILED",
+      "interruptedAt": null
+    },
+    {
+      "id": "example-still-running",
+      "region": "us-east-1",
+      "availabilityZone": "us-east-1a",
+      "instanceType": "g4dn.xlarge",
+      "resourceType": "GPU",
+      "gpuType": "NVIDIA T4",
+      "startedAt": "2026-10-24T08:00:00Z",
+      "observedUntil": "2026-10-24T11:00:00Z",
+      "recordedAt": "2026-10-24T11:01:00Z",
+      "resourceUnits": 2,
+      "outcome": "CENSORED",
+      "interruptedAt": null
+    }
+  ]
+}

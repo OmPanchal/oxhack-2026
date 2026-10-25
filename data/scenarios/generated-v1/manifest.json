@@ -1,0 +1,12 @@
+{
+  "dataKind": "SIMULATED",
+  "schemaVersion": "synthetic-market-v1",
+  "seed": 42,
+  "sha256": {
+    "capacity-shortage.json": "6857ebf1c20de53c528eb3d6ea883fc0c69b22adf529ff5e10e21d208ecca9c9",
+    "deadline-pressure.json": "72ae99b71b20720839f9cae625761b11fdaccf80e3f546432edecf309079f784",
+    "interruption.json": "3a07f56897a09e8785cdf2ad373194588887259d6379938273d77aef4561864d",
+    "normal.json": "455f406955a554a27fa0915e33fc810b9d53eccb40e451ced92100865a60cfe6",
+    "price-spike.json": "556f2db1eb465a1e416ae456c969fa461bba4899291e619f9ca2683edddb8eac"
+  }
+}

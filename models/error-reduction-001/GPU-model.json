@@ -1,0 +1,603 @@
+{
+  "schemaVersion": "relative-price-error-model-v1",
+  "status": "EXPERIMENTAL_POST_HOLDOUT",
+  "originUtc": "2026-07-28T00:00:00+00:00",
+  "datasetSha256": "618ed38329ec8b4934c7fd40a0e77e61b3dcd9d3850b2df87299af5827903a36",
+  "trainingEndExclusive": 1257,
+  "modelFile": "GPU-scaled-l1-31.txt",
+  "modelSha256": "734be7a557defad2d6e3e7989c252b810568ea2b745faa2853ee241cfc7269c9",
+  "identities": [
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "g4dn.12xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA T4"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "g4dn.16xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA T4"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "g4dn.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA T4"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "g4dn.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA T4"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "g4dn.8xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA T4"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "g4dn.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA T4"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "g6.12xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA L4"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "g6.24xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA L4"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "g6.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA L4"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "g6.48xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA L4"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "g6.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA L4"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "g6.8xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA L4"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "g6.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA L4"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "g6e.12xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA L40S"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "g6e.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA L40S"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "g6e.48xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA L40S"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "g6e.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA L40S"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "g6e.8xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA L40S"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "g6e.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA L40S"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "p5e.48xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA H200"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "p5en.48xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA H200"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "g4dn.12xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA T4"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "g4dn.16xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA T4"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "g4dn.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA T4"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "g4dn.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA T4"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "g4dn.8xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA T4"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "g4dn.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA T4"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "g5.12xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA A10G"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "g5.24xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA A10G"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "g5.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA A10G"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "g5.48xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA A10G"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "g5.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA A10G"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "g5.8xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA A10G"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "g5.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA A10G"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "g6.12xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA L4"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "g6.24xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA L4"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "g6.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA L4"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "g6.48xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA L4"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "g6.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA L4"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "g6.8xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA L4"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "g6.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA L4"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "g6e.12xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA L40S"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "g6e.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA L40S"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "g6e.48xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA L40S"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "g6e.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA L40S"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "g6e.8xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA L40S"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "g6e.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA L40S"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "p6-b200.48xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA B200"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "g4dn.12xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA T4"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "g4dn.16xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA T4"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "g4dn.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA T4"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "g4dn.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA T4"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "g4dn.8xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA T4"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "g4dn.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA T4"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "g5.12xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA A10G"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "g5.24xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA A10G"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "g5.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA A10G"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "g5.48xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA A10G"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "g5.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA A10G"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "g5.8xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA A10G"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "g5.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA A10G"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "p4d.24xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA A100"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "p5.48xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA H100"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "p5en.48xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA H200"
+    }
+  ],
+  "supportedPoolIndices": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
+    62,
+    63
+  ],
+  "hardware": [
+    "NVIDIA A100",
+    "NVIDIA A10G",
+    "NVIDIA B200",
+    "NVIDIA H100",
+    "NVIDIA H200",
+    "NVIDIA L4",
+    "NVIDIA L40S",
+    "NVIDIA T4"
+  ],
+  "target": "scaled",
+  "weight": 1.0,
+  "scale": 0.4617,
+  "featureSchema": "relative-price-error-features-v1",
+  "featureImplementationSha256": "e146323139c180c382b78695706d606003eaf352d3569ccaba89bc663648587f"
+}

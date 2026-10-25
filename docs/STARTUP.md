@@ -22,7 +22,10 @@ Browser login requires AWS CLI 2.32+. Then run:
 
 This creates `backend/.venv` if absent, installs backend dev/AWS dependencies plus
 `botocore[crt]`, installs the frontend lockfile with `npm ci`, then launches both
-servers. It requires internet access. It does not install Docker or ML dependencies.
+servers. It requires internet access. It does not install Docker. Add `--ml` to
+install/enable the selected ML provider (`./dev --setup --ml` on first use, then
+`./dev --ml`). On macOS, LightGBM additionally needs OpenMP: `brew install libomp`.
+See the [official installation guide](https://lightgbm.readthedocs.io/en/stable/Installation-Guide.html#macos).
 Normal startup does not install packages. Existing `backend/.venv` takes precedence
 over the Python environment used to invoke the launcher; otherwise it uses that
 Python environment. No `.env` file is required or modified.
@@ -59,14 +62,20 @@ access to other regions. Verify access before changing it.
 - Ports 8000 and 3000 are free before spawning either server.
 - Backend health, then actual AWS capabilities and observed quotes through the
   frontend proxy. Readiness requires READY responses for the configured region.
+- With `--ml`, automatic history backfill/recovery completes for the quoted model
+  pools before readiness is announced. Missing anchors/read failures time out with
+  an explicit error; see [automatic history](AUTOMATIC_HISTORY.md).
 - Both owned server processes remain running after readiness.
 
 The launcher sets live AWS mode, a two-second backend polling interval and the
 local frontend proxy. It clears inherited JSON-source and UTC-origin overrides.
 Automatic local Docker dispatch is disabled. Existing jobs/database are retained;
 an explicit `COMPUTE_DB_PATH` remains supported. The launcher does not change the
-persisted forecast mode or model configuration. The default unconfigured model
-uses persistence; previously selecting unavailable ML can still produce an engine
+persisted forecast mode. `--ml` validates the selected artifacts, enables the
+provider for engine/replay and uses fixed instance/AZ live GPU pools. Plain `./dev`
+disables that provider and retains the regional price index. Select ML in the UI
+after enabling it. Short/mismatched histories produce labeled persistence
+fallbacks; previously selecting unavailable ML can still produce an engine
 error which must be resolved in the UI.
 
 Readiness confirms live pricing, not GPU inventory or cloud allocation. Unknown
@@ -82,6 +91,7 @@ capabilities, and starts in isolated Design preview until Backend data is select
 | Browser does not open | Use `aws login --remote --region eu-north-1 --profile arbitr`, complete authorization, then retry `./dev`. |
 | Port already in use | Stop the old server from its terminal. The error supplies an `lsof` command to identify the listener. |
 | Live readiness timeout | Inspect `.arbitr/backend.log`, `/api/capabilities` and `/api/market/aws/spot`; check permissions, connection and supported regional offerings. |
+| Missing `libomp.dylib` | Install the macOS OpenMP runtime with `brew install libomp`, then retry `./dev --ml`. |
 | `MissingDependencyException` | The active backend environment needs `botocore[crt]`; rerun `./dev --setup`. |
 | Frontend stops or build fails | Inspect `.arbitr/frontend.log`; the launcher also stops its backend. |
 | Runtime credentials expire after startup | The UI shows API/source errors. Stop with Ctrl+C, then run `./dev --login`. |

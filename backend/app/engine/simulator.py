@@ -230,10 +230,14 @@ class ReplayService:
             mode = "ML" if run.strategy == "OPTIMIZER_WITH_ML" else "NAIVE"
             try:
                 predictions = predict_checked(self.providers.get(mode), mode,
-                    ForecastRequest(current_slot=slot, horizon_slots=6, history=deepcopy(session.history)))
-                if run.forecasts and {row.model_version for row in run.forecasts} != {row.model_version for row in predictions}:
+                    ForecastRequest(current_slot=slot, horizon_slots=6, history=deepcopy(session.history)),
+                    origin_utc=session.scenario.origin_utc)
+                def model_families(rows):
+                    return {r.model_version for r in rows if not r.model_version.startswith('persistence-v1:fallback-')}
+                if model_families(run.forecasts) and model_families(predictions) and model_families(run.forecasts) != model_families(predictions):
                     raise EngineUnavailable("REPLAY_MODEL_CHANGED", "Forecast model versions changed; reset replay")
                 prior = [row for row in run.forecasts if row.target_slot == slot]
+                run.model_versions_used = sorted(set(run.model_versions_used) | {row.model_version for row in predictions})
                 run.forecasts = prior + predictions
                 inputs.forecasts = run.forecasts
                 plan = ConstrainedPortfolioOptimizer().plan(inputs)

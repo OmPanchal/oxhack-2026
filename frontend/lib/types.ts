@@ -1,4 +1,4 @@
-import type { DecisionDetail, EngineState, MarketCapabilities, ReplayMetrics, ReplayShock, ReplayStrategy, TaskCatalog, LocalExecution, LiveMetrics, ModelMetrics } from "./backend-types";
+import type { DecisionDetail, EngineState, MarketCapabilities, ReplayMetrics, ReplayShock, ReplayStrategy, TaskCatalog, LocalExecution, LiveMetrics, ModelMetrics, ModelStatus } from "./backend-types";
 // Person 3 owns this mirror of backend/app/api/schemas.py. Coordinate contract edits.
 export type ResourceType = "CPU" | "GPU";
 export type JobStatus = "PENDING" | "RUNNING" | "COMPLETED" | "FAILED" | "INFEASIBLE";
@@ -45,4 +45,4 @@ export type Health = { status: "ok"; stage: "SCAFFOLD" };
 export type TerminalData = { jobs: Job[]; market: MarketSnapshot[]; forecasts: Forecast[]; decisions: Decision[]; replay: ReplayState;
   engine?: EngineState; capabilities?: MarketCapabilities; decisionDetails?: DecisionDetail[];
   taskCatalog?: TaskCatalog; executions?: LocalExecution[]; replayMetrics?: ReplayMetrics; liveMetrics?: LiveMetrics;
-  modelMetrics?: ModelMetrics; errors?: string[] };
+  modelMetrics?: ModelMetrics; modelStatus?: ModelStatus; errors?: string[] };

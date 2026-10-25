@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import type { ModelMetrics } from "@/lib/backend-types";
+import type { ModelMetrics, ModelStatus } from "@/lib/backend-types";
 import type { Forecast, MarketSnapshot } from "@/lib/types";
 import { compareRegions, forecastRuns, lowestCurrentQuote, marketResources, plotPoints, price, regionName, resourceKey, resourceLabel, upcomingPoints } from "@/lib/market";
 import type { QuoteKind } from "@/lib/market";
@@ -9,7 +9,7 @@ import { SlotPriceChart } from "./SlotPriceChart";
 import { ValuePulse } from "./ValuePulse";
 import { MarketModal } from "./MarketModal";
 
-export function MarketChart({ market, forecasts, preview, currentSlot, modelMetrics }: { market: MarketSnapshot[]; forecasts: Forecast[]; preview: boolean; currentSlot: number; modelMetrics?: ModelMetrics }) {
+export function MarketChart({ market, forecasts, preview, currentSlot, modelMetrics, modelStatus }: { market: MarketSnapshot[]; forecasts: Forecast[]; preview: boolean; currentSlot: number; modelMetrics?: ModelMetrics; modelStatus?: ModelStatus }) {
   const resources = marketResources(market, forecasts, currentSlot);
   const [resourceChoice, setResourceChoice] = useState("");
   const [kind, setKind] = useState<QuoteKind>(preview ? "SIMULATED" : "OBSERVED");
@@ -33,6 +33,7 @@ export function MarketChart({ market, forecasts, preview, currentSlot, modelMetr
   const selectedQuote = rows.find(row => row.region === region)?.quote;
   function selectRegion(value: string) { setRegionChoice(value); setRunChoice(""); setSlotChoice(null); }
   return <div className="market-workspace">
+    {!preview && modelStatus && <details className="model-metrics"><summary>Forecast model · {modelStatus.status === "READY" ? `${modelStatus.modelFamily ?? "ML"} ${modelStatus.engineEnabled ? "enabled" : "available, not enabled"}` : "Unavailable"}</summary><div className="panel-body"><p>{modelStatus.reason ?? `Current mode: ${modelStatus.engineForecastMode}. The selected model needs ${modelStatus.lookbackHours ?? 168} prior hours plus the current observation from the same instance and availability zone.`}</p>{modelStatus.history && <div><p>Historical inputs · {modelStatus.history.status === "READY" ? "Ready" : modelStatus.history.status === "WARMING" ? "Loading" : "Incomplete"}</p>{modelStatus.history.pools.map(pool => <p key={`${pool.region}-${pool.instanceType}-${pool.availabilityZone}`} className="muted">{pool.gpuType} · {pool.availabilityZone}: {pool.availableHours} / {pool.requiredHours} prior hours{pool.errorCode ? ` · ${pool.errorCode}` : ""}</p>)}</div>}<p className="muted">Each forecast names its actual model or persistence fallback. Packaged evaluation is exploratory post-holdout, not proof of scheduling savings.</p></div></details>}
     {!preview && modelMetrics && <details className="model-metrics"><summary>Model evaluation · {modelMetrics.status}</summary>{modelMetrics.evaluation ? <div className="panel-body"><p>{modelMetrics.evaluation.modelVersion} · {modelMetrics.evaluation.sampleCount} samples · {modelMetrics.evaluation.dataSource}</p><p>MAE {modelMetrics.evaluation.mae.toFixed(6)} · Persistence MAE {modelMetrics.evaluation.persistenceMae.toFixed(6)} · RMSE {modelMetrics.evaluation.rmse.toFixed(6)}</p><p className="muted">Forecast evaluation is separate from scheduling savings.</p></div> : <p className="panel-body muted">{modelMetrics.reason ?? "No model evaluation supplied."}</p>}</details>}
     <section aria-labelledby="regional-comparison-title">
       <div className="panel-heading"><h2 id="regional-comparison-title">Regional comparison</h2><span className="muted">As of slot {currentSlot} · USD / unit-hour</span></div>

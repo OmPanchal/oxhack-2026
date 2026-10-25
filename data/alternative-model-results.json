@@ -1,0 +1,5002 @@
+{
+  "calibration": {
+    "status": "RESERVED_NOT_USED"
+  },
+  "dataKind": "OBSERVED",
+  "datasetSha256": "b286afcaaf18c76736c959f14b46617442bb2ebf44cddb30c45abc12d58669f8",
+  "design": {
+    "absoluteMaeTolerance": 1e-12,
+    "architecture": "per-horizon",
+    "changeThresholds": [
+      0.5,
+      0.7,
+      0.9
+    ],
+    "correctionWeights": [
+      0.5,
+      1.0
+    ],
+    "featureProfile": "extended168",
+    "laterPeriodStatus": "Previously inspected development data, not independent confirmation or final test",
+    "minimumImprovingFolds": 2,
+    "models": {
+      "extra-trees": {
+        "max_depth": 6,
+        "max_features": 0.8,
+        "min_samples_leaf": 30,
+        "n_estimators": 80
+      },
+      "hist-gradient": {
+        "early_stopping": false,
+        "l2_regularization": 1.0,
+        "learning_rate": 0.05,
+        "loss": "absolute_error",
+        "max_iter": 80,
+        "max_leaf_nodes": 7,
+        "min_samples_leaf": 40
+      },
+      "lightgbm-reference": {
+        "lambda_l1": 5,
+        "lambda_l2": 10,
+        "learning_rate": 0.03,
+        "max_depth": 2,
+        "min_data_in_leaf": 200,
+        "num_boost_round": 80,
+        "num_leaves": 3
+      },
+      "ridge": {
+        "alpha": 10.0
+      },
+      "two-stage": {
+        "lambda_l1": 0.5,
+        "lambda_l2": 2.0,
+        "learning_rate": 0.05,
+        "max_depth": 3,
+        "min_data_in_leaf": 60,
+        "num_boost_round": 80,
+        "num_leaves": 7
+      }
+    },
+    "protectedPeriods": [
+      "calibration",
+      "test"
+    ],
+    "schemaVersion": "alternative-price-model-design-v1",
+    "seed": 42,
+    "selectionRule": "Lowest aggregate earlier-fold MAE among variants improving at least two folds and aggregate MAE; freeze before later development comparison. Otherwise persistence.",
+    "walkForwardFractions": [
+      0.4,
+      0.6,
+      0.8,
+      1.0
+    ]
+  },
+  "designSha256": "6087dd2c1283e979651e12d8f4ca37ad5ded22e10d964833422ceecc0b5c0b96",
+  "earliestHistoricalDeploymentSlot": 1602,
+  "featureCodeSha256": "95fa1f0b67f6b321ff8bd3cb3c59be748efeffca46078312c34729c0504e5273",
+  "featureSchema": "causal-price-extended-v1",
+  "folds": [
+    {
+      "training": {
+        "boundaryRule": "origin >= partition start and origin + 6 < partition end",
+        "firstOriginSlot": 168,
+        "lastOriginSlot": 505,
+        "lastTargetSlot": 511,
+        "originCount": 1013,
+        "partition": "fold-1-train",
+        "sampleCount": 6078,
+        "skippedOriginsWithMissingHistoryOrLabels": 1
+      },
+      "validation": {
+        "boundaryRule": "origin >= partition start and origin + 6 < partition end",
+        "firstOriginSlot": 512,
+        "lastOriginSlot": 761,
+        "lastTargetSlot": 767,
+        "originCount": 750,
+        "partition": "fold-1-validation",
+        "sampleCount": 4500,
+        "skippedOriginsWithMissingHistoryOrLabels": 0
+      }
+    },
+    {
+      "training": {
+        "boundaryRule": "origin >= partition start and origin + 6 < partition end",
+        "firstOriginSlot": 168,
+        "lastOriginSlot": 761,
+        "lastTargetSlot": 767,
+        "originCount": 1781,
+        "partition": "fold-2-train",
+        "sampleCount": 10686,
+        "skippedOriginsWithMissingHistoryOrLabels": 1
+      },
+      "validation": {
+        "boundaryRule": "origin >= partition start and origin + 6 < partition end",
+        "firstOriginSlot": 768,
+        "lastOriginSlot": 1017,
+        "lastTargetSlot": 1023,
+        "originCount": 750,
+        "partition": "fold-2-validation",
+        "sampleCount": 4500,
+        "skippedOriginsWithMissingHistoryOrLabels": 0
+      }
+    },
+    {
+      "training": {
+        "boundaryRule": "origin >= partition start and origin + 6 < partition end",
+        "firstOriginSlot": 168,
+        "lastOriginSlot": 1017,
+        "lastTargetSlot": 1023,
+        "originCount": 2549,
+        "partition": "fold-3-train",
+        "sampleCount": 15294,
+        "skippedOriginsWithMissingHistoryOrLabels": 1
+      },
+      "validation": {
+        "boundaryRule": "origin >= partition start and origin + 6 < partition end",
+        "firstOriginSlot": 1024,
+        "lastOriginSlot": 1274,
+        "lastTargetSlot": 1280,
+        "originCount": 753,
+        "partition": "fold-3-validation",
+        "sampleCount": 4518,
+        "skippedOriginsWithMissingHistoryOrLabels": 0
+      }
+    }
+  ],
+  "frozenSelection": "lightgbm-reference-weight-0.5-gate-0",
+  "implementationSha256": {
+    "alternative_models.py": "664ed8373650025c5c4a0f101c49c7870fc4ec792eb891e9577ceb3f13b650ea",
+    "compare_models.py": "df74b1062bfba9f3180435e08b320ee5aa044d4da35f652a1a36c5ef9ace4d77"
+  },
+  "laterValidationSummary": {
+    "boundaryRule": "origin >= partition start and origin + 6 < partition end",
+    "firstOriginSlot": 1281,
+    "lastOriginSlot": 1595,
+    "lastTargetSlot": 1601,
+    "originCount": 945,
+    "partition": "validation",
+    "sampleCount": 5670,
+    "skippedOriginsWithMissingHistoryOrLabels": 0
+  },
+  "limitations": [
+    "Earlier-fold scores are model-selection scores, not independent performance estimates.",
+    "The later development period was inspected before this design; all later gains are exploratory.",
+    "Many alternatives have been compared on these development periods; selection optimism is expected.",
+    "Price-change classifier probabilities are not calibrated or interruption-risk estimates.",
+    "Only one region, one instance type and three AZ source series are represented.",
+    "No final-test, scheduling-cost or statistical-significance claim is made.",
+    "Fitted estimators are not serialized; this report and per-variant predictions are reproducible from the frozen recipe."
+  ],
+  "originUtc": "2026-07-27T00:00:00Z",
+  "packageVersions": {
+    "lightgbm": "4.7.0",
+    "numpy": "2.5.4",
+    "scikit-learn": "1.9.1",
+    "scipy": "1.18.1",
+    "threadpoolctl": "3.7.0"
+  },
+  "protectedFromSlot": 1602,
+  "provisionalDevelopmentPass": true,
+  "pythonVersion": "3.12.3",
+  "recommendation": "CANDIDATE_FOR_FROZEN_FINAL_EVALUATION",
+  "schemaVersion": "alternative-price-model-results-v1",
+  "selectedLaterDevelopment": {
+    "changedTargetCount": 3074,
+    "maeImprovementPct": 1.8884614633558974,
+    "ml": {
+      "mae": 0.0006174970659997673,
+      "rmse": 0.0009922522792977456,
+      "sampleCount": 5670
+    },
+    "note": "Lower MAE is better",
+    "persistence": {
+      "mae": 0.0006293827160493826,
+      "rmse": 0.001014334648694131,
+      "sampleCount": 5670
+    },
+    "sampleCount": 5670
+  },
+  "test": {
+    "status": "RESERVED_NOT_EVALUATED"
+  },
+  "trainingSummary": {
+    "boundaryRule": "origin >= partition start and origin + 6 < partition end",
+    "firstOriginSlot": 168,
+    "lastOriginSlot": 1274,
+    "lastTargetSlot": 1280,
+    "originCount": 3320,
+    "partition": "train",
+    "sampleCount": 19920,
+    "skippedOriginsWithMissingHistoryOrLabels": 1
+  },
+  "variants": [
+    {
+      "changeThreshold": 0.0,
+      "correctionWeight": 0.5,
+      "earlier": {
+        "folds": [
+          {
+            "changedTargetCount": 2199,
+            "maeImprovementPct": -0.19915210089942095,
+            "ml": {
+              "mae": 0.0003954526536248822,
+              "rmse": 0.0007190661524916118,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00039466666666666583,
+              "rmse": 0.0007342237019086508,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2154,
+            "maeImprovementPct": 6.394542319727076,
+            "ml": {
+              "mae": 0.00038898267969357856,
+              "rmse": 0.000709701266187713,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0004155555555555555,
+              "rmse": 0.0007523681132117295,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2029,
+            "maeImprovementPct": 3.1231050549400763,
+            "ml": {
+              "mae": 0.00024946122084790336,
+              "rmse": 0.0005297004079578229,
+              "sampleCount": 4518
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0002575033200531209,
+              "rmse": 0.0005573883005357648,
+              "sampleCount": 4518
+            },
+            "sampleCount": 4518
+          }
+        ],
+        "improvingFolds": 2,
+        "overall": {
+          "changedTargetCount": 6382,
+          "maeImprovementPct": 3.1682788762859255,
+          "ml": {
+            "mae": 0.00034450545907115706,
+            "rmse": 0.0006584584525066281,
+            "sampleCount": 13518
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0003557774818760169,
+            "rmse": 0.0006868235484993151,
+            "sampleCount": 13518
+          },
+          "sampleCount": 13518
+        }
+      },
+      "eligibleForSelection": true,
+      "family": "lightgbm-reference",
+      "id": "lightgbm-reference-weight-0.5-gate-0",
+      "laterDevelopment": {
+        "byHorizon": {
+          "1": {
+            "changedTargetCount": 158,
+            "maeImprovementPct": 0.0,
+            "ml": {
+              "mae": 0.00018031746031746033,
+              "rmse": 0.0005188917779736708,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00018031746031746033,
+              "rmse": 0.0005188917779736708,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "2": {
+            "changedTargetCount": 317,
+            "maeImprovementPct": 0.0,
+            "ml": {
+              "mae": 0.00036137566137566137,
+              "rmse": 0.0007341770038729576,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00036137566137566137,
+              "rmse": 0.0007341770038729576,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "3": {
+            "changedTargetCount": 474,
+            "maeImprovementPct": -0.13473991478646635,
+            "ml": {
+              "mae": 0.0005405156701643659,
+              "rmse": 0.0008960444056747189,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0005397883597883598,
+              "rmse": 0.0008972444589116274,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "4": {
+            "changedTargetCount": 608,
+            "maeImprovementPct": 0.6396568326692206,
+            "ml": {
+              "mae": 0.0007158150436859131,
+              "rmse": 0.001062406413991869,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0007204232804232804,
+              "rmse": 0.001068639049440651,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "5": {
+            "changedTargetCount": 715,
+            "maeImprovementPct": 2.639116671149838,
+            "ml": {
+              "mae": 0.0008752176760619916,
+              "rmse": 0.0011898733371410342,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0008989417989417989,
+              "rmse": 0.0012296556062788109,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "6": {
+            "changedTargetCount": 802,
+            "maeImprovementPct": 4.0642393238625,
+            "ml": {
+              "mae": 0.001031740884393212,
+              "rmse": 0.0013235261389537092,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0010754497354497354,
+              "rmse": 0.0013805412633797584,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          }
+        },
+        "byPool": [
+          {
+            "identity": {
+              "availability_zone": "eu-north-1a",
+              "gpu_type": "NVIDIA T4",
+              "instance_type": "g4dn.xlarge",
+              "product_description": "Linux/UNIX",
+              "region": "eu-north-1",
+              "resource_type": "GPU"
+            },
+            "metrics": {
+              "changedTargetCount": 986,
+              "maeImprovementPct": 1.369810309726871,
+              "ml": {
+                "mae": 0.000558017258390524,
+                "rmse": 0.0009027439224883568,
+                "sampleCount": 1890
+              },
+              "note": "Lower MAE is better",
+              "persistence": {
+                "mae": 0.0005657671957671956,
+                "rmse": 0.000918092685895155,
+                "sampleCount": 1890
+              },
+              "sampleCount": 1890
+            }
+          },
+          {
+            "identity": {
+              "availability_zone": "eu-north-1b",
+              "gpu_type": "NVIDIA T4",
+              "instance_type": "g4dn.xlarge",
+              "product_description": "Linux/UNIX",
+              "region": "eu-north-1",
+              "resource_type": "GPU"
+            },
+            "metrics": {
+              "changedTargetCount": 986,
+              "maeImprovementPct": 2.7717859400887215,
+              "ml": {
+                "mae": 0.0005924747837714277,
+                "rmse": 0.0009795117158265135,
+                "sampleCount": 1890
+              },
+              "note": "Lower MAE is better",
+              "persistence": {
+                "mae": 0.0006093650793650795,
+                "rmse": 0.0010091040606850247,
+                "sampleCount": 1890
+              },
+              "sampleCount": 1890
+            }
+          },
+          {
+            "identity": {
+              "availability_zone": "eu-north-1c",
+              "gpu_type": "NVIDIA T4",
+              "instance_type": "g4dn.xlarge",
+              "product_description": "Linux/UNIX",
+              "region": "eu-north-1",
+              "resource_type": "GPU"
+            },
+            "metrics": {
+              "changedTargetCount": 1102,
+              "maeImprovementPct": 1.5450872267295572,
+              "ml": {
+                "mae": 0.0007019991558373504,
+                "rmse": 0.001085957626375748,
+                "sampleCount": 1890
+              },
+              "note": "Lower MAE is better",
+              "persistence": {
+                "mae": 0.0007130158730158729,
+                "rmse": 0.001106995552583276,
+                "sampleCount": 1890
+              },
+              "sampleCount": 1890
+            }
+          }
+        ],
+        "byPriceMovement": {
+          "CHANGED": {
+            "changedTargetCount": 3074,
+            "maeImprovementPct": 2.7273229963766976,
+            "ml": {
+              "mae": 0.0011292364188520822,
+              "rmse": 0.0013470554116716276,
+              "sampleCount": 3074
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0011608978529603121,
+              "rmse": 0.0013775927822764211,
+              "sampleCount": 3074
+            },
+            "sampleCount": 3074
+          },
+          "UNCHANGED": {
+            "changedTargetCount": 0,
+            "maeImprovementPct": null,
+            "ml": {
+              "mae": 1.1531437853382366e-05,
+              "rmse": 4.176868812585561e-05,
+              "sampleCount": 2596
+            },
+            "note": "Improvement is undefined when persistence MAE is zero",
+            "persistence": {
+              "mae": 0.0,
+              "rmse": 0.0,
+              "sampleCount": 2596
+            },
+            "sampleCount": 2596
+          }
+        },
+        "byRegion": {
+          "eu-north-1": {
+            "changedTargetCount": 3074,
+            "maeImprovementPct": 1.8884614633558974,
+            "ml": {
+              "mae": 0.0006174970659997673,
+              "rmse": 0.0009922522792977456,
+              "sampleCount": 5670
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0006293827160493826,
+              "rmse": 0.001014334648694131,
+              "sampleCount": 5670
+            },
+            "sampleCount": 5670
+          }
+        },
+        "byResourceType": {
+          "GPU": {
+            "changedTargetCount": 3074,
+            "maeImprovementPct": 1.8884614633558974,
+            "ml": {
+              "mae": 0.0006174970659997673,
+              "rmse": 0.0009922522792977456,
+              "sampleCount": 5670
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0006293827160493826,
+              "rmse": 0.001014334648694131,
+              "sampleCount": 5670
+            },
+            "sampleCount": 5670
+          }
+        },
+        "overall": {
+          "changedTargetCount": 3074,
+          "maeImprovementPct": 1.8884614633558974,
+          "ml": {
+            "mae": 0.0006174970659997673,
+            "rmse": 0.0009922522792977456,
+            "sampleCount": 5670
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0006293827160493826,
+            "rmse": 0.001014334648694131,
+            "sampleCount": 5670
+          },
+          "sampleCount": 5670
+        }
+      }
+    },
+    {
+      "changeThreshold": 0.0,
+      "correctionWeight": 1.0,
+      "earlier": {
+        "folds": [
+          {
+            "changedTargetCount": 2199,
+            "maeImprovementPct": -7.81900529438089,
+            "ml": {
+              "mae": 0.000425525674228489,
+              "rmse": 0.0007433727426659455,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00039466666666666583,
+              "rmse": 0.0007342237019086508,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2154,
+            "maeImprovementPct": 10.262852719434191,
+            "ml": {
+              "mae": 0.0003729077009214623,
+              "rmse": 0.000679632165560274,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0004155555555555555,
+              "rmse": 0.0007523681132117295,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2029,
+            "maeImprovementPct": 4.147115922642185,
+            "ml": {
+              "mae": 0.00024682435886586566,
+              "rmse": 0.0005103250565732877,
+              "sampleCount": 4518
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0002575033200531209,
+              "rmse": 0.0005573883005357648,
+              "sampleCount": 4518
+            },
+            "sampleCount": 4518
+          }
+        ],
+        "improvingFolds": 2,
+        "overall": {
+          "changedTargetCount": 6382,
+          "maeImprovementPct": 2.1062369208058014,
+          "ml": {
+            "mae": 0.00034828396519683106,
+            "rmse": 0.0006517354444518659,
+            "sampleCount": 13518
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0003557774818760169,
+            "rmse": 0.0006868235484993151,
+            "sampleCount": 13518
+          },
+          "sampleCount": 13518
+        }
+      },
+      "eligibleForSelection": true,
+      "family": "lightgbm-reference",
+      "id": "lightgbm-reference-weight-1-gate-0",
+      "laterDevelopment": {
+        "byHorizon": {
+          "1": {
+            "changedTargetCount": 158,
+            "maeImprovementPct": 0.0,
+            "ml": {
+              "mae": 0.00018031746031746033,
+              "rmse": 0.0005188917779736708,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00018031746031746033,
+              "rmse": 0.0005188917779736708,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "2": {
+            "changedTargetCount": 317,
+            "maeImprovementPct": 0.0,
+            "ml": {
+              "mae": 0.00036137566137566137,
+              "rmse": 0.0007341770038729576,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00036137566137566137,
+              "rmse": 0.0007341770038729576,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "3": {
+            "changedTargetCount": 474,
+            "maeImprovementPct": -0.286747637851812,
+            "ml": {
+              "mae": 0.000541336190159452,
+              "rmse": 0.0008955492807295812,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0005397883597883598,
+              "rmse": 0.0008972444589116274,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "4": {
+            "changedTargetCount": 608,
+            "maeImprovementPct": 1.2477141942107204,
+            "ml": {
+              "mae": 0.0007114344568950406,
+              "rmse": 0.00105657384226514,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0007204232804232804,
+              "rmse": 0.001068639049440651,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "5": {
+            "changedTargetCount": 715,
+            "maeImprovementPct": 3.9124516981425725,
+            "ml": {
+              "mae": 0.0008637711352637871,
+              "rmse": 0.0011671411819709127,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0008989417989417989,
+              "rmse": 0.0012296556062788109,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "6": {
+            "changedTargetCount": 802,
+            "maeImprovementPct": 6.241360412339913,
+            "ml": {
+              "mae": 0.0010083270414067613,
+              "rmse": 0.0012926143493828478,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0010754497354497354,
+              "rmse": 0.0013805412633797584,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          }
+        },
+        "byPool": [
+          {
+            "identity": {
+              "availability_zone": "eu-north-1a",
+              "gpu_type": "NVIDIA T4",
+              "instance_type": "g4dn.xlarge",
+              "product_description": "Linux/UNIX",
+              "region": "eu-north-1",
+              "resource_type": "GPU"
+            },
+            "metrics": {
+              "changedTargetCount": 986,
+              "maeImprovementPct": 1.9819618498915004,
+              "ml": {
+                "mae": 0.0005545539057878889,
+                "rmse": 0.0008983331862516785,
+                "sampleCount": 1890
+              },
+              "note": "Lower MAE is better",
+              "persistence": {
+                "mae": 0.0005657671957671956,
+                "rmse": 0.000918092685895155,
+                "sampleCount": 1890
+              },
+              "sampleCount": 1890
+            }
+          },
+          {
+            "identity": {
+              "availability_zone": "eu-north-1b",
+              "gpu_type": "NVIDIA T4",
+              "instance_type": "g4dn.xlarge",
+              "product_description": "Linux/UNIX",
+              "region": "eu-north-1",
+              "resource_type": "GPU"
+            },
+            "metrics": {
+              "changedTargetCount": 986,
+              "maeImprovementPct": 4.440396083399077,
+              "ml": {
+                "mae": 0.0005823068562473508,
+                "rmse": 0.0009603166277253245,
+                "sampleCount": 1890
+              },
+              "note": "Lower MAE is better",
+              "persistence": {
+                "mae": 0.0006093650793650795,
+                "rmse": 0.0010091040606850247,
+                "sampleCount": 1890
+              },
+              "sampleCount": 1890
+            }
+          },
+          {
+            "identity": {
+              "availability_zone": "eu-north-1c",
+              "gpu_type": "NVIDIA T4",
+              "instance_type": "g4dn.xlarge",
+              "product_description": "Linux/UNIX",
+              "region": "eu-north-1",
+              "resource_type": "GPU"
+            },
+            "metrics": {
+              "changedTargetCount": 1102,
+              "maeImprovementPct": 2.327530559991013,
+              "ml": {
+                "mae": 0.0006964202106738418,
+                "rmse": 0.001072676713998206,
+                "sampleCount": 1890
+              },
+              "note": "Lower MAE is better",
+              "persistence": {
+                "mae": 0.0007130158730158729,
+                "rmse": 0.001106995552583276,
+                "sampleCount": 1890
+              },
+              "sampleCount": 1890
+            }
+          }
+        ],
+        "byPriceMovement": {
+          "CHANGED": {
+            "changedTargetCount": 3074,
+            "maeImprovementPct": 4.583595441198044,
+            "ml": {
+              "mae": 0.0011076869918950573,
+              "rmse": 0.0013284329374702968,
+              "sampleCount": 3074
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0011608978529603121,
+              "rmse": 0.0013775927822764211,
+              "sampleCount": 3074
+            },
+            "sampleCount": 3074
+          },
+          "UNCHANGED": {
+            "changedTargetCount": 0,
+            "maeImprovementPct": null,
+            "ml": {
+              "mae": 2.306287570676341e-05,
+              "rmse": 8.353737625170973e-05,
+              "sampleCount": 2596
+            },
+            "note": "Improvement is undefined when persistence MAE is zero",
+            "persistence": {
+              "mae": 0.0,
+              "rmse": 0.0,
+              "sampleCount": 2596
+            },
+            "sampleCount": 2596
+          }
+        },
+        "byRegion": {
+          "eu-north-1": {
+            "changedTargetCount": 3074,
+            "maeImprovementPct": 2.905872375156529,
+            "ml": {
+              "mae": 0.0006110936575696937,
+              "rmse": 0.000979769679016591,
+              "sampleCount": 5670
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0006293827160493826,
+              "rmse": 0.001014334648694131,
+              "sampleCount": 5670
+            },
+            "sampleCount": 5670
+          }
+        },
+        "byResourceType": {
+          "GPU": {
+            "changedTargetCount": 3074,
+            "maeImprovementPct": 2.905872375156529,
+            "ml": {
+              "mae": 0.0006110936575696937,
+              "rmse": 0.000979769679016591,
+              "sampleCount": 5670
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0006293827160493826,
+              "rmse": 0.001014334648694131,
+              "sampleCount": 5670
+            },
+            "sampleCount": 5670
+          }
+        },
+        "overall": {
+          "changedTargetCount": 3074,
+          "maeImprovementPct": 2.905872375156529,
+          "ml": {
+            "mae": 0.0006110936575696937,
+            "rmse": 0.000979769679016591,
+            "sampleCount": 5670
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0006293827160493826,
+            "rmse": 0.001014334648694131,
+            "sampleCount": 5670
+          },
+          "sampleCount": 5670
+        }
+      }
+    },
+    {
+      "changeThreshold": 0.7,
+      "correctionWeight": 0.5,
+      "earlier": {
+        "folds": [
+          {
+            "changedTargetCount": 2199,
+            "maeImprovementPct": -2.5387230743074944,
+            "ml": {
+              "mae": 0.0004046861603999327,
+              "rmse": 0.000722499366212895,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00039466666666666583,
+              "rmse": 0.0007342237019086508,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2154,
+            "maeImprovementPct": 7.2798743489156506,
+            "ml": {
+              "mae": 0.0003853036332611727,
+              "rmse": 0.0007089800971049171,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0004155555555555555,
+              "rmse": 0.0007523681132117295,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2029,
+            "maeImprovementPct": -0.3139344365206944,
+            "ml": {
+              "mae": 0.00025831171164995175,
+              "rmse": 0.000529516490031898,
+              "sampleCount": 4518
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0002575033200531209,
+              "rmse": 0.0005573883005357648,
+              "sampleCount": 4518
+            },
+            "sampleCount": 4518
+          }
+        ],
+        "improvingFolds": 1,
+        "overall": {
+          "changedTargetCount": 6382,
+          "maeImprovementPct": 1.8171417492938726,
+          "ml": {
+            "mae": 0.00034931250071826135,
+            "rmse": 0.0006594007731314524,
+            "sampleCount": 13518
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0003557774818760169,
+            "rmse": 0.0006868235484993151,
+            "sampleCount": 13518
+          },
+          "sampleCount": 13518
+        }
+      },
+      "eligibleForSelection": false,
+      "family": "two-stage",
+      "id": "two-stage-weight-0.5-gate-0.7",
+      "laterDevelopment": {
+        "byHorizon": {
+          "1": {
+            "changedTargetCount": 158,
+            "maeImprovementPct": 0.0,
+            "ml": {
+              "mae": 0.00018031746031746033,
+              "rmse": 0.0005188917779736708,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00018031746031746033,
+              "rmse": 0.0005188917779736708,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "2": {
+            "changedTargetCount": 317,
+            "maeImprovementPct": 0.0,
+            "ml": {
+              "mae": 0.00036137566137566137,
+              "rmse": 0.0007341770038729576,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00036137566137566137,
+              "rmse": 0.0007341770038729576,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "3": {
+            "changedTargetCount": 474,
+            "maeImprovementPct": 0.1977295084980597,
+            "ml": {
+              "mae": 0.0005387210389176206,
+              "rmse": 0.000894292386121476,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0005397883597883598,
+              "rmse": 0.0008972444589116274,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "4": {
+            "changedTargetCount": 608,
+            "maeImprovementPct": 0.7242004861425174,
+            "ml": {
+              "mae": 0.0007152059715241711,
+              "rmse": 0.0010596948528277098,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0007204232804232804,
+              "rmse": 0.001068639049440651,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "5": {
+            "changedTargetCount": 715,
+            "maeImprovementPct": 1.4396615380021802,
+            "ml": {
+              "mae": 0.0008860000796134089,
+              "rmse": 0.0012124614045808855,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0008989417989417989,
+              "rmse": 0.0012296556062788109,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "6": {
+            "changedTargetCount": 802,
+            "maeImprovementPct": 2.4434132800890462,
+            "ml": {
+              "mae": 0.001049172053793074,
+              "rmse": 0.0013538891115501088,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0010754497354497354,
+              "rmse": 0.0013805412633797584,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          }
+        },
+        "byPool": [
+          {
+            "identity": {
+              "availability_zone": "eu-north-1a",
+              "gpu_type": "NVIDIA T4",
+              "instance_type": "g4dn.xlarge",
+              "product_description": "Linux/UNIX",
+              "region": "eu-north-1",
+              "resource_type": "GPU"
+            },
+            "metrics": {
+              "changedTargetCount": 986,
+              "maeImprovementPct": -0.25360389785035864,
+              "ml": {
+                "mae": 0.0005672020034284199,
+                "rmse": 0.0009153538859921503,
+                "sampleCount": 1890
+              },
+              "note": "Lower MAE is better",
+              "persistence": {
+                "mae": 0.0005657671957671956,
+                "rmse": 0.000918092685895155,
+                "sampleCount": 1890
+              },
+              "sampleCount": 1890
+            }
+          },
+          {
+            "identity": {
+              "availability_zone": "eu-north-1b",
+              "gpu_type": "NVIDIA T4",
+              "instance_type": "g4dn.xlarge",
+              "product_description": "Linux/UNIX",
+              "region": "eu-north-1",
+              "resource_type": "GPU"
+            },
+            "metrics": {
+              "changedTargetCount": 986,
+              "maeImprovementPct": 3.0654617422987687,
+              "ml": {
+                "mae": 0.0005906852259862144,
+                "rmse": 0.0009876473278790266,
+                "sampleCount": 1890
+              },
+              "note": "Lower MAE is better",
+              "persistence": {
+                "mae": 0.0006093650793650795,
+                "rmse": 0.0010091040606850247,
+                "sampleCount": 1890
+              },
+              "sampleCount": 1890
+            }
+          },
+          {
+            "identity": {
+              "availability_zone": "eu-north-1c",
+              "gpu_type": "NVIDIA T4",
+              "instance_type": "g4dn.xlarge",
+              "product_description": "Linux/UNIX",
+              "region": "eu-north-1",
+              "resource_type": "GPU"
+            },
+            "metrics": {
+              "changedTargetCount": 1102,
+              "maeImprovementPct": 0.7723488169367185,
+              "ml": {
+                "mae": 0.0007075089033560638,
+                "rmse": 0.0010971360502431107,
+                "sampleCount": 1890
+              },
+              "note": "Lower MAE is better",
+              "persistence": {
+                "mae": 0.0007130158730158729,
+                "rmse": 0.001106995552583276,
+                "sampleCount": 1890
+              },
+              "sampleCount": 1890
+            }
+          }
+        ],
+        "byPriceMovement": {
+          "CHANGED": {
+            "changedTargetCount": 3074,
+            "maeImprovementPct": 1.944943582528854,
+            "ml": {
+              "mae": 0.0011383190446694453,
+              "rmse": 0.0013605852062336847,
+              "sampleCount": 3074
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0011608978529603121,
+              "rmse": 0.0013775927822764211,
+              "sampleCount": 3074
+            },
+            "sampleCount": 3074
+          },
+          "UNCHANGED": {
+            "changedTargetCount": 0,
+            "maeImprovementPct": null,
+            "ml": {
+              "mae": 1.0171782597359295e-05,
+              "rmse": 6.689641109189568e-05,
+              "sampleCount": 2596
+            },
+            "note": "Improvement is undefined when persistence MAE is zero",
+            "persistence": {
+              "mae": 0.0,
+              "rmse": 0.0,
+              "sampleCount": 2596
+            },
+            "sampleCount": 2596
+          }
+        },
+        "byRegion": {
+          "eu-north-1": {
+            "changedTargetCount": 3074,
+            "maeImprovementPct": 1.20499100665191,
+            "ml": {
+              "mae": 0.000621798710923566,
+              "rmse": 0.0010028339001068533,
+              "sampleCount": 5670
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0006293827160493826,
+              "rmse": 0.001014334648694131,
+              "sampleCount": 5670
+            },
+            "sampleCount": 5670
+          }
+        },
+        "byResourceType": {
+          "GPU": {
+            "changedTargetCount": 3074,
+            "maeImprovementPct": 1.20499100665191,
+            "ml": {
+              "mae": 0.000621798710923566,
+              "rmse": 0.0010028339001068533,
+              "sampleCount": 5670
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0006293827160493826,
+              "rmse": 0.001014334648694131,
+              "sampleCount": 5670
+            },
+            "sampleCount": 5670
+          }
+        },
+        "overall": {
+          "changedTargetCount": 3074,
+          "maeImprovementPct": 1.20499100665191,
+          "ml": {
+            "mae": 0.000621798710923566,
+            "rmse": 0.0010028339001068533,
+            "sampleCount": 5670
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0006293827160493826,
+            "rmse": 0.001014334648694131,
+            "sampleCount": 5670
+          },
+          "sampleCount": 5670
+        }
+      }
+    },
+    {
+      "changeThreshold": 0.9,
+      "correctionWeight": 0.5,
+      "earlier": {
+        "folds": [
+          {
+            "changedTargetCount": 2199,
+            "maeImprovementPct": -0.11903548925139082,
+            "ml": {
+              "mae": 0.00039513646006424465,
+              "rmse": 0.0007318440888232085,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00039466666666666583,
+              "rmse": 0.0007342237019086508,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2154,
+            "maeImprovementPct": 2.229493520464894,
+            "ml": {
+              "mae": 0.0004062907713705125,
+              "rmse": 0.0007433872090116576,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0004155555555555555,
+              "rmse": 0.0007523681132117295,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2029,
+            "maeImprovementPct": 1.5542360653934382,
+            "ml": {
+              "mae": 0.0002535011105832698,
+              "rmse": 0.0005428100078313978,
+              "sampleCount": 4518
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0002575033200531209,
+              "rmse": 0.0005573883005357648,
+              "sampleCount": 4518
+            },
+            "sampleCount": 4518
+          }
+        ],
+        "improvingFolds": 2,
+        "overall": {
+          "changedTargetCount": 6382,
+          "maeImprovementPct": 1.1988905253956152,
+          "ml": {
+            "mae": 0.0003515120993543142,
+            "rmse": 0.0006787730737012718,
+            "sampleCount": 13518
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0003557774818760169,
+            "rmse": 0.0006868235484993151,
+            "sampleCount": 13518
+          },
+          "sampleCount": 13518
+        }
+      },
+      "eligibleForSelection": true,
+      "family": "two-stage",
+      "id": "two-stage-weight-0.5-gate-0.9",
+      "laterDevelopment": {
+        "byHorizon": {
+          "1": {
+            "changedTargetCount": 158,
+            "maeImprovementPct": 0.0,
+            "ml": {
+              "mae": 0.00018031746031746033,
+              "rmse": 0.0005188917779736708,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00018031746031746033,
+              "rmse": 0.0005188917779736708,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "2": {
+            "changedTargetCount": 317,
+            "maeImprovementPct": 0.0,
+            "ml": {
+              "mae": 0.00036137566137566137,
+              "rmse": 0.0007341770038729576,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00036137566137566137,
+              "rmse": 0.0007341770038729576,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "3": {
+            "changedTargetCount": 474,
+            "maeImprovementPct": 0.0,
+            "ml": {
+              "mae": 0.0005397883597883598,
+              "rmse": 0.0008972444589116274,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0005397883597883598,
+              "rmse": 0.0008972444589116274,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "4": {
+            "changedTargetCount": 608,
+            "maeImprovementPct": 0.0,
+            "ml": {
+              "mae": 0.0007204232804232804,
+              "rmse": 0.001068639049440651,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0007204232804232804,
+              "rmse": 0.001068639049440651,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "5": {
+            "changedTargetCount": 715,
+            "maeImprovementPct": 0.13988330513885106,
+            "ml": {
+              "mae": 0.0008976843294421645,
+              "rmse": 0.0012265550257209554,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0008989417989417989,
+              "rmse": 0.0012296556062788109,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "6": {
+            "changedTargetCount": 802,
+            "maeImprovementPct": 0.3500522291139913,
+            "ml": {
+              "mae": 0.001071685099677793,
+              "rmse": 0.0013778791812317282,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0010754497354497354,
+              "rmse": 0.0013805412633797584,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          }
+        },
+        "byPool": [
+          {
+            "identity": {
+              "availability_zone": "eu-north-1a",
+              "gpu_type": "NVIDIA T4",
+              "instance_type": "g4dn.xlarge",
+              "product_description": "Linux/UNIX",
+              "region": "eu-north-1",
+              "resource_type": "GPU"
+            },
+            "metrics": {
+              "changedTargetCount": 986,
+              "maeImprovementPct": -0.813026815246562,
+              "ml": {
+                "mae": 0.0005703670347806515,
+                "rmse": 0.0009222892592790905,
+                "sampleCount": 1890
+              },
+              "note": "Lower MAE is better",
+              "persistence": {
+                "mae": 0.0005657671957671956,
+                "rmse": 0.000918092685895155,
+                "sampleCount": 1890
+              },
+              "sampleCount": 1890
+            }
+          },
+          {
+            "identity": {
+              "availability_zone": "eu-north-1b",
+              "gpu_type": "NVIDIA T4",
+              "instance_type": "g4dn.xlarge",
+              "product_description": "Linux/UNIX",
+              "region": "eu-north-1",
+              "resource_type": "GPU"
+            },
+            "metrics": {
+              "changedTargetCount": 986,
+              "maeImprovementPct": 0.9941007785843304,
+              "ml": {
+                "mae": 0.0006033073763666902,
+                "rmse": 0.0010040546192472595,
+                "sampleCount": 1890
+              },
+              "note": "Lower MAE is better",
+              "persistence": {
+                "mae": 0.0006093650793650795,
+                "rmse": 0.0010091040606850247,
+                "sampleCount": 1890
+              },
+              "sampleCount": 1890
+            }
+          },
+          {
+            "identity": {
+              "availability_zone": "eu-north-1c",
+              "gpu_type": "NVIDIA T4",
+              "instance_type": "g4dn.xlarge",
+              "product_description": "Linux/UNIX",
+              "region": "eu-north-1",
+              "resource_type": "GPU"
+            },
+            "metrics": {
+              "changedTargetCount": 1102,
+              "maeImprovementPct": 0.14770900490618755,
+              "ml": {
+                "mae": 0.000711962684365018,
+                "rmse": 0.001104717960401675,
+                "sampleCount": 1890
+              },
+              "note": "Lower MAE is better",
+              "persistence": {
+                "mae": 0.0007130158730158729,
+                "rmse": 0.001106995552583276,
+                "sampleCount": 1890
+              },
+              "sampleCount": 1890
+            }
+          }
+        ],
+        "byPriceMovement": {
+          "CHANGED": {
+            "changedTargetCount": 3074,
+            "maeImprovementPct": 0.13299023375103744,
+            "ml": {
+              "mae": 0.0011593539721920494,
+              "rmse": 0.0013759227003321702,
+              "sampleCount": 3074
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0011608978529603121,
+              "rmse": 0.0013775927822764211,
+              "sampleCount": 3074
+            },
+            "sampleCount": 3074
+          },
+          "UNCHANGED": {
+            "changedTargetCount": 0,
+            "maeImprovementPct": null,
+            "ml": {
+              "mae": 0.0,
+              "rmse": 0.0,
+              "sampleCount": 2596
+            },
+            "note": "Improvement is undefined when persistence MAE is zero",
+            "persistence": {
+              "mae": 0.0,
+              "rmse": 0.0,
+              "sampleCount": 2596
+            },
+            "sampleCount": 2596
+          }
+        },
+        "byRegion": {
+          "eu-north-1": {
+            "changedTargetCount": 3074,
+            "maeImprovementPct": 0.1329902337510403,
+            "ml": {
+              "mae": 0.0006285456985041199,
+              "rmse": 0.001013104951497683,
+              "sampleCount": 5670
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0006293827160493826,
+              "rmse": 0.001014334648694131,
+              "sampleCount": 5670
+            },
+            "sampleCount": 5670
+          }
+        },
+        "byResourceType": {
+          "GPU": {
+            "changedTargetCount": 3074,
+            "maeImprovementPct": 0.1329902337510403,
+            "ml": {
+              "mae": 0.0006285456985041199,
+              "rmse": 0.001013104951497683,
+              "sampleCount": 5670
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0006293827160493826,
+              "rmse": 0.001014334648694131,
+              "sampleCount": 5670
+            },
+            "sampleCount": 5670
+          }
+        },
+        "overall": {
+          "changedTargetCount": 3074,
+          "maeImprovementPct": 0.1329902337510403,
+          "ml": {
+            "mae": 0.0006285456985041199,
+            "rmse": 0.001013104951497683,
+            "sampleCount": 5670
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0006293827160493826,
+            "rmse": 0.001014334648694131,
+            "sampleCount": 5670
+          },
+          "sampleCount": 5670
+        }
+      }
+    },
+    {
+      "changeThreshold": 0.0,
+      "correctionWeight": 0.5,
+      "earlier": {
+        "folds": [
+          {
+            "changedTargetCount": 2199,
+            "maeImprovementPct": -3.1505286192153887,
+            "ml": {
+              "mae": 0.00040710075295050254,
+              "rmse": 0.0007197017921385386,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00039466666666666583,
+              "rmse": 0.0007342237019086508,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2154,
+            "maeImprovementPct": 5.30616095960529,
+            "ml": {
+              "mae": 0.00039350550890119575,
+              "rmse": 0.0007155256717529894,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0004155555555555555,
+              "rmse": 0.0007523681132117295,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2029,
+            "maeImprovementPct": 0.23519667535467575,
+            "ml": {
+              "mae": 0.00025689768080542805,
+              "rmse": 0.0005293350945074944,
+              "sampleCount": 4518
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0002575033200531209,
+              "rmse": 0.0005573883005357648,
+              "sampleCount": 4518
+            },
+            "sampleCount": 4518
+          }
+        ],
+        "improvingFolds": 2,
+        "overall": {
+          "changedTargetCount": 6382,
+          "maeImprovementPct": 0.9566286810918102,
+          "ml": {
+            "mae": 0.0003523740124435247,
+            "rmse": 0.0006606860215752861,
+            "sampleCount": 13518
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0003557774818760169,
+            "rmse": 0.0006868235484993151,
+            "sampleCount": 13518
+          },
+          "sampleCount": 13518
+        }
+      },
+      "eligibleForSelection": true,
+      "family": "hist-gradient",
+      "id": "hist-gradient-weight-0.5-gate-0",
+      "laterDevelopment": {
+        "byHorizon": {
+          "1": {
+            "changedTargetCount": 158,
+            "maeImprovementPct": 0.0,
+            "ml": {
+              "mae": 0.00018031746031746033,
+              "rmse": 0.0005188917779736708,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00018031746031746033,
+              "rmse": 0.0005188917779736708,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "2": {
+            "changedTargetCount": 317,
+            "maeImprovementPct": -0.48958239049640523,
+            "ml": {
+              "mae": 0.0003631448929772965,
+              "rmse": 0.0007344172174964622,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00036137566137566137,
+              "rmse": 0.0007341770038729576,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "3": {
+            "changedTargetCount": 474,
+            "maeImprovementPct": 1.0207109945356803,
+            "ml": {
+              "mae": 0.0005342786806527762,
+              "rmse": 0.0008824308081574268,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0005397883597883598,
+              "rmse": 0.0008972444589116274,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "4": {
+            "changedTargetCount": 608,
+            "maeImprovementPct": 2.384506059993439,
+            "ml": {
+              "mae": 0.0007032447436439837,
+              "rmse": 0.001040059182941799,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0007204232804232804,
+              "rmse": 0.001068639049440651,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "5": {
+            "changedTargetCount": 715,
+            "maeImprovementPct": 1.1165919093410124,
+            "ml": {
+              "mae": 0.0008889042875451302,
+              "rmse": 0.0011997014706587703,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0008989417989417989,
+              "rmse": 0.0012296556062788109,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "6": {
+            "changedTargetCount": 802,
+            "maeImprovementPct": -0.7330483599394573,
+            "ml": {
+              "mae": 0.001083333302097423,
+              "rmse": 0.0013543261911850208,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0010754497354497354,
+              "rmse": 0.0013805412633797584,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          }
+        },
+        "byPool": [
+          {
+            "identity": {
+              "availability_zone": "eu-north-1a",
+              "gpu_type": "NVIDIA T4",
+              "instance_type": "g4dn.xlarge",
+              "product_description": "Linux/UNIX",
+              "region": "eu-north-1",
+              "resource_type": "GPU"
+            },
+            "metrics": {
+              "changedTargetCount": 986,
+              "maeImprovementPct": -0.3757124107381661,
+              "ml": {
+                "mae": 0.0005678928533375783,
+                "rmse": 0.0009101792031703566,
+                "sampleCount": 1890
+              },
+              "note": "Lower MAE is better",
+              "persistence": {
+                "mae": 0.0005657671957671956,
+                "rmse": 0.000918092685895155,
+                "sampleCount": 1890
+              },
+              "sampleCount": 1890
+            }
+          },
+          {
+            "identity": {
+              "availability_zone": "eu-north-1b",
+              "gpu_type": "NVIDIA T4",
+              "instance_type": "g4dn.xlarge",
+              "product_description": "Linux/UNIX",
+              "region": "eu-north-1",
+              "resource_type": "GPU"
+            },
+            "metrics": {
+              "changedTargetCount": 986,
+              "maeImprovementPct": 2.1768805119690215,
+              "ml": {
+                "mae": 0.0005960999297056365,
+                "rmse": 0.0009760648649416775,
+                "sampleCount": 1890
+              },
+              "note": "Lower MAE is better",
+              "persistence": {
+                "mae": 0.0006093650793650795,
+                "rmse": 0.0010091040606850247,
+                "sampleCount": 1890
+              },
+              "sampleCount": 1890
+            }
+          },
+          {
+            "identity": {
+              "availability_zone": "eu-north-1c",
+              "gpu_type": "NVIDIA T4",
+              "instance_type": "g4dn.xlarge",
+              "product_description": "Linux/UNIX",
+              "region": "eu-north-1",
+              "resource_type": "GPU"
+            },
+            "metrics": {
+              "changedTargetCount": 1102,
+              "maeImprovementPct": 0.05567511987824495,
+              "ml": {
+                "mae": 0.0007126189005738204,
+                "rmse": 0.0010909285053857828,
+                "sampleCount": 1890
+              },
+              "note": "Lower MAE is better",
+              "persistence": {
+                "mae": 0.0007130158730158729,
+                "rmse": 0.001106995552583276,
+                "sampleCount": 1890
+              },
+              "sampleCount": 1890
+            }
+          }
+        ],
+        "byPriceMovement": {
+          "CHANGED": {
+            "changedTargetCount": 3074,
+            "maeImprovementPct": 2.852699809976789,
+            "ml": {
+              "mae": 0.0011277809221148887,
+              "rmse": 0.0013489891192031518,
+              "sampleCount": 3074
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0011608978529603121,
+              "rmse": 0.0013775927822764211,
+              "sampleCount": 3074
+            },
+            "sampleCount": 3074
+          },
+          "UNCHANGED": {
+            "changedTargetCount": 0,
+            "maeImprovementPct": null,
+            "ml": {
+              "mae": 3.081568854199858e-05,
+              "rmse": 9.141007420366259e-05,
+              "sampleCount": 2596
+            },
+            "note": "Improvement is undefined when persistence MAE is zero",
+            "persistence": {
+              "mae": 0.0,
+              "rmse": 0.0,
+              "sampleCount": 2596
+            },
+            "sampleCount": 2596
+          }
+        },
+        "byRegion": {
+          "eu-north-1": {
+            "changedTargetCount": 3074,
+            "maeImprovementPct": 0.6109936099255463,
+            "ml": {
+              "mae": 0.000625537227872345,
+              "rmse": 0.0009951974354067805,
+              "sampleCount": 5670
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0006293827160493826,
+              "rmse": 0.001014334648694131,
+              "sampleCount": 5670
+            },
+            "sampleCount": 5670
+          }
+        },
+        "byResourceType": {
+          "GPU": {
+            "changedTargetCount": 3074,
+            "maeImprovementPct": 0.6109936099255463,
+            "ml": {
+              "mae": 0.000625537227872345,
+              "rmse": 0.0009951974354067805,
+              "sampleCount": 5670
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0006293827160493826,
+              "rmse": 0.001014334648694131,
+              "sampleCount": 5670
+            },
+            "sampleCount": 5670
+          }
+        },
+        "overall": {
+          "changedTargetCount": 3074,
+          "maeImprovementPct": 0.6109936099255463,
+          "ml": {
+            "mae": 0.000625537227872345,
+            "rmse": 0.0009951974354067805,
+            "sampleCount": 5670
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0006293827160493826,
+            "rmse": 0.001014334648694131,
+            "sampleCount": 5670
+          },
+          "sampleCount": 5670
+        }
+      }
+    },
+    {
+      "changeThreshold": 0.5,
+      "correctionWeight": 0.5,
+      "earlier": {
+        "folds": [
+          {
+            "changedTargetCount": 2199,
+            "maeImprovementPct": -6.459723696977189,
+            "ml": {
+              "mae": 0.0004201610428574024,
+              "rmse": 0.0007233455599135773,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00039466666666666583,
+              "rmse": 0.0007342237019086508,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2154,
+            "maeImprovementPct": 9.077557861562328,
+            "ml": {
+              "mae": 0.0003778332595530632,
+              "rmse": 0.0006840119959574113,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0004155555555555555,
+              "rmse": 0.0007523681132117295,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2029,
+            "maeImprovementPct": -3.007124926008772,
+            "ml": {
+              "mae": 0.00026524676657573845,
+              "rmse": 0.0005132297420540798,
+              "sampleCount": 4518
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0002575033200531209,
+              "rmse": 0.0005573883005357648,
+              "sampleCount": 4518
+            },
+            "sampleCount": 4518
+          }
+        ],
+        "improvingFolds": 1,
+        "overall": {
+          "changedTargetCount": 6382,
+          "maeImprovementPct": 0.4166995418080173,
+          "ml": {
+            "mae": 0.00035429495873918343,
+            "rmse": 0.0006465002569045714,
+            "sampleCount": 13518
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0003557774818760169,
+            "rmse": 0.0006868235484993151,
+            "sampleCount": 13518
+          },
+          "sampleCount": 13518
+        }
+      },
+      "eligibleForSelection": false,
+      "family": "two-stage",
+      "id": "two-stage-weight-0.5-gate-0.5",
+      "laterDevelopment": {
+        "byHorizon": {
+          "1": {
+            "changedTargetCount": 158,
+            "maeImprovementPct": 0.0,
+            "ml": {
+              "mae": 0.00018031746031746033,
+              "rmse": 0.0005188917779736708,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00018031746031746033,
+              "rmse": 0.0005188917779736708,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "2": {
+            "changedTargetCount": 317,
+            "maeImprovementPct": -0.731609795795915,
+            "ml": {
+              "mae": 0.000364019521113908,
+              "rmse": 0.0007313992426157167,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00036137566137566137,
+              "rmse": 0.0007341770038729576,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "3": {
+            "changedTargetCount": 474,
+            "maeImprovementPct": 1.2290536678483692,
+            "ml": {
+              "mae": 0.0005331540711537624,
+              "rmse": 0.0008806326823961889,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0005397883597883598,
+              "rmse": 0.0008972444589116274,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "4": {
+            "changedTargetCount": 608,
+            "maeImprovementPct": 1.866198652018488,
+            "ml": {
+              "mae": 0.0007069787508751938,
+              "rmse": 0.0010391609307506993,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0007204232804232804,
+              "rmse": 0.001068639049440651,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "5": {
+            "changedTargetCount": 715,
+            "maeImprovementPct": 2.475277195160191,
+            "ml": {
+              "mae": 0.0008766904975948298,
+              "rmse": 0.0011924788244607697,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0008989417989417989,
+              "rmse": 0.0012296556062788109,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "6": {
+            "changedTargetCount": 802,
+            "maeImprovementPct": 3.464177751706357,
+            "ml": {
+              "mae": 0.0010381942449835008,
+              "rmse": 0.0013302818378861988,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0010754497354497354,
+              "rmse": 0.0013805412633797584,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          }
+        },
+        "byPool": [
+          {
+            "identity": {
+              "availability_zone": "eu-north-1a",
+              "gpu_type": "NVIDIA T4",
+              "instance_type": "g4dn.xlarge",
+              "product_description": "Linux/UNIX",
+              "region": "eu-north-1",
+              "resource_type": "GPU"
+            },
+            "metrics": {
+              "changedTargetCount": 986,
+              "maeImprovementPct": -0.18192110767805286,
+              "ml": {
+                "mae": 0.0005667964457166144,
+                "rmse": 0.0009126682529453755,
+                "sampleCount": 1890
+              },
+              "note": "Lower MAE is better",
+              "persistence": {
+                "mae": 0.0005657671957671956,
+                "rmse": 0.000918092685895155,
+                "sampleCount": 1890
+              },
+              "sampleCount": 1890
+            }
+          },
+          {
+            "identity": {
+              "availability_zone": "eu-north-1b",
+              "gpu_type": "NVIDIA T4",
+              "instance_type": "g4dn.xlarge",
+              "product_description": "Linux/UNIX",
+              "region": "eu-north-1",
+              "resource_type": "GPU"
+            },
+            "metrics": {
+              "changedTargetCount": 986,
+              "maeImprovementPct": 4.561063229868918,
+              "ml": {
+                "mae": 0.0005815715527944973,
+                "rmse": 0.000961203408882729,
+                "sampleCount": 1890
+              },
+              "note": "Lower MAE is better",
+              "persistence": {
+                "mae": 0.0006093650793650795,
+                "rmse": 0.0010091040606850247,
+                "sampleCount": 1890
+              },
+              "sampleCount": 1890
+            }
+          },
+          {
+            "identity": {
+              "availability_zone": "eu-north-1c",
+              "gpu_type": "NVIDIA T4",
+              "instance_type": "g4dn.xlarge",
+              "product_description": "Linux/UNIX",
+              "region": "eu-north-1",
+              "resource_type": "GPU"
+            },
+            "metrics": {
+              "changedTargetCount": 1102,
+              "maeImprovementPct": 1.6418426224007165,
+              "ml": {
+                "mae": 0.0007013092745082157,
+                "rmse": 0.0010810799552492462,
+                "sampleCount": 1890
+              },
+              "note": "Lower MAE is better",
+              "persistence": {
+                "mae": 0.0007130158730158729,
+                "rmse": 0.001106995552583276,
+                "sampleCount": 1890
+              },
+              "sampleCount": 1890
+            }
+          }
+        ],
+        "byPriceMovement": {
+          "CHANGED": {
+            "changedTargetCount": 3074,
+            "maeImprovementPct": 4.079045884287239,
+            "ml": {
+              "mae": 0.0011135442968683556,
+              "rmse": 0.0013377206388796054,
+              "sampleCount": 3074
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0011608978529603121,
+              "rmse": 0.0013775927822764211,
+              "sampleCount": 3074
+            },
+            "sampleCount": 3074
+          },
+          "UNCHANGED": {
+            "changedTargetCount": 0,
+            "maeImprovementPct": null,
+            "ml": {
+              "mae": 2.8064282524346655e-05,
+              "rmse": 0.00010475800993358679,
+              "sampleCount": 2596
+            },
+            "note": "Improvement is undefined when persistence MAE is zero",
+            "persistence": {
+              "mae": 0.0,
+              "rmse": 0.0,
+              "sampleCount": 2596
+            },
+            "sampleCount": 2596
+          }
+        },
+        "byRegion": {
+          "eu-north-1": {
+            "changedTargetCount": 3074,
+            "maeImprovementPct": 2.0374924058025603,
+            "ml": {
+              "mae": 0.0006165590910064425,
+              "rmse": 0.0009875237048334342,
+              "sampleCount": 5670
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0006293827160493826,
+              "rmse": 0.001014334648694131,
+              "sampleCount": 5670
+            },
+            "sampleCount": 5670
+          }
+        },
+        "byResourceType": {
+          "GPU": {
+            "changedTargetCount": 3074,
+            "maeImprovementPct": 2.0374924058025603,
+            "ml": {
+              "mae": 0.0006165590910064425,
+              "rmse": 0.0009875237048334342,
+              "sampleCount": 5670
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0006293827160493826,
+              "rmse": 0.001014334648694131,
+              "sampleCount": 5670
+            },
+            "sampleCount": 5670
+          }
+        },
+        "overall": {
+          "changedTargetCount": 3074,
+          "maeImprovementPct": 2.0374924058025603,
+          "ml": {
+            "mae": 0.0006165590910064425,
+            "rmse": 0.0009875237048334342,
+            "sampleCount": 5670
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0006293827160493826,
+            "rmse": 0.001014334648694131,
+            "sampleCount": 5670
+          },
+          "sampleCount": 5670
+        }
+      }
+    },
+    {
+      "changeThreshold": 0.9,
+      "correctionWeight": 1.0,
+      "earlier": {
+        "folds": [
+          {
+            "changedTargetCount": 2199,
+            "maeImprovementPct": -4.999183323403141,
+            "ml": {
+              "mae": 0.00041439677684969686,
+              "rmse": 0.0007569802945052511,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00039466666666666583,
+              "rmse": 0.0007342237019086508,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2154,
+            "maeImprovementPct": 2.8514123759555905,
+            "ml": {
+              "mae": 0.0004037063530154734,
+              "rmse": 0.0007415722086712435,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0004155555555555555,
+              "rmse": 0.0007523681132117295,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2029,
+            "maeImprovementPct": -3.119007164371934,
+            "ml": {
+              "mae": 0.00026553486705407334,
+              "rmse": 0.0005456616224785883,
+              "sampleCount": 4518
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0002575033200531209,
+              "rmse": 0.0005573883005357648,
+              "sampleCount": 4518
+            },
+            "sampleCount": 4518
+          }
+        ],
+        "improvingFolds": 1,
+        "overall": {
+          "changedTargetCount": 6382,
+          "maeImprovementPct": -1.4918828490783336,
+          "ml": {
+            "mae": 0.00036108526510900796,
+            "rmse": 0.0006879904979752107,
+            "sampleCount": 13518
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0003557774818760169,
+            "rmse": 0.0006868235484993151,
+            "sampleCount": 13518
+          },
+          "sampleCount": 13518
+        }
+      },
+      "eligibleForSelection": false,
+      "family": "two-stage",
+      "id": "two-stage-weight-1-gate-0.9",
+      "laterDevelopment": {
+        "byHorizon": {
+          "1": {
+            "changedTargetCount": 158,
+            "maeImprovementPct": 0.0,
+            "ml": {
+              "mae": 0.00018031746031746033,
+              "rmse": 0.0005188917779736708,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00018031746031746033,
+              "rmse": 0.0005188917779736708,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "2": {
+            "changedTargetCount": 317,
+            "maeImprovementPct": 0.0,
+            "ml": {
+              "mae": 0.00036137566137566137,
+              "rmse": 0.0007341770038729576,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00036137566137566137,
+              "rmse": 0.0007341770038729576,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "3": {
+            "changedTargetCount": 474,
+            "maeImprovementPct": 0.0,
+            "ml": {
+              "mae": 0.0005397883597883598,
+              "rmse": 0.0008972444589116274,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0005397883597883598,
+              "rmse": 0.0008972444589116274,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "4": {
+            "changedTargetCount": 608,
+            "maeImprovementPct": 0.0,
+            "ml": {
+              "mae": 0.0007204232804232804,
+              "rmse": 0.001068639049440651,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0007204232804232804,
+              "rmse": 0.001068639049440651,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "5": {
+            "changedTargetCount": 715,
+            "maeImprovementPct": 0.1855935673112201,
+            "ml": {
+              "mae": 0.0008972734207890912,
+              "rmse": 0.0012247828292918403,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0008989417989417989,
+              "rmse": 0.0012296556062788109,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "6": {
+            "changedTargetCount": 802,
+            "maeImprovementPct": -0.5456409320231215,
+            "ml": {
+              "mae": 0.0010813178294096836,
+              "rmse": 0.0013863030162139468,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0010754497354497354,
+              "rmse": 0.0013805412633797584,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          }
+        },
+        "byPool": [
+          {
+            "identity": {
+              "availability_zone": "eu-north-1a",
+              "gpu_type": "NVIDIA T4",
+              "instance_type": "g4dn.xlarge",
+              "product_description": "Linux/UNIX",
+              "region": "eu-north-1",
+              "resource_type": "GPU"
+            },
+            "metrics": {
+              "changedTargetCount": 986,
+              "maeImprovementPct": -1.673641538492333,
+              "ml": {
+                "mae": 0.0005752361105667187,
+                "rmse": 0.0009295438930002226,
+                "sampleCount": 1890
+              },
+              "note": "Lower MAE is better",
+              "persistence": {
+                "mae": 0.0005657671957671956,
+                "rmse": 0.000918092685895155,
+                "sampleCount": 1890
+              },
+              "sampleCount": 1890
+            }
+          },
+          {
+            "identity": {
+              "availability_zone": "eu-north-1b",
+              "gpu_type": "NVIDIA T4",
+              "instance_type": "g4dn.xlarge",
+              "product_description": "Linux/UNIX",
+              "region": "eu-north-1",
+              "resource_type": "GPU"
+            },
+            "metrics": {
+              "changedTargetCount": 986,
+              "maeImprovementPct": 0.8636332754211151,
+              "ml": {
+                "mae": 0.0006041023997708863,
+                "rmse": 0.0010039710997152855,
+                "sampleCount": 1890
+              },
+              "note": "Lower MAE is better",
+              "persistence": {
+                "mae": 0.0006093650793650795,
+                "rmse": 0.0010091040606850247,
+                "sampleCount": 1890
+              },
+              "sampleCount": 1890
+            }
+          },
+          {
+            "identity": {
+              "availability_zone": "eu-north-1c",
+              "gpu_type": "NVIDIA T4",
+              "instance_type": "g4dn.xlarge",
+              "product_description": "Linux/UNIX",
+              "region": "eu-north-1",
+              "resource_type": "GPU"
+            },
+            "metrics": {
+              "changedTargetCount": 1102,
+              "maeImprovementPct": 0.2954180098123751,
+              "ml": {
+                "mae": 0.0007109094957141631,
+                "rmse": 0.001102998409527081,
+                "sampleCount": 1890
+              },
+              "note": "Lower MAE is better",
+              "persistence": {
+                "mae": 0.0007130158730158729,
+                "rmse": 0.001106995552583276,
+                "sampleCount": 1890
+              },
+              "sampleCount": 1890
+            }
+          }
+        ],
+        "byPriceMovement": {
+          "CHANGED": {
+            "changedTargetCount": 3074,
+            "maeImprovementPct": -0.11121256060758533,
+            "ml": {
+              "mae": 0.0011621889171886278,
+              "rmse": 0.001378037006233661,
+              "sampleCount": 3074
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0011608978529603121,
+              "rmse": 0.0013775927822764211,
+              "sampleCount": 3074
+            },
+            "sampleCount": 3074
+          },
+          "UNCHANGED": {
+            "changedTargetCount": 0,
+            "maeImprovementPct": null,
+            "ml": {
+              "mae": 0.0,
+              "rmse": 0.0,
+              "sampleCount": 2596
+            },
+            "note": "Improvement is undefined when persistence MAE is zero",
+            "persistence": {
+              "mae": 0.0,
+              "rmse": 0.0,
+              "sampleCount": 2596
+            },
+            "sampleCount": 2596
+          }
+        },
+        "byRegion": {
+          "eu-north-1": {
+            "changedTargetCount": 3074,
+            "maeImprovementPct": -0.1112125606075877,
+            "ml": {
+              "mae": 0.0006300826686839227,
+              "rmse": 0.0010146617350126758,
+              "sampleCount": 5670
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0006293827160493826,
+              "rmse": 0.001014334648694131,
+              "sampleCount": 5670
+            },
+            "sampleCount": 5670
+          }
+        },
+        "byResourceType": {
+          "GPU": {
+            "changedTargetCount": 3074,
+            "maeImprovementPct": -0.1112125606075877,
+            "ml": {
+              "mae": 0.0006300826686839227,
+              "rmse": 0.0010146617350126758,
+              "sampleCount": 5670
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0006293827160493826,
+              "rmse": 0.001014334648694131,
+              "sampleCount": 5670
+            },
+            "sampleCount": 5670
+          }
+        },
+        "overall": {
+          "changedTargetCount": 3074,
+          "maeImprovementPct": -0.1112125606075877,
+          "ml": {
+            "mae": 0.0006300826686839227,
+            "rmse": 0.0010146617350126758,
+            "sampleCount": 5670
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0006293827160493826,
+            "rmse": 0.001014334648694131,
+            "sampleCount": 5670
+          },
+          "sampleCount": 5670
+        }
+      }
+    },
+    {
+      "changeThreshold": 0.0,
+      "correctionWeight": 0.5,
+      "earlier": {
+        "folds": [
+          {
+            "changedTargetCount": 2199,
+            "maeImprovementPct": -6.077820120103017,
+            "ml": {
+              "mae": 0.00041865379674067236,
+              "rmse": 0.0007087139486355852,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00039466666666666583,
+              "rmse": 0.0007342237019086508,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2154,
+            "maeImprovementPct": 1.2702400403475462,
+            "ml": {
+              "mae": 0.00041027700249900015,
+              "rmse": 0.0007105854676064364,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0004155555555555555,
+              "rmse": 0.0007523681132117295,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2029,
+            "maeImprovementPct": -4.009172281321923,
+            "ml": {
+              "mae": 0.0002678270717841743,
+              "rmse": 0.0005237042807594699,
+              "sampleCount": 4518
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0002575033200531209,
+              "rmse": 0.0005573883005357648,
+              "sampleCount": 4518
+            },
+            "sampleCount": 4518
+          }
+        ],
+        "improvingFolds": 1,
+        "overall": {
+          "changedTargetCount": 6382,
+          "maeImprovementPct": -2.7203249240950935,
+          "ml": {
+            "mae": 0.0003654557853898081,
+            "rmse": 0.0006534173218188679,
+            "sampleCount": 13518
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0003557774818760169,
+            "rmse": 0.0006868235484993151,
+            "sampleCount": 13518
+          },
+          "sampleCount": 13518
+        }
+      },
+      "eligibleForSelection": false,
+      "family": "extra-trees",
+      "id": "extra-trees-weight-0.5-gate-0",
+      "laterDevelopment": {
+        "byHorizon": {
+          "1": {
+            "changedTargetCount": 158,
+            "maeImprovementPct": -11.357660673220732,
+            "ml": {
+              "mae": 0.00020079730559488692,
+              "rmse": 0.0005120809299175907,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00018031746031746033,
+              "rmse": 0.0005188917779736708,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "2": {
+            "changedTargetCount": 317,
+            "maeImprovementPct": -6.9664474211717,
+            "ml": {
+              "mae": 0.0003865507068183083,
+              "rmse": 0.0007174809013260129,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00036137566137566137,
+              "rmse": 0.0007341770038729576,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "3": {
+            "changedTargetCount": 474,
+            "maeImprovementPct": -4.109627424575043,
+            "ml": {
+              "mae": 0.0005619716502568861,
+              "rmse": 0.0008702018086673772,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0005397883597883598,
+              "rmse": 0.0008972444589116274,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "4": {
+            "changedTargetCount": 608,
+            "maeImprovementPct": -2.169186424203899,
+            "ml": {
+              "mae": 0.0007360506044190266,
+              "rmse": 0.0010286238888571448,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0007204232804232804,
+              "rmse": 0.001068639049440651,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "5": {
+            "changedTargetCount": 715,
+            "maeImprovementPct": 1.4042428781473,
+            "ml": {
+              "mae": 0.0008863184727514695,
+              "rmse": 0.00117244497237518,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0008989417989417989,
+              "rmse": 0.0012296556062788109,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "6": {
+            "changedTargetCount": 802,
+            "maeImprovementPct": 3.5410437195512436,
+            "ml": {
+              "mae": 0.001037367590135662,
+              "rmse": 0.0013168831074939738,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0010754497354497354,
+              "rmse": 0.0013805412633797584,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          }
+        },
+        "byPool": [
+          {
+            "identity": {
+              "availability_zone": "eu-north-1a",
+              "gpu_type": "NVIDIA T4",
+              "instance_type": "g4dn.xlarge",
+              "product_description": "Linux/UNIX",
+              "region": "eu-north-1",
+              "resource_type": "GPU"
+            },
+            "metrics": {
+              "changedTargetCount": 986,
+              "maeImprovementPct": -2.0172627498796665,
+              "ml": {
+                "mae": 0.000577180206658446,
+                "rmse": 0.0008935324625541767,
+                "sampleCount": 1890
+              },
+              "note": "Lower MAE is better",
+              "persistence": {
+                "mae": 0.0005657671957671956,
+                "rmse": 0.000918092685895155,
+                "sampleCount": 1890
+              },
+              "sampleCount": 1890
+            }
+          },
+          {
+            "identity": {
+              "availability_zone": "eu-north-1b",
+              "gpu_type": "NVIDIA T4",
+              "instance_type": "g4dn.xlarge",
+              "product_description": "Linux/UNIX",
+              "region": "eu-north-1",
+              "resource_type": "GPU"
+            },
+            "metrics": {
+              "changedTargetCount": 986,
+              "maeImprovementPct": -0.11992729285566571,
+              "ml": {
+                "mae": 0.0006100958744083698,
+                "rmse": 0.0009545863616601871,
+                "sampleCount": 1890
+              },
+              "note": "Lower MAE is better",
+              "persistence": {
+                "mae": 0.0006093650793650795,
+                "rmse": 0.0010091040606850247,
+                "sampleCount": 1890
+              },
+              "sampleCount": 1890
+            }
+          },
+          {
+            "identity": {
+              "availability_zone": "eu-north-1c",
+              "gpu_type": "NVIDIA T4",
+              "instance_type": "g4dn.xlarge",
+              "product_description": "Linux/UNIX",
+              "region": "eu-north-1",
+              "resource_type": "GPU"
+            },
+            "metrics": {
+              "changedTargetCount": 1102,
+              "maeImprovementPct": -0.5941257503164349,
+              "ml": {
+                "mae": 0.0007172520839213038,
+                "rmse": 0.0010681436186505341,
+                "sampleCount": 1890
+              },
+              "note": "Lower MAE is better",
+              "persistence": {
+                "mae": 0.0007130158730158729,
+                "rmse": 0.001106995552583276,
+                "sampleCount": 1890
+              },
+              "sampleCount": 1890
+            }
+          }
+        ],
+        "byPriceMovement": {
+          "CHANGED": {
+            "changedTargetCount": 3074,
+            "maeImprovementPct": 5.959561021082617,
+            "ml": {
+              "mae": 0.0010917134370207044,
+              "rmse": 0.00131849560893225,
+              "sampleCount": 3074
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0011608978529603121,
+              "rmse": 0.0013775927822764211,
+              "sampleCount": 3074
+            },
+            "sampleCount": 3074
+          },
+          "UNCHANGED": {
+            "changedTargetCount": 0,
+            "maeImprovementPct": null,
+            "ml": {
+              "mae": 9.384866195142548e-05,
+              "rmse": 0.0001296465892055365,
+              "sampleCount": 2596
+            },
+            "note": "Improvement is undefined when persistence MAE is zero",
+            "persistence": {
+              "mae": 0.0,
+              "rmse": 0.0,
+              "sampleCount": 2596
+            },
+            "sampleCount": 2596
+          }
+        },
+        "byRegion": {
+          "eu-north-1": {
+            "changedTargetCount": 3074,
+            "maeImprovementPct": -0.8675175650828522,
+            "ml": {
+              "mae": 0.0006348427216627065,
+              "rmse": 0.000974776243310847,
+              "sampleCount": 5670
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0006293827160493826,
+              "rmse": 0.001014334648694131,
+              "sampleCount": 5670
+            },
+            "sampleCount": 5670
+          }
+        },
+        "byResourceType": {
+          "GPU": {
+            "changedTargetCount": 3074,
+            "maeImprovementPct": -0.8675175650828522,
+            "ml": {
+              "mae": 0.0006348427216627065,
+              "rmse": 0.000974776243310847,
+              "sampleCount": 5670
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0006293827160493826,
+              "rmse": 0.001014334648694131,
+              "sampleCount": 5670
+            },
+            "sampleCount": 5670
+          }
+        },
+        "overall": {
+          "changedTargetCount": 3074,
+          "maeImprovementPct": -0.8675175650828522,
+          "ml": {
+            "mae": 0.0006348427216627065,
+            "rmse": 0.000974776243310847,
+            "sampleCount": 5670
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0006293827160493826,
+            "rmse": 0.001014334648694131,
+            "sampleCount": 5670
+          },
+          "sampleCount": 5670
+        }
+      }
+    },
+    {
+      "changeThreshold": 0.7,
+      "correctionWeight": 1.0,
+      "earlier": {
+        "folds": [
+          {
+            "changedTargetCount": 2199,
+            "maeImprovementPct": -16.17678036374371,
+            "ml": {
+              "mae": 0.0004585110265022409,
+              "rmse": 0.0007825835098794674,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00039466666666666583,
+              "rmse": 0.0007342237019086508,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2154,
+            "maeImprovementPct": 9.222514166459812,
+            "ml": {
+              "mae": 0.00037723088557493363,
+              "rmse": 0.0006926051556819728,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0004155555555555555,
+              "rmse": 0.0007523681132117295,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2029,
+            "maeImprovementPct": -10.539576164237424,
+            "ml": {
+              "mae": 0.00028464307859555964,
+              "rmse": 0.0005341423647560821,
+              "sampleCount": 4518
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0002575033200531209,
+              "rmse": 0.0005573883005357648,
+              "sampleCount": 4518
+            },
+            "sampleCount": 4518
+          }
+        ],
+        "improvingFolds": 1,
+        "overall": {
+          "changedTargetCount": 6382,
+          "maeImprovementPct": -4.937331755354671,
+          "ml": {
+            "mae": 0.0003733433964670827,
+            "rmse": 0.0006774344936917201,
+            "sampleCount": 13518
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0003557774818760169,
+            "rmse": 0.0006868235484993151,
+            "sampleCount": 13518
+          },
+          "sampleCount": 13518
+        }
+      },
+      "eligibleForSelection": false,
+      "family": "two-stage",
+      "id": "two-stage-weight-1-gate-0.7",
+      "laterDevelopment": {
+        "byHorizon": {
+          "1": {
+            "changedTargetCount": 158,
+            "maeImprovementPct": 0.0,
+            "ml": {
+              "mae": 0.00018031746031746033,
+              "rmse": 0.0005188917779736708,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00018031746031746033,
+              "rmse": 0.0005188917779736708,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "2": {
+            "changedTargetCount": 317,
+            "maeImprovementPct": 0.0,
+            "ml": {
+              "mae": 0.00036137566137566137,
+              "rmse": 0.0007341770038729576,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00036137566137566137,
+              "rmse": 0.0007341770038729576,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "3": {
+            "changedTargetCount": 474,
+            "maeImprovementPct": 0.2924538180631378,
+            "ml": {
+              "mae": 0.0005382097281206984,
+              "rmse": 0.0008964436213127775,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0005397883597883598,
+              "rmse": 0.0008972444589116274,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "4": {
+            "changedTargetCount": 608,
+            "maeImprovementPct": 0.47395405521256767,
+            "ml": {
+              "mae": 0.0007170088050710188,
+              "rmse": 0.001064405309517835,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0007204232804232804,
+              "rmse": 0.001068639049440651,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "5": {
+            "changedTargetCount": 715,
+            "maeImprovementPct": 0.057691291235986514,
+            "ml": {
+              "mae": 0.0008984231878105294,
+              "rmse": 0.0012276576546542226,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0008989417989417989,
+              "rmse": 0.0012296556062788109,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "6": {
+            "changedTargetCount": 802,
+            "maeImprovementPct": -0.4894566024441664,
+            "ml": {
+              "mae": 0.0010807135951858625,
+              "rmse": 0.0013925120060216882,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0010754497354497354,
+              "rmse": 0.0013805412633797584,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          }
+        },
+        "byPool": [
+          {
+            "identity": {
+              "availability_zone": "eu-north-1a",
+              "gpu_type": "NVIDIA T4",
+              "instance_type": "g4dn.xlarge",
+              "product_description": "Linux/UNIX",
+              "region": "eu-north-1",
+              "resource_type": "GPU"
+            },
+            "metrics": {
+              "changedTargetCount": 986,
+              "maeImprovementPct": -2.8182119249459556,
+              "ml": {
+                "mae": 0.0005817117143457391,
+                "rmse": 0.0009449162996734615,
+                "sampleCount": 1890
+              },
+              "note": "Lower MAE is better",
+              "persistence": {
+                "mae": 0.0005657671957671956,
+                "rmse": 0.000918092685895155,
+                "sampleCount": 1890
+              },
+              "sampleCount": 1890
+            }
+          },
+          {
+            "identity": {
+              "availability_zone": "eu-north-1b",
+              "gpu_type": "NVIDIA T4",
+              "instance_type": "g4dn.xlarge",
+              "product_description": "Linux/UNIX",
+              "region": "eu-north-1",
+              "resource_type": "GPU"
+            },
+            "metrics": {
+              "changedTargetCount": 986,
+              "maeImprovementPct": 2.1980984561818735,
+              "ml": {
+                "mae": 0.0005959706349630442,
+                "rmse": 0.0009946618483637952,
+                "sampleCount": 1890
+              },
+              "note": "Lower MAE is better",
+              "persistence": {
+                "mae": 0.0006093650793650795,
+                "rmse": 0.0010091040606850247,
+                "sampleCount": 1890
+              },
+              "sampleCount": 1890
+            }
+          },
+          {
+            "identity": {
+              "availability_zone": "eu-north-1c",
+              "gpu_type": "NVIDIA T4",
+              "instance_type": "g4dn.xlarge",
+              "product_description": "Linux/UNIX",
+              "region": "eu-north-1",
+              "resource_type": "GPU"
+            },
+            "metrics": {
+              "changedTargetCount": 1102,
+              "maeImprovementPct": 0.37502718876793645,
+              "ml": {
+                "mae": 0.0007103418696318323,
+                "rmse": 0.0011015056448730053,
+                "sampleCount": 1890
+              },
+              "note": "Lower MAE is better",
+              "persistence": {
+                "mae": 0.0007130158730158729,
+                "rmse": 0.001106995552583276,
+                "sampleCount": 1890
+              },
+              "sampleCount": 1890
+            }
+          }
+        ],
+        "byPriceMovement": {
+          "CHANGED": {
+            "changedTargetCount": 3074,
+            "maeImprovementPct": 1.4864686837338332,
+            "ml": {
+              "mae": 0.0011436414699259186,
+              "rmse": 0.0013740897417880585,
+              "sampleCount": 3074
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0011608978529603121,
+              "rmse": 0.0013775927822764211,
+              "sampleCount": 3074
+            },
+            "sampleCount": 3074
+          },
+          "UNCHANGED": {
+            "changedTargetCount": 0,
+            "maeImprovementPct": null,
+            "ml": {
+              "mae": 2.0343565194718638e-05,
+              "rmse": 0.00013379282218379165,
+              "sampleCount": 2596
+            },
+            "note": "Improvement is undefined when persistence MAE is zero",
+            "persistence": {
+              "mae": 0.0,
+              "rmse": 0.0,
+              "sampleCount": 2596
+            },
+            "sampleCount": 2596
+          }
+        },
+        "byRegion": {
+          "eu-north-1": {
+            "changedTargetCount": 3074,
+            "maeImprovementPct": 0.006563531979931754,
+            "ml": {
+              "mae": 0.0006293414063135385,
+              "rmse": 0.0010157975014188218,
+              "sampleCount": 5670
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0006293827160493826,
+              "rmse": 0.001014334648694131,
+              "sampleCount": 5670
+            },
+            "sampleCount": 5670
+          }
+        },
+        "byResourceType": {
+          "GPU": {
+            "changedTargetCount": 3074,
+            "maeImprovementPct": 0.006563531979931754,
+            "ml": {
+              "mae": 0.0006293414063135385,
+              "rmse": 0.0010157975014188218,
+              "sampleCount": 5670
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0006293827160493826,
+              "rmse": 0.001014334648694131,
+              "sampleCount": 5670
+            },
+            "sampleCount": 5670
+          }
+        },
+        "overall": {
+          "changedTargetCount": 3074,
+          "maeImprovementPct": 0.006563531979931754,
+          "ml": {
+            "mae": 0.0006293414063135385,
+            "rmse": 0.0010157975014188218,
+            "sampleCount": 5670
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0006293827160493826,
+            "rmse": 0.001014334648694131,
+            "sampleCount": 5670
+          },
+          "sampleCount": 5670
+        }
+      }
+    },
+    {
+      "changeThreshold": 0.0,
+      "correctionWeight": 1.0,
+      "earlier": {
+        "folds": [
+          {
+            "changedTargetCount": 2199,
+            "maeImprovementPct": -17.958698762447618,
+            "ml": {
+              "mae": 0.0004655436644491256,
+              "rmse": 0.0007759958362409422,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00039466666666666583,
+              "rmse": 0.0007342237019086508,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2154,
+            "maeImprovementPct": 7.052206853507753,
+            "ml": {
+              "mae": 0.0003862497181865344,
+              "rmse": 0.0006940037005206155,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0004155555555555555,
+              "rmse": 0.0007523681132117295,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2029,
+            "maeImprovementPct": -6.910189034673768,
+            "ml": {
+              "mae": 0.00027529728623935256,
+              "rmse": 0.0005236142619733276,
+              "sampleCount": 4518
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0002575033200531209,
+              "rmse": 0.0005573883005357648,
+              "sampleCount": 4518
+            },
+            "sampleCount": 4518
+          }
+        ],
+        "improvingFolds": 1,
+        "overall": {
+          "changedTargetCount": 6382,
+          "maeImprovementPct": -5.561262550211436,
+          "ml": {
+            "mae": 0.0003755632017376731,
+            "rmse": 0.000672624106112355,
+            "sampleCount": 13518
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0003557774818760169,
+            "rmse": 0.0006868235484993151,
+            "sampleCount": 13518
+          },
+          "sampleCount": 13518
+        }
+      },
+      "eligibleForSelection": false,
+      "family": "hist-gradient",
+      "id": "hist-gradient-weight-1-gate-0",
+      "laterDevelopment": {
+        "byHorizon": {
+          "1": {
+            "changedTargetCount": 158,
+            "maeImprovementPct": 0.0,
+            "ml": {
+              "mae": 0.00018031746031746033,
+              "rmse": 0.0005188917779736708,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00018031746031746033,
+              "rmse": 0.0005188917779736708,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "2": {
+            "changedTargetCount": 317,
+            "maeImprovementPct": -0.9791647809928404,
+            "ml": {
+              "mae": 0.0003649141245789318,
+              "rmse": 0.000735165700609207,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00036137566137566137,
+              "rmse": 0.0007341770038729576,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "3": {
+            "changedTargetCount": 474,
+            "maeImprovementPct": 1.5533074700441463,
+            "ml": {
+              "mae": 0.0005314037868733385,
+              "rmse": 0.0008721625579642719,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0005397883597883598,
+              "rmse": 0.0008972444589116274,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "4": {
+            "changedTargetCount": 608,
+            "maeImprovementPct": 4.098407597692806,
+            "ml": {
+              "mae": 0.0006908973979628649,
+              "rmse": 0.001018471806834002,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0007204232804232804,
+              "rmse": 0.001068639049440651,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "5": {
+            "changedTargetCount": 715,
+            "maeImprovementPct": -0.1656405186007835,
+            "ml": {
+              "mae": 0.0009004308107994853,
+              "rmse": 0.001207836044430491,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0008989417989417989,
+              "rmse": 0.0012296556062788109,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "6": {
+            "changedTargetCount": 802,
+            "maeImprovementPct": -8.042780794504466,
+            "ml": {
+              "mae": 0.0011619458002270358,
+              "rmse": 0.001427683072163806,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0010754497354497354,
+              "rmse": 0.0013805412633797584,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          }
+        },
+        "byPool": [
+          {
+            "identity": {
+              "availability_zone": "eu-north-1a",
+              "gpu_type": "NVIDIA T4",
+              "instance_type": "g4dn.xlarge",
+              "product_description": "Linux/UNIX",
+              "region": "eu-north-1",
+              "resource_type": "GPU"
+            },
+            "metrics": {
+              "changedTargetCount": 986,
+              "maeImprovementPct": -3.6074690694147,
+              "ml": {
+                "mae": 0.0005861770723593921,
+                "rmse": 0.0009408738108547885,
+                "sampleCount": 1890
+              },
+              "note": "Lower MAE is better",
+              "persistence": {
+                "mae": 0.0005657671957671956,
+                "rmse": 0.000918092685895155,
+                "sampleCount": 1890
+              },
+              "sampleCount": 1890
+            }
+          },
+          {
+            "identity": {
+              "availability_zone": "eu-north-1b",
+              "gpu_type": "NVIDIA T4",
+              "instance_type": "g4dn.xlarge",
+              "product_description": "Linux/UNIX",
+              "region": "eu-north-1",
+              "resource_type": "GPU"
+            },
+            "metrics": {
+              "changedTargetCount": 986,
+              "maeImprovementPct": 0.6580325585389963,
+              "ml": {
+                "mae": 0.0006053552587424902,
+                "rmse": 0.000978283326919376,
+                "sampleCount": 1890
+              },
+              "note": "Lower MAE is better",
+              "persistence": {
+                "mae": 0.0006093650793650795,
+                "rmse": 0.0010091040606850247,
+                "sampleCount": 1890
+              },
+              "sampleCount": 1890
+            }
+          },
+          {
+            "identity": {
+              "availability_zone": "eu-north-1c",
+              "gpu_type": "NVIDIA T4",
+              "instance_type": "g4dn.xlarge",
+              "product_description": "Linux/UNIX",
+              "region": "eu-north-1",
+              "resource_type": "GPU"
+            },
+            "metrics": {
+              "changedTargetCount": 1102,
+              "maeImprovementPct": -1.4595027482047815,
+              "ml": {
+                "mae": 0.0007234223592776759,
+                "rmse": 0.0011000574773252238,
+                "sampleCount": 1890
+              },
+              "note": "Lower MAE is better",
+              "persistence": {
+                "mae": 0.0007130158730158729,
+                "rmse": 0.001106995552583276,
+                "sampleCount": 1890
+              },
+              "sampleCount": 1890
+            }
+          }
+        ],
+        "byPriceMovement": {
+          "CHANGED": {
+            "changedTargetCount": 3074,
+            "maeImprovementPct": 3.063685761718628,
+            "ml": {
+              "mae": 0.0011253315907310698,
+              "rmse": 0.0013595950431267228,
+              "sampleCount": 3074
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0011608978529603121,
+              "rmse": 0.0013775927822764211,
+              "sampleCount": 3074
+            },
+            "sampleCount": 3074
+          },
+          "UNCHANGED": {
+            "changedTargetCount": 0,
+            "maeImprovementPct": null,
+            "ml": {
+              "mae": 6.163137708399724e-05,
+              "rmse": 0.0001828201484073253,
+              "sampleCount": 2596
+            },
+            "note": "Improvement is undefined when persistence MAE is zero",
+            "persistence": {
+              "mae": 0.0,
+              "rmse": 0.0,
+              "sampleCount": 2596
+            },
+            "sampleCount": 2596
+          }
+        },
+        "byRegion": {
+          "eu-north-1": {
+            "changedTargetCount": 3074,
+            "maeImprovementPct": -1.4197266383838425,
+            "ml": {
+              "mae": 0.0006383182301265194,
+              "rmse": 0.0010086968902334652,
+              "sampleCount": 5670
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0006293827160493826,
+              "rmse": 0.001014334648694131,
+              "sampleCount": 5670
+            },
+            "sampleCount": 5670
+          }
+        },
+        "byResourceType": {
+          "GPU": {
+            "changedTargetCount": 3074,
+            "maeImprovementPct": -1.4197266383838425,
+            "ml": {
+              "mae": 0.0006383182301265194,
+              "rmse": 0.0010086968902334652,
+              "sampleCount": 5670
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0006293827160493826,
+              "rmse": 0.001014334648694131,
+              "sampleCount": 5670
+            },
+            "sampleCount": 5670
+          }
+        },
+        "overall": {
+          "changedTargetCount": 3074,
+          "maeImprovementPct": -1.4197266383838425,
+          "ml": {
+            "mae": 0.0006383182301265194,
+            "rmse": 0.0010086968902334652,
+            "sampleCount": 5670
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0006293827160493826,
+            "rmse": 0.001014334648694131,
+            "sampleCount": 5670
+          },
+          "sampleCount": 5670
+        }
+      }
+    },
+    {
+      "changeThreshold": 0.5,
+      "correctionWeight": 1.0,
+      "earlier": {
+        "folds": [
+          {
+            "changedTargetCount": 2199,
+            "maeImprovementPct": -28.45611150047966,
+            "ml": {
+              "mae": 0.0005069734533885587,
+              "rmse": 0.0008129330601524809,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00039466666666666583,
+              "rmse": 0.0007342237019086508,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2154,
+            "maeImprovementPct": 9.605323999421417,
+            "ml": {
+              "mae": 0.00037564009804684874,
+              "rmse": 0.0006646584042863632,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0004155555555555555,
+              "rmse": 0.0007523681132117295,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2029,
+            "maeImprovementPct": -17.98711571161322,
+            "ml": {
+              "mae": 0.0003038207401923215,
+              "rmse": 0.0005154109486234437,
+              "sampleCount": 4518
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0002575033200531209,
+              "rmse": 0.0005573883005357648,
+              "sampleCount": 4518
+            },
+            "sampleCount": 4518
+          }
+        ],
+        "improvingFolds": 1,
+        "overall": {
+          "changedTargetCount": 6382,
+          "maeImprovementPct": -11.124528748871922,
+          "ml": {
+            "mae": 0.000395356050129327,
+            "rmse": 0.0006751589038244947,
+            "sampleCount": 13518
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0003557774818760169,
+            "rmse": 0.0006868235484993151,
+            "sampleCount": 13518
+          },
+          "sampleCount": 13518
+        }
+      },
+      "eligibleForSelection": false,
+      "family": "two-stage",
+      "id": "two-stage-weight-1-gate-0.5",
+      "laterDevelopment": {
+        "byHorizon": {
+          "1": {
+            "changedTargetCount": 158,
+            "maeImprovementPct": 0.0,
+            "ml": {
+              "mae": 0.00018031746031746033,
+              "rmse": 0.0005188917779736708,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00018031746031746033,
+              "rmse": 0.0005188917779736708,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "2": {
+            "changedTargetCount": 317,
+            "maeImprovementPct": -2.0063018841515667,
+            "ml": {
+              "mae": 0.00036862594807870645,
+              "rmse": 0.0007382158709583253,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00036137566137566137,
+              "rmse": 0.0007341770038729576,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "3": {
+            "changedTargetCount": 474,
+            "maeImprovementPct": 1.6509937553002643,
+            "ml": {
+              "mae": 0.0005308764876764163,
+              "rmse": 0.0008798949297157954,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0005397883597883598,
+              "rmse": 0.0008972444589116274,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "4": {
+            "changedTargetCount": 608,
+            "maeImprovementPct": 1.4070785679995368,
+            "ml": {
+              "mae": 0.0007102863588455652,
+              "rmse": 0.0010444331036884489,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0007204232804232804,
+              "rmse": 0.001068639049440651,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "5": {
+            "changedTargetCount": 715,
+            "maeImprovementPct": 0.5552718095133121,
+            "ml": {
+              "mae": 0.0008939502285483432,
+              "rmse": 0.001215990945451597,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0008989417989417989,
+              "rmse": 0.0012296556062788109,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "6": {
+            "changedTargetCount": 802,
+            "maeImprovementPct": -0.7732775308322746,
+            "ml": {
+              "mae": 0.0010837659466093634,
+              "rmse": 0.0013824712222762754,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0010754497354497354,
+              "rmse": 0.0013805412633797584,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          }
+        },
+        "byPool": [
+          {
+            "identity": {
+              "availability_zone": "eu-north-1a",
+              "gpu_type": "NVIDIA T4",
+              "instance_type": "g4dn.xlarge",
+              "product_description": "Linux/UNIX",
+              "region": "eu-north-1",
+              "resource_type": "GPU"
+            },
+            "metrics": {
+              "changedTargetCount": 986,
+              "maeImprovementPct": -4.693659188031955,
+              "ml": {
+                "mae": 0.0005923223797341934,
+                "rmse": 0.0009613635666111986,
+                "sampleCount": 1890
+              },
+              "note": "Lower MAE is better",
+              "persistence": {
+                "mae": 0.0005657671957671956,
+                "rmse": 0.000918092685895155,
+                "sampleCount": 1890
+              },
+              "sampleCount": 1890
+            }
+          },
+          {
+            "identity": {
+              "availability_zone": "eu-north-1b",
+              "gpu_type": "NVIDIA T4",
+              "instance_type": "g4dn.xlarge",
+              "product_description": "Linux/UNIX",
+              "region": "eu-north-1",
+              "resource_type": "GPU"
+            },
+            "metrics": {
+              "changedTargetCount": 986,
+              "maeImprovementPct": 3.7403028256844606,
+              "ml": {
+                "mae": 0.000586572980082853,
+                "rmse": 0.0009646512904016995,
+                "sampleCount": 1890
+              },
+              "note": "Lower MAE is better",
+              "persistence": {
+                "mae": 0.0006093650793650795,
+                "rmse": 0.0010091040606850247,
+                "sampleCount": 1890
+              },
+              "sampleCount": 1890
+            }
+          },
+          {
+            "identity": {
+              "availability_zone": "eu-north-1c",
+              "gpu_type": "NVIDIA T4",
+              "instance_type": "g4dn.xlarge",
+              "product_description": "Linux/UNIX",
+              "region": "eu-north-1",
+              "resource_type": "GPU"
+            },
+            "metrics": {
+              "changedTargetCount": 1102,
+              "maeImprovementPct": 1.1219971529040154,
+              "ml": {
+                "mae": 0.0007050158552208811,
+                "rmse": 0.0010861822052684064,
+                "sampleCount": 1890
+              },
+              "note": "Lower MAE is better",
+              "persistence": {
+                "mae": 0.0007130158730158729,
+                "rmse": 0.001106995552583276,
+                "sampleCount": 1890
+              },
+              "sampleCount": 1890
+            }
+          }
+        ],
+        "byPriceMovement": {
+          "CHANGED": {
+            "changedTargetCount": 3074,
+            "maeImprovementPct": 4.307503178970029,
+            "ml": {
+              "mae": 0.0011108921410394519,
+              "rmse": 0.0013522877638778392,
+              "sampleCount": 3074
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0011608978529603121,
+              "rmse": 0.0013775927822764211,
+              "sampleCount": 3074
+            },
+            "sampleCount": 3074
+          },
+          "UNCHANGED": {
+            "changedTargetCount": 0,
+            "maeImprovementPct": null,
+            "ml": {
+              "mae": 5.612856504869332e-05,
+              "rmse": 0.0002095160198671737,
+              "sampleCount": 2596
+            },
+            "note": "Improvement is undefined when persistence MAE is zero",
+            "persistence": {
+              "mae": 0.0,
+              "rmse": 0.0,
+              "sampleCount": 2596
+            },
+            "sampleCount": 2596
+          }
+        },
+        "byRegion": {
+          "eu-north-1": {
+            "changedTargetCount": 3074,
+            "maeImprovementPct": 0.2243962220006998,
+            "ml": {
+              "mae": 0.0006279704050126424,
+              "rmse": 0.0010057441361702964,
+              "sampleCount": 5670
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0006293827160493826,
+              "rmse": 0.001014334648694131,
+              "sampleCount": 5670
+            },
+            "sampleCount": 5670
+          }
+        },
+        "byResourceType": {
+          "GPU": {
+            "changedTargetCount": 3074,
+            "maeImprovementPct": 0.2243962220006998,
+            "ml": {
+              "mae": 0.0006279704050126424,
+              "rmse": 0.0010057441361702964,
+              "sampleCount": 5670
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0006293827160493826,
+              "rmse": 0.001014334648694131,
+              "sampleCount": 5670
+            },
+            "sampleCount": 5670
+          }
+        },
+        "overall": {
+          "changedTargetCount": 3074,
+          "maeImprovementPct": 0.2243962220006998,
+          "ml": {
+            "mae": 0.0006279704050126424,
+            "rmse": 0.0010057441361702964,
+            "sampleCount": 5670
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0006293827160493826,
+            "rmse": 0.001014334648694131,
+            "sampleCount": 5670
+          },
+          "sampleCount": 5670
+        }
+      }
+    },
+    {
+      "changeThreshold": 0.0,
+      "correctionWeight": 1.0,
+      "earlier": {
+        "folds": [
+          {
+            "changedTargetCount": 2199,
+            "maeImprovementPct": -24.507117481558844,
+            "ml": {
+              "mae": 0.0004913880903272179,
+              "rmse": 0.0007563966266138398,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00039466666666666583,
+              "rmse": 0.0007342237019086508,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2154,
+            "maeImprovementPct": -0.12652015369788946,
+            "ml": {
+              "mae": 0.0004160813170831445,
+              "rmse": 0.0006875866575598768,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0004155555555555555,
+              "rmse": 0.0007523681132117295,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2029,
+            "maeImprovementPct": -11.269204484755376,
+            "ml": {
+              "mae": 0.0002865218957449412,
+              "rmse": 0.0005063338864387376,
+              "sampleCount": 4518
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0002575033200531209,
+              "rmse": 0.0005573883005357648,
+              "sampleCount": 4518
+            },
+            "sampleCount": 4518
+          }
+        ],
+        "improvingFolds": 0,
+        "overall": {
+          "changedTargetCount": 6382,
+          "maeImprovementPct": -11.825139483558855,
+          "ml": {
+            "mae": 0.0003978486653589492,
+            "rmse": 0.0006584265756987627,
+            "sampleCount": 13518
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0003557774818760169,
+            "rmse": 0.0006868235484993151,
+            "sampleCount": 13518
+          },
+          "sampleCount": 13518
+        }
+      },
+      "eligibleForSelection": false,
+      "family": "extra-trees",
+      "id": "extra-trees-weight-1-gate-0",
+      "laterDevelopment": {
+        "byHorizon": {
+          "1": {
+            "changedTargetCount": 158,
+            "maeImprovementPct": -23.193299173747423,
+            "ml": {
+              "mae": 0.0002221390283513922,
+              "rmse": 0.0005113723487394265,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00018031746031746033,
+              "rmse": 0.0005188917779736708,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "2": {
+            "changedTargetCount": 317,
+            "maeImprovementPct": -15.587918241472686,
+            "ml": {
+              "mae": 0.00041770660401548065,
+              "rmse": 0.0007182594346280036,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00036137566137566137,
+              "rmse": 0.0007341770038729576,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "3": {
+            "changedTargetCount": 474,
+            "maeImprovementPct": -10.446096475824655,
+            "ml": {
+              "mae": 0.0005961751726171234,
+              "rmse": 0.0008701346926330122,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0005397883597883598,
+              "rmse": 0.0008972444589116274,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "4": {
+            "changedTargetCount": 608,
+            "maeImprovementPct": -7.602871578390548,
+            "ml": {
+              "mae": 0.0007751961372546908,
+              "rmse": 0.0010328386646400835,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0007204232804232804,
+              "rmse": 0.001068639049440651,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "5": {
+            "changedTargetCount": 715,
+            "maeImprovementPct": -2.005374109153983,
+            "ml": {
+              "mae": 0.0009169689450341408,
+              "rmse": 0.001180081947946618,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0008989417989417989,
+              "rmse": 0.0012296556062788109,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "6": {
+            "changedTargetCount": 802,
+            "maeImprovementPct": 2.034252858952721,
+            "ml": {
+              "mae": 0.0010535723684597497,
+              "rmse": 0.001325172264207917,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0010754497354497354,
+              "rmse": 0.0013805412633797584,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          }
+        },
+        "byPool": [
+          {
+            "identity": {
+              "availability_zone": "eu-north-1a",
+              "gpu_type": "NVIDIA T4",
+              "instance_type": "g4dn.xlarge",
+              "product_description": "Linux/UNIX",
+              "region": "eu-north-1",
+              "resource_type": "GPU"
+            },
+            "metrics": {
+              "changedTargetCount": 986,
+              "maeImprovementPct": -8.263956345420997,
+              "ml": {
+                "mae": 0.0006125219498421092,
+                "rmse": 0.000916975032359145,
+                "sampleCount": 1890
+              },
+              "note": "Lower MAE is better",
+              "persistence": {
+                "mae": 0.0005657671957671956,
+                "rmse": 0.000918092685895155,
+                "sampleCount": 1890
+              },
+              "sampleCount": 1890
+            }
+          },
+          {
+            "identity": {
+              "availability_zone": "eu-north-1b",
+              "gpu_type": "NVIDIA T4",
+              "instance_type": "g4dn.xlarge",
+              "product_description": "Linux/UNIX",
+              "region": "eu-north-1",
+              "resource_type": "GPU"
+            },
+            "metrics": {
+              "changedTargetCount": 986,
+              "maeImprovementPct": -4.607716383077371,
+              "ml": {
+                "mae": 0.0006374428939597366,
+                "rmse": 0.0009473141455428155,
+                "sampleCount": 1890
+              },
+              "note": "Lower MAE is better",
+              "persistence": {
+                "mae": 0.0006093650793650795,
+                "rmse": 0.0010091040606850247,
+                "sampleCount": 1890
+              },
+              "sampleCount": 1890
+            }
+          },
+          {
+            "identity": {
+              "availability_zone": "eu-north-1c",
+              "gpu_type": "NVIDIA T4",
+              "instance_type": "g4dn.xlarge",
+              "product_description": "Linux/UNIX",
+              "region": "eu-north-1",
+              "resource_type": "GPU"
+            },
+            "metrics": {
+              "changedTargetCount": 1102,
+              "maeImprovementPct": -3.912733517497576,
+              "ml": {
+                "mae": 0.0007409142840644429,
+                "rmse": 0.0010661774519400502,
+                "sampleCount": 1890
+              },
+              "note": "Lower MAE is better",
+              "persistence": {
+                "mae": 0.0007130158730158729,
+                "rmse": 0.001106995552583276,
+                "sampleCount": 1890
+              },
+              "sampleCount": 1890
+            }
+          }
+        ],
+        "byPriceMovement": {
+          "CHANGED": {
+            "changedTargetCount": 3074,
+            "maeImprovementPct": 8.21332458623871,
+            "ml": {
+              "mae": 0.0010655495441820055,
+              "rmse": 0.0013079978431844064,
+              "sampleCount": 3074
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0011608978529603121,
+              "rmse": 0.0013775927822764211,
+              "sampleCount": 3074
+            },
+            "sampleCount": 3074
+          },
+          "UNCHANGED": {
+            "changedTargetCount": 0,
+            "maeImprovementPct": null,
+            "ml": {
+              "mae": 0.00018769732390285082,
+              "rmse": 0.00025929317841107277,
+              "sampleCount": 2596
+            },
+            "note": "Improvement is undefined when persistence MAE is zero",
+            "persistence": {
+              "mae": 0.0,
+              "rmse": 0.0,
+              "sampleCount": 2596
+            },
+            "sampleCount": 2596
+          }
+        },
+        "byRegion": {
+          "eu-north-1": {
+            "changedTargetCount": 3074,
+            "maeImprovementPct": -5.440832586092209,
+            "ml": {
+              "mae": 0.0006636263759554296,
+              "rmse": 0.0009789418878464217,
+              "sampleCount": 5670
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0006293827160493826,
+              "rmse": 0.001014334648694131,
+              "sampleCount": 5670
+            },
+            "sampleCount": 5670
+          }
+        },
+        "byResourceType": {
+          "GPU": {
+            "changedTargetCount": 3074,
+            "maeImprovementPct": -5.440832586092209,
+            "ml": {
+              "mae": 0.0006636263759554296,
+              "rmse": 0.0009789418878464217,
+              "sampleCount": 5670
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0006293827160493826,
+              "rmse": 0.001014334648694131,
+              "sampleCount": 5670
+            },
+            "sampleCount": 5670
+          }
+        },
+        "overall": {
+          "changedTargetCount": 3074,
+          "maeImprovementPct": -5.440832586092209,
+          "ml": {
+            "mae": 0.0006636263759554296,
+            "rmse": 0.0009789418878464217,
+            "sampleCount": 5670
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0006293827160493826,
+            "rmse": 0.001014334648694131,
+            "sampleCount": 5670
+          },
+          "sampleCount": 5670
+        }
+      }
+    },
+    {
+      "changeThreshold": 0.0,
+      "correctionWeight": 0.5,
+      "earlier": {
+        "folds": [
+          {
+            "changedTargetCount": 2199,
+            "maeImprovementPct": -25.025562322295578,
+            "ml": {
+              "mae": 0.0004934342192986588,
+              "rmse": 0.0007590033038001601,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00039466666666666583,
+              "rmse": 0.0007342237019086508,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2154,
+            "maeImprovementPct": -1.8473505548043114,
+            "ml": {
+              "mae": 0.0004232323234166312,
+              "rmse": 0.0007107570773617095,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0004155555555555555,
+              "rmse": 0.0007523681132117295,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2029,
+            "maeImprovementPct": -16.459823708453207,
+            "ml": {
+              "mae": 0.00029988791257727865,
+              "rmse": 0.0005674244111442596,
+              "sampleCount": 4518
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0002575033200531209,
+              "rmse": 0.0005573883005357648,
+              "sampleCount": 4518
+            },
+            "sampleCount": 4518
+          }
+        ],
+        "improvingFolds": 0,
+        "overall": {
+          "changedTargetCount": 6382,
+          "maeImprovementPct": -13.941303098992691,
+          "ml": {
+            "mae": 0.0004053774989823162,
+            "rmse": 0.0006837762262370413,
+            "sampleCount": 13518
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0003557774818760169,
+            "rmse": 0.0006868235484993151,
+            "sampleCount": 13518
+          },
+          "sampleCount": 13518
+        }
+      },
+      "eligibleForSelection": false,
+      "family": "ridge",
+      "id": "ridge-weight-0.5-gate-0",
+      "laterDevelopment": {
+        "byHorizon": {
+          "1": {
+            "changedTargetCount": 158,
+            "maeImprovementPct": -15.917852200529175,
+            "ml": {
+              "mae": 0.0002090201271425415,
+              "rmse": 0.0005133662312707185,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00018031746031746033,
+              "rmse": 0.0005188917779736708,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "2": {
+            "changedTargetCount": 317,
+            "maeImprovementPct": -8.543216035364598,
+            "ml": {
+              "mae": 0.00039224876482621174,
+              "rmse": 0.0007138507323819942,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00036137566137566137,
+              "rmse": 0.0007341770038729576,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "3": {
+            "changedTargetCount": 474,
+            "maeImprovementPct": -2.477419940928404,
+            "ml": {
+              "mae": 0.000553161184252567,
+              "rmse": 0.0008570389904850399,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0005397883597883598,
+              "rmse": 0.0008972444589116274,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "4": {
+            "changedTargetCount": 608,
+            "maeImprovementPct": 2.4548001834510846,
+            "ml": {
+              "mae": 0.0007027383284138254,
+              "rmse": 0.0010040871923286422,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0007204232804232804,
+              "rmse": 0.001068639049440651,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "5": {
+            "changedTargetCount": 715,
+            "maeImprovementPct": 6.361602261871559,
+            "ml": {
+              "mae": 0.0008417546971274085,
+              "rmse": 0.001134182605513772,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0008989417989417989,
+              "rmse": 0.0012296556062788109,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "6": {
+            "changedTargetCount": 802,
+            "maeImprovementPct": 9.279627285852797,
+            "ml": {
+              "mae": 0.00097565200835331,
+              "rmse": 0.001256615625556813,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0010754497354497354,
+              "rmse": 0.0013805412633797584,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          }
+        },
+        "byPool": [
+          {
+            "identity": {
+              "availability_zone": "eu-north-1a",
+              "gpu_type": "NVIDIA T4",
+              "instance_type": "g4dn.xlarge",
+              "product_description": "Linux/UNIX",
+              "region": "eu-north-1",
+              "resource_type": "GPU"
+            },
+            "metrics": {
+              "changedTargetCount": 986,
+              "maeImprovementPct": 0.9765698579713445,
+              "ml": {
+                "mae": 0.0005602420838670435,
+                "rmse": 0.0008540188840571182,
+                "sampleCount": 1890
+              },
+              "note": "Lower MAE is better",
+              "persistence": {
+                "mae": 0.0005657671957671956,
+                "rmse": 0.000918092685895155,
+                "sampleCount": 1890
+              },
+              "sampleCount": 1890
+            }
+          },
+          {
+            "identity": {
+              "availability_zone": "eu-north-1b",
+              "gpu_type": "NVIDIA T4",
+              "instance_type": "g4dn.xlarge",
+              "product_description": "Linux/UNIX",
+              "region": "eu-north-1",
+              "resource_type": "GPU"
+            },
+            "metrics": {
+              "changedTargetCount": 986,
+              "maeImprovementPct": 3.9751991105093274,
+              "ml": {
+                "mae": 0.0005851416041504044,
+                "rmse": 0.0009300525961434799,
+                "sampleCount": 1890
+              },
+              "note": "Lower MAE is better",
+              "persistence": {
+                "mae": 0.0006093650793650795,
+                "rmse": 0.0010091040606850247,
+                "sampleCount": 1890
+              },
+              "sampleCount": 1890
+            }
+          },
+          {
+            "identity": {
+              "availability_zone": "eu-north-1c",
+              "gpu_type": "NVIDIA T4",
+              "instance_type": "g4dn.xlarge",
+              "product_description": "Linux/UNIX",
+              "region": "eu-north-1",
+              "resource_type": "GPU"
+            },
+            "metrics": {
+              "changedTargetCount": 1102,
+              "maeImprovementPct": 2.9609447383114307,
+              "ml": {
+                "mae": 0.0006919038670404841,
+                "rmse": 0.0010470423863784613,
+                "sampleCount": 1890
+              },
+              "note": "Lower MAE is better",
+              "persistence": {
+                "mae": 0.0007130158730158729,
+                "rmse": 0.001106995552583276,
+                "sampleCount": 1890
+              },
+              "sampleCount": 1890
+            }
+          }
+        ],
+        "byPriceMovement": {
+          "CHANGED": {
+            "changedTargetCount": 3074,
+            "maeImprovementPct": 9.501016790754663,
+            "ml": {
+              "mae": 0.0010506007530270425,
+              "rmse": 0.0012808225135031313,
+              "sampleCount": 3074
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0011608978529603121,
+              "rmse": 0.0013775927822764211,
+              "sampleCount": 3074
+            },
+            "sampleCount": 3074
+          },
+          "UNCHANGED": {
+            "changedTargetCount": 0,
+            "maeImprovementPct": null,
+            "ml": {
+              "mae": 9.357733599936956e-05,
+              "rmse": 0.000127800623485738,
+              "sampleCount": 2596
+            },
+            "note": "Improvement is undefined when persistence MAE is zero",
+            "persistence": {
+              "mae": 0.0,
+              "rmse": 0.0,
+              "sampleCount": 2596
+            },
+            "sampleCount": 2596
+          }
+        },
+        "byRegion": {
+          "eu-north-1": {
+            "changedTargetCount": 3074,
+            "maeImprovementPct": 2.693675977708562,
+            "ml": {
+              "mae": 0.0006124291850193107,
+              "rmse": 0.0009470381626932986,
+              "sampleCount": 5670
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0006293827160493826,
+              "rmse": 0.001014334648694131,
+              "sampleCount": 5670
+            },
+            "sampleCount": 5670
+          }
+        },
+        "byResourceType": {
+          "GPU": {
+            "changedTargetCount": 3074,
+            "maeImprovementPct": 2.693675977708562,
+            "ml": {
+              "mae": 0.0006124291850193107,
+              "rmse": 0.0009470381626932986,
+              "sampleCount": 5670
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0006293827160493826,
+              "rmse": 0.001014334648694131,
+              "sampleCount": 5670
+            },
+            "sampleCount": 5670
+          }
+        },
+        "overall": {
+          "changedTargetCount": 3074,
+          "maeImprovementPct": 2.693675977708562,
+          "ml": {
+            "mae": 0.0006124291850193107,
+            "rmse": 0.0009470381626932986,
+            "sampleCount": 5670
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0006293827160493826,
+            "rmse": 0.001014334648694131,
+            "sampleCount": 5670
+          },
+          "sampleCount": 5670
+        }
+      }
+    },
+    {
+      "changeThreshold": 0.0,
+      "correctionWeight": 1.0,
+      "earlier": {
+        "folds": [
+          {
+            "changedTargetCount": 2199,
+            "maeImprovementPct": -80.96510425546411,
+            "ml": {
+              "mae": 0.0007142089447948969,
+              "rmse": 0.000978508817614952,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00039466666666666583,
+              "rmse": 0.0007342237019086508,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2154,
+            "maeImprovementPct": -7.716363941312122,
+            "ml": {
+              "mae": 0.00044762133460056366,
+              "rmse": 0.000696282685926861,
+              "sampleCount": 4500
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0004155555555555555,
+              "rmse": 0.0007523681132117295,
+              "sampleCount": 4500
+            },
+            "sampleCount": 4500
+          },
+          {
+            "changedTargetCount": 2029,
+            "maeImprovementPct": -36.113863177016825,
+            "ml": {
+              "mae": 0.0003504977167333807,
+              "rmse": 0.0005964338962866294,
+              "sampleCount": 4518
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0002575033200531209,
+              "rmse": 0.0005573883005357648,
+              "sampleCount": 4518
+            },
+            "sampleCount": 4518
+          }
+        ],
+        "improvingFolds": 0,
+        "overall": {
+          "changedTargetCount": 6382,
+          "maeImprovementPct": -41.63481809541711,
+          "ml": {
+            "mae": 0.0005039047892795521,
+            "rmse": 0.0007739615290370761,
+            "sampleCount": 13518
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0003557774818760169,
+            "rmse": 0.0006868235484993151,
+            "sampleCount": 13518
+          },
+          "sampleCount": 13518
+        }
+      },
+      "eligibleForSelection": false,
+      "family": "ridge",
+      "id": "ridge-weight-1-gate-0",
+      "laterDevelopment": {
+        "byHorizon": {
+          "1": {
+            "changedTargetCount": 158,
+            "maeImprovementPct": -32.16669639239491,
+            "ml": {
+              "mae": 0.00023831963032025497,
+              "rmse": 0.0005130310213330037,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00018031746031746033,
+              "rmse": 0.0005188917779736708,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "2": {
+            "changedTargetCount": 317,
+            "maeImprovementPct": -18.14972562397469,
+            "ml": {
+              "mae": 0.0004269643523871678,
+              "rmse": 0.0007064785414348414,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.00036137566137566137,
+              "rmse": 0.0007341770038729576,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "3": {
+            "changedTargetCount": 474,
+            "maeImprovementPct": -7.132826919805321,
+            "ml": {
+              "mae": 0.0005782905292253196,
+              "rmse": 0.0008384486479319425,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0005397883597883598,
+              "rmse": 0.0008972444589116274,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "4": {
+            "changedTargetCount": 608,
+            "maeImprovementPct": 1.7367447203525157,
+            "ml": {
+              "mae": 0.0007079113671363387,
+              "rmse": 0.0009690660569402482,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0007204232804232804,
+              "rmse": 0.001068639049440651,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "5": {
+            "changedTargetCount": 715,
+            "maeImprovementPct": 8.86611924229891,
+            "ml": {
+              "mae": 0.0008192405471287521,
+              "rmse": 0.0010772794498702006,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0008989417989417989,
+              "rmse": 0.0012296556062788109,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          },
+          "6": {
+            "changedTargetCount": 802,
+            "maeImprovementPct": 14.001512150701299,
+            "ml": {
+              "mae": 0.0009248705100660557,
+              "rmse": 0.001181054235827434,
+              "sampleCount": 945
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0010754497354497354,
+              "rmse": 0.0013805412633797584,
+              "sampleCount": 945
+            },
+            "sampleCount": 945
+          }
+        },
+        "byPool": [
+          {
+            "identity": {
+              "availability_zone": "eu-north-1a",
+              "gpu_type": "NVIDIA T4",
+              "instance_type": "g4dn.xlarge",
+              "product_description": "Linux/UNIX",
+              "region": "eu-north-1",
+              "resource_type": "GPU"
+            },
+            "metrics": {
+              "changedTargetCount": 986,
+              "maeImprovementPct": -0.8284284210808605,
+              "ml": {
+                "mae": 0.0005704541720140833,
+                "rmse": 0.000825470074481756,
+                "sampleCount": 1890
+              },
+              "note": "Lower MAE is better",
+              "persistence": {
+                "mae": 0.0005657671957671956,
+                "rmse": 0.000918092685895155,
+                "sampleCount": 1890
+              },
+              "sampleCount": 1890
+            }
+          },
+          {
+            "identity": {
+              "availability_zone": "eu-north-1b",
+              "gpu_type": "NVIDIA T4",
+              "instance_type": "g4dn.xlarge",
+              "product_description": "Linux/UNIX",
+              "region": "eu-north-1",
+              "resource_type": "GPU"
+            },
+            "metrics": {
+              "changedTargetCount": 986,
+              "maeImprovementPct": 4.42810732476797,
+              "ml": {
+                "mae": 0.0005823817396511362,
+                "rmse": 0.0008801465033423032,
+                "sampleCount": 1890
+              },
+              "note": "Lower MAE is better",
+              "persistence": {
+                "mae": 0.0006093650793650795,
+                "rmse": 0.0010091040606850247,
+                "sampleCount": 1890
+              },
+              "sampleCount": 1890
+            }
+          },
+          {
+            "identity": {
+              "availability_zone": "eu-north-1c",
+              "gpu_type": "NVIDIA T4",
+              "instance_type": "g4dn.xlarge",
+              "product_description": "Linux/UNIX",
+              "region": "eu-north-1",
+              "resource_type": "GPU"
+            },
+            "metrics": {
+              "changedTargetCount": 1102,
+              "maeImprovementPct": 2.531965589039024,
+              "ml": {
+                "mae": 0.0006949625564667248,
+                "rmse": 0.001011854884592617,
+                "sampleCount": 1890
+              },
+              "note": "Lower MAE is better",
+              "persistence": {
+                "mae": 0.0007130158730158729,
+                "rmse": 0.001106995552583276,
+                "sampleCount": 1890
+              },
+              "sampleCount": 1890
+            }
+          }
+        ],
+        "byPriceMovement": {
+          "CHANGED": {
+            "changedTargetCount": 3074,
+            "maeImprovementPct": 15.751679194623987,
+            "ml": {
+              "mae": 0.000978036947384726,
+              "rmse": 0.0012122539297053845,
+              "sampleCount": 3074
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0011608978529603121,
+              "rmse": 0.0013775927822764211,
+              "sampleCount": 3074
+            },
+            "sampleCount": 3074
+          },
+          "UNCHANGED": {
+            "changedTargetCount": 0,
+            "maeImprovementPct": null,
+            "ml": {
+              "mae": 0.00018715467199873924,
+              "rmse": 0.00025560124697147603,
+              "sampleCount": 2596
+            },
+            "note": "Improvement is undefined when persistence MAE is zero",
+            "persistence": {
+              "mae": 0.0,
+              "rmse": 0.0,
+              "sampleCount": 2596
+            },
+            "sampleCount": 2596
+          }
+        },
+        "byRegion": {
+          "eu-north-1": {
+            "changedTargetCount": 3074,
+            "maeImprovementPct": 2.136997568531765,
+            "ml": {
+              "mae": 0.0006159328227106481,
+              "rmse": 0.0009091954352951362,
+              "sampleCount": 5670
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0006293827160493826,
+              "rmse": 0.001014334648694131,
+              "sampleCount": 5670
+            },
+            "sampleCount": 5670
+          }
+        },
+        "byResourceType": {
+          "GPU": {
+            "changedTargetCount": 3074,
+            "maeImprovementPct": 2.136997568531765,
+            "ml": {
+              "mae": 0.0006159328227106481,
+              "rmse": 0.0009091954352951362,
+              "sampleCount": 5670
+            },
+            "note": "Lower MAE is better",
+            "persistence": {
+              "mae": 0.0006293827160493826,
+              "rmse": 0.001014334648694131,
+              "sampleCount": 5670
+            },
+            "sampleCount": 5670
+          }
+        },
+        "overall": {
+          "changedTargetCount": 3074,
+          "maeImprovementPct": 2.136997568531765,
+          "ml": {
+            "mae": 0.0006159328227106481,
+            "rmse": 0.0009091954352951362,
+            "sampleCount": 5670
+          },
+          "note": "Lower MAE is better",
+          "persistence": {
+            "mae": 0.0006293827160493826,
+            "rmse": 0.001014334648694131,
+            "sampleCount": 5670
+          },
+          "sampleCount": 5670
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "schemaVersion": "expanded-spot-collection-config-v1",
+  "days": 89,
+  "product": "Linux/UNIX",
+  "regions": ["eu-north-1", "eu-central-1", "eu-west-1", "us-east-1", "us-west-2", "ap-southeast-1"],
+  "instanceTypes": ["g4dn.xlarge", "g5.xlarge", "g6.xlarge", "p3.2xlarge", "m5.xlarge", "c6i.xlarge", "r6i.xlarge"]
+}

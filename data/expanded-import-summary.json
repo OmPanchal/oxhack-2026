@@ -1,0 +1,690 @@
+{
+  "collectedPairCount": 6,
+  "collectionStatus": "PARTIAL",
+  "excludedPairs": [
+    {
+      "instanceType": "p3.2xlarge",
+      "region": "eu-north-1",
+      "status": "NOT_OFFERED"
+    },
+    {
+      "errorCode": "UnauthorizedOperation",
+      "instanceType": "g4dn.xlarge",
+      "region": "eu-central-1",
+      "status": "ERROR"
+    },
+    {
+      "errorCode": "UnauthorizedOperation",
+      "instanceType": "g5.xlarge",
+      "region": "eu-central-1",
+      "status": "ERROR"
+    },
+    {
+      "errorCode": "UnauthorizedOperation",
+      "instanceType": "g6.xlarge",
+      "region": "eu-central-1",
+      "status": "ERROR"
+    },
+    {
+      "errorCode": "UnauthorizedOperation",
+      "instanceType": "p3.2xlarge",
+      "region": "eu-central-1",
+      "status": "ERROR"
+    },
+    {
+      "errorCode": "UnauthorizedOperation",
+      "instanceType": "m5.xlarge",
+      "region": "eu-central-1",
+      "status": "ERROR"
+    },
+    {
+      "errorCode": "UnauthorizedOperation",
+      "instanceType": "c6i.xlarge",
+      "region": "eu-central-1",
+      "status": "ERROR"
+    },
+    {
+      "errorCode": "UnauthorizedOperation",
+      "instanceType": "r6i.xlarge",
+      "region": "eu-central-1",
+      "status": "ERROR"
+    },
+    {
+      "errorCode": "UnauthorizedOperation",
+      "instanceType": "g4dn.xlarge",
+      "region": "eu-west-1",
+      "status": "ERROR"
+    },
+    {
+      "errorCode": "UnauthorizedOperation",
+      "instanceType": "g5.xlarge",
+      "region": "eu-west-1",
+      "status": "ERROR"
+    },
+    {
+      "errorCode": "UnauthorizedOperation",
+      "instanceType": "g6.xlarge",
+      "region": "eu-west-1",
+      "status": "ERROR"
+    },
+    {
+      "errorCode": "UnauthorizedOperation",
+      "instanceType": "p3.2xlarge",
+      "region": "eu-west-1",
+      "status": "ERROR"
+    },
+    {
+      "errorCode": "UnauthorizedOperation",
+      "instanceType": "m5.xlarge",
+      "region": "eu-west-1",
+      "status": "ERROR"
+    },
+    {
+      "errorCode": "UnauthorizedOperation",
+      "instanceType": "c6i.xlarge",
+      "region": "eu-west-1",
+      "status": "ERROR"
+    },
+    {
+      "errorCode": "UnauthorizedOperation",
+      "instanceType": "r6i.xlarge",
+      "region": "eu-west-1",
+      "status": "ERROR"
+    },
+    {
+      "errorCode": "UnauthorizedOperation",
+      "instanceType": "g4dn.xlarge",
+      "region": "us-east-1",
+      "status": "ERROR"
+    },
+    {
+      "errorCode": "UnauthorizedOperation",
+      "instanceType": "g5.xlarge",
+      "region": "us-east-1",
+      "status": "ERROR"
+    },
+    {
+      "errorCode": "UnauthorizedOperation",
+      "instanceType": "g6.xlarge",
+      "region": "us-east-1",
+      "status": "ERROR"
+    },
+    {
+      "errorCode": "UnauthorizedOperation",
+      "instanceType": "p3.2xlarge",
+      "region": "us-east-1",
+      "status": "ERROR"
+    },
+    {
+      "errorCode": "UnauthorizedOperation",
+      "instanceType": "m5.xlarge",
+      "region": "us-east-1",
+      "status": "ERROR"
+    },
+    {
+      "errorCode": "UnauthorizedOperation",
+      "instanceType": "c6i.xlarge",
+      "region": "us-east-1",
+      "status": "ERROR"
+    },
+    {
+      "errorCode": "UnauthorizedOperation",
+      "instanceType": "r6i.xlarge",
+      "region": "us-east-1",
+      "status": "ERROR"
+    },
+    {
+      "errorCode": "UnauthorizedOperation",
+      "instanceType": "g4dn.xlarge",
+      "region": "us-west-2",
+      "status": "ERROR"
+    },
+    {
+      "errorCode": "UnauthorizedOperation",
+      "instanceType": "g5.xlarge",
+      "region": "us-west-2",
+      "status": "ERROR"
+    },
+    {
+      "errorCode": "UnauthorizedOperation",
+      "instanceType": "g6.xlarge",
+      "region": "us-west-2",
+      "status": "ERROR"
+    },
+    {
+      "errorCode": "UnauthorizedOperation",
+      "instanceType": "p3.2xlarge",
+      "region": "us-west-2",
+      "status": "ERROR"
+    },
+    {
+      "errorCode": "UnauthorizedOperation",
+      "instanceType": "m5.xlarge",
+      "region": "us-west-2",
+      "status": "ERROR"
+    },
+    {
+      "errorCode": "UnauthorizedOperation",
+      "instanceType": "c6i.xlarge",
+      "region": "us-west-2",
+      "status": "ERROR"
+    },
+    {
+      "errorCode": "UnauthorizedOperation",
+      "instanceType": "r6i.xlarge",
+      "region": "us-west-2",
+      "status": "ERROR"
+    },
+    {
+      "errorCode": "UnauthorizedOperation",
+      "instanceType": "g4dn.xlarge",
+      "region": "ap-southeast-1",
+      "status": "ERROR"
+    },
+    {
+      "errorCode": "UnauthorizedOperation",
+      "instanceType": "g5.xlarge",
+      "region": "ap-southeast-1",
+      "status": "ERROR"
+    },
+    {
+      "errorCode": "UnauthorizedOperation",
+      "instanceType": "g6.xlarge",
+      "region": "ap-southeast-1",
+      "status": "ERROR"
+    },
+    {
+      "errorCode": "UnauthorizedOperation",
+      "instanceType": "p3.2xlarge",
+      "region": "ap-southeast-1",
+      "status": "ERROR"
+    },
+    {
+      "errorCode": "UnauthorizedOperation",
+      "instanceType": "m5.xlarge",
+      "region": "ap-southeast-1",
+      "status": "ERROR"
+    },
+    {
+      "errorCode": "UnauthorizedOperation",
+      "instanceType": "c6i.xlarge",
+      "region": "ap-southeast-1",
+      "status": "ERROR"
+    },
+    {
+      "errorCode": "UnauthorizedOperation",
+      "instanceType": "r6i.xlarge",
+      "region": "ap-southeast-1",
+      "status": "ERROR"
+    }
+  ],
+  "hardware": [
+    {
+      "allocationGranularityUnits": 1,
+      "dataKind": "OBSERVED",
+      "gpuCount": 1,
+      "gpuMemoryMiBPerDevice": 16384,
+      "gpuType": "NVIDIA T4",
+      "instanceType": "g4dn.xlarge",
+      "memoryMiB": 16384,
+      "offeringSource": "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeInstanceTypeOfferings.html",
+      "region": "eu-north-1",
+      "resourceType": "GPU",
+      "resourceUnitsPerInstance": 1,
+      "retrievedAt": "2026-10-25T00:14:03.328556Z",
+      "source": "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeInstanceTypes.html",
+      "supportedRegions": [
+        "eu-north-1"
+      ],
+      "unit": "GPU-hour",
+      "vcpuCount": 4
+    },
+    {
+      "allocationGranularityUnits": 1,
+      "dataKind": "OBSERVED",
+      "gpuCount": 1,
+      "gpuMemoryMiBPerDevice": 22888,
+      "gpuType": "NVIDIA A10G",
+      "instanceType": "g5.xlarge",
+      "memoryMiB": 16384,
+      "offeringSource": "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeInstanceTypeOfferings.html",
+      "region": "eu-north-1",
+      "resourceType": "GPU",
+      "resourceUnitsPerInstance": 1,
+      "retrievedAt": "2026-10-25T00:14:03.328556Z",
+      "source": "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeInstanceTypes.html",
+      "supportedRegions": [
+        "eu-north-1"
+      ],
+      "unit": "GPU-hour",
+      "vcpuCount": 4
+    },
+    {
+      "allocationGranularityUnits": 1,
+      "dataKind": "OBSERVED",
+      "gpuCount": 1,
+      "gpuMemoryMiBPerDevice": 22888,
+      "gpuType": "NVIDIA L4",
+      "instanceType": "g6.xlarge",
+      "memoryMiB": 16384,
+      "offeringSource": "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeInstanceTypeOfferings.html",
+      "region": "eu-north-1",
+      "resourceType": "GPU",
+      "resourceUnitsPerInstance": 1,
+      "retrievedAt": "2026-10-25T00:14:03.328556Z",
+      "source": "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeInstanceTypes.html",
+      "supportedRegions": [
+        "eu-north-1"
+      ],
+      "unit": "GPU-hour",
+      "vcpuCount": 4
+    },
+    {
+      "allocationGranularityUnits": 4,
+      "dataKind": "OBSERVED",
+      "gpuCount": 0,
+      "gpuMemoryMiBPerDevice": null,
+      "gpuType": null,
+      "instanceType": "m5.xlarge",
+      "memoryMiB": 16384,
+      "offeringSource": "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeInstanceTypeOfferings.html",
+      "region": "eu-north-1",
+      "resourceType": "CPU",
+      "resourceUnitsPerInstance": 4,
+      "retrievedAt": "2026-10-25T00:14:03.328556Z",
+      "source": "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeInstanceTypes.html",
+      "supportedRegions": [
+        "eu-north-1"
+      ],
+      "unit": "vCPU-hour",
+      "vcpuCount": 4
+    },
+    {
+      "allocationGranularityUnits": 4,
+      "dataKind": "OBSERVED",
+      "gpuCount": 0,
+      "gpuMemoryMiBPerDevice": null,
+      "gpuType": null,
+      "instanceType": "c6i.xlarge",
+      "memoryMiB": 8192,
+      "offeringSource": "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeInstanceTypeOfferings.html",
+      "region": "eu-north-1",
+      "resourceType": "CPU",
+      "resourceUnitsPerInstance": 4,
+      "retrievedAt": "2026-10-25T00:14:03.328556Z",
+      "source": "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeInstanceTypes.html",
+      "supportedRegions": [
+        "eu-north-1"
+      ],
+      "unit": "vCPU-hour",
+      "vcpuCount": 4
+    },
+    {
+      "allocationGranularityUnits": 4,
+      "dataKind": "OBSERVED",
+      "gpuCount": 0,
+      "gpuMemoryMiBPerDevice": null,
+      "gpuType": null,
+      "instanceType": "r6i.xlarge",
+      "memoryMiB": 32768,
+      "offeringSource": "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeInstanceTypeOfferings.html",
+      "region": "eu-north-1",
+      "resourceType": "CPU",
+      "resourceUnitsPerInstance": 4,
+      "retrievedAt": "2026-10-25T00:14:03.328556Z",
+      "source": "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeInstanceTypes.html",
+      "supportedRegions": [
+        "eu-north-1"
+      ],
+      "unit": "vCPU-hour",
+      "vcpuCount": 4
+    }
+  ],
+  "hourlyDatasetSha256": "85d5a2853e3f414d9f4a8a8bb25b25ce3670f7f887aa5b78461f44892bf3de82",
+  "hourlyRowCount": 34176,
+  "limitations": [
+    "One region was collected; 35 pairs in five other regions were unauthorized.",
+    "Provider export hashes establish consistency, not independent AWS signatures.",
+    "Price histories do not establish available capacity or interruption labels."
+  ],
+  "requestedPairCount": 42,
+  "schemaVersion": "expanded-import-summary-v1",
+  "series": [
+    {
+      "allocationGranularityUnits": 4,
+      "availabilityZone": "eu-north-1a",
+      "dataKind": "OBSERVED",
+      "declaredGapCount": 0,
+      "eventCount": 358,
+      "firstEvent": "2026-07-28T00:00:00Z",
+      "gpuType": null,
+      "instanceType": "c6i.xlarge",
+      "knownSlotCount": 2136,
+      "lastEvent": "2026-10-24T22:00:00Z",
+      "meets60DayCoverageTarget": true,
+      "missingAveragePriceSlots": 0,
+      "missingStartPriceSlots": 0,
+      "productDescription": "Linux/UNIX",
+      "region": "eu-north-1",
+      "resourceType": "CPU",
+      "resourceUnitsPerInstance": 4,
+      "unit": "vCPU-hour"
+    },
+    {
+      "allocationGranularityUnits": 1,
+      "availabilityZone": "eu-north-1a",
+      "dataKind": "OBSERVED",
+      "declaredGapCount": 0,
+      "eventCount": 369,
+      "firstEvent": "2026-07-27T20:00:00Z",
+      "gpuType": "NVIDIA T4",
+      "instanceType": "g4dn.xlarge",
+      "knownSlotCount": 2136,
+      "lastEvent": "2026-10-24T20:00:00Z",
+      "meets60DayCoverageTarget": true,
+      "missingAveragePriceSlots": 0,
+      "missingStartPriceSlots": 0,
+      "productDescription": "Linux/UNIX",
+      "region": "eu-north-1",
+      "resourceType": "GPU",
+      "resourceUnitsPerInstance": 1,
+      "unit": "GPU-hour"
+    },
+    {
+      "allocationGranularityUnits": 1,
+      "availabilityZone": "eu-north-1a",
+      "dataKind": "OBSERVED",
+      "declaredGapCount": 0,
+      "eventCount": 364,
+      "firstEvent": "2026-07-27T19:00:00Z",
+      "gpuType": "NVIDIA L4",
+      "instanceType": "g6.xlarge",
+      "knownSlotCount": 2136,
+      "lastEvent": "2026-10-24T18:00:00Z",
+      "meets60DayCoverageTarget": true,
+      "missingAveragePriceSlots": 0,
+      "missingStartPriceSlots": 0,
+      "productDescription": "Linux/UNIX",
+      "region": "eu-north-1",
+      "resourceType": "GPU",
+      "resourceUnitsPerInstance": 1,
+      "unit": "GPU-hour"
+    },
+    {
+      "allocationGranularityUnits": 4,
+      "availabilityZone": "eu-north-1a",
+      "dataKind": "OBSERVED",
+      "declaredGapCount": 0,
+      "eventCount": 354,
+      "firstEvent": "2026-07-28T00:00:00Z",
+      "gpuType": null,
+      "instanceType": "m5.xlarge",
+      "knownSlotCount": 2136,
+      "lastEvent": "2026-10-24T19:00:00Z",
+      "meets60DayCoverageTarget": true,
+      "missingAveragePriceSlots": 0,
+      "missingStartPriceSlots": 0,
+      "productDescription": "Linux/UNIX",
+      "region": "eu-north-1",
+      "resourceType": "CPU",
+      "resourceUnitsPerInstance": 4,
+      "unit": "vCPU-hour"
+    },
+    {
+      "allocationGranularityUnits": 4,
+      "availabilityZone": "eu-north-1a",
+      "dataKind": "OBSERVED",
+      "declaredGapCount": 0,
+      "eventCount": 354,
+      "firstEvent": "2026-07-27T22:00:00Z",
+      "gpuType": null,
+      "instanceType": "r6i.xlarge",
+      "knownSlotCount": 2136,
+      "lastEvent": "2026-10-24T19:00:00Z",
+      "meets60DayCoverageTarget": true,
+      "missingAveragePriceSlots": 0,
+      "missingStartPriceSlots": 0,
+      "productDescription": "Linux/UNIX",
+      "region": "eu-north-1",
+      "resourceType": "CPU",
+      "resourceUnitsPerInstance": 4,
+      "unit": "vCPU-hour"
+    },
+    {
+      "allocationGranularityUnits": 4,
+      "availabilityZone": "eu-north-1b",
+      "dataKind": "OBSERVED",
+      "declaredGapCount": 0,
+      "eventCount": 358,
+      "firstEvent": "2026-07-27T21:00:00Z",
+      "gpuType": null,
+      "instanceType": "c6i.xlarge",
+      "knownSlotCount": 2136,
+      "lastEvent": "2026-10-24T16:00:00Z",
+      "meets60DayCoverageTarget": true,
+      "missingAveragePriceSlots": 0,
+      "missingStartPriceSlots": 0,
+      "productDescription": "Linux/UNIX",
+      "region": "eu-north-1",
+      "resourceType": "CPU",
+      "resourceUnitsPerInstance": 4,
+      "unit": "vCPU-hour"
+    },
+    {
+      "allocationGranularityUnits": 1,
+      "availabilityZone": "eu-north-1b",
+      "dataKind": "OBSERVED",
+      "declaredGapCount": 0,
+      "eventCount": 354,
+      "firstEvent": "2026-07-27T21:00:00Z",
+      "gpuType": "NVIDIA T4",
+      "instanceType": "g4dn.xlarge",
+      "knownSlotCount": 2136,
+      "lastEvent": "2026-10-24T20:00:00Z",
+      "meets60DayCoverageTarget": true,
+      "missingAveragePriceSlots": 0,
+      "missingStartPriceSlots": 0,
+      "productDescription": "Linux/UNIX",
+      "region": "eu-north-1",
+      "resourceType": "GPU",
+      "resourceUnitsPerInstance": 1,
+      "unit": "GPU-hour"
+    },
+    {
+      "allocationGranularityUnits": 1,
+      "availabilityZone": "eu-north-1b",
+      "dataKind": "OBSERVED",
+      "declaredGapCount": 0,
+      "eventCount": 365,
+      "firstEvent": "2026-07-28T00:00:00Z",
+      "gpuType": "NVIDIA A10G",
+      "instanceType": "g5.xlarge",
+      "knownSlotCount": 2136,
+      "lastEvent": "2026-10-24T20:00:00Z",
+      "meets60DayCoverageTarget": true,
+      "missingAveragePriceSlots": 0,
+      "missingStartPriceSlots": 0,
+      "productDescription": "Linux/UNIX",
+      "region": "eu-north-1",
+      "resourceType": "GPU",
+      "resourceUnitsPerInstance": 1,
+      "unit": "GPU-hour"
+    },
+    {
+      "allocationGranularityUnits": 1,
+      "availabilityZone": "eu-north-1b",
+      "dataKind": "OBSERVED",
+      "declaredGapCount": 0,
+      "eventCount": 356,
+      "firstEvent": "2026-07-27T21:00:00Z",
+      "gpuType": "NVIDIA L4",
+      "instanceType": "g6.xlarge",
+      "knownSlotCount": 2136,
+      "lastEvent": "2026-10-24T20:00:00Z",
+      "meets60DayCoverageTarget": true,
+      "missingAveragePriceSlots": 0,
+      "missingStartPriceSlots": 0,
+      "productDescription": "Linux/UNIX",
+      "region": "eu-north-1",
+      "resourceType": "GPU",
+      "resourceUnitsPerInstance": 1,
+      "unit": "GPU-hour"
+    },
+    {
+      "allocationGranularityUnits": 4,
+      "availabilityZone": "eu-north-1b",
+      "dataKind": "OBSERVED",
+      "declaredGapCount": 0,
+      "eventCount": 359,
+      "firstEvent": "2026-07-27T21:00:00Z",
+      "gpuType": null,
+      "instanceType": "m5.xlarge",
+      "knownSlotCount": 2136,
+      "lastEvent": "2026-10-24T23:00:00Z",
+      "meets60DayCoverageTarget": true,
+      "missingAveragePriceSlots": 0,
+      "missingStartPriceSlots": 0,
+      "productDescription": "Linux/UNIX",
+      "region": "eu-north-1",
+      "resourceType": "CPU",
+      "resourceUnitsPerInstance": 4,
+      "unit": "vCPU-hour"
+    },
+    {
+      "allocationGranularityUnits": 4,
+      "availabilityZone": "eu-north-1b",
+      "dataKind": "OBSERVED",
+      "declaredGapCount": 0,
+      "eventCount": 353,
+      "firstEvent": "2026-07-28T00:00:00Z",
+      "gpuType": null,
+      "instanceType": "r6i.xlarge",
+      "knownSlotCount": 2136,
+      "lastEvent": "2026-10-24T21:00:00Z",
+      "meets60DayCoverageTarget": true,
+      "missingAveragePriceSlots": 0,
+      "missingStartPriceSlots": 0,
+      "productDescription": "Linux/UNIX",
+      "region": "eu-north-1",
+      "resourceType": "CPU",
+      "resourceUnitsPerInstance": 4,
+      "unit": "vCPU-hour"
+    },
+    {
+      "allocationGranularityUnits": 4,
+      "availabilityZone": "eu-north-1c",
+      "dataKind": "OBSERVED",
+      "declaredGapCount": 0,
+      "eventCount": 357,
+      "firstEvent": "2026-07-27T22:00:00Z",
+      "gpuType": null,
+      "instanceType": "c6i.xlarge",
+      "knownSlotCount": 2136,
+      "lastEvent": "2026-10-24T18:00:00Z",
+      "meets60DayCoverageTarget": true,
+      "missingAveragePriceSlots": 0,
+      "missingStartPriceSlots": 0,
+      "productDescription": "Linux/UNIX",
+      "region": "eu-north-1",
+      "resourceType": "CPU",
+      "resourceUnitsPerInstance": 4,
+      "unit": "vCPU-hour"
+    },
+    {
+      "allocationGranularityUnits": 1,
+      "availabilityZone": "eu-north-1c",
+      "dataKind": "OBSERVED",
+      "declaredGapCount": 0,
+      "eventCount": 360,
+      "firstEvent": "2026-07-27T23:00:00Z",
+      "gpuType": "NVIDIA T4",
+      "instanceType": "g4dn.xlarge",
+      "knownSlotCount": 2136,
+      "lastEvent": "2026-10-24T15:00:00Z",
+      "meets60DayCoverageTarget": true,
+      "missingAveragePriceSlots": 0,
+      "missingStartPriceSlots": 0,
+      "productDescription": "Linux/UNIX",
+      "region": "eu-north-1",
+      "resourceType": "GPU",
+      "resourceUnitsPerInstance": 1,
+      "unit": "GPU-hour"
+    },
+    {
+      "allocationGranularityUnits": 1,
+      "availabilityZone": "eu-north-1c",
+      "dataKind": "OBSERVED",
+      "declaredGapCount": 0,
+      "eventCount": 364,
+      "firstEvent": "2026-07-27T22:00:00Z",
+      "gpuType": "NVIDIA A10G",
+      "instanceType": "g5.xlarge",
+      "knownSlotCount": 2136,
+      "lastEvent": "2026-10-24T22:00:00Z",
+      "meets60DayCoverageTarget": true,
+      "missingAveragePriceSlots": 0,
+      "missingStartPriceSlots": 0,
+      "productDescription": "Linux/UNIX",
+      "region": "eu-north-1",
+      "resourceType": "GPU",
+      "resourceUnitsPerInstance": 1,
+      "unit": "GPU-hour"
+    },
+    {
+      "allocationGranularityUnits": 4,
+      "availabilityZone": "eu-north-1c",
+      "dataKind": "OBSERVED",
+      "declaredGapCount": 0,
+      "eventCount": 355,
+      "firstEvent": "2026-07-27T18:00:00Z",
+      "gpuType": null,
+      "instanceType": "m5.xlarge",
+      "knownSlotCount": 2136,
+      "lastEvent": "2026-10-24T18:00:00Z",
+      "meets60DayCoverageTarget": true,
+      "missingAveragePriceSlots": 0,
+      "missingStartPriceSlots": 0,
+      "productDescription": "Linux/UNIX",
+      "region": "eu-north-1",
+      "resourceType": "CPU",
+      "resourceUnitsPerInstance": 4,
+      "unit": "vCPU-hour"
+    },
+    {
+      "allocationGranularityUnits": 4,
+      "availabilityZone": "eu-north-1c",
+      "dataKind": "OBSERVED",
+      "declaredGapCount": 0,
+      "eventCount": 357,
+      "firstEvent": "2026-07-27T23:00:00Z",
+      "gpuType": null,
+      "instanceType": "r6i.xlarge",
+      "knownSlotCount": 2136,
+      "lastEvent": "2026-10-24T22:00:00Z",
+      "meets60DayCoverageTarget": true,
+      "missingAveragePriceSlots": 0,
+      "missingStartPriceSlots": 0,
+      "productDescription": "Linux/UNIX",
+      "region": "eu-north-1",
+      "resourceType": "CPU",
+      "resourceUnitsPerInstance": 4,
+      "unit": "vCPU-hour"
+    }
+  ],
+  "validation": {
+    "allManifestHashesVerified": true,
+    "archiveSha256": "e759ee0201a335f436bafe9d687cdf32ac35d7a417ce7f4f5e6c1209c8c19c6d",
+    "combinedMatchesShards": true,
+    "crcVerified": true,
+    "hardwareRecordCount": 6,
+    "normalizationRecomputed": true,
+    "priceEventCount": 5737,
+    "scopeStatus": "PARTIAL",
+    "sourceReceipt": "expanded-data/receipt.json"
+  },
+  "window": {
+    "endTime": "2026-10-25T00:00:00Z",
+    "retrievedAt": "2026-10-25T00:14:03.328556Z",
+    "startTime": "2026-07-28T00:00:00Z"
+  }
+}

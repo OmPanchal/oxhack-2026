@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "complex-price-model-design-v1",
+  "seed": 42,
+  "featureProfile": "extended168",
+  "walkForwardFractions": [0.4, 0.6, 0.8, 1.0],
+  "correctionWeights": [0.25, 0.5, 1.0],
+  "incumbent": "lightgbm-reference-weight-0.5",
+  "minimumImprovingFolds": 2,
+  "absoluteMaeTolerance": 1e-12,
+  "models": {
+    "lightgbm-reference": {"num_leaves": 3, "max_depth": 2, "min_data_in_leaf": 200, "learning_rate": 0.03, "num_boost_round": 80, "lambda_l1": 5, "lambda_l2": 10},
+    "deep-lightgbm": {"num_leaves": 15, "max_depth": 5, "min_data_in_leaf": 40, "learning_rate": 0.03, "num_boost_round": 240, "lambda_l1": 0.1, "lambda_l2": 5, "feature_fraction": 0.8},
+    "random-forest": {"n_estimators": 120, "max_depth": 12, "min_samples_leaf": 20, "max_features": 0.8},
+    "rbf-svr": {"kernel": "rbf", "C": 1.0, "epsilon": 0.1, "gamma": "scale", "cache_size": 256},
+    "mlp": {"hidden_layer_sizes": [64, 32], "activation": "relu", "solver": "adam", "alpha": 1.0, "batch_size": 128, "learning_rate_init": 0.001, "max_iter": 250, "tol": 0.0001, "n_iter_no_change": 20, "early_stopping": false}
+  },
+  "ensembles": {
+    "tree-blend": ["lightgbm-reference", "deep-lightgbm"],
+    "kernel-tree-blend": ["lightgbm-reference", "deep-lightgbm", "rbf-svr"]
+  },
+  "ensembleCorrectionWeight": 0.5,
+  "selectionRule": "Replace incumbent only if aggregate earlier MAE improves, at least two earlier folds beat incumbent, and aggregate MAE beats persistence; choose lowest eligible earlier MAE. Freeze before later development scoring.",
+  "laterPeriodStatus": "Previously inspected development data; not independent confirmation",
+  "protectedPeriods": ["calibration", "test"]
+}

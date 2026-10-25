@@ -327,3 +327,26 @@ development results, not final-test or scheduling-savings claims. See
 The ignored local bundle is `models/price-experiment-001/`; full predictions and
 report are in `data/processed/forecast-experiments-001/`. All 40 outcomes,
 including failures, are retained in the tracked results.
+
+## Alternative model families
+
+The [alternative-model design](alternative-model-design.json) compares Ridge,
+Extra Trees, histogram gradient boosting and two-stage price-change prediction
+with the existing extended-history LightGBM reference. Fourteen prespecified
+variants use the same observed dataset, seed 42, eligibility and chronological
+windows as the earlier experiment. No AWS calls or new data were needed.
+
+The frozen earlier-window selection remains the half-correction LightGBM
+reference: 3.1683% earlier aggregate and 1.8885% later development MAE improvement.
+Two-stage prediction with half correction and a 0.5 gate improved later MAE
+2.0375% but won only one earlier window. Histogram gradient boosting with half
+correction improved earlier MAE 0.9566% and later MAE 0.6110%, winning two earlier
+windows. These are development results from repeatedly inspected periods, not
+independent confirmation or final-test evidence. Calibration and test remain
+unused. The price-change classifier uses genuine observed price-change labels
+and supplies no interruption-risk estimate.
+
+See [all measured results](alternative-model-results.json) and
+[reproduction/limitations](alternative-models.md). The ignored local run is
+`data/processed/alternative-models-001/`. The default service was not changed;
+there is no new claim of scheduling savings or final predictive superiority.

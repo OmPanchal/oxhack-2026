@@ -46,6 +46,45 @@ ForecastService.predict(ForecastRequest) -> list[Forecast]
 
 Person 2 owns API routes, shared schemas, the market adapter, optimizer, replay, execution, and shared backend configuration/dependencies. Coordinate changes to those files. Person 3 consumes forecasts and metrics through Person 2's backend and owns the frontend. Preserve teammates' uncommitted work; do not silently edit their modules.
 
+## Current implementation and serving handoff — 25 October 2026
+
+This status update supersedes the initial-run status statements below; historical
+milestone descriptions and targets remain as the original plan.
+
+- **Steps 5–10:** persistence, causal features, chronological evaluation and the
+  stronger CPU/GPU LightGBM models are delivered. The current model has 31 leaves,
+  200 rounds and an L1/MAE objective. See [model results](error-model.md).
+- **Steps 14–15:** the selected model is wrapped by
+  `ErrorForecastService.predict(ForecastRequest) -> list[Forecast]`; the protocol
+  and shared request/response schemas are unchanged. Native weight/metadata
+  checksums, fixed source-pool identity, UTC origin, model-selection availability,
+  finite output, explicit fallbacks and stale/future/conflicting history checks
+  are enforced. The serving parity and latency evidence is in
+  [forecast-serving-validation.json](forecast-serving-validation.json).
+- **Step 16, backend handoff:** at the user's explicit request to connect the
+  backend, the integration owner composition in `main.py` now wires this service
+  through a thin `POST /api/forecasts` route, defaulting to ML. The existing GET
+  returns the latest generated forecasts. `forecastMode=NAIVE` remains available.
+  `/api/models/metrics` exposes the clock, model hashes, selected source identities
+  and verified evaluation metrics. This is the scoped API integration handoff;
+  optimizer, live market ingestion, replay, execution and frontend modules are
+  not implemented or changed by this integration.
+- **Steps 17 and 19:** evaluation reports, frozen selected weights, metadata,
+  serving configuration and reproduction instructions are packaged. The original
+  test and final extra day have now been evaluated; neither is untouched. No
+  claim of a new blind test, guaranteed generalization or current-model scheduling
+  savings follows from these forecast scores.
+- **Still open:** empirical interval calibration (Step 11), genuine labeled risk
+  evidence (Step 12; probabilities remain null), Person 2's production optimizer/
+  replay and the new model's scheduling ablation (Steps 13/18), frontend chart
+  tracing and complete demo rehearsals (Steps 16/20–22). Previous offline scheduler
+  comparisons used the earlier model and cannot be attributed to this one.
+
+Use [the current serving handoff](forecast-serving.md) rather than the original
+Milestone 2 artifact/clock examples. With the existing API pool key, one fixed
+CPU source and one source per GPU type/region are configured explicitly; the API
+does not expose all 79 instance configurations simultaneously.
+
 ## Dataset plan
 
 ### 1. Required: historical cloud Spot prices

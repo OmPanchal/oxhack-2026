@@ -1,15 +1,19 @@
 """Person 2 owns composition and routes. Start: uvicorn app.main:app --reload."""
 import os
-from fastapi import FastAPI, HTTPException
+from pathlib import Path
+from threading import RLock
+from typing import Literal
+from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.schemas import (
-    Decision, Forecast, Health, Job, JobCreate, MarketSnapshot, OptimizeRequest,
+    Decision, Forecast, ForecastRequest, Health, Job, JobCreate, MarketSnapshot, OptimizeRequest,
     ReplayResetRequest, ReplayState, ReplayStepRequest, ShockRequest,
 )
 from app.jobs.store import JobStore
+from app.forecasting.baselines import PersistenceForecastService
 
 
-def create_app() -> FastAPI:
+def create_app(*, forecast_service=None) -> FastAPI:
     app = FastAPI(title="Compute Arbitrage Engine", version="0.1.0")
     app.add_middleware(
         CORSMiddleware,
@@ -17,6 +21,21 @@ def create_app() -> FastAPI:
         allow_methods=["GET", "POST"], allow_headers=["Content-Type"],
     )
     store = JobStore()
+    forecast_lock = RLock()
+    latest_forecasts = []
+
+    def get_forecast_service():
+        nonlocal forecast_service
+        if forecast_service is None:
+            from app.forecasting.error_service import DEFAULT_CONFIG, ErrorForecastService
+            try:
+                forecast_service = ErrorForecastService.from_config(
+                    Path(os.getenv("PRICE_FORECAST_CONFIG", str(DEFAULT_CONFIG))),
+                    models_directory=os.getenv("PRICE_MODEL_DIR"),
+                )
+            except (OSError, ValueError, KeyError, ImportError) as exc:
+                raise HTTPException(503, detail={"code": "MODEL_UNAVAILABLE", "message": str(exc)}) from exc
+        return forecast_service
 
     def unfinished(feature: str):
         raise HTTPException(501, detail={"code": "NOT_IMPLEMENTED", "feature": feature})
@@ -42,7 +61,21 @@ def create_app() -> FastAPI:
 
     @app.get("/api/forecasts", response_model=list[Forecast])
     def forecasts():
-        return []
+        with forecast_lock:
+            return list(latest_forecasts)
+
+    @app.post("/api/forecasts", response_model=list[Forecast])
+    def generate_forecasts(payload: ForecastRequest,
+                           forecast_mode: Literal["ML", "NAIVE"] = Query("ML", alias="forecastMode")):
+        nonlocal latest_forecasts
+        with forecast_lock:
+            service = get_forecast_service() if forecast_mode == "ML" else PersistenceForecastService()
+            try:
+                result = service.predict(payload)
+            except ValueError as exc:
+                raise HTTPException(422, detail=str(exc)) from exc
+            latest_forecasts = result
+            return result
 
     @app.post("/api/optimize", response_model=list[Decision])
     def optimize(payload: OptimizeRequest):
@@ -76,7 +109,8 @@ def create_app() -> FastAPI:
 
     @app.get("/api/models/metrics")
     def model_metrics():
-        unfinished("model evaluation")
+        with forecast_lock:
+            return get_forecast_service().status()
 
     @app.post("/api/execute/{jobId}")
     def execute(jobId: str):

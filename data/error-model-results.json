@@ -1,0 +1,3546 @@
+{
+  "design": {
+    "status": "POST_HOLDOUT_DEVELOPMENT_NOT_BLIND",
+    "seed": 42,
+    "trainEnd": 1257,
+    "selection": [
+      1257,
+      1578
+    ],
+    "confirmation": [
+      1791,
+      2112
+    ],
+    "candidates": [
+      {
+        "name": "relative-l1-7",
+        "target": "relative",
+        "leaves": 7
+      },
+      {
+        "name": "relative-l1-31",
+        "target": "relative",
+        "leaves": 31
+      },
+      {
+        "name": "scaled-l1-7",
+        "target": "scaled",
+        "leaves": 7
+      },
+      {
+        "name": "scaled-l1-31",
+        "target": "scaled",
+        "leaves": 31
+      },
+      {
+        "name": "relative-l2-31",
+        "target": "relative",
+        "leaves": 31,
+        "objective": "regression"
+      }
+    ],
+    "weights": [
+      0.5,
+      1.0
+    ],
+    "rounds": 200,
+    "datasetSha256": "618ed38329ec8b4934c7fd40a0e77e61b3dcd9d3850b2df87299af5827903a36",
+    "implementationSha256": "e146323139c180c382b78695706d606003eaf352d3569ccaba89bc663648587f"
+  },
+  "resources": {
+    "CPU": {
+      "winner": "scaled-l1-31-w1.0",
+      "candidates": [
+        {
+          "name": "relative-l1-7-w0.5",
+          "selection": {
+            "mae": 5.9566217229062265e-05,
+            "rmse": 0.00010716957476316744,
+            "persistenceMae": 6.126171186067019e-05,
+            "maeImprovementPct": 2.7676252917385846,
+            "sampleCount": 272160
+          },
+          "confirmation": {
+            "mae": 6.0766757393472254e-05,
+            "rmse": 0.00010882953560062086,
+            "persistenceMae": 6.267478229717813e-05,
+            "maeImprovementPct": 3.0443263363226447,
+            "sampleCount": 272160
+          }
+        },
+        {
+          "name": "relative-l1-7-w1.0",
+          "selection": {
+            "mae": 5.818878105565073e-05,
+            "rmse": 0.00010482669308296876,
+            "persistenceMae": 6.126171186067019e-05,
+            "maeImprovementPct": 5.016070742535472,
+            "sampleCount": 272160
+          },
+          "confirmation": {
+            "mae": 5.9191828372447436e-05,
+            "rmse": 0.00010595733841663276,
+            "persistenceMae": 6.267478229717813e-05,
+            "maeImprovementPct": 5.557185517160567,
+            "sampleCount": 272160
+          }
+        },
+        {
+          "name": "relative-l1-31-w0.5",
+          "selection": {
+            "mae": 5.766091278386808e-05,
+            "rmse": 0.00010365473894323902,
+            "persistenceMae": 6.126171186067019e-05,
+            "maeImprovementPct": 5.877731730695901,
+            "sampleCount": 272160
+          },
+          "confirmation": {
+            "mae": 5.8975430836827135e-05,
+            "rmse": 0.00010553328808124843,
+            "persistenceMae": 6.267478229717813e-05,
+            "maeImprovementPct": 5.902456019408553,
+            "sampleCount": 272160
+          }
+        },
+        {
+          "name": "relative-l1-31-w1.0",
+          "selection": {
+            "mae": 5.5135431565946384e-05,
+            "rmse": 9.876882860804679e-05,
+            "persistenceMae": 6.126171186067019e-05,
+            "maeImprovementPct": 10.000178102526803,
+            "sampleCount": 272160
+          },
+          "confirmation": {
+            "mae": 5.635930775820976e-05,
+            "rmse": 0.00010043261163813034,
+            "persistenceMae": 6.267478229717813e-05,
+            "maeImprovementPct": 10.076579937721974,
+            "sampleCount": 272160
+          }
+        },
+        {
+          "name": "scaled-l1-7-w0.5",
+          "selection": {
+            "mae": 5.871777100889643e-05,
+            "rmse": 0.00010610872811566257,
+            "persistenceMae": 6.126171186067019e-05,
+            "maeImprovementPct": 4.1525787878072045,
+            "sampleCount": 272160
+          },
+          "confirmation": {
+            "mae": 5.992500746151825e-05,
+            "rmse": 0.00010788713580069612,
+            "persistenceMae": 6.267478229717813e-05,
+            "maeImprovementPct": 4.387370382272049,
+            "sampleCount": 272160
+          }
+        },
+        {
+          "name": "scaled-l1-7-w1.0",
+          "selection": {
+            "mae": 5.7114737078141126e-05,
+            "rmse": 0.00010335690722437584,
+            "persistenceMae": 6.126171186067019e-05,
+            "maeImprovementPct": 6.76927669269296,
+            "sampleCount": 272160
+          },
+          "confirmation": {
+            "mae": 5.8076112974189395e-05,
+            "rmse": 0.00010463726662581056,
+            "persistenceMae": 6.267478229717813e-05,
+            "maeImprovementPct": 7.337351889287358,
+            "sampleCount": 272160
+          }
+        },
+        {
+          "name": "scaled-l1-31-w0.5",
+          "selection": {
+            "mae": 5.720477991337585e-05,
+            "rmse": 0.00010332625047615815,
+            "persistenceMae": 6.126171186067019e-05,
+            "maeImprovementPct": 6.622296086862834,
+            "sampleCount": 272160
+          },
+          "confirmation": {
+            "mae": 5.859684014992502e-05,
+            "rmse": 0.00010545471329118778,
+            "persistenceMae": 6.267478229717813e-05,
+            "maeImprovementPct": 6.506511866155639,
+            "sampleCount": 272160
+          }
+        },
+        {
+          "name": "scaled-l1-31-w1.0",
+          "selection": {
+            "mae": 5.468208363629801e-05,
+            "rmse": 9.852183028639145e-05,
+            "persistenceMae": 6.126171186067019e-05,
+            "maeImprovementPct": 10.740196485753572,
+            "sampleCount": 272160
+          },
+          "confirmation": {
+            "mae": 5.601749845195298e-05,
+            "rmse": 0.00010055048860269699,
+            "persistenceMae": 6.267478229717813e-05,
+            "maeImprovementPct": 10.62194969207717,
+            "sampleCount": 272160
+          }
+        },
+        {
+          "name": "relative-l2-31-w0.5",
+          "selection": {
+            "mae": 5.8105948037584736e-05,
+            "rmse": 0.00010003914820624607,
+            "persistenceMae": 6.126171186067019e-05,
+            "maeImprovementPct": 5.1512824686693826,
+            "sampleCount": 272160
+          },
+          "confirmation": {
+            "mae": 5.919779666813879e-05,
+            "rmse": 0.00010078423871021856,
+            "persistenceMae": 6.267478229717813e-05,
+            "maeImprovementPct": 5.547662874284754,
+            "sampleCount": 272160
+          }
+        },
+        {
+          "name": "relative-l2-31-w1.0",
+          "selection": {
+            "mae": 5.694930176635142e-05,
+            "rmse": 9.313116219906455e-05,
+            "persistenceMae": 6.126171186067019e-05,
+            "maeImprovementPct": 7.039323524172236,
+            "sampleCount": 272160
+          },
+          "confirmation": {
+            "mae": 5.82984751860264e-05,
+            "rmse": 9.348378842678312e-05,
+            "persistenceMae": 6.267478229717813e-05,
+            "maeImprovementPct": 6.982564519173073,
+            "sampleCount": 272160
+          }
+        }
+      ],
+      "byPool": [
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "c6g.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 4.7411109754421714e-05,
+          "rmse": 8.324323390816987e-05,
+          "persistenceMae": 4.953703703703704e-05,
+          "maeImprovementPct": 4.291591523784211,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "c6g.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 3.476187941260996e-05,
+          "rmse": 5.4903848653395245e-05,
+          "persistenceMae": 3.92989417989418e-05,
+          "maeImprovementPct": 11.544998869292733,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "c6g.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 5.561367277081669e-05,
+          "rmse": 9.753648061451483e-05,
+          "persistenceMae": 6.302910052910053e-05,
+          "maeImprovementPct": 11.765085803279296,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "c6i.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 5.820273771452747e-05,
+          "rmse": 9.719837507296947e-05,
+          "persistenceMae": 6.46759259259259e-05,
+          "maeImprovementPct": 10.00865177997181,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "c6i.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 5.0596029300649514e-05,
+          "rmse": 7.878175922691168e-05,
+          "persistenceMae": 5.863095238095239e-05,
+          "maeImprovementPct": 13.704234289247541,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "c6i.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 6.956622927725788e-05,
+          "rmse": 0.00011327700763769409,
+          "persistenceMae": 8.064814814814813e-05,
+          "maeImprovementPct": 13.741070471367934,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "c7a.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 7.261481751986319e-05,
+          "rmse": 0.00011975216315741343,
+          "persistenceMae": 8.319444444444444e-05,
+          "maeImprovementPct": 12.716746887643582,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "c7a.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 5.4802236807218875e-05,
+          "rmse": 8.541047111587623e-05,
+          "persistenceMae": 6.861441798941798e-05,
+          "maeImprovementPct": 20.13014405271103,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "c7a.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 6.692008979242532e-05,
+          "rmse": 0.00011165134212671843,
+          "persistenceMae": 7.223544973544972e-05,
+          "maeImprovementPct": 7.358381462967312,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "c7g.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 6.566386422650793e-05,
+          "rmse": 0.00010977066288345426,
+          "persistenceMae": 7.579365079365079e-05,
+          "maeImprovementPct": 13.364954004816765,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "c7g.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 3.668051282635265e-05,
+          "rmse": 5.862579659446623e-05,
+          "persistenceMae": 4.638227513227514e-05,
+          "maeImprovementPct": 20.916960796456298,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "c7g.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 7.90393904291744e-05,
+          "rmse": 0.00012680804378395637,
+          "persistenceMae": 8.395502645502645e-05,
+          "maeImprovementPct": 5.855082457135897,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "c7i.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 5.637413064592529e-05,
+          "rmse": 9.370191233234445e-05,
+          "persistenceMae": 6.192460317460321e-05,
+          "maeImprovementPct": 8.963275086362287,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "c7i.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 4.410905997365601e-05,
+          "rmse": 7.440624276292293e-05,
+          "persistenceMae": 4.8829365079365084e-05,
+          "maeImprovementPct": 9.666939346921467,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "c7i.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 6.205852654827874e-05,
+          "rmse": 0.00010377795648912034,
+          "persistenceMae": 6.595238095238098e-05,
+          "maeImprovementPct": 5.904039168674869,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "m5.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 5.081718261973039e-05,
+          "rmse": 8.057151644909017e-05,
+          "persistenceMae": 6.160714285714289e-05,
+          "maeImprovementPct": 17.514138356379693,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "m5.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 5.384800300866817e-05,
+          "rmse": 8.740319007515438e-05,
+          "persistenceMae": 6.12797619047619e-05,
+          "maeImprovementPct": 12.127591010624073,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "m5.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 1.8636585027200125e-05,
+          "rmse": 3.702905682015257e-05,
+          "persistenceMae": 1.933862433862433e-05,
+          "maeImprovementPct": 3.6302443189924816,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "m6g.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 4.6613762656713216e-05,
+          "rmse": 8.453250641907169e-05,
+          "persistenceMae": 4.8115079365079364e-05,
+          "maeImprovementPct": 3.1202623547073816,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "m6g.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 4.4319577935978114e-05,
+          "rmse": 6.811083072230224e-05,
+          "persistenceMae": 4.8402777777777786e-05,
+          "maeImprovementPct": 8.435879156659286,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "m6g.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 6.048162281941585e-05,
+          "rmse": 0.00010222607397789912,
+          "persistenceMae": 6.625661375661377e-05,
+          "maeImprovementPct": 8.716097321863892,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "m6i.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 8.964061371006464e-05,
+          "rmse": 0.00014476241384532384,
+          "persistenceMae": 0.0001008333333333334,
+          "maeImprovementPct": 11.10021780820042,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "m6i.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 4.841229046839154e-05,
+          "rmse": 7.61725292989708e-05,
+          "persistenceMae": 5.5826719576719584e-05,
+          "maeImprovementPct": 13.281147745281373,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "m6i.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 7.549526426084238e-05,
+          "rmse": 0.00012807992674034076,
+          "persistenceMae": 8.563492063492063e-05,
+          "maeImprovementPct": 11.840562586968117,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "m7a.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 7.228540449725433e-05,
+          "rmse": 0.00011877990534817532,
+          "persistenceMae": 8.265873015873018e-05,
+          "maeImprovementPct": 12.549582653345725,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "m7a.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 5.361965508665103e-05,
+          "rmse": 8.67832007224664e-05,
+          "persistenceMae": 5.608134920634922e-05,
+          "maeImprovementPct": 4.389505877685784,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "m7a.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 7.045618075176416e-05,
+          "rmse": 0.0001143002398116233,
+          "persistenceMae": 7.789682539682542e-05,
+          "maeImprovementPct": 9.551922825040437,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "m7g.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 5.863852700196048e-05,
+          "rmse": 9.844975817317792e-05,
+          "persistenceMae": 6.51388888888889e-05,
+          "maeImprovementPct": 9.979233600401837,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "m7g.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 3.404096884287027e-05,
+          "rmse": 5.552301660567522e-05,
+          "persistenceMae": 4.218915343915344e-05,
+          "maeImprovementPct": 19.313458394074544,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "m7g.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 7.723496586212426e-05,
+          "rmse": 0.00012867949755669916,
+          "persistenceMae": 8.305555555555558e-05,
+          "maeImprovementPct": 7.00806785831195,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "m7i.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 6.802026893226836e-05,
+          "rmse": 0.000106942138653109,
+          "persistenceMae": 7.865079365079366e-05,
+          "maeImprovementPct": 13.516106100244073,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "m7i.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 4.411372414380696e-05,
+          "rmse": 7.880385864279968e-05,
+          "persistenceMae": 4.99867724867725e-05,
+          "maeImprovementPct": 11.749204941206525,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "m7i.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 6.81207097616046e-05,
+          "rmse": 0.00010941334510134612,
+          "persistenceMae": 7.085978835978836e-05,
+          "maeImprovementPct": 3.8654907975115282,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "r6g.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 5.358383110158625e-05,
+          "rmse": 8.976002093428985e-05,
+          "persistenceMae": 6.517195767195766e-05,
+          "maeImprovementPct": 17.78084775157456,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "r6g.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 7.734034665759163e-05,
+          "rmse": 0.00016212641374414204,
+          "persistenceMae": 7.684193121693118e-05,
+          "maeImprovementPct": -0.648624302860612,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "r6g.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 6.126853999681206e-05,
+          "rmse": 0.00010628951952576139,
+          "persistenceMae": 6.52248677248677e-05,
+          "maeImprovementPct": 6.065673823585616,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "r6i.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 0.00014803728388983992,
+          "rmse": 0.0002766442428609228,
+          "persistenceMae": 0.0001594973544973545,
+          "maeImprovementPct": 7.18511642003733,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "r6i.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 5.8216149945368445e-05,
+          "rmse": 9.02036985115146e-05,
+          "persistenceMae": 6.590939153439149e-05,
+          "maeImprovementPct": 11.672451239378711,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "r6i.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 8.955523787672912e-05,
+          "rmse": 0.00014426682834340314,
+          "persistenceMae": 9.563492063492062e-05,
+          "maeImprovementPct": 6.35717865171892,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "r7a.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 0.0001066256770752347,
+          "rmse": 0.00017318933629689438,
+          "persistenceMae": 0.00011769841269841271,
+          "maeImprovementPct": 9.4077187358087,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "r7a.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 8.451038791916255e-05,
+          "rmse": 0.00014552479955315726,
+          "persistenceMae": 8.990740740740739e-05,
+          "maeImprovementPct": 6.0028641063897386,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "r7a.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 0.0001146346899505183,
+          "rmse": 0.00019390090850753732,
+          "persistenceMae": 0.00012107142857142845,
+          "maeImprovementPct": 5.316480276857948,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "r7g.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 5.5677730219199244e-05,
+          "rmse": 9.146296692804834e-05,
+          "persistenceMae": 6.500000000000001e-05,
+          "maeImprovementPct": 14.341953508924254,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "r7g.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 4.124243745837428e-05,
+          "rmse": 6.7944826333655e-05,
+          "persistenceMae": 4.588955026455026e-05,
+          "maeImprovementPct": 10.126734255153247,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "r7g.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 9.544433633668894e-05,
+          "rmse": 0.00015516739258912917,
+          "persistenceMae": 0.00010371693121693124,
+          "maeImprovementPct": 7.976127699863755,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "r7i.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 6.798844999639285e-05,
+          "rmse": 0.00011495693724294963,
+          "persistenceMae": 7.488095238095236e-05,
+          "maeImprovementPct": 9.204613677313178,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "r7i.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 4.801637487361252e-05,
+          "rmse": 7.725228678022606e-05,
+          "persistenceMae": 5.2807539682539676e-05,
+          "maeImprovementPct": 9.072880194248679,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "r7i.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 6.752700658823937e-05,
+          "rmse": 0.00010764301452378282,
+          "persistenceMae": 7.513227513227512e-05,
+          "maeImprovementPct": 10.122505315653207,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "c6g.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 4.5711896459956415e-05,
+          "rmse": 7.223481727468063e-05,
+          "persistenceMae": 5.4497354497354516e-05,
+          "maeImprovementPct": 16.12088902008001,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "c6g.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 2.7958908820477048e-05,
+          "rmse": 4.5169655788149005e-05,
+          "persistenceMae": 3.604828042328042e-05,
+          "maeImprovementPct": 22.440381365817263,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "c6g.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 4.9801510664388285e-05,
+          "rmse": 8.275698582287532e-05,
+          "persistenceMae": 5.551587301587301e-05,
+          "maeImprovementPct": 10.293204521616516,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "c6i.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 6.13841258214154e-05,
+          "rmse": 0.00010512525163940046,
+          "persistenceMae": 6.769841269841269e-05,
+          "maeImprovementPct": 9.327082608460247,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "c6i.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 3.255583903699388e-05,
+          "rmse": 5.568671671431644e-05,
+          "persistenceMae": 4.013888888888888e-05,
+          "maeImprovementPct": 18.892027312679595,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "c6i.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 6.613034107921823e-05,
+          "rmse": 0.00010267291436342426,
+          "persistenceMae": 7.222222222222216e-05,
+          "maeImprovementPct": 8.434912351851608,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "c7a.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 6.062201897364138e-05,
+          "rmse": 9.92708504096216e-05,
+          "persistenceMae": 6.802248677248679e-05,
+          "maeImprovementPct": 10.879443181190329,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "c7a.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 4.3295527793142705e-05,
+          "rmse": 7.570240424535304e-05,
+          "persistenceMae": 4.7986111111111134e-05,
+          "maeImprovementPct": 9.774876957850264,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "c7a.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 6.296456673257663e-05,
+          "rmse": 0.00010337454222657286,
+          "persistenceMae": 6.989417989417992e-05,
+          "maeImprovementPct": 9.91443518200622,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "c7g.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 4.963671865514653e-05,
+          "rmse": 7.980429175794973e-05,
+          "persistenceMae": 5.869708994708993e-05,
+          "maeImprovementPct": 15.435810020753149,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "c7g.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 2.5156282880802727e-05,
+          "rmse": 4.052463699046922e-05,
+          "persistenceMae": 2.919642857142858e-05,
+          "maeImprovementPct": 13.837807870033492,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "c7g.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 4.9580769710886983e-05,
+          "rmse": 8.381461586319495e-05,
+          "persistenceMae": 5.686507936507935e-05,
+          "maeImprovementPct": 12.809811813373873,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "c7i.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 6.284307674400698e-05,
+          "rmse": 9.960808961896664e-05,
+          "persistenceMae": 7.234788359788359e-05,
+          "maeImprovementPct": 13.137643260866106,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "c7i.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 5.028551567514748e-05,
+          "rmse": 7.963382603603351e-05,
+          "persistenceMae": 5.862103174603173e-05,
+          "maeImprovementPct": 14.219326788714381,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "c7i.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 5.296511580341378e-05,
+          "rmse": 8.861560795054458e-05,
+          "persistenceMae": 6.332010582010582e-05,
+          "maeImprovementPct": 16.35339973390262,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "m5.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 1.6992914932949457e-05,
+          "rmse": 3.1767006272648446e-05,
+          "persistenceMae": 1.7334656084656086e-05,
+          "maeImprovementPct": 1.9714331223976478,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "m5.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 2.5500645019222902e-05,
+          "rmse": 4.269428116217997e-05,
+          "persistenceMae": 2.4801587301587295e-05,
+          "maeImprovementPct": -2.8186007175067695,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "m5.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 3.0886253337110406e-05,
+          "rmse": 5.0514156796407405e-05,
+          "persistenceMae": 3.579365079365079e-05,
+          "maeImprovementPct": 13.710245665722576,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "m6g.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 4.6283856872150034e-05,
+          "rmse": 7.849444562576553e-05,
+          "persistenceMae": 5.1785714285714316e-05,
+          "maeImprovementPct": 10.62427638481378,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "m6g.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 2.9214447832485303e-05,
+          "rmse": 4.68212508923201e-05,
+          "persistenceMae": 3.606481481481481e-05,
+          "maeImprovementPct": 18.994599078089514,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "m6g.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 5.1926654636722764e-05,
+          "rmse": 8.647468039482261e-05,
+          "persistenceMae": 5.5674603174603135e-05,
+          "maeImprovementPct": 6.731881906955484,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "m6i.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 9.400740498071109e-05,
+          "rmse": 0.0001618892580521344,
+          "persistenceMae": 0.00010420634920634922,
+          "maeImprovementPct": 9.787257977383124,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "m6i.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 3.985113338066861e-05,
+          "rmse": 6.414552401779624e-05,
+          "persistenceMae": 4.757936507936508e-05,
+          "maeImprovementPct": 16.242822252472976,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "m6i.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 6.326615189878843e-05,
+          "rmse": 0.00010782335121739875,
+          "persistenceMae": 7.183862433862432e-05,
+          "maeImprovementPct": 11.932957401060463,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "m7a.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 9.193073627149013e-05,
+          "rmse": 0.00014562032286570006,
+          "persistenceMae": 9.925264550264552e-05,
+          "maeImprovementPct": 7.377041885458091,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "m7a.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 6.648738575649352e-05,
+          "rmse": 0.00011101726421048003,
+          "persistenceMae": 6.939153439153435e-05,
+          "maeImprovementPct": 4.185162729872028,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "m7a.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 5.4189842525845686e-05,
+          "rmse": 9.172768518460359e-05,
+          "persistenceMae": 6.36243386243386e-05,
+          "maeImprovementPct": 14.828438774346452,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "m7g.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 6.0782237029387385e-05,
+          "rmse": 0.00010115989569180111,
+          "persistenceMae": 6.795634920634919e-05,
+          "maeImprovementPct": 10.55694171441971,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "m7g.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 3.486418369787705e-05,
+          "rmse": 5.558632156183653e-05,
+          "persistenceMae": 3.9732142857142835e-05,
+          "maeImprovementPct": 12.251942153657714,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "m7g.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 5.071913223904718e-05,
+          "rmse": 8.203633540331023e-05,
+          "persistenceMae": 5.71825396825397e-05,
+          "maeImprovementPct": 11.303113641638552,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "m7i.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 6.241542602803833e-05,
+          "rmse": 9.728747126507619e-05,
+          "persistenceMae": 7.14616402116402e-05,
+          "maeImprovementPct": 12.658839283300349,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "m7i.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 4.509852636879345e-05,
+          "rmse": 7.48052183160113e-05,
+          "persistenceMae": 5.2152777777777816e-05,
+          "maeImprovementPct": 13.52612786809252,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "m7i.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 6.014730247223744e-05,
+          "rmse": 9.770925969470932e-05,
+          "persistenceMae": 6.865079365079363e-05,
+          "maeImprovementPct": 12.386588306336188,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "r6g.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 4.435598306770608e-05,
+          "rmse": 7.055823563954155e-05,
+          "persistenceMae": 5.2916666666666654e-05,
+          "maeImprovementPct": 16.177669793311324,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "r6g.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 4.338301331561168e-06,
+          "rmse": 1.7907171147373007e-05,
+          "persistenceMae": 3.39285714285713e-06,
+          "maeImprovementPct": -27.86572345654017,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "r6g.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 5.957092555118054e-05,
+          "rmse": 9.772243461445483e-05,
+          "persistenceMae": 6.582010582010583e-05,
+          "maeImprovementPct": 9.494333366775564,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "r6i.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 0.00012610751775750915,
+          "rmse": 0.0002248674135598741,
+          "persistenceMae": 0.00013870370370370363,
+          "maeImprovementPct": 9.081362364412582,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "r6i.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 4.605100602073821e-05,
+          "rmse": 7.474009102938116e-05,
+          "persistenceMae": 4.954034391534391e-05,
+          "maeImprovementPct": 7.043426869559866,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "r6i.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 9.219219167574903e-05,
+          "rmse": 0.00014042027844408025,
+          "persistenceMae": 0.00010432539682539684,
+          "maeImprovementPct": 11.630154803009695,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "r7a.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 9.4334476134144e-05,
+          "rmse": 0.00015164240629427902,
+          "persistenceMae": 0.00010553571428571431,
+          "maeImprovementPct": 10.613694356817893,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "r7a.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 7.064179019246172e-05,
+          "rmse": 0.00011561821467021002,
+          "persistenceMae": 8.00496031746032e-05,
+          "maeImprovementPct": 11.752479224189639,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "r7a.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 7.943861235995443e-05,
+          "rmse": 0.00012733593645509987,
+          "persistenceMae": 8.925925925925926e-05,
+          "maeImprovementPct": 11.00238449299712,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "r7g.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 4.700643538599062e-05,
+          "rmse": 7.712327737802345e-05,
+          "persistenceMae": 5.529761904761905e-05,
+          "maeImprovementPct": 14.993744404236564,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "r7g.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 1.230998350644667e-05,
+          "rmse": 3.0205992099864615e-05,
+          "persistenceMae": 1.209325396825396e-05,
+          "maeImprovementPct": -1.792152374883127,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "r7g.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 6.76380568144527e-05,
+          "rmse": 0.0001078355781529549,
+          "persistenceMae": 7.523809523809523e-05,
+          "maeImprovementPct": 10.10131689218311,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "r7i.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 6.424822133575571e-05,
+          "rmse": 0.00010520362443720534,
+          "persistenceMae": 7.335317460317461e-05,
+          "maeImprovementPct": 12.412487007787732,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "r7i.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 4.1690770494954984e-05,
+          "rmse": 6.984519329043049e-05,
+          "persistenceMae": 4.814814814814815e-05,
+          "maeImprovementPct": 13.411476664324262,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "r7i.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 8.090980376349319e-05,
+          "rmse": 0.00012864941555371266,
+          "persistenceMae": 9.03968253968254e-05,
+          "maeImprovementPct": 10.494861508339405,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "c6g.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 3.6808917764552246e-05,
+          "rmse": 6.1032232511175306e-05,
+          "persistenceMae": 4.7103174603174597e-05,
+          "maeImprovementPct": 21.854698595895815,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "c6g.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 3.2825488605360095e-05,
+          "rmse": 5.305372675749466e-05,
+          "persistenceMae": 4.010912698412699e-05,
+          "maeImprovementPct": 18.159553514214753,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "c6g.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 5.147254606030241e-05,
+          "rmse": 8.184083784698091e-05,
+          "persistenceMae": 5.9193121693121706e-05,
+          "maeImprovementPct": 13.043028331645557,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "c6i.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 6.683418303070538e-05,
+          "rmse": 0.00010482806056206084,
+          "persistenceMae": 7.017857142857144e-05,
+          "maeImprovementPct": 4.765540719605587,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "c6i.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 4.7881794776356975e-05,
+          "rmse": 7.531642447430188e-05,
+          "persistenceMae": 5.462301587301586e-05,
+          "maeImprovementPct": 12.341356457377694,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "c6i.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 6.726498107842801e-05,
+          "rmse": 0.00010699641350919549,
+          "persistenceMae": 7.492063492063493e-05,
+          "maeImprovementPct": 10.218351526674486,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "c7a.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 5.636934701729484e-05,
+          "rmse": 9.819164437651217e-05,
+          "persistenceMae": 6.253968253968256e-05,
+          "maeImprovementPct": 9.866272535797627,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "c7a.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 4.204766999963982e-05,
+          "rmse": 7.102482968737396e-05,
+          "persistenceMae": 4.7063492063492084e-05,
+          "maeImprovementPct": 10.65756458761189,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "c7a.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 7.592447203122503e-05,
+          "rmse": 0.00011778894445696082,
+          "persistenceMae": 8.244708994708993e-05,
+          "maeImprovementPct": 7.911277305300601,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "c7g.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 3.5723419085572164e-05,
+          "rmse": 5.995162570713824e-05,
+          "persistenceMae": 4.017857142857142e-05,
+          "maeImprovementPct": 11.088379164798145,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "c7g.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 2.678566935212307e-05,
+          "rmse": 4.276146340460178e-05,
+          "persistenceMae": 3.147817460317461e-05,
+          "maeImprovementPct": 14.907170794390012,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "c7g.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 5.669193010216639e-05,
+          "rmse": 9.00780848121909e-05,
+          "persistenceMae": 6.399470899470901e-05,
+          "maeImprovementPct": 11.411535433572173,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "c7i.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 5.6811227214507214e-05,
+          "rmse": 9.716739123728904e-05,
+          "persistenceMae": 6.44378306878307e-05,
+          "maeImprovementPct": 11.835599355090952,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "c7i.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 4.1648123460915e-05,
+          "rmse": 6.530316157279545e-05,
+          "persistenceMae": 5.216600529100529e-05,
+          "maeImprovementPct": 20.162329416287193,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "c7i.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 5.415924646084616e-05,
+          "rmse": 9.070767391503613e-05,
+          "persistenceMae": 5.7341269841269824e-05,
+          "maeImprovementPct": 5.549272608074496,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "m5.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 1.2181013684529e-05,
+          "rmse": 3.254402353979727e-05,
+          "persistenceMae": 1.1197089947089942e-05,
+          "maeImprovementPct": -8.787316544641799,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "m5.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 1.2041568461798686e-05,
+          "rmse": 3.1693573719073425e-05,
+          "persistenceMae": 1.290674603174603e-05,
+          "maeImprovementPct": 6.703297390522078,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "m5.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 3.3695141243383026e-05,
+          "rmse": 5.464003647423233e-05,
+          "persistenceMae": 4.026455026455028e-05,
+          "maeImprovementPct": 16.315615046000143,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "m6g.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 4.4744262936713056e-05,
+          "rmse": 7.41582216141448e-05,
+          "persistenceMae": 5.529100529100528e-05,
+          "maeImprovementPct": 19.074969425466325,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "m6g.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 3.4518735334830404e-05,
+          "rmse": 5.588223527305137e-05,
+          "persistenceMae": 3.847222222222221e-05,
+          "maeImprovementPct": 10.276211404050905,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "m6g.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 4.775473322902874e-05,
+          "rmse": 7.802543353174604e-05,
+          "persistenceMae": 5.6150793650793654e-05,
+          "maeImprovementPct": 14.952701245828681,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "m6i.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 8.866541812839978e-05,
+          "rmse": 0.00015155091482746538,
+          "persistenceMae": 9.985449735449732e-05,
+          "maeImprovementPct": 11.205383355318244,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "m6i.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 5.1477666734327045e-05,
+          "rmse": 8.193548588608376e-05,
+          "persistenceMae": 5.9513888888888884e-05,
+          "maeImprovementPct": 13.503103736953381,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "m6i.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 5.8679201098229166e-05,
+          "rmse": 9.407458693595151e-05,
+          "persistenceMae": 6.140211640211636e-05,
+          "maeImprovementPct": 4.43456262330616,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "m7a.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 6.926898426065269e-05,
+          "rmse": 0.0001151710673992755,
+          "persistenceMae": 7.556878306878311e-05,
+          "maeImprovementPct": 8.336509537802538,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "m7a.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 6.470184619805496e-05,
+          "rmse": 0.00010744458319923338,
+          "persistenceMae": 6.754298941798943e-05,
+          "maeImprovementPct": 4.206422079354633,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "m7a.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 5.437746922813813e-05,
+          "rmse": 8.837565984299954e-05,
+          "persistenceMae": 6.386243386243387e-05,
+          "maeImprovementPct": 14.852181573172295,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "m7g.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 5.091381857986662e-05,
+          "rmse": 8.004104606628005e-05,
+          "persistenceMae": 5.9047619047619046e-05,
+          "maeImprovementPct": 13.774984663129109,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "m7g.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 3.055673874716196e-05,
+          "rmse": 4.9188884347649856e-05,
+          "persistenceMae": 3.437500000000001e-05,
+          "maeImprovementPct": 11.107669099165241,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "m7g.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 4.714950399035169e-05,
+          "rmse": 7.815974396946742e-05,
+          "persistenceMae": 5.175925925925922e-05,
+          "maeImprovementPct": 8.906146136708648,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "m7i.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 5.382096486329218e-05,
+          "rmse": 9.353989606044972e-05,
+          "persistenceMae": 6.072751322751319e-05,
+          "maeImprovementPct": 11.373013642672813,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "m7i.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 4.7318298855409024e-05,
+          "rmse": 7.344571356847572e-05,
+          "persistenceMae": 5.6633597883597867e-05,
+          "maeImprovementPct": 16.448361708071392,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "m7i.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 5.443990675618091e-05,
+          "rmse": 9.085387201603813e-05,
+          "persistenceMae": 6.133597883597882e-05,
+          "maeImprovementPct": 11.243110830983872,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "r6g.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 1.199629960328454e-09,
+          "rmse": 2.701556700918401e-09,
+          "persistenceMae": 0.0,
+          "maeImprovementPct": null,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "r6g.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 1.206305976421281e-06,
+          "rmse": 1.7270318424852616e-06,
+          "persistenceMae": 0.0,
+          "maeImprovementPct": null,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "r6g.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 6.324989403965975e-05,
+          "rmse": 9.980141828217055e-05,
+          "persistenceMae": 6.783068783068779e-05,
+          "maeImprovementPct": 6.753276337787051,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "r6i.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 0.00012527841977422467,
+          "rmse": 0.00020755831208346044,
+          "persistenceMae": 0.00014081349206349205,
+          "maeImprovementPct": 11.032374853868898,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "r6i.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 4.6116669649605505e-05,
+          "rmse": 7.420735018967982e-05,
+          "persistenceMae": 4.9229497354497375e-05,
+          "maeImprovementPct": 6.323094632627802,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "r6i.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 6.044182627589155e-05,
+          "rmse": 9.823528426714503e-05,
+          "persistenceMae": 7.115079365079364e-05,
+          "maeImprovementPct": 15.051086327246665,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "r7a.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 7.25580971686576e-05,
+          "rmse": 0.00011593394510751441,
+          "persistenceMae": 8.16666666666667e-05,
+          "maeImprovementPct": 11.153350405725416,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "r7a.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 4.4240989316557106e-05,
+          "rmse": 7.67741951955399e-05,
+          "persistenceMae": 5.1560846560846585e-05,
+          "maeImprovementPct": 14.196542013039615,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "r7a.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 7.822983991428867e-05,
+          "rmse": 0.00012275879575511842,
+          "persistenceMae": 8.24867724867725e-05,
+          "maeImprovementPct": 5.160745710066994,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "r7g.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 5.159912383612974e-05,
+          "rmse": 8.858802892909503e-05,
+          "persistenceMae": 5.946428571428572e-05,
+          "maeImprovementPct": 13.226698653956003,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "r7g.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 1.330046873167179e-05,
+          "rmse": 3.223316108663141e-05,
+          "persistenceMae": 1.3591269841269845e-05,
+          "maeImprovementPct": 2.1396169231740148,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "r7g.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 6.715943068439003e-05,
+          "rmse": 0.00010506509864786246,
+          "persistenceMae": 7.685185185185186e-05,
+          "maeImprovementPct": 12.61182513356479,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "r7i.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 7.416786384347856e-05,
+          "rmse": 0.00011727209376125797,
+          "persistenceMae": 8.108465608465611e-05,
+          "maeImprovementPct": 8.530334313752409,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "r7i.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 4.16789809159951e-05,
+          "rmse": 7.181813752454691e-05,
+          "persistenceMae": 4.3445767195767196e-05,
+          "maeImprovementPct": 4.066647670901824,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "r7i.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "CPU",
+            "gpu_type": ""
+          },
+          "mae": 6.656777915827918e-05,
+          "rmse": 0.00010764329824009102,
+          "persistenceMae": 7.17857142857143e-05,
+          "maeImprovementPct": 7.268765351650897,
+          "sampleCount": 1890
+        }
+      ],
+      "fallbackConfirmationCount": 0,
+      "comparisonWithPreviousModel": {
+        "previousMae": 6.127922962090934e-05,
+        "previousMaeReductionVsPersistencePct": 2.2266573973111465,
+        "maeReductionVsPreviousModelPct": 8.586483873095208
+      }
+    },
+    "GPU": {
+      "winner": "scaled-l1-31-w1.0",
+      "candidates": [
+        {
+          "name": "relative-l1-7-w0.5",
+          "selection": {
+            "mae": 0.0037944288623544494,
+            "rmse": 0.011069150597141243,
+            "persistenceMae": 0.003968753216782055,
+            "maeImprovementPct": 4.392421118311596,
+            "sampleCount": 120462
+          },
+          "confirmation": {
+            "mae": 0.004702092408462199,
+            "rmse": 0.013110831044639717,
+            "persistenceMae": 0.004987280609292328,
+            "maeImprovementPct": 5.7183107022044215,
+            "sampleCount": 120960
+          }
+        },
+        {
+          "name": "relative-l1-7-w1.0",
+          "selection": {
+            "mae": 0.003707594107572634,
+            "rmse": 0.010645265934078446,
+            "persistenceMae": 0.003968753216782055,
+            "maeImprovementPct": 6.580381670119917,
+            "sampleCount": 120462
+          },
+          "confirmation": {
+            "mae": 0.004512318240230838,
+            "rmse": 0.01232878056681788,
+            "persistenceMae": 0.004987280609292328,
+            "maeImprovementPct": 9.523473938413197,
+            "sampleCount": 120960
+          }
+        },
+        {
+          "name": "relative-l1-31-w0.5",
+          "selection": {
+            "mae": 0.003733521642272178,
+            "rmse": 0.010980319027633589,
+            "persistenceMae": 0.003968753216782055,
+            "maeImprovementPct": 5.927089986729072,
+            "sampleCount": 120462
+          },
+          "confirmation": {
+            "mae": 0.004608416164149191,
+            "rmse": 0.012876473152479646,
+            "persistenceMae": 0.004987280609292328,
+            "maeImprovementPct": 7.596613762562987,
+            "sampleCount": 120960
+          }
+        },
+        {
+          "name": "relative-l1-31-w1.0",
+          "selection": {
+            "mae": 0.003612223503390563,
+            "rmse": 0.010476254774063824,
+            "persistenceMae": 0.003968753216782055,
+            "maeImprovementPct": 8.983418567924295,
+            "sampleCount": 120462
+          },
+          "confirmation": {
+            "mae": 0.004362122534603545,
+            "rmse": 0.011944172064219877,
+            "persistenceMae": 0.004987280609292328,
+            "maeImprovementPct": 12.535049131263731,
+            "sampleCount": 120960
+          }
+        },
+        {
+          "name": "scaled-l1-7-w0.5",
+          "selection": {
+            "mae": 0.003917329707243628,
+            "rmse": 0.01161701764914498,
+            "persistenceMae": 0.003968753216782055,
+            "maeImprovementPct": 1.2957094263503333,
+            "sampleCount": 120462
+          },
+          "confirmation": {
+            "mae": 0.004919386160887168,
+            "rmse": 0.014013008142208216,
+            "persistenceMae": 0.004987280609292328,
+            "maeImprovementPct": 1.3613520819072966,
+            "sampleCount": 120960
+          }
+        },
+        {
+          "name": "scaled-l1-7-w1.0",
+          "selection": {
+            "mae": 0.0038819184033798046,
+            "rmse": 0.011564705934042263,
+            "persistenceMae": 0.003968753216782055,
+            "maeImprovementPct": 2.1879620288574597,
+            "sampleCount": 120462
+          },
+          "confirmation": {
+            "mae": 0.004866726261823896,
+            "rmse": 0.013941664970956804,
+            "persistenceMae": 0.004987280609292328,
+            "maeImprovementPct": 2.417236103455145,
+            "sampleCount": 120960
+          }
+        },
+        {
+          "name": "scaled-l1-31-w0.5",
+          "selection": {
+            "mae": 0.003730781847846531,
+            "rmse": 0.011216120943068762,
+            "persistenceMae": 0.003968753216782055,
+            "maeImprovementPct": 5.996124121027513,
+            "sampleCount": 120462
+          },
+          "confirmation": {
+            "mae": 0.0046639068479138795,
+            "rmse": 0.013360609554813385,
+            "persistenceMae": 0.004987280609292328,
+            "maeImprovementPct": 6.483969656247868,
+            "sampleCount": 120960
+          }
+        },
+        {
+          "name": "scaled-l1-31-w1.0",
+          "selection": {
+            "mae": 0.0035961209201096664,
+            "rmse": 0.010855687448004706,
+            "persistenceMae": 0.003968753216782055,
+            "maeImprovementPct": 9.38915262094645,
+            "sampleCount": 120462
+          },
+          "confirmation": {
+            "mae": 0.004453488674213882,
+            "rmse": 0.012737194144952252,
+            "persistenceMae": 0.004987280609292328,
+            "maeImprovementPct": 10.703065997206608,
+            "sampleCount": 120960
+          }
+        },
+        {
+          "name": "relative-l2-31-w0.5",
+          "selection": {
+            "mae": 0.0038299037064535727,
+            "rmse": 0.010499896122955172,
+            "persistenceMae": 0.003968753216782055,
+            "maeImprovementPct": 3.498567503299299,
+            "sampleCount": 120462
+          },
+          "confirmation": {
+            "mae": 0.004629637479966791,
+            "rmse": 0.012057358217779065,
+            "persistenceMae": 0.004987280609292328,
+            "maeImprovementPct": 7.171105003780498,
+            "sampleCount": 120960
+          }
+        },
+        {
+          "name": "relative-l2-31-w1.0",
+          "selection": {
+            "mae": 0.003955938002207127,
+            "rmse": 0.010124247403000296,
+            "persistenceMae": 0.003968753216782055,
+            "maeImprovementPct": 0.3229027826859743,
+            "sampleCount": 120462
+          },
+          "confirmation": {
+            "mae": 0.0046051128379771995,
+            "rmse": 0.010919931914387513,
+            "persistenceMae": 0.004987280609292328,
+            "maeImprovementPct": 7.662848779815423,
+            "sampleCount": 120960
+          }
+        }
+      ],
+      "byPool": [
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "g4dn.12xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA T4"
+          },
+          "mae": 0.0013900758080475644,
+          "rmse": 0.0022816488899628216,
+          "persistenceMae": 0.0015601190476190478,
+          "maeImprovementPct": 10.899375905383145,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "g4dn.16xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA T4"
+          },
+          "mae": 0.0024002022299915425,
+          "rmse": 0.004764310786432839,
+          "persistenceMae": 0.002864285714285714,
+          "maeImprovementPct": 16.202415910519708,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "g4dn.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA T4"
+          },
+          "mae": 0.0005838572546326711,
+          "rmse": 0.0009094878082384269,
+          "persistenceMae": 0.0006495767195767197,
+          "maeImprovementPct": 10.117275290726713,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "g4dn.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA T4"
+          },
+          "mae": 0.0014518843841783975,
+          "rmse": 0.0022383684928684758,
+          "persistenceMae": 0.0017150793650793643,
+          "maeImprovementPct": 15.34593595257836,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "g4dn.8xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA T4"
+          },
+          "mae": 0.001564489792260202,
+          "rmse": 0.0025425934299693207,
+          "persistenceMae": 0.00171015873015873,
+          "maeImprovementPct": 8.5178606716236,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "g4dn.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA T4"
+          },
+          "mae": 0.00044395407479522555,
+          "rmse": 0.000697523220596044,
+          "persistenceMae": 0.0005752380952380952,
+          "maeImprovementPct": 22.822553222684295,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "g6.12xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA L4"
+          },
+          "mae": 0.0019093159003988425,
+          "rmse": 0.0031611083146579635,
+          "persistenceMae": 0.002238174603174602,
+          "maeImprovementPct": 14.693165685523823,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "g6.24xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA L4"
+          },
+          "mae": 0.0024175996848901315,
+          "rmse": 0.003971524964087399,
+          "persistenceMae": 0.0027866666666666656,
+          "maeImprovementPct": 13.244030446526345,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "g6.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA L4"
+          },
+          "mae": 0.0008540597570248529,
+          "rmse": 0.0013164895784595293,
+          "persistenceMae": 0.00107010582010582,
+          "maeImprovementPct": 20.18922418902487,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "g6.48xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA L4"
+          },
+          "mae": 0.003767328603585755,
+          "rmse": 0.008959206711589385,
+          "persistenceMae": 0.0037914550264550252,
+          "maeImprovementPct": 0.6363367810227727,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "g6.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA L4"
+          },
+          "mae": 0.0011773532573435825,
+          "rmse": 0.0020153477090774957,
+          "persistenceMae": 0.0014015873015873013,
+          "maeImprovementPct": 15.99857846812489,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "g6.8xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA L4"
+          },
+          "mae": 0.001998326373187604,
+          "rmse": 0.0032416024366938643,
+          "persistenceMae": 0.002252433862433861,
+          "maeImprovementPct": 11.281462842672862,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "g6.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA L4"
+          },
+          "mae": 0.0011200001798993137,
+          "rmse": 0.001738578180041618,
+          "persistenceMae": 0.001236296296296297,
+          "maeImprovementPct": 9.406815885915364,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "g6e.12xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA L40S"
+          },
+          "mae": 0.005817187784682678,
+          "rmse": 0.013174486783893068,
+          "persistenceMae": 0.006256970899470894,
+          "maeImprovementPct": 7.028690429508078,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "g6e.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA L40S"
+          },
+          "mae": 0.006561092788640229,
+          "rmse": 0.01273394518661094,
+          "persistenceMae": 0.007026507936507938,
+          "maeImprovementPct": 6.623704862689062,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "g6e.48xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA L40S"
+          },
+          "mae": 0.00856679486250174,
+          "rmse": 0.017642782567957333,
+          "persistenceMae": 0.009006653439153443,
+          "maeImprovementPct": 4.883707135211446,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "g6e.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA L40S"
+          },
+          "mae": 0.005171864545595494,
+          "rmse": 0.009043703373388426,
+          "persistenceMae": 0.005438888888888888,
+          "maeImprovementPct": 4.909538487518994,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "g6e.8xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA L40S"
+          },
+          "mae": 0.005429043771802476,
+          "rmse": 0.008945815038191801,
+          "persistenceMae": 0.006505873015873017,
+          "maeImprovementPct": 16.551648663343034,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "g6e.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA L40S"
+          },
+          "mae": 0.006867004436153874,
+          "rmse": 0.011063360348153242,
+          "persistenceMae": 0.007894126984126983,
+          "maeImprovementPct": 13.011224040839252,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "p5e.48xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA H200"
+          },
+          "mae": 0.015307361596136763,
+          "rmse": 0.024604566737208112,
+          "persistenceMae": 0.017609424603174603,
+          "maeImprovementPct": 13.072903055689999,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1a",
+            "instance_type": "p5en.48xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA H200"
+          },
+          "mae": 0.012318888674052026,
+          "rmse": 0.019778122761992246,
+          "persistenceMae": 0.015215277777777775,
+          "maeImprovementPct": 19.036058007143218,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "g4dn.12xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA T4"
+          },
+          "mae": 0.0016087576591408371,
+          "rmse": 0.002740283511506754,
+          "persistenceMae": 0.0018126984126984116,
+          "maeImprovementPct": 11.250672043894227,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "g4dn.16xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA T4"
+          },
+          "mae": 0.003527629717349266,
+          "rmse": 0.005824042224699059,
+          "persistenceMae": 0.004266031746031746,
+          "maeImprovementPct": 17.308873272434976,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "g4dn.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA T4"
+          },
+          "mae": 0.0004981926549538593,
+          "rmse": 0.0008377886795485014,
+          "persistenceMae": 0.0006249206349206352,
+          "maeImprovementPct": 20.279051912387292,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "g4dn.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA T4"
+          },
+          "mae": 0.0015452918298337745,
+          "rmse": 0.0024783887765522324,
+          "persistenceMae": 0.001773809523809523,
+          "maeImprovementPct": 12.882876707357639,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "g4dn.8xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA T4"
+          },
+          "mae": 0.0018123236888705652,
+          "rmse": 0.0029615597450764718,
+          "persistenceMae": 0.00216026455026455,
+          "maeImprovementPct": 16.10640054947785,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "g4dn.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA T4"
+          },
+          "mae": 0.0005845993384090356,
+          "rmse": 0.0009410517182644712,
+          "persistenceMae": 0.0006773015873015871,
+          "maeImprovementPct": 13.686997141389135,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "g5.12xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA A10G"
+          },
+          "mae": 0.0018747746062799926,
+          "rmse": 0.003126306592907278,
+          "persistenceMae": 0.002364563492063492,
+          "maeImprovementPct": 20.71371259124337,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "g5.24xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA A10G"
+          },
+          "mae": 0.0029100798566791958,
+          "rmse": 0.0046782559369042175,
+          "persistenceMae": 0.0034889550264550285,
+          "maeImprovementPct": 16.591648943208128,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "g5.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA A10G"
+          },
+          "mae": 0.0012880243075120187,
+          "rmse": 0.0022353087270735998,
+          "persistenceMae": 0.0014664021164021157,
+          "maeImprovementPct": 12.164317474374297,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "g5.48xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA A10G"
+          },
+          "mae": 0.0024584027630954798,
+          "rmse": 0.00417808222671613,
+          "persistenceMae": 0.003010171957671958,
+          "maeImprovementPct": 18.330155297945574,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "g5.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA A10G"
+          },
+          "mae": 0.00218840473769921,
+          "rmse": 0.0035783760879953995,
+          "persistenceMae": 0.0023440740740740735,
+          "maeImprovementPct": 6.640973427273367,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "g5.8xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA A10G"
+          },
+          "mae": 0.0033434873104494444,
+          "rmse": 0.0054121422451363895,
+          "persistenceMae": 0.003930000000000001,
+          "maeImprovementPct": 14.923987011464545,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "g5.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA A10G"
+          },
+          "mae": 0.0016498395774021065,
+          "rmse": 0.00273246009200864,
+          "persistenceMae": 0.0019176719576719586,
+          "maeImprovementPct": 13.966537874131447,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "g6.12xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA L4"
+          },
+          "mae": 0.002042357818671275,
+          "rmse": 0.003398468418834609,
+          "persistenceMae": 0.0023111111111111114,
+          "maeImprovementPct": 11.62874823056984,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "g6.24xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA L4"
+          },
+          "mae": 0.002119509213708407,
+          "rmse": 0.003472632152236137,
+          "persistenceMae": 0.002434272486772489,
+          "maeImprovementPct": 12.930486409161801,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "g6.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA L4"
+          },
+          "mae": 0.00097783230424365,
+          "rmse": 0.001564746169565939,
+          "persistenceMae": 0.0010946031746031743,
+          "maeImprovementPct": 10.667872437137527,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "g6.48xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA L4"
+          },
+          "mae": 0.0028036702811270204,
+          "rmse": 0.0046774773345000424,
+          "persistenceMae": 0.002839292328042329,
+          "maeImprovementPct": 1.254610050662519,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "g6.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA L4"
+          },
+          "mae": 0.0012306571344852235,
+          "rmse": 0.0018797585744773982,
+          "persistenceMae": 0.0015412698412698412,
+          "maeImprovementPct": 20.153038648229572,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "g6.8xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA L4"
+          },
+          "mae": 0.002724735184346671,
+          "rmse": 0.004762433492220172,
+          "persistenceMae": 0.002847883597883598,
+          "maeImprovementPct": 4.3242081111898205,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "g6.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA L4"
+          },
+          "mae": 0.001030446559643091,
+          "rmse": 0.0016906160571785748,
+          "persistenceMae": 0.0011543386243386242,
+          "maeImprovementPct": 10.732731460538014,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "g6e.12xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA L40S"
+          },
+          "mae": 0.011031390455209199,
+          "rmse": 0.01808563475013143,
+          "persistenceMae": 0.01152227513227513,
+          "maeImprovementPct": 4.26031032439862,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "g6e.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA L40S"
+          },
+          "mae": 0.004268880350038638,
+          "rmse": 0.007099229780827993,
+          "persistenceMae": 0.004910793650793652,
+          "maeImprovementPct": 13.071477777350138,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "g6e.48xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA L40S"
+          },
+          "mae": 0.014324789185256597,
+          "rmse": 0.025023548518936654,
+          "persistenceMae": 0.016346091269841267,
+          "maeImprovementPct": 12.365660090947838,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "g6e.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA L40S"
+          },
+          "mae": 0.00694390436611194,
+          "rmse": 0.01079810200065944,
+          "persistenceMae": 0.007894920634920635,
+          "maeImprovementPct": 12.045925637329159,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "g6e.8xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA L40S"
+          },
+          "mae": 0.006472189679759881,
+          "rmse": 0.010335763308042051,
+          "persistenceMae": 0.007494656084656084,
+          "maeImprovementPct": 13.642606056193996,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "g6e.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA L40S"
+          },
+          "mae": 0.0069399562131570326,
+          "rmse": 0.011580042210851467,
+          "persistenceMae": 0.008102116402116404,
+          "maeImprovementPct": 14.343908816908579,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1b",
+            "instance_type": "p6-b200.48xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA B200"
+          },
+          "mae": 0.011559338624338632,
+          "rmse": 0.02086760457743688,
+          "persistenceMae": 0.011559338624338632,
+          "maeImprovementPct": 0.0,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "g4dn.12xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA T4"
+          },
+          "mae": 0.0011558637835407484,
+          "rmse": 0.0018253209935532814,
+          "persistenceMae": 0.0014392460317460309,
+          "maeImprovementPct": 19.689632068083274,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "g4dn.16xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA T4"
+          },
+          "mae": 0.0017852569958918083,
+          "rmse": 0.003703573446261655,
+          "persistenceMae": 0.0020988888888888884,
+          "maeImprovementPct": 14.94275826878625,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "g4dn.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA T4"
+          },
+          "mae": 0.0008270508145030129,
+          "rmse": 0.0015544108410620895,
+          "persistenceMae": 0.0008803703703703706,
+          "maeImprovementPct": 6.056491411100784,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "g4dn.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA T4"
+          },
+          "mae": 0.0012571615004083152,
+          "rmse": 0.0019937117339075047,
+          "persistenceMae": 0.0013343915343915355,
+          "maeImprovementPct": 5.7876591684491,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "g4dn.8xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA T4"
+          },
+          "mae": 0.0012837124068722284,
+          "rmse": 0.002274738528839549,
+          "persistenceMae": 0.0013607936507936509,
+          "maeImprovementPct": 5.664432948850595,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "g4dn.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA T4"
+          },
+          "mae": 0.0005892044496815129,
+          "rmse": 0.0009304386189481794,
+          "persistenceMae": 0.0007077248677248674,
+          "maeImprovementPct": 16.74667988202303,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "g5.12xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA A10G"
+          },
+          "mae": 0.0018403047113287544,
+          "rmse": 0.003074905021490363,
+          "persistenceMae": 0.002029484126984126,
+          "maeImprovementPct": 9.321551873209177,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "g5.24xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA A10G"
+          },
+          "mae": 0.0028770334072001735,
+          "rmse": 0.004812665893852736,
+          "persistenceMae": 0.0031598412698412696,
+          "maeImprovementPct": 8.95006547766567,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "g5.2xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA A10G"
+          },
+          "mae": 0.0014744665576241892,
+          "rmse": 0.0024714406349597242,
+          "persistenceMae": 0.0015677248677248678,
+          "maeImprovementPct": 5.94864009754581,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "g5.48xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA A10G"
+          },
+          "mae": 0.003250759863639107,
+          "rmse": 0.006110485705541253,
+          "persistenceMae": 0.0033945701058201052,
+          "maeImprovementPct": 4.236478779284325,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "g5.4xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA A10G"
+          },
+          "mae": 0.0023074784494477893,
+          "rmse": 0.0038916205048321545,
+          "persistenceMae": 0.002419365079365078,
+          "maeImprovementPct": 4.624627794770497,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "g5.8xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA A10G"
+          },
+          "mae": 0.0035643549723006767,
+          "rmse": 0.005806222356154876,
+          "persistenceMae": 0.004183650793650796,
+          "maeImprovementPct": 14.802760839646956,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "g5.xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA A10G"
+          },
+          "mae": 0.001553220561318924,
+          "rmse": 0.002600193098703241,
+          "persistenceMae": 0.0016607936507936482,
+          "maeImprovementPct": 6.477209822142438,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "p4d.24xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA A100"
+          },
+          "mae": 0.0066703732081566346,
+          "rmse": 0.01082990401985288,
+          "persistenceMae": 0.007844861111111111,
+          "maeImprovementPct": 14.971430167080769,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "p5.48xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA H100"
+          },
+          "mae": 0.032298069199223865,
+          "rmse": 0.05151334343093185,
+          "persistenceMae": 0.036093809523809535,
+          "maeImprovementPct": 10.516319487090387,
+          "sampleCount": 1890
+        },
+        {
+          "identity": {
+            "region": "eu-north-1",
+            "availability_zone": "eu-north-1c",
+            "instance_type": "p5en.48xlarge",
+            "product_description": "Linux/UNIX",
+            "resource_type": "GPU",
+            "gpu_type": "NVIDIA H200"
+          },
+          "mae": 0.03541181309097769,
+          "rmse": 0.05763649168854917,
+          "persistenceMae": 0.03831571428571428,
+          "maeImprovementPct": 7.578877880450441,
+          "sampleCount": 1890
+        }
+      ],
+      "fallbackConfirmationCount": 1890,
+      "comparisonWithPreviousModel": {
+        "previousMae": 0.004931313279680077,
+        "previousMaeReductionVsPersistencePct": 1.1222013356932776,
+        "maeReductionVsPreviousModelPct": 9.68960149895799
+      }
+    }
+  },
+  "limitations": [
+    "Post-holdout development: the October confirmation interval was evaluated by an earlier model. It is not a fresh blind test.",
+    "Ten variants per resource were selected solely by September development MAE. Confirmation was inspected after selection receipts were saved.",
+    "Additional rolling folds are post-selection diagnostics and cannot erase historical dataset reuse or certify absence of overfitting.",
+    "Pool, zone and horizon errors are correlated. Block bootstrap intervals are descriptive, conditional on this short single-region history.",
+    "Seven CPU pools worsen; B200 cold-start fallback is retained. No unseen-region or unseen-hardware generalization claim.",
+    "Prediction-error improvements are not scheduling savings. No production API/default or risk/uncertainty model changed."
+  ]
+}

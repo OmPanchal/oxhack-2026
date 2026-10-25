@@ -1,0 +1,281 @@
+{
+  "design": {
+    "status": "POST_SELECTION_STABILITY_DIAGNOSTIC_NOT_BLIND",
+    "sourceReportSha256": "45c7bf2ee3aaa7484acf35b0ac0a838fce24b04bd701791229285a692aad6996",
+    "folds": [
+      [
+        488,
+        744
+      ],
+      [
+        744,
+        1000
+      ],
+      [
+        1000,
+        1257
+      ]
+    ],
+    "candidates": {
+      "CPU": "scaled-l1-31-w1.0",
+      "GPU": "scaled-l1-31-w1.0"
+    },
+    "blockHours": [
+      24,
+      48
+    ],
+    "bootstrapReplicates": 5000,
+    "rule": "Do not reselect or tune models using these diagnostics.",
+    "implementationSha256": "ab9451383c49f8786b12616df31c38bd774c61ff4a3af6dfb18dcac2e09644f9"
+  },
+  "resources": {
+    "CPU": {
+      "rollingFolds": [
+        {
+          "trainEndExclusive": 488,
+          "scoreEndExclusive": 744,
+          "trainingSampleCount": 271296,
+          "trainingMaxTargetSlot": 487,
+          "firstScoreOriginSlot": 488,
+          "fallbackSampleCount": 0,
+          "mae": 4.2357997661965906e-05,
+          "rmse": 8.451732918355076e-05,
+          "persistenceMae": 4.5953645833333324e-05,
+          "maeImprovementPct": 7.824511213774576,
+          "sampleCount": 216000
+        },
+        {
+          "trainEndExclusive": 744,
+          "scoreEndExclusive": 1000,
+          "trainingSampleCount": 492480,
+          "trainingMaxTargetSlot": 743,
+          "firstScoreOriginSlot": 744,
+          "fallbackSampleCount": 0,
+          "mae": 3.8371977120549805e-05,
+          "rmse": 7.511659777800025e-05,
+          "persistenceMae": 4.0776909722222226e-05,
+          "maeImprovementPct": 5.897780430285538,
+          "sampleCount": 216000
+        },
+        {
+          "trainEndExclusive": 1000,
+          "scoreEndExclusive": 1257,
+          "trainingSampleCount": 713664,
+          "trainingMaxTargetSlot": 999,
+          "firstScoreOriginSlot": 1000,
+          "fallbackSampleCount": 0,
+          "mae": 3.686217550887717e-05,
+          "rmse": 7.235816911660318e-05,
+          "persistenceMae": 3.959405433820275e-05,
+          "maeImprovementPct": 6.899719856902098,
+          "sampleCount": 216864
+        }
+      ],
+      "confirmation": {
+        "mae": 5.601749845195298e-05,
+        "rmse": 0.00010055048860269699,
+        "persistenceMae": 6.267478229717813e-05,
+        "maeImprovementPct": 10.62194969207717,
+        "sampleCount": 272160
+      },
+      "confirmationLabelAudit": "ALL_MATCH_OBSERVED_SOURCE",
+      "byHorizon": {
+        "1": {
+          "mae": 1.8094939921455148e-05,
+          "rmse": 5.7147416983382075e-05,
+          "persistenceMae": 1.7935130070546737e-05,
+          "maeImprovementPct": -0.8910437241314018,
+          "sampleCount": 45360
+        },
+        "2": {
+          "mae": 3.5575975324369686e-05,
+          "rmse": 7.98849330007437e-05,
+          "persistenceMae": 3.586874448853616e-05,
+          "maeImprovementPct": 0.8162236184766414,
+          "sampleCount": 45360
+        },
+        "3": {
+          "mae": 5.1530255136325474e-05,
+          "rmse": 9.464032168073037e-05,
+          "persistenceMae": 5.380332341269841e-05,
+          "maeImprovementPct": 4.224772992064752,
+          "sampleCount": 45360
+        },
+        "4": {
+          "mae": 6.518643680084145e-05,
+          "rmse": 0.0001059524478692913,
+          "persistenceMae": 7.169629078483245e-05,
+          "maeImprovementPct": 9.079763977648025,
+          "sampleCount": 45360
+        },
+        "5": {
+          "mae": 7.683777642768718e-05,
+          "rmse": 0.00011718824176584292,
+          "persistenceMae": 8.95083774250441e-05,
+          "maeImprovementPct": 14.15577107066598,
+          "sampleCount": 45360
+        },
+        "6": {
+          "mae": 8.887960710103894e-05,
+          "rmse": 0.00013076382930896476,
+          "persistenceMae": 0.00010723682760141093,
+          "maeImprovementPct": 17.118391984332128,
+          "sampleCount": 45360
+        }
+      },
+      "poolSummary": {
+        "improved": 137,
+        "worsened": 7,
+        "tied": 0
+      },
+      "blockDiagnostics": [
+        {
+          "blockHours": 24,
+          "blockCount": 14,
+          "replicates": 5000,
+          "maeReduction95PercentileInterval": [
+            8.253303259492787,
+            12.692080658424715
+          ],
+          "improvedBlockCount": 14,
+          "tiedBlockCount": 0
+        },
+        {
+          "blockHours": 48,
+          "blockCount": 7,
+          "replicates": 5000,
+          "maeReduction95PercentileInterval": [
+            7.721065169929664,
+            13.150304975412437
+          ],
+          "improvedBlockCount": 7,
+          "tiedBlockCount": 0
+        }
+      ]
+    },
+    "GPU": {
+      "rollingFolds": [
+        {
+          "trainEndExclusive": 488,
+          "scoreEndExclusive": 744,
+          "trainingSampleCount": 118692,
+          "trainingMaxTargetSlot": 487,
+          "firstScoreOriginSlot": 488,
+          "fallbackSampleCount": 0,
+          "mae": 0.0024276379976034945,
+          "rmse": 0.005975882002697178,
+          "persistenceMae": 0.0026402705026455026,
+          "maeImprovementPct": 8.053436374377332,
+          "sampleCount": 94500
+        },
+        {
+          "trainEndExclusive": 744,
+          "scoreEndExclusive": 1000,
+          "trainingSampleCount": 215460,
+          "trainingMaxTargetSlot": 743,
+          "firstScoreOriginSlot": 744,
+          "fallbackSampleCount": 0,
+          "mae": 0.0026047606706501134,
+          "rmse": 0.007293195557799168,
+          "persistenceMae": 0.0027724035714285717,
+          "maeImprovementPct": 6.046843342222175,
+          "sampleCount": 94500
+        },
+        {
+          "trainEndExclusive": 1000,
+          "scoreEndExclusive": 1257,
+          "trainingSampleCount": 312228,
+          "trainingMaxTargetSlot": 999,
+          "firstScoreOriginSlot": 1000,
+          "fallbackSampleCount": 0,
+          "mae": 0.002339701865909494,
+          "rmse": 0.005956147643116141,
+          "persistenceMae": 0.0025114827726132505,
+          "maeImprovementPct": 6.839820227992844,
+          "sampleCount": 94878
+        }
+      ],
+      "confirmation": {
+        "mae": 0.004453488674213882,
+        "rmse": 0.012737194144952252,
+        "persistenceMae": 0.004987280609292328,
+        "maeImprovementPct": 10.703065997206608,
+        "sampleCount": 120960
+      },
+      "confirmationLabelAudit": "ALL_MATCH_OBSERVED_SOURCE",
+      "byHorizon": {
+        "1": {
+          "mae": 0.0014433210843035947,
+          "rmse": 0.00710058650184073,
+          "persistenceMae": 0.0014299497767857143,
+          "maeImprovementPct": -0.9350893111740533,
+          "sampleCount": 20160
+        },
+        "2": {
+          "mae": 0.002806956510550065,
+          "rmse": 0.009897858329501907,
+          "persistenceMae": 0.0028608655753968254,
+          "maeImprovementPct": 1.8843620375026737,
+          "sampleCount": 20160
+        },
+        "3": {
+          "mae": 0.004068994745925131,
+          "rmse": 0.011754825551002115,
+          "persistenceMae": 0.004285735367063492,
+          "maeImprovementPct": 5.05725628334509,
+          "sampleCount": 20160
+        },
+        "4": {
+          "mae": 0.0051700041419502005,
+          "rmse": 0.01344142564885098,
+          "persistenceMae": 0.00570640873015873,
+          "maeImprovementPct": 9.400037984899278,
+          "sampleCount": 20160
+        },
+        "5": {
+          "mae": 0.0061130340020021665,
+          "rmse": 0.014925420937919938,
+          "persistenceMae": 0.007117191220238095,
+          "maeImprovementPct": 14.108897557516187,
+          "sampleCount": 20160
+        },
+        "6": {
+          "mae": 0.007118621560552133,
+          "rmse": 0.016834925677116683,
+          "persistenceMae": 0.00852353298611111,
+          "maeImprovementPct": 16.482735830884288,
+          "sampleCount": 20160
+        }
+      },
+      "poolSummary": {
+        "improved": 63,
+        "worsened": 0,
+        "tied": 1
+      },
+      "blockDiagnostics": [
+        {
+          "blockHours": 24,
+          "blockCount": 14,
+          "replicates": 5000,
+          "maeReduction95PercentileInterval": [
+            9.885573286047961,
+            11.461279367334177
+          ],
+          "improvedBlockCount": 14,
+          "tiedBlockCount": 0
+        },
+        {
+          "blockHours": 48,
+          "blockCount": 7,
+          "replicates": 5000,
+          "maeReduction95PercentileInterval": [
+            10.085962526197733,
+            11.407225627143646
+          ],
+          "improvedBlockCount": 7,
+          "tiedBlockCount": 0
+        }
+      ]
+    }
+  }
+}

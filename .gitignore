@@ -20,3 +20,10 @@ data/processed/*
 !data/processed/.gitkeep
 models/*
 !models/.gitkeep
+
+# Selected serving artifacts: keep weights available on fresh checkouts.
+!models/error-reduction-001/
+!models/error-reduction-001/CPU-model.json
+!models/error-reduction-001/GPU-model.json
+!models/error-reduction-001/CPU-scaled-l1-31.txt
+!models/error-reduction-001/GPU-scaled-l1-31.txt

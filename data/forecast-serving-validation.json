@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "forecast-serving-validation-v1",
+  "currentSlot": 2000,
+  "validationTimePolicy": "Fixed recorded source origin; no retraining",
+  "apiKeyCount": 9,
+  "requestHistoryRowCount": 1521,
+  "forecastCount": 54,
+  "archivedPredictionParity": {
+    "count": 54,
+    "absoluteTolerance": 1e-13,
+    "passed": true
+  },
+  "mlForecastCount": 48,
+  "fallbackForecastCount": 6,
+  "performance": {
+    "warmRuns": 30,
+    "inferenceOnly": true,
+    "modelLoadAndSourceDataReadExcluded": true,
+    "p50Milliseconds": 34.37225400193711,
+    "p95Milliseconds": 37.902518500050064,
+    "maximumMilliseconds": 87.34459699917352,
+    "targetP95Milliseconds": 250,
+    "targetMet": true,
+    "platform": "Linux-7.0.0-38-generic-x86_64-with-glibc2.39",
+    "note": "One process, sequential calls, CPU-only inference; capacity is a simulated test field and not an ML input."
+  },
+  "packageVersions": {
+    "lightgbm": "4.7.0",
+    "numpy": "2.5.4",
+    "scikit-learn": "1.9.1",
+    "fastapi": "0.162.0",
+    "pydantic": "2.14.1"
+  },
+  "implementationSha256": {
+    "error_model.py": "261f8579213e6420046658e60b8e10bb5910555a88805b9ebf758ac2fd3a7ea7",
+    "error_service.py": "8078d1a15f8668195f5d42bd0607fe4c9ef58bc2272e4a07a16ed7bdb9d21501",
+    "error_search.py": "e146323139c180c382b78695706d606003eaf352d3569ccaba89bc663648587f"
+  },
+  "servingConfigSha256": "9495602612f5345fe09808fbbf1d030ce8235deb378e7200236a67a38db8982b",
+  "tests": {
+    "forecastingAndEnginePassed": 162,
+    "forecastingSubtestsPassed": 53,
+    "apiPassed": 8,
+    "totalTestsPassed": 170,
+    "apiSandboxNote": "FastAPI TestClient timed out inside sandbox; all API tests passed outside it.",
+    "exampleServiceToApiParity": true
+  }
+}

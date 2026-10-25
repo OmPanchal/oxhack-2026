@@ -1,0 +1,21 @@
+{
+  "status": "EXPERIMENTAL_POST_HOLDOUT",
+  "files": [
+    {
+      "path": "models/error-reduction-001/CPU-model.json",
+      "sha256": "38d3c056d9e610e75764e7983be849483c27d8491848fcde42fbf6f019aa93e6"
+    },
+    {
+      "path": "models/error-reduction-001/CPU-scaled-l1-31.txt",
+      "sha256": "d95dcd8147ee3337645a3d06b300fc5c520645d641674792c0c53123b15e1eb7"
+    },
+    {
+      "path": "models/error-reduction-001/GPU-model.json",
+      "sha256": "b96e4389d0bd027f8db47309661e26e88b70a951d8a8ae974a9bfad94ab601eb"
+    },
+    {
+      "path": "models/error-reduction-001/GPU-scaled-l1-31.txt",
+      "sha256": "734be7a557defad2d6e3e7989c252b810568ea2b745faa2853ee241cfc7269c9"
+    }
+  ]
+}

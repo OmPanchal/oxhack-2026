@@ -33,6 +33,7 @@ class AwsSpotMarket:
         self.lock = RLock()
         self.quote_archive = quote_archive
         self.pool_selections = pool_selections
+        self.model_history = None
 
     @staticmethod
     def _boto_client(region):
@@ -207,6 +208,8 @@ class AwsSpotMarket:
                     if int((quote.observed_at_utc - origin_utc).total_seconds() // 3600) != current_slot:
                         self.price_cache = None
                         return self.poll_with_origin(current_slot, origin_utc)
+                    if self.model_history is not None:
+                        self.model_history.ensure(identity, quote)
                     selected.append(MarketSnapshot(slot=current_slot, region=quote.region, resource_type='GPU',
                         gpu_type=quote.gpu_type, price_usd_per_unit_hour=quote.price_usd_per_gpu_hour,
                         available_units=None, carbon_kg_per_unit_hour=None, data_kind='OBSERVED',

@@ -57,12 +57,17 @@ quote endpoint still returns all observed quotes. Without ML enabled, the
 existing regional minimum-price index remains the live price source.
 
 The model requires **168 prior consecutive hourly observations plus the current
-observation**, from the matching source pool. The current live history may not
-meet that requirement. Short history, unsupported pools, pre-availability dates
-and mismatched source identity produce explicit `persistence-v1:fallback-...`
-versions. They are never labeled as trained predictions. A regional index is
-not silently used to infer a fixed-AZ trajectory. Older index rows remain in
-SQLite; they are not reclassified or backfilled as fixed-pool observations.
+observation**, from the matching source pool. With `--ml`, the app automatically
+backfills missing historical prices, saves them, and fills new hours or downtime
+gaps as it runs/restarts. No manual daily download or week-long wait is required.
+Market's Forecast model details report historical-input readiness and pool counts.
+
+Historical samples preserve when they were actually retrieved and are used only
+for current live inference. They do not enter earlier replay decisions or replace
+the runtime's observed market history. See [automatic history](docs/AUTOMATIC_HISTORY.md).
+Missing anchors, unavailable pools and failed fetches remain missing and produce
+explicit `persistence-v1:fallback-...` versions. They are never labeled as trained
+predictions. A regional index is not silently used as fixed-AZ model history.
 
 The source branch's API example demonstrates genuine saved-model inference on
 explicitly SIMULATED inputs; it is not a live-accuracy test. Historical replay
@@ -142,16 +147,28 @@ npm run build
 
 Startup regressions: `python3 -m unittest discover -s scripts -p test_dev.py -v`.
 
-Verified after merge on 25 October 2026: backend **354 passed, 1 skipped,
-53 subtests passed**; frontend **40 passed**; **5 startup tests passed**; frontend
-production build passed. Live AWS/ML startup and labeled-example inference were
-verified through the frontend proxy. Existing backend warnings remain.
+Verified after automatic history integration on 25 October 2026: backend
+**360 passed, 1 skipped, 53 subtests passed**; frontend **40 passed**; **5 startup tests passed**; frontend
+production build passed. Live AWS backfill produced 168 prior hourly inputs for each T4/A10G pool and
+12 genuine LightGBM forecasts through the frontend proxy. This verifies live
+inference, not predictive accuracy or savings. Existing backend warnings remain.
 Current integration evidence and remaining limitations are recorded in
 [frontend/INTEGRATION.md](frontend/INTEGRATION.md). Earlier backend audits are
 historical snapshots. The [milestone plan](docs/PRE_ML_MILESTONES.md) tracks the
 baseline benchmark, current UI/local execution checks and final demo work.
 
-Still required: sufficient correctly identified live history, a fresh held-out
-model evaluation, a saved fair scheduler benchmark, browser walkthrough and demo
-rehearsal. Passing tests does not establish cloud capacity, real savings or live
-model quality. [AGENTS.md](AGENTS.md) defines ownership and design rules.
+## Remaining demo milestones
+
+| Milestone | Status / completion check |
+| --- | --- |
+| 1. Automatic live model inputs | Complete for current T4/A10G demo pools: automatic backfill and persisted rolling history; 168/168 prior hours per pool and 12 genuine live forecasts verified. Gap/hour rollover covered by tests; real restart reused saved inputs without new history fetches. |
+| 2. Meaningful ML replay | Pending: matching historical series, warm-up and valid model-availability dates, with clearly simulated capacity. The capacity-pressure fixture alone does not establish ML value. |
+| 3. Saved fair benchmark | Pending: all four policies on identical inputs, with scenario/seed/configuration, spend, completions, failed/infeasible/missed/unfinished jobs and fallback versions saved. Disclose experimental/reused evaluation periods; fresh held-out evaluation is required for new accuracy claims. |
+| 4. Current UI/local execution check | Pending: run an allowlisted Docker CPU task through the current UI and verify logs, completion/exit code and failures. Earlier backend smoke evidence is separate. |
+| 5. Browser walkthrough | Pending: verify model inspection, workload/decision details, replay/reset/shocks, policy comparison and explicit loading/error states. |
+| 6. Three-minute demo rehearsal | Pending: reliable reset → predict → decide → explain → outcome → baseline comparison, plus a backup recording and honest provenance labels. |
+
+Actual AWS provisioning is outside this demo scope. Capacity remains explicitly
+simulated in replay; Docker remains LOCAL. Passing tests does not establish cloud
+capacity, real savings or live model quality. [AGENTS.md](AGENTS.md) defines
+ownership and design rules.

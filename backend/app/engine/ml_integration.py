@@ -1,5 +1,5 @@
 """Adapt selected fixed-pool ML models to the engine's clock and resource keys."""
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 from threading import RLock
 
@@ -12,9 +12,10 @@ def gpu_name(value):
 
 
 class SelectedModelProvider:
-    def __init__(self, service, lock=None):
+    def __init__(self, service, lock=None, history_source=None):
         self.service = service
         self.lock = lock or RLock()
+        self.history_source = history_source
 
     def __deepcopy__(self, memo):
         # Frozen inference artifacts have no per-policy training/adaptive state.
@@ -49,7 +50,8 @@ class SelectedModelProvider:
             else:
                 prefix = fixed_pool_source(selection)
                 window = [r for r in rows if r.slot >= request.current_slot - 168]
-                if any(r.data_kind == 'OBSERVED' and not r.source.startswith(prefix) for r in window):
+                check = [current] if self.history_source is not None else window
+                if any(r.data_kind == 'OBSERVED' and not r.source.startswith(prefix) for r in check):
                     reason = 'source-identity-mismatch'
             if reason:
                 fallback = PersistenceForecastProvider().predict(ForecastRequest(
@@ -59,6 +61,11 @@ class SelectedModelProvider:
             shifted = [r.model_copy(update={'slot': r.slot + offset,
                        'gpu_type': selection.gpu_type or None}) for r in rows
                        if request.current_slot - 168 <= r.slot <= request.current_slot and r.slot + offset >= 0]
+            if self.history_source is not None and current.data_kind == 'OBSERVED':
+                boundary = origin_utc + timedelta(hours=request.current_slot)
+                shifted = self.history_source.native_history(selection, model_origin, boundary)
+                shifted.append(current.model_copy(update={'slot': request.current_slot + offset,
+                                                          'gpu_type': selection.gpu_type or None}))
             with self.lock:
                 predictions = self.service.predict(ForecastRequest(current_slot=request.current_slot + offset,
                     horizon_slots=request.horizon_slots, history=shifted))

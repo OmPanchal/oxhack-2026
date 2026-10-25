@@ -3,6 +3,9 @@ import type { Decision, ExecutionMode, Forecast, Job, JobCreate, ResourceType, S
 export type ModelStatus = {
   status: "READY" | "UNAVAILABLE"; reason?: string; engineEnabled: boolean; engineForecastMode: "NAIVE" | "ML";
   modelFamily?: string; lookbackHours?: number; originUtc?: string; validationStatus?: string;
+  history?: { status: "READY" | "WARMING" | "PARTIAL"; lookbackHours: number;
+    pools: { region: string; instanceType: string; availabilityZone: string; gpuType: string;
+      status: "READY" | "PARTIAL"; requiredHours: number; availableHours: number; errorCode: string | null }[] } | null;
 };
 
 export type EngineState = {

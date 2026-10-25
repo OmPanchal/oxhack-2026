@@ -28,6 +28,13 @@ CREATE INDEX IF NOT EXISTS aws_quote_batches_time ON aws_quote_batches(recorded_
 CREATE TABLE IF NOT EXISTS engine_state (
     id INTEGER PRIMARY KEY CHECK (id = 1), payload TEXT NOT NULL
 );
+CREATE TABLE IF NOT EXISTS model_price_history (
+    series_key TEXT NOT NULL, hour_utc TEXT NOT NULL, available_at_utc TEXT NOT NULL,
+    payload TEXT NOT NULL, PRIMARY KEY (series_key, hour_utc)
+);
+CREATE TABLE IF NOT EXISTS model_history_fetches (
+    fingerprint TEXT PRIMARY KEY, payload TEXT NOT NULL
+);
 CREATE TABLE IF NOT EXISTS dispatch_state (
     id INTEGER PRIMARY KEY CHECK (id = 1), payload TEXT NOT NULL
 );

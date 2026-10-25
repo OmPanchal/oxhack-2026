@@ -62,6 +62,9 @@ access to other regions. Verify access before changing it.
 - Ports 8000 and 3000 are free before spawning either server.
 - Backend health, then actual AWS capabilities and observed quotes through the
   frontend proxy. Readiness requires READY responses for the configured region.
+- With `--ml`, automatic history backfill/recovery completes for the quoted model
+  pools before readiness is announced. Missing anchors/read failures time out with
+  an explicit error; see [automatic history](AUTOMATIC_HISTORY.md).
 - Both owned server processes remain running after readiness.
 
 The launcher sets live AWS mode, a two-second backend polling interval and the

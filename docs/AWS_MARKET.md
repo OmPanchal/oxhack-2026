@@ -115,6 +115,15 @@ backend contract. Forecasting must preserve missing capacity or handle it with
 documented missing-value features; do not convert it into observed zero capacity
 or a calibrated risk estimate.
 
+## Automatic model warm-up
+
+With `./dev --ml`, missing historical model inputs are automatically fetched for
+fixed model instance/AZ pools, reconstructed at hourly boundaries and retained.
+Subsequent hour changes/restarts fetch missing spans only. Live T4/A10G input
+windows and genuine forecasts have been verified; no daily manual download is
+needed. This is separate from observed quote archival and never seeds historical
+replay with later-known data. See [AUTOMATIC_HISTORY.md](AUTOMATIC_HISTORY.md).
+
 ## Durable detailed history
 
 FastAPI now archives freshly fetched exact instance/AZ quote batches in SQLite

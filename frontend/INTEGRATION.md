@@ -227,3 +227,24 @@ scheduler savings is claimed by this merge verification.
 
 Final combined backend rerun: **354 passed, 1 skipped, 53 subtests passed**.
 Existing Starlette/httpx and physical-core-detection warnings remain.
+
+## Automatic live history — 25 October 2026
+
+The live AWS ML source now backfills and persists missing fixed-pool historical
+boundaries, uses 168 prior observations plus the current quote, and repairs the
+rolling window after hour changes/downtime. Runtime history stays separate from
+replay; retrieval timestamps prevent retrospective data from becoming earlier
+known observations. Model status and the Market details disclose input readiness,
+per-pool counts and sanitized failures. `./dev --ml` checks that readiness.
+
+Actual frontend-proxy verification: T4 in eu-north-1a and A10G in eu-north-1b both
+reported 168/168 historical inputs. SQLite retained 336 samples/two source fetches.
+GET /api/forecasts returned 12 genuine saved LightGBM outputs; engine ML mode had
+no last error, and live capacity remained null. This is genuine live inference,
+not just the earlier packaged SIMULATED example. No accuracy/savings claim follows.
+
+Tests: backend 360 passed / 1 skipped / 53 subtests passed; frontend 40 passed;
+startup 5 passed; frontend production build passed. Existing warnings remain.
+
+Real process restart reused all 336 inputs/two source receipts without new
+historical requests and continued returning 12 genuine forecasts.

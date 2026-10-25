@@ -36,8 +36,11 @@ report file. This separates inference readiness from evaluation strength.
 Live ML uses the configured fixed instance/AZ sources, with explicit alias mapping
 between AWS hardware names and model identifiers. A regional minimum-price index
 is rejected as fixed-pool model history and receives a labeled persistence
-fallback. Existing index history is not retrospectively relabeled. Collection of
-169 consecutive matching observations is required before genuine live inference.
+fallback. Existing index history is not retrospectively relabeled. The live provider automatically retrieves/persists missing historical boundary
+prices and combines 168 prior hours with the current quote. On rollover/restart it
+fetches only the missing span. See [automatic history](../docs/AUTOMATIC_HISTORY.md).
+Incomplete windows remain explicit fallbacks; retrospective receipts never enter
+earlier replay decisions.
 
 ## Configuration, identities and time
 

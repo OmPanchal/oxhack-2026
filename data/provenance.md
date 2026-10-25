@@ -220,9 +220,10 @@ is pending.
 ## Real collection 001 — imported 24 October 2026
 
 The user supplied `spot-data.zip` after running the read-only collectors in AWS
-CloudShell. The original archive is preserved at [data/raw/spot-data.zip](raw/spot-data.zip).
-It and the extracted/processed data are covered by the existing Git ignore rules.
-An [import receipt](raw/spot-data-import-receipt.json) records archive and price
+CloudShell. That original run recorded the archive at `data/raw/spot-data.zip`.
+It and the extracted/processed data are covered by the existing Git ignore rules
+and are not present in this checkout. The historical import receipt at
+`data/raw/spot-data-import-receipt.json` recorded archive and price
 hashes and the checks performed. Checksums establish integrity relative to the
 export manifests; they are not independent AWS signatures.
 
@@ -254,9 +255,10 @@ prevented the original multi-region collection. Regional expansion remains open.
 - Raw price SHA-256: `566d7d5d2a30e63908cb61e266be5c6c9490e9a0e959bf4f042dba3c6081c349`.
 - Archive SHA-256: `ab04ae656b5ef7be673fcfce40ca999e520183a644a223775cb97dbbcf2f7d4f`.
 
-The prepared dataset is
-[hourly-prices.jsonl](processed/hourly-prices-001/hourly-prices.jsonl), with its
-[quality report and hashes](processed/hourly-prices-001/manifest.json).
+The historical prepared dataset path is
+`data/processed/hourly-prices-001/hourly-prices.jsonl`, with its quality report
+and hashes in `data/processed/hourly-prices-001/manifest.json` (also ignored and
+not included in this checkout).
 It contains 6,408 hourly rows across the three source series, including 6,407
 known start prices and one missing start price.
 
@@ -350,3 +352,19 @@ See [all measured results](alternative-model-results.json) and
 [reproduction/limitations](alternative-models.md). The ignored local run is
 `data/processed/alternative-models-001/`. The default service was not changed;
 there is no new claim of scheduling savings or final predictive superiority.
+
+## Automatic live model inputs — 25 October 2026
+
+`model_history_fetches` stores complete paginated EC2 Spot price-event responses
+for each selected instance/AZ/product, request window, source URL and receipt time.
+`model_price_history` stores the effective price at each required historical UTC
+boundary, original whole-instance USD/hour, normalization by verified GPU count,
+and actual retrieval time. Unchanged prices use the last preceding provider event;
+missing anchors are not backfilled from a later value. Data is OBSERVED, capacity
+is unknown. Values retrieved today are available today only, never to earlier
+replay decisions. The live provider alone reads this store.
+
+Live verification populated 168 prior hours for g4dn.xlarge / eu-north-1a (T4)
+and g5.xlarge / eu-north-1b (A10G), both in eu-north-1. No training data, clean
+held-out evaluation, capacity labels or cloud execution was created. See
+[automatic history](../docs/AUTOMATIC_HISTORY.md).

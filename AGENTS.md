@@ -802,13 +802,18 @@ engine-owned forecasts. GET /api/models/status carries artifact/provenance detai
 GET /api/models/metrics retains its strict held-out evaluation contract.
 
 The model requires 168 prior consecutive hours plus the current observation.
+Live AWS ML mode now automatically backfills missing fixed-pool history and
+recovers rolling-hour/downtime gaps. Receipt provenance is persisted separately
+and backfilled data must never enter earlier replay decisions. See
+[automatic model history](docs/AUTOMATIC_HISTORY.md) and the current README demo milestones.
 Missing history, unsupported pools, pre-availability dates and source mismatch
 produce labeled persistence fallbacks. Do not count those as ML predictions.
 Packaged evaluation is exploratory post-holdout and must not be relabeled as a
 clean disjoint test or evidence of scheduling savings. Live AWS capacity remains
 unknown. The simulated capacity scenario and detailed quote archive remain
-separate from real allocation. Current UI/Docker verification, sufficient live
-history, fresh evaluation and a saved fair benchmark remain outstanding.
+separate from real allocation. Automatic backfill has supplied and verified the required live T4/A10G history.
+Current UI/Docker verification, fresh evaluation, a saved fair benchmark and demo
+rehearsal remain outstanding; track these in the README demo milestone table.
 
 See [README.md](README.md), [model serving](data/forecast-serving.md),
 [startup](docs/STARTUP.md), and [capacity scenarios](docs/CAPACITY_SCENARIOS.md).

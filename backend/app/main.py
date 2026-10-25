@@ -28,6 +28,7 @@ from app.forecasting.interfaces import ForecastService
 from app.market.adapter import JsonMarketSource, MarketSource
 from app.market.aws import AwsSpotMarket
 from app.market.history import AwsQuoteArchive
+from app.market.model_history import AwsModelHistory
 from app.jobs.store import DecisionStore, JobStore
 from app.api.execution_schemas import ExecuteRequest, LocalExecution, TaskCatalog
 from app.execution.docker import TASK
@@ -107,10 +108,14 @@ def create_app(database_path: str | Path | None = None, *,
         aws_market.quote_archive = AwsQuoteArchive(database)
     if aws_market is not None and selected_service is not None:
         aws_market.pool_selections = list(selected_service.selections.values())
+        aws_market.model_history = AwsModelHistory(database, aws_market._client, aws_market._now)
+    live_providers = dict(forecast_services)
+    if aws_market is not None and selected_service is not None and aws_market.model_history is not None:
+        live_providers['ML'] = SelectedModelProvider(selected_service, history_source=aws_market.model_history)
     source = market_source if market_source is not None else aws_market if aws_market is not None else (
         JsonMarketSource(source_path) if source_mode == "json" else None)
     origin = datetime.fromisoformat(os.environ["COMPUTE_ORIGIN_UTC"]) if os.getenv("COMPUTE_ORIGIN_UTC") else None
-    engine = RollingScheduler(database, market_source=source, forecast_services=forecast_services,
+    engine = RollingScheduler(database, market_source=source, forecast_services=live_providers,
                               monitor=monitor, clock=clock, config=optimizer_config,
                               auto_tick_enabled=interval > 0, origin_utc=origin)
     app.state.engine = engine
@@ -257,7 +262,8 @@ def create_app(database_path: str | Path | None = None, *,
     def model_status():
         status = selected_service.status() if selected_service is not None else model_loader.status()
         return {**status, 'engineEnabled': engine.providers.get('ML') is not None,
-                'engineForecastMode': engine.state().forecast_mode}
+                'engineForecastMode': engine.state().forecast_mode,
+                'history': aws_market.model_history.status() if aws_market is not None and aws_market.model_history is not None else None}
 
     @app.get("/api/execution/tasks", response_model=TaskCatalog)
     def execution_tasks():

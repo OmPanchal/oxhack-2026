@@ -207,6 +207,13 @@ def main():
                 quotes = read_json('http://127.0.0.1:3000/api/market/aws/spot')
                 last_codes = sorted({str(e.get('code', 'UNKNOWN')) for d in (cap, quotes) for e in d.get('errors', [])})
                 if live_ready(cap, quotes, args.region):
+                    if args.ml:
+                        status = read_json('http://127.0.0.1:3000/api/models/status')
+                        history = status.get('history') or {}
+                        if not status.get('engineEnabled') or history.get('status') != 'READY':
+                            last_codes = sorted({p.get('errorCode') for p in history.get('pools', []) if p.get('errorCode')}) or ['MODEL_HISTORY_INCOMPLETE']
+                            time.sleep(1)
+                            continue
                     break
             except (OSError, ValueError):
                 pass
@@ -217,6 +224,7 @@ def main():
                                + '. Check .arbitr/backend.log and docs/STARTUP.md; no preview fallback was used.')
         print('\nArbitr ready: http://127.0.0.1:3000\nSelect Backend data → Market.\n'
               'Live prices; check forecast mode in the app; AWS capacity unknown.\n'
+              + ('ML historical inputs ready.\n' if args.ml else '') +
               'Ctrl+C stops both servers. Logs: .arbitr/backend.log and .arbitr/frontend.log', flush=True)
         while True:
             check_processes(processes)

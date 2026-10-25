@@ -54,10 +54,16 @@ merging. Update both mirrors, API checks and affected fixtures together.
   returns a pending Job, 201 on creation and 409 for duplicate IDs. Impossible
   arrival/duration/deadline combinations remain representable so the optimizer
   can mark them INFEASIBLE instead of hiding them.
-- Collection reads return bare arrays. `/api/replay/state` returns `ReplayState`.
-  Implemented response shapes are reflected in OpenAPI. Mutation result schemas
-  for replay/execution and metric schemas are intentionally pending Person 2's
-  coordination with Person 3; the client currently types those as `unknown`.
+- Collection reads return bare arrays. Replay reset/step/state now return
+  ReplayView, extending ReplayState; shock accepts ReplayShockRequest and returns
+  ReplayShock (backend/app/api/replay_schemas.py). OpenAPI reflects those types.
+  Person 3's client mirror still needs the extended contracts. Official scoped
+  metrics and model-report contracts are now in api/metrics_schemas.py; see
+  BACKEND_METRICS.md. Real execution and the approved pause/resume dispatch gate
+  remain in Milestone 7 (MILESTONE_7_PLAN.md).
+- AWS price-only observations extend availableUnits to number | null. null is
+  unknown and cannot be allocated. Person 3 must update the TypeScript mirror;
+  Person 1 must handle missing capacity explicitly. See AWS_MARKET.md.
 - `POST /api/optimize` takes current slot, forecast mode (NAIVE/ML), and execution
   mode. Person 2 assembles `OptimizationInput` from server-owned state. The frontend
   does not submit authoritative job portfolios, forecasts or savings.
@@ -71,14 +77,18 @@ merging. Update both mirrors, API checks and affected fixtures together.
   safety/portfolio configuration. Risk estimates are carried by Forecast. It must
   account for shared capacity and never duplicate running jobs. The optimizer
   never imports trained model implementations or Docker.
-- Detailed deadline slack and forecast/risk evidence for the decision inspector
-  are a planned coordinated extension; the base Decision matches AGENTS.md.
+- Detailed slack, forecast/risk evidence, cost breakdown and pricing assumptions
+  are exposed by GET /api/decisions/details. GET /api/engine/state and
+  GET /api/capabilities supply runtime status and supported hardware. Person 3
+  owns consuming these additive endpoints; the base Decision is unchanged.
 - All four policy names are fixed in `Strategy`. Replay strategies must have
   independent state and share identical exogenous events. Report failed and
   unfinished jobs alongside cost. No real benchmark exists in this scaffold.
 - `dockerTaskId` is an allowlist lookup key, never a user-supplied shell command.
-  Docker execution remains disabled until the adapter is implemented. LOCAL
-  execution does not substantiate regional cloud execution.
+  Manual LOCAL execution is implemented; MILESTONE_8.md describes opt-in automatic
+  local execution and its final plan/pause checks.
+  See BACKEND_EXECUTION.md for task IDs, execution responses and frontend handoff.
+  LOCAL execution does not substantiate regional cloud execution.
 
 ## Independent work and integration order
 
@@ -87,12 +97,25 @@ merging. Update both mirrors, API checks and affected fixtures together.
 2. Person 2 implements/test-drives portfolio constraints using manually constructed
    Forecast inputs, then integrates Person 1's service in `main.py` (or a new
    Person 2-owned composition module). Person 1 need not edit the API routes.
-3. Person 3 uses `NEXT_PUBLIC_USE_MOCKS=true` and edits independent components.
-   The shared fixture is `data/scenarios/demo.json`; coordinate fixture changes
-   with Person 1. Switch to API mode for integration, where empty state is expected.
-4. Person 2 coordinates remaining API response contracts with Person 3 before
-   adding official metric and execution displays. Connect replay controls only
-   after replay semantics and response shapes exist.
-5. Integrate replay and forecasting, verify fairness and leakage controls, execute
-   one real local Docker task, and rehearse the three-minute demo. These remain
-   acceptance work, not accomplishments of this scaffold.
+3. Person 3 maintains isolated Design preview and explicit Backend data modes.
+   The frontend now consumes runtime, replay/shock, metrics, dispatch and execution
+   APIs. Preview-created jobs remain in memory and never reach FastAPI.
+4. Person 2 coordinates shared API/schema changes with Person 3. API integration,
+   restart persistence and seeded replay have recorded verification; browser flows
+   still need checking. See [integration evidence](../frontend/INTEGRATION.md).
+5. Follow the [pre-ML milestones](PRE_ML_MILESTONES.md): repeatable live startup,
+   model-compatible retained history, explicit capacity scenarios, baseline results
+   and the forecast handoff. Earlier backend LOCAL Docker smoke evidence remains
+   valid for those runs; a current UI/Mac execution check and full demo remain.
+
+### Additive GPU alternatives contract
+
+The Add job multi-select uses `allowedGpuTypes` on Job/JobCreate. Python schemas,
+the TypeScript mirror, and contract checks include this field. Legacy singular
+`gpuType` requests normalize to one allowed model; multiple alternatives keep
+`gpuType` null and must not be interpreted as unrestricted hardware. The optimizer and immediate policies now check membership in the alternatives
+list (falling back to legacy `gpuType` when needed), and committed reservations
+retain the selected model. Allocate the requested number of one model,
+not a mixture, and do not duplicate the workload per selected model. CPU requests
+must contain no GPU requirements. Other forecast/market/resource contracts retain
+singular `gpuType` because each observation or forecast describes one model.

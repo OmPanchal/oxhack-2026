@@ -1,4 +1,5 @@
 .DS_Store
+.arbitr/
 .env
 .env.*
 !.env.example
@@ -7,6 +8,8 @@
 __pycache__/
 *.py[cod]
 .pytest_cache/
+.test-tmp*/
+backend/state/
 .ruff_cache/
 *.egg-info/
 node_modules/
@@ -14,6 +17,7 @@ node_modules/
 out/
 *.tsbuildinfo
 *.sqlite*
+*.dispatch.lock
 data/raw/*
 !data/raw/.gitkeep
 data/processed/*

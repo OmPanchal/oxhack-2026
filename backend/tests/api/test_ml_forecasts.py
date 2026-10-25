@@ -16,7 +16,7 @@ def payload(*, full=True):
         for t in (range(current-168,current+1) if full else [current])])
 
 
-def test_default_ml_endpoint_and_get_cache():
+def test_explicit_ml_inference_does_not_replace_server_forecasts():
     client=TestClient(create_app())
     assert client.get('/api/forecasts').json()==[]
     data=payload()
@@ -27,8 +27,8 @@ def test_default_ml_endpoint_and_get_cache():
     assert all(r['modelVersion'].startswith('lightgbm-price-l1-v1-gpu-') for r in rows)
     assert all(r['generatedAtSlot']==1791 for r in rows)
     assert all('predicted_price_usd_per_unit_hour' not in r for r in rows)
-    assert client.get('/api/forecasts').json()==rows
-    status=client.get('/api/models/metrics').json()
+    assert client.get('/api/forecasts').json()==[]
+    status=client.get('/api/models/status').json()
     assert status['status']=='READY' and status['defaultForecastMode']=='ML'
     assert 'availabilityZone' in status['poolSelections'][0]
     assert TestClient(create_app()).get('/api/forecasts').json()==[]
@@ -42,7 +42,7 @@ def test_naive_mode_does_not_require_model_artifacts(monkeypatch,tmp_path):
     assert response.status_code==200
     assert all(r['modelVersion']=='persistence-v1' for r in response.json())
     assert client.post('/api/forecasts',json=data).status_code==503
-    assert client.get('/api/models/metrics').status_code==503
+    assert client.get('/api/models/status').json()['status']=='UNAVAILABLE'
 
 
 def test_fallback_validation_and_cache_atomicity():
@@ -50,7 +50,7 @@ def test_fallback_validation_and_cache_atomicity():
     response=client.post('/api/forecasts',json=payload(full=False))
     assert response.status_code==200
     assert all(r['modelVersion']=='persistence-v1:fallback-insufficient-history' for r in response.json())
-    saved=response.json()
+    saved=client.get('/api/forecasts').json()
     bad=payload();bad['currentSlot']+=1
     assert client.post('/api/forecasts',json=bad).status_code==422
     bad=payload();bad['history'][0]['slot']=2000

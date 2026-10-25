@@ -1,0 +1,38 @@
+[
+  {
+    "width": 1440,
+    "controls": "pass",
+    "capacity": "pass",
+    "issueAndHorizon": "pass",
+    "slotKeyboard": "pass",
+    "cpuIsolation": "pass",
+    "quoteKindIsolation": "pass",
+    "consoleErrors": [],
+    "findings": []
+  },
+  {
+    "width": 768,
+    "controls": "pass",
+    "capacity": "pass",
+    "issueAndHorizon": "pass",
+    "slotKeyboard": "pass",
+    "cpuIsolation": "pass",
+    "quoteKindIsolation": "pass",
+    "consoleErrors": [],
+    "findings": []
+  },
+  {
+    "width": 390,
+    "controls": "pass",
+    "capacity": "pass",
+    "issueAndHorizon": "pass",
+    "slotKeyboard": "pass",
+    "cpuIsolation": "pass",
+    "quoteKindIsolation": "pass",
+    "consoleErrors": [],
+    "findings": []
+  },
+  {
+    "emptyBackend": "pass; isolated browser fetch fixture, no backend writes"
+  }
+]

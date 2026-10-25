@@ -32,6 +32,22 @@ def samples(data, start, end):
                           feature_lookback=168)[0]
 
 
+def assert_same_numerics(first, second):
+    """Allow platform BLAS rounding only; structure/identity/counts stay exact."""
+    if isinstance(first, dict):
+        assert first.keys() == second.keys()
+        for key in first:
+            assert_same_numerics(first[key], second[key])
+    elif isinstance(first, list):
+        assert len(first) == len(second)
+        for left, right in zip(first, second):
+            assert_same_numerics(left, right)
+    elif isinstance(first, float):
+        assert first == pytest.approx(second, rel=0, abs=1e-12)
+    else:
+        assert first == second
+
+
 @pytest.mark.parametrize("family", list(PARAMETERS))
 def test_models_reproduce_ignore_prediction_labels_and_fallback_for_unseen_pools(family):
     data = dataset()
@@ -44,7 +60,7 @@ def test_models_reproduce_ignore_prediction_labels_and_fallback_for_unseen_pools
     changed = deepcopy(validation)
     for e in changed:
         e.target_price = float("nan")
-    assert model.predict_deltas(changed) == prediction
+    assert model.predict_deltas(changed) == pytest.approx(prediction, rel=0, abs=1e-12)
     changed[0].identity = SeriesIdentity("unseen", "z", "other", "Linux/UNIX", "GPU", "Other")
     assert model.predict_deltas(changed[:1]) == [0.0]
     assert model.predict_deltas([]) == []
@@ -102,10 +118,12 @@ def test_runner_excludes_protected_rows_and_reproduces(tmp_path, monkeypatch):
     first = run_comparison(tmp_path, tmp_path / "first", design_path=design_path)
     data.series[0].prices.update({i: 9999.0 for i in range(750, 1000)})
     second = run_comparison(tmp_path, tmp_path / "second", design_path=design_path)
-    assert first == second
+    assert_same_numerics(first, second)
     assert first["calibration"]["status"] == "RESERVED_NOT_USED"
     assert first["test"]["status"] == "RESERVED_NOT_EVALUATED"
     for name in ("earlier-predictions.jsonl", "later-predictions.jsonl"):
-        assert (tmp_path / "first" / name).read_bytes() == (tmp_path / "second" / name).read_bytes()
+        left = [json.loads(line) for line in (tmp_path / "first" / name).read_text().splitlines()]
+        right = [json.loads(line) for line in (tmp_path / "second" / name).read_text().splitlines()]
+        assert_same_numerics(left, right)
     with pytest.raises(ValueError, match="fresh"):
         run_comparison(tmp_path, tmp_path / "first", design_path=design_path)

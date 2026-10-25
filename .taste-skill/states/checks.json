@@ -1,0 +1,32 @@
+[
+  {
+    "width": 1440,
+    "modal": "pass",
+    "selectionPersistence": "pass",
+    "escape": "pass",
+    "previewCreation": "pass",
+    "tabs": "pass",
+    "hover": "pass",
+    "consoleErrors": 0
+  },
+  {
+    "width": 768,
+    "modal": "pass",
+    "selectionPersistence": "pass",
+    "escape": "pass",
+    "previewCreation": "pass",
+    "tabs": "pass",
+    "hover": "pass",
+    "consoleErrors": 0
+  },
+  {
+    "width": 390,
+    "modal": "pass",
+    "selectionPersistence": "pass",
+    "escape": "pass",
+    "previewCreation": "pass",
+    "tabs": "pass",
+    "hover": "pass",
+    "consoleErrors": 0
+  }
+]

@@ -1,41 +1,43 @@
 # Person 1 selected-model serving handoff
 
-The backend now selects the saved, MAE-focused CPU/GPU LightGBM models by default
-for forecast generation. The public `ForecastService.predict(ForecastRequest) ->
-list[Forecast]` interface and shared camelCase request/response schemas are unchanged.
-This delivers Person 1 action-plan Steps 14–16/19 for backend serving; uncertainty
-calibration, new-model scheduling replay and frontend integration remain open.
+The selected CPU/GPU LightGBM models are now integrated with the persistent
+backend. Enable them with `./dev --setup --ml` on first setup, then `./dev --ml`.
+Use the engine's forecast selector to choose ML; the persisted mode is retained.
+The public `ForecastService.predict(ForecastRequest) -> list[Forecast]` contract
+remains unchanged; the integration adapter additionally receives the engine or
+replay UTC origin and maps slots without changing the model's training clock.
 
 ## Start and call
 
-Install the existing ML extra and start from `backend/`:
+Install `.[dev,aws,ml]` and `botocore[crt]` in the backend environment. macOS also
+requires OpenMP (`brew install libomp`). `COMPUTE_ENABLE_ML=1` enables the selected
+provider for engine/replay when launching FastAPI directly. Without that setting,
+normal server planning uses persistence and explicit inference remains available.
 
 ```sh
-python -m pip install -e '.[dev,ml]'
-uvicorn app.main:app --reload --port 8000
-```
-
-In another terminal, from the project root:
-
-```sh
-curl -sS http://localhost:8000/api/models/metrics
+curl -sS http://localhost:8000/api/models/status
 curl -sS -X POST http://localhost:8000/api/forecasts -H 'Content-Type: application/json' --data-binary @data/examples/ml-forecast-request.simulated.json
 curl -sS http://localhost:8000/api/forecasts
 ```
 
-The example contains explicitly **SIMULATED prices and capacity** for the fixed
-m5.xlarge CPU and g4dn.xlarge T4 pools. It demonstrates model inference, not AWS
-execution or a measured accuracy/savings claim. The POST returns twelve forecasts
-(six horizons for each of the two pools). Use the returned `modelVersion` to
-identify ML versus a persistence fallback. Unknown bounds/risk remain null.
+The packaged example is explicitly SIMULATED and exercises saved-model inference,
+not real execution or measured accuracy/savings. Its twelve forecasts use the
+native model clock. `POST /api/forecasts?forecastMode=NAIVE` selects persistence.
+POST inference does not mutate official live/replay state or replace GET results.
+`GET /api/forecasts` reads persisted engine forecasts, initially empty before its
+first tick. Generated forecasts now survive restart with the rest of engine state.
 
-`POST /api/forecasts?forecastMode=NAIVE` selects the independent persistence
-service for comparison. The latest successful result is cached per app process
-and read by `GET /api/forecasts`; it is empty before the first generation and
-resets on restart. Invalid requests do not overwrite this cache. This generation
-endpoint consumes supplied observations; live market ingestion and server-owned
-optimizer/replay state remain Person 2's integration work. No data/capacity feed
-is fabricated to populate the GET route automatically.
+`GET /api/models/status` preserves the native serving/evaluation metadata and adds
+engine availability/mode. `GET /api/models/metrics` retains the strict backend
+held-out evaluation shape; the exploratory post-holdout report is not relabeled
+as a clean chronological test. It remains available in status and the original
+report file. This separates inference readiness from evaluation strength.
+
+Live ML uses the configured fixed instance/AZ sources, with explicit alias mapping
+between AWS hardware names and model identifiers. A regional minimum-price index
+is rejected as fixed-pool model history and receives a labeled persistence
+fallback. Existing index history is not retrospectively relabeled. Collection of
+169 consecutive matching observations is required before genuine live inference.
 
 ## Configuration, identities and time
 
@@ -53,7 +55,7 @@ Optional environment overrides:
 - `PRICE_MODEL_DIR`: relocated directory containing the exact selected artifacts
   (absolute, or relative to the project root).
 
-The scenario clock is **2026-07-28 00:00 UTC**. Request slots must use this origin;
+The scenario clock is **2026-07-28 00:00 UTC**. Explicit POST request slots must use this origin;
 the schema does not carry a separate origin. Model training ends before slot
 1257; selection uses labels through slot 1577. ML is permitted from slot 1578.
 Earlier historical requests return explicit `model-not-available` persistence.

@@ -20,10 +20,33 @@ class JobCreate(Contract):
     resource_type: ResourceType
     resource_units: int = Field(gt=0)
     gpu_type: str | None = None
+    allowed_gpu_types: list[str] = Field(default_factory=list)
     allowed_regions: list[str] = Field(min_length=1)
     max_budget_usd: float | None = Field(default=None, ge=0)
     priority: int = 0
     docker_task_id: str | None = None
+
+
+    @model_validator(mode="after")
+    def gpu_alternatives(self):
+        """One job may accept any listed model; resourceUnits applies to that model."""
+        models = list(dict.fromkeys(model.strip() for model in self.allowed_gpu_types))
+        if any(not model for model in models):
+            raise ValueError("allowedGpuTypes cannot contain blank model names")
+        singular = self.gpu_type.strip() if self.gpu_type is not None else None
+        if singular == "":
+            raise ValueError("gpuType cannot be blank")
+        if self.resource_type == "CPU":
+            if singular is not None or models:
+                raise ValueError("CPU jobs cannot specify GPU requirements")
+            return self
+        if singular is not None:
+            if models and models != [singular]:
+                raise ValueError("gpuType conflicts with allowedGpuTypes; omit gpuType for multiple alternatives")
+            models = [singular]
+        self.allowed_gpu_types = models
+        self.gpu_type = models[0] if len(models) == 1 else None
+        return self
 
 class Job(JobCreate):
     status: JobStatus = "PENDING"
@@ -34,7 +57,7 @@ class MarketSnapshot(Contract):
     resource_type: ResourceType
     gpu_type: str | None = None
     price_usd_per_unit_hour: float = Field(ge=0)
-    available_units: int = Field(ge=0)
+    available_units: int | None = Field(default=None, ge=0)
     carbon_kg_per_unit_hour: float | None = Field(default=None, ge=0)
     source: str
     data_kind: Literal["OBSERVED", "FORECAST", "SIMULATED"]

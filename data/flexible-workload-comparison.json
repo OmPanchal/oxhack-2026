@@ -1,0 +1,865 @@
+{
+  "schemaVersion": "flexible-workload-comparison-v1",
+  "variantCount": 3,
+  "uniqueInputCaseCount": 27,
+  "policyVariantCases": 81,
+  "controlsVerified": {
+    "identicalScenarioBundles": true,
+    "identicalModelsAndCode": true,
+    "allRepeatedStatesMatched": true
+  },
+  "hindsight": {
+    "independentImmediateComputeUsd": 199.7057,
+    "minimumComputeForAllJobsIgnoringCapacityUsd": 198.9793,
+    "oneHourIndividualOpportunityUsd": 0.0791,
+    "sixHourIndividualOpportunityUsd": 0.2547,
+    "fullWindowIndividualOpportunityUsd": 0.7264,
+    "kind": "HINDSIGHT_INDEPENDENT_JOB_LOWER_BOUND",
+    "jobCount": 486,
+    "ignoresSharedCapacity": true,
+    "feasibilityNotEstablished": true,
+    "suppliedToPolicies": false,
+    "note": "An optimistic comparison between independent per-job plans for all submitted jobs. Not executable portfolio savings and not directly comparable with spend on fewer completed jobs."
+  },
+  "variants": {
+    "legacy": {
+      "report": "data/flexible-workload-legacy-results.json",
+      "summary": {
+        "caseCount": 27,
+        "strategies": [
+          {
+            "strategy": "FIFO",
+            "totals": {
+              "computeSpendUsd": 184.6857,
+              "startupCostUsd": 0.0,
+              "transferCostUsd": 0.0,
+              "carbonCostUsd": 0.0,
+              "recoveryCostUsd": 0.0,
+              "totalSpendUsd": 184.6857,
+              "completedJobs": 462,
+              "failedJobs": 0,
+              "infeasibleJobs": 24,
+              "pendingJobs": 0,
+              "runningJobs": 0,
+              "unfinishedJobs": 0,
+              "missedDeadlines": 24
+            },
+            "modelVersions": [],
+            "errorCaseIds": []
+          },
+          {
+            "strategy": "CHEAPEST_NOW",
+            "totals": {
+              "computeSpendUsd": 184.6857,
+              "startupCostUsd": 0.0,
+              "transferCostUsd": 0.0,
+              "carbonCostUsd": 0.0,
+              "recoveryCostUsd": 0.0,
+              "totalSpendUsd": 184.6857,
+              "completedJobs": 462,
+              "failedJobs": 0,
+              "infeasibleJobs": 24,
+              "pendingJobs": 0,
+              "runningJobs": 0,
+              "unfinishedJobs": 0,
+              "missedDeadlines": 24
+            },
+            "modelVersions": [],
+            "errorCaseIds": []
+          },
+          {
+            "strategy": "OPTIMIZER_WITH_NAIVE_FORECAST",
+            "totals": {
+              "computeSpendUsd": 184.6857,
+              "startupCostUsd": 0.0,
+              "transferCostUsd": 0.0,
+              "carbonCostUsd": 0.0,
+              "recoveryCostUsd": 0.0,
+              "totalSpendUsd": 184.6857,
+              "completedJobs": 462,
+              "failedJobs": 0,
+              "infeasibleJobs": 24,
+              "pendingJobs": 0,
+              "runningJobs": 0,
+              "unfinishedJobs": 0,
+              "missedDeadlines": 24
+            },
+            "modelVersions": [
+              "integration-persistence-v1"
+            ],
+            "errorCaseIds": []
+          },
+          {
+            "strategy": "OPTIMIZER_WITH_ML",
+            "totals": {
+              "computeSpendUsd": 187.7344,
+              "startupCostUsd": 0.0,
+              "transferCostUsd": 0.0,
+              "carbonCostUsd": 0.0,
+              "recoveryCostUsd": 0.0,
+              "totalSpendUsd": 187.7344,
+              "completedJobs": 460,
+              "failedJobs": 0,
+              "infeasibleJobs": 26,
+              "pendingJobs": 0,
+              "runningJobs": 0,
+              "unfinishedJobs": 0,
+              "missedDeadlines": 26
+            },
+            "modelVersions": [
+              "lightgbm-price-l1-v1-gpu-734be7a557de"
+            ],
+            "errorCaseIds": []
+          }
+        ],
+        "comparisons": [
+          {
+            "strategy": "CHEAPEST_NOW",
+            "baseline": "FIFO",
+            "allCasesComparable": true,
+            "comparableCases": 27,
+            "nonComparableCases": [],
+            "wins": 0,
+            "ties": 27,
+            "losses": 0,
+            "rawCostDifferenceUsd": 0.0,
+            "savingsUsd": 0.0,
+            "savingsPercent": 0.0,
+            "comparableCasesOnlySavingsUsd": 0.0
+          },
+          {
+            "strategy": "OPTIMIZER_WITH_NAIVE_FORECAST",
+            "baseline": "FIFO",
+            "allCasesComparable": true,
+            "comparableCases": 27,
+            "nonComparableCases": [],
+            "wins": 0,
+            "ties": 27,
+            "losses": 0,
+            "rawCostDifferenceUsd": 0.0,
+            "savingsUsd": 0.0,
+            "savingsPercent": 0.0,
+            "comparableCasesOnlySavingsUsd": 0.0
+          },
+          {
+            "strategy": "OPTIMIZER_WITH_NAIVE_FORECAST",
+            "baseline": "CHEAPEST_NOW",
+            "allCasesComparable": true,
+            "comparableCases": 27,
+            "nonComparableCases": [],
+            "wins": 0,
+            "ties": 27,
+            "losses": 0,
+            "rawCostDifferenceUsd": 0.0,
+            "savingsUsd": 0.0,
+            "savingsPercent": 0.0,
+            "comparableCasesOnlySavingsUsd": 0.0
+          },
+          {
+            "strategy": "OPTIMIZER_WITH_ML",
+            "baseline": "FIFO",
+            "allCasesComparable": false,
+            "comparableCases": 15,
+            "nonComparableCases": [
+              {
+                "caseId": "20261003T00-busy-mixed-seed-42",
+                "reasonCode": "DIFFERENT_WORKLOADS"
+              },
+              {
+                "caseId": "20261003T00-busy-mixed-seed-43",
+                "reasonCode": "DIFFERENT_WORKLOADS"
+              },
+              {
+                "caseId": "20261003T00-busy-mixed-seed-44",
+                "reasonCode": "DIFFERENT_WORKLOADS"
+              },
+              {
+                "caseId": "20261009T00-mixed-seed-43",
+                "reasonCode": "DIFFERENT_WORKLOADS"
+              },
+              {
+                "caseId": "20261009T00-mixed-seed-44",
+                "reasonCode": "DIFFERENT_WORKLOADS"
+              },
+              {
+                "caseId": "20261009T00-busy-mixed-seed-42",
+                "reasonCode": "DIFFERENT_WORKLOADS"
+              },
+              {
+                "caseId": "20261009T00-busy-mixed-seed-43",
+                "reasonCode": "DIFFERENT_WORKLOADS"
+              },
+              {
+                "caseId": "20261009T00-busy-mixed-seed-44",
+                "reasonCode": "DIFFERENT_WORKLOADS"
+              },
+              {
+                "caseId": "20261015T00-mixed-seed-43",
+                "reasonCode": "DIFFERENT_WORKLOADS"
+              },
+              {
+                "caseId": "20261015T00-mixed-seed-44",
+                "reasonCode": "DIFFERENT_WORKLOADS"
+              },
+              {
+                "caseId": "20261015T00-busy-mixed-seed-42",
+                "reasonCode": "DIFFERENT_WORKLOADS"
+              },
+              {
+                "caseId": "20261015T00-busy-mixed-seed-44",
+                "reasonCode": "DIFFERENT_WORKLOADS"
+              }
+            ],
+            "wins": 5,
+            "ties": 1,
+            "losses": 9,
+            "rawCostDifferenceUsd": -3.0487,
+            "savingsUsd": null,
+            "savingsPercent": null,
+            "comparableCasesOnlySavingsUsd": -0.0448
+          },
+          {
+            "strategy": "OPTIMIZER_WITH_ML",
+            "baseline": "CHEAPEST_NOW",
+            "allCasesComparable": false,
+            "comparableCases": 15,
+            "nonComparableCases": [
+              {
+                "caseId": "20261003T00-busy-mixed-seed-42",
+                "reasonCode": "DIFFERENT_WORKLOADS"
+              },
+              {
+                "caseId": "20261003T00-busy-mixed-seed-43",
+                "reasonCode": "DIFFERENT_WORKLOADS"
+              },
+              {
+                "caseId": "20261003T00-busy-mixed-seed-44",
+                "reasonCode": "DIFFERENT_WORKLOADS"
+              },
+              {
+                "caseId": "20261009T00-mixed-seed-43",
+                "reasonCode": "DIFFERENT_WORKLOADS"
+              },
+              {
+                "caseId": "20261009T00-mixed-seed-44",
+                "reasonCode": "DIFFERENT_WORKLOADS"
+              },
+              {
+                "caseId": "20261009T00-busy-mixed-seed-42",
+                "reasonCode": "DIFFERENT_WORKLOADS"
+              },
+              {
+                "caseId": "20261009T00-busy-mixed-seed-43",
+                "reasonCode": "DIFFERENT_WORKLOADS"
+              },
+              {
+                "caseId": "20261009T00-busy-mixed-seed-44",
+                "reasonCode": "DIFFERENT_WORKLOADS"
+              },
+              {
+                "caseId": "20261015T00-mixed-seed-43",
+                "reasonCode": "DIFFERENT_WORKLOADS"
+              },
+              {
+                "caseId": "20261015T00-mixed-seed-44",
+                "reasonCode": "DIFFERENT_WORKLOADS"
+              },
+              {
+                "caseId": "20261015T00-busy-mixed-seed-42",
+                "reasonCode": "DIFFERENT_WORKLOADS"
+              },
+              {
+                "caseId": "20261015T00-busy-mixed-seed-44",
+                "reasonCode": "DIFFERENT_WORKLOADS"
+              }
+            ],
+            "wins": 5,
+            "ties": 1,
+            "losses": 9,
+            "rawCostDifferenceUsd": -3.0487,
+            "savingsUsd": null,
+            "savingsPercent": null,
+            "comparableCasesOnlySavingsUsd": -0.0448
+          },
+          {
+            "strategy": "OPTIMIZER_WITH_ML",
+            "baseline": "OPTIMIZER_WITH_NAIVE_FORECAST",
+            "allCasesComparable": false,
+            "comparableCases": 15,
+            "nonComparableCases": [
+              {
+                "caseId": "20261003T00-busy-mixed-seed-42",
+                "reasonCode": "DIFFERENT_WORKLOADS"
+              },
+              {
+                "caseId": "20261003T00-busy-mixed-seed-43",
+                "reasonCode": "DIFFERENT_WORKLOADS"
+              },
+              {
+                "caseId": "20261003T00-busy-mixed-seed-44",
+                "reasonCode": "DIFFERENT_WORKLOADS"
+              },
+              {
+                "caseId": "20261009T00-mixed-seed-43",
+                "reasonCode": "DIFFERENT_WORKLOADS"
+              },
+              {
+                "caseId": "20261009T00-mixed-seed-44",
+                "reasonCode": "DIFFERENT_WORKLOADS"
+              },
+              {
+                "caseId": "20261009T00-busy-mixed-seed-42",
+                "reasonCode": "DIFFERENT_WORKLOADS"
+              },
+              {
+                "caseId": "20261009T00-busy-mixed-seed-43",
+                "reasonCode": "DIFFERENT_WORKLOADS"
+              },
+              {
+                "caseId": "20261009T00-busy-mixed-seed-44",
+                "reasonCode": "DIFFERENT_WORKLOADS"
+              },
+              {
+                "caseId": "20261015T00-mixed-seed-43",
+                "reasonCode": "DIFFERENT_WORKLOADS"
+              },
+              {
+                "caseId": "20261015T00-mixed-seed-44",
+                "reasonCode": "DIFFERENT_WORKLOADS"
+              },
+              {
+                "caseId": "20261015T00-busy-mixed-seed-42",
+                "reasonCode": "DIFFERENT_WORKLOADS"
+              },
+              {
+                "caseId": "20261015T00-busy-mixed-seed-44",
+                "reasonCode": "DIFFERENT_WORKLOADS"
+              }
+            ],
+            "wins": 5,
+            "ties": 1,
+            "losses": 9,
+            "rawCostDifferenceUsd": -3.0487,
+            "savingsUsd": null,
+            "savingsPercent": null,
+            "comparableCasesOnlySavingsUsd": -0.0448
+          }
+        ]
+      },
+      "profiles": {
+        "flexible": {
+          "FIFO": {
+            "spendUsd": 50.3234,
+            "completed": 126,
+            "missed": 0
+          },
+          "OPTIMIZER_WITH_ML": {
+            "spendUsd": 50.3922,
+            "completed": 126,
+            "missed": 0
+          }
+        },
+        "mixed": {
+          "FIFO": {
+            "spendUsd": 50.9465,
+            "completed": 126,
+            "missed": 0
+          },
+          "OPTIMIZER_WITH_ML": {
+            "spendUsd": 49.7433,
+            "completed": 121,
+            "missed": 5
+          }
+        },
+        "busy-mixed": {
+          "FIFO": {
+            "spendUsd": 83.4158,
+            "completed": 210,
+            "missed": 24
+          },
+          "OPTIMIZER_WITH_ML": {
+            "spendUsd": 87.5989,
+            "completed": 213,
+            "missed": 21
+          }
+        }
+      },
+      "audit": {
+        "status": "VERIFIED",
+        "caseCount": 27,
+        "datasetSha256": "618ed38329ec8b4934c7fd40a0e77e61b3dcd9d3850b2df87299af5827903a36",
+        "scenarioPriceRowsChecked": 11664,
+        "policyJobOutcomesChecked": 1944,
+        "policyExecutionsChecked": 1846,
+        "chargedHoursChecked": 3537,
+        "hindsightJobBoundsChecked": 486,
+        "fullRepeatedStatesIdentical": true,
+        "engineCodeUnchangedAcrossCases": true,
+        "allScoredMlVersionsGenuine": true,
+        "scope": "Observed prices; simulated workloads/capacity; reused evaluation periods"
+      }
+    },
+    "cautious": {
+      "report": "data/flexible-workload-cautious-results.json",
+      "summary": {
+        "caseCount": 27,
+        "strategies": [
+          {
+            "strategy": "FIFO",
+            "totals": {
+              "computeSpendUsd": 184.6857,
+              "startupCostUsd": 0.0,
+              "transferCostUsd": 0.0,
+              "carbonCostUsd": 0.0,
+              "recoveryCostUsd": 0.0,
+              "totalSpendUsd": 184.6857,
+              "completedJobs": 462,
+              "failedJobs": 0,
+              "infeasibleJobs": 24,
+              "pendingJobs": 0,
+              "runningJobs": 0,
+              "unfinishedJobs": 0,
+              "missedDeadlines": 24
+            },
+            "modelVersions": [],
+            "errorCaseIds": []
+          },
+          {
+            "strategy": "CHEAPEST_NOW",
+            "totals": {
+              "computeSpendUsd": 184.6857,
+              "startupCostUsd": 0.0,
+              "transferCostUsd": 0.0,
+              "carbonCostUsd": 0.0,
+              "recoveryCostUsd": 0.0,
+              "totalSpendUsd": 184.6857,
+              "completedJobs": 462,
+              "failedJobs": 0,
+              "infeasibleJobs": 24,
+              "pendingJobs": 0,
+              "runningJobs": 0,
+              "unfinishedJobs": 0,
+              "missedDeadlines": 24
+            },
+            "modelVersions": [],
+            "errorCaseIds": []
+          },
+          {
+            "strategy": "OPTIMIZER_WITH_NAIVE_FORECAST",
+            "totals": {
+              "computeSpendUsd": 184.6857,
+              "startupCostUsd": 0.0,
+              "transferCostUsd": 0.0,
+              "carbonCostUsd": 0.0,
+              "recoveryCostUsd": 0.0,
+              "totalSpendUsd": 184.6857,
+              "completedJobs": 462,
+              "failedJobs": 0,
+              "infeasibleJobs": 24,
+              "pendingJobs": 0,
+              "runningJobs": 0,
+              "unfinishedJobs": 0,
+              "missedDeadlines": 24
+            },
+            "modelVersions": [
+              "integration-persistence-v1"
+            ],
+            "errorCaseIds": []
+          },
+          {
+            "strategy": "OPTIMIZER_WITH_ML",
+            "totals": {
+              "computeSpendUsd": 184.6857,
+              "startupCostUsd": 0.0,
+              "transferCostUsd": 0.0,
+              "carbonCostUsd": 0.0,
+              "recoveryCostUsd": 0.0,
+              "totalSpendUsd": 184.6857,
+              "completedJobs": 462,
+              "failedJobs": 0,
+              "infeasibleJobs": 24,
+              "pendingJobs": 0,
+              "runningJobs": 0,
+              "unfinishedJobs": 0,
+              "missedDeadlines": 24
+            },
+            "modelVersions": [
+              "lightgbm-price-l1-v1-gpu-734be7a557de"
+            ],
+            "errorCaseIds": []
+          }
+        ],
+        "comparisons": [
+          {
+            "strategy": "CHEAPEST_NOW",
+            "baseline": "FIFO",
+            "allCasesComparable": true,
+            "comparableCases": 27,
+            "nonComparableCases": [],
+            "wins": 0,
+            "ties": 27,
+            "losses": 0,
+            "rawCostDifferenceUsd": 0.0,
+            "savingsUsd": 0.0,
+            "savingsPercent": 0.0,
+            "comparableCasesOnlySavingsUsd": 0.0
+          },
+          {
+            "strategy": "OPTIMIZER_WITH_NAIVE_FORECAST",
+            "baseline": "FIFO",
+            "allCasesComparable": true,
+            "comparableCases": 27,
+            "nonComparableCases": [],
+            "wins": 0,
+            "ties": 27,
+            "losses": 0,
+            "rawCostDifferenceUsd": 0.0,
+            "savingsUsd": 0.0,
+            "savingsPercent": 0.0,
+            "comparableCasesOnlySavingsUsd": 0.0
+          },
+          {
+            "strategy": "OPTIMIZER_WITH_NAIVE_FORECAST",
+            "baseline": "CHEAPEST_NOW",
+            "allCasesComparable": true,
+            "comparableCases": 27,
+            "nonComparableCases": [],
+            "wins": 0,
+            "ties": 27,
+            "losses": 0,
+            "rawCostDifferenceUsd": 0.0,
+            "savingsUsd": 0.0,
+            "savingsPercent": 0.0,
+            "comparableCasesOnlySavingsUsd": 0.0
+          },
+          {
+            "strategy": "OPTIMIZER_WITH_ML",
+            "baseline": "FIFO",
+            "allCasesComparable": true,
+            "comparableCases": 27,
+            "nonComparableCases": [],
+            "wins": 0,
+            "ties": 27,
+            "losses": 0,
+            "rawCostDifferenceUsd": 0.0,
+            "savingsUsd": 0.0,
+            "savingsPercent": 0.0,
+            "comparableCasesOnlySavingsUsd": 0.0
+          },
+          {
+            "strategy": "OPTIMIZER_WITH_ML",
+            "baseline": "CHEAPEST_NOW",
+            "allCasesComparable": true,
+            "comparableCases": 27,
+            "nonComparableCases": [],
+            "wins": 0,
+            "ties": 27,
+            "losses": 0,
+            "rawCostDifferenceUsd": 0.0,
+            "savingsUsd": 0.0,
+            "savingsPercent": 0.0,
+            "comparableCasesOnlySavingsUsd": 0.0
+          },
+          {
+            "strategy": "OPTIMIZER_WITH_ML",
+            "baseline": "OPTIMIZER_WITH_NAIVE_FORECAST",
+            "allCasesComparable": true,
+            "comparableCases": 27,
+            "nonComparableCases": [],
+            "wins": 0,
+            "ties": 27,
+            "losses": 0,
+            "rawCostDifferenceUsd": 0.0,
+            "savingsUsd": 0.0,
+            "savingsPercent": 0.0,
+            "comparableCasesOnlySavingsUsd": 0.0
+          }
+        ]
+      },
+      "profiles": {
+        "flexible": {
+          "FIFO": {
+            "spendUsd": 50.3234,
+            "completed": 126,
+            "missed": 0
+          },
+          "OPTIMIZER_WITH_ML": {
+            "spendUsd": 50.3234,
+            "completed": 126,
+            "missed": 0
+          }
+        },
+        "mixed": {
+          "FIFO": {
+            "spendUsd": 50.9465,
+            "completed": 126,
+            "missed": 0
+          },
+          "OPTIMIZER_WITH_ML": {
+            "spendUsd": 50.9465,
+            "completed": 126,
+            "missed": 0
+          }
+        },
+        "busy-mixed": {
+          "FIFO": {
+            "spendUsd": 83.4158,
+            "completed": 210,
+            "missed": 24
+          },
+          "OPTIMIZER_WITH_ML": {
+            "spendUsd": 83.4158,
+            "completed": 210,
+            "missed": 24
+          }
+        }
+      },
+      "audit": {
+        "status": "VERIFIED",
+        "caseCount": 27,
+        "datasetSha256": "618ed38329ec8b4934c7fd40a0e77e61b3dcd9d3850b2df87299af5827903a36",
+        "scenarioPriceRowsChecked": 11664,
+        "policyJobOutcomesChecked": 1944,
+        "policyExecutionsChecked": 1848,
+        "chargedHoursChecked": 3540,
+        "hindsightJobBoundsChecked": 486,
+        "fullRepeatedStatesIdentical": true,
+        "engineCodeUnchangedAcrossCases": true,
+        "allScoredMlVersionsGenuine": true,
+        "scope": "Observed prices; simulated workloads/capacity; reused evaluation periods"
+      }
+    },
+    "flexible-margin": {
+      "report": "data/flexible-workload-flexible-margin-results.json",
+      "summary": {
+        "caseCount": 27,
+        "strategies": [
+          {
+            "strategy": "FIFO",
+            "totals": {
+              "computeSpendUsd": 184.6857,
+              "startupCostUsd": 0.0,
+              "transferCostUsd": 0.0,
+              "carbonCostUsd": 0.0,
+              "recoveryCostUsd": 0.0,
+              "totalSpendUsd": 184.6857,
+              "completedJobs": 462,
+              "failedJobs": 0,
+              "infeasibleJobs": 24,
+              "pendingJobs": 0,
+              "runningJobs": 0,
+              "unfinishedJobs": 0,
+              "missedDeadlines": 24
+            },
+            "modelVersions": [],
+            "errorCaseIds": []
+          },
+          {
+            "strategy": "CHEAPEST_NOW",
+            "totals": {
+              "computeSpendUsd": 184.6857,
+              "startupCostUsd": 0.0,
+              "transferCostUsd": 0.0,
+              "carbonCostUsd": 0.0,
+              "recoveryCostUsd": 0.0,
+              "totalSpendUsd": 184.6857,
+              "completedJobs": 462,
+              "failedJobs": 0,
+              "infeasibleJobs": 24,
+              "pendingJobs": 0,
+              "runningJobs": 0,
+              "unfinishedJobs": 0,
+              "missedDeadlines": 24
+            },
+            "modelVersions": [],
+            "errorCaseIds": []
+          },
+          {
+            "strategy": "OPTIMIZER_WITH_NAIVE_FORECAST",
+            "totals": {
+              "computeSpendUsd": 184.6857,
+              "startupCostUsd": 0.0,
+              "transferCostUsd": 0.0,
+              "carbonCostUsd": 0.0,
+              "recoveryCostUsd": 0.0,
+              "totalSpendUsd": 184.6857,
+              "completedJobs": 462,
+              "failedJobs": 0,
+              "infeasibleJobs": 24,
+              "pendingJobs": 0,
+              "runningJobs": 0,
+              "unfinishedJobs": 0,
+              "missedDeadlines": 24
+            },
+            "modelVersions": [
+              "integration-persistence-v1"
+            ],
+            "errorCaseIds": []
+          },
+          {
+            "strategy": "OPTIMIZER_WITH_ML",
+            "totals": {
+              "computeSpendUsd": 184.6857,
+              "startupCostUsd": 0.0,
+              "transferCostUsd": 0.0,
+              "carbonCostUsd": 0.0,
+              "recoveryCostUsd": 0.0,
+              "totalSpendUsd": 184.6857,
+              "completedJobs": 462,
+              "failedJobs": 0,
+              "infeasibleJobs": 24,
+              "pendingJobs": 0,
+              "runningJobs": 0,
+              "unfinishedJobs": 0,
+              "missedDeadlines": 24
+            },
+            "modelVersions": [
+              "lightgbm-price-l1-v1-gpu-734be7a557de"
+            ],
+            "errorCaseIds": []
+          }
+        ],
+        "comparisons": [
+          {
+            "strategy": "CHEAPEST_NOW",
+            "baseline": "FIFO",
+            "allCasesComparable": true,
+            "comparableCases": 27,
+            "nonComparableCases": [],
+            "wins": 0,
+            "ties": 27,
+            "losses": 0,
+            "rawCostDifferenceUsd": 0.0,
+            "savingsUsd": 0.0,
+            "savingsPercent": 0.0,
+            "comparableCasesOnlySavingsUsd": 0.0
+          },
+          {
+            "strategy": "OPTIMIZER_WITH_NAIVE_FORECAST",
+            "baseline": "FIFO",
+            "allCasesComparable": true,
+            "comparableCases": 27,
+            "nonComparableCases": [],
+            "wins": 0,
+            "ties": 27,
+            "losses": 0,
+            "rawCostDifferenceUsd": 0.0,
+            "savingsUsd": 0.0,
+            "savingsPercent": 0.0,
+            "comparableCasesOnlySavingsUsd": 0.0
+          },
+          {
+            "strategy": "OPTIMIZER_WITH_NAIVE_FORECAST",
+            "baseline": "CHEAPEST_NOW",
+            "allCasesComparable": true,
+            "comparableCases": 27,
+            "nonComparableCases": [],
+            "wins": 0,
+            "ties": 27,
+            "losses": 0,
+            "rawCostDifferenceUsd": 0.0,
+            "savingsUsd": 0.0,
+            "savingsPercent": 0.0,
+            "comparableCasesOnlySavingsUsd": 0.0
+          },
+          {
+            "strategy": "OPTIMIZER_WITH_ML",
+            "baseline": "FIFO",
+            "allCasesComparable": true,
+            "comparableCases": 27,
+            "nonComparableCases": [],
+            "wins": 0,
+            "ties": 27,
+            "losses": 0,
+            "rawCostDifferenceUsd": 0.0,
+            "savingsUsd": 0.0,
+            "savingsPercent": 0.0,
+            "comparableCasesOnlySavingsUsd": 0.0
+          },
+          {
+            "strategy": "OPTIMIZER_WITH_ML",
+            "baseline": "CHEAPEST_NOW",
+            "allCasesComparable": true,
+            "comparableCases": 27,
+            "nonComparableCases": [],
+            "wins": 0,
+            "ties": 27,
+            "losses": 0,
+            "rawCostDifferenceUsd": 0.0,
+            "savingsUsd": 0.0,
+            "savingsPercent": 0.0,
+            "comparableCasesOnlySavingsUsd": 0.0
+          },
+          {
+            "strategy": "OPTIMIZER_WITH_ML",
+            "baseline": "OPTIMIZER_WITH_NAIVE_FORECAST",
+            "allCasesComparable": true,
+            "comparableCases": 27,
+            "nonComparableCases": [],
+            "wins": 0,
+            "ties": 27,
+            "losses": 0,
+            "rawCostDifferenceUsd": 0.0,
+            "savingsUsd": 0.0,
+            "savingsPercent": 0.0,
+            "comparableCasesOnlySavingsUsd": 0.0
+          }
+        ]
+      },
+      "profiles": {
+        "flexible": {
+          "FIFO": {
+            "spendUsd": 50.3234,
+            "completed": 126,
+            "missed": 0
+          },
+          "OPTIMIZER_WITH_ML": {
+            "spendUsd": 50.3234,
+            "completed": 126,
+            "missed": 0
+          }
+        },
+        "mixed": {
+          "FIFO": {
+            "spendUsd": 50.9465,
+            "completed": 126,
+            "missed": 0
+          },
+          "OPTIMIZER_WITH_ML": {
+            "spendUsd": 50.9465,
+            "completed": 126,
+            "missed": 0
+          }
+        },
+        "busy-mixed": {
+          "FIFO": {
+            "spendUsd": 83.4158,
+            "completed": 210,
+            "missed": 24
+          },
+          "OPTIMIZER_WITH_ML": {
+            "spendUsd": 83.4158,
+            "completed": 210,
+            "missed": 24
+          }
+        }
+      },
+      "audit": {
+        "status": "VERIFIED",
+        "caseCount": 27,
+        "datasetSha256": "618ed38329ec8b4934c7fd40a0e77e61b3dcd9d3850b2df87299af5827903a36",
+        "scenarioPriceRowsChecked": 11664,
+        "policyJobOutcomesChecked": 1944,
+        "policyExecutionsChecked": 1848,
+        "chargedHoursChecked": 3540,
+        "hindsightJobBoundsChecked": 486,
+        "fullRepeatedStatesIdentical": true,
+        "engineCodeUnchangedAcrossCases": true,
+        "allScoredMlVersionsGenuine": true,
+        "scope": "Observed prices; simulated workloads/capacity; reused evaluation periods"
+      }
+    }
+  },
+  "activeDeploymentChanged": false,
+  "scope": "Observed fixed-pool prices; synthetic illustrative jobs/capacity; reused forecasting evaluation periods; no verified routing alternatives supplied."
+}

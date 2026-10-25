@@ -1,4 +1,4 @@
-import type { DecisionDetail, EngineState, MarketCapabilities, ReplayMetrics, ReplayShock, ReplayStrategy, TaskCatalog, LocalExecution, LiveMetrics, ModelMetrics, ModelStatus } from "./backend-types";
+import type { DecisionDetail, EngineState, MarketCapabilities, ReplayMetrics, ReplayShock, ReplayStrategy, TaskCatalog, LocalExecution, LiveMetrics, ModelMetrics, ModelStatus, ReplayProvenance, ReplayScenarioOption } from "./backend-types";
 // Person 3 owns this mirror of backend/app/api/schemas.py. Coordinate contract edits.
 export type ResourceType = "CPU" | "GPU";
 export type JobStatus = "PENDING" | "RUNNING" | "COMPLETED" | "FAILED" | "INFEASIBLE";
@@ -36,6 +36,7 @@ export type ShockRequest = {
   durationSlots?: number; resourceType?: ResourceType | null; gpuType?: string | null; jobId?: string | null; job?: JobCreate;
 };
 export type ReplayState = {
+  startSlot?: number; provenance?: ReplayProvenance | null;
   status: "NOT_IMPLEMENTED" | "READY" | "RUNNING" | "COMPLETED";
   currentSlot: number; seed: number; strategies: Strategy[];
   initialized?: boolean; scenarioId?: string | null; description?: string | null; originUtc?: string | null; endSlot?: number | null;
@@ -43,6 +44,7 @@ export type ReplayState = {
 };
 export type Health = { status: "ok"; stage: "SCAFFOLD" };
 export type TerminalData = { jobs: Job[]; market: MarketSnapshot[]; forecasts: Forecast[]; decisions: Decision[]; replay: ReplayState;
+  replayScenarios?: ReplayScenarioOption[];
   engine?: EngineState; capabilities?: MarketCapabilities; decisionDetails?: DecisionDetail[];
   taskCatalog?: TaskCatalog; executions?: LocalExecution[]; replayMetrics?: ReplayMetrics; liveMetrics?: LiveMetrics;
   modelMetrics?: ModelMetrics; modelStatus?: ModelStatus; errors?: string[] };

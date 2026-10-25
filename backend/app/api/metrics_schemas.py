@@ -5,7 +5,7 @@ from typing import Literal
 from pydantic import Field, model_validator
 
 from app.api.schemas import Contract, ExecutionMode, JobStatus, Strategy
-from app.api.replay_schemas import ReplayCounters
+from app.api.replay_schemas import ReplayCounters, ReplayProvenance
 
 
 class ReplayJobMetrics(Contract):
@@ -71,6 +71,8 @@ class ReplayMetrics(Contract):
     origin_utc: datetime | None = None
     as_of_slot: int = 0
     end_slot: int | None = None
+    start_slot: int = 0
+    provenance: ReplayProvenance | None = None
     strategies: list[StrategyMetrics] = Field(default_factory=list)
     comparisons: list[PolicyComparison] = Field(default_factory=list)
 

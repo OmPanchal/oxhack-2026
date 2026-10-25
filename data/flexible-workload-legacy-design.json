@@ -1,0 +1,70 @@
+{
+  "schemaVersion": "fair-production-benchmark-v1",
+  "datasetSha256": "618ed38329ec8b4934c7fd40a0e77e61b3dcd9d3850b2df87299af5827903a36",
+  "scoredStartsUtc": [
+    "2026-10-03T00:00:00+00:00",
+    "2026-10-09T00:00:00+00:00",
+    "2026-10-15T00:00:00+00:00"
+  ],
+  "scoredHours": 48,
+  "workloadSeeds": [
+    42,
+    43,
+    44
+  ],
+  "profiles": [
+    {
+      "id": "flexible",
+      "arrivalEveryHours": 4,
+      "durationRangeHours": [
+        1,
+        3
+      ],
+      "completeWithinHours": 24,
+      "completionWindowsHours": [
+        24
+      ]
+    },
+    {
+      "id": "mixed",
+      "arrivalEveryHours": 4,
+      "durationRangeHours": [
+        1,
+        3
+      ],
+      "completeWithinHours": 24,
+      "completionWindowsHours": [
+        3,
+        12,
+        24
+      ]
+    },
+    {
+      "id": "busy-mixed",
+      "arrivalEveryHours": 2,
+      "durationRangeHours": [
+        1,
+        3
+      ],
+      "completeWithinHours": 24,
+      "completionWindowsHours": [
+        3,
+        12,
+        24
+      ]
+    }
+  ],
+  "priceDataKind": "OBSERVED",
+  "capacityDataKind": "SIMULATED",
+  "capacityUnitsPerPool": 1,
+  "warmupHours": 168,
+  "repeats": 2,
+  "evaluationStatus": "EXPLORATORY_REUSED_PERIODS",
+  "selectionRule": "Full fixed date/profile/seed/policy grid saved before scoring. No selecting windows for savings or promoting the best-looking result. Synthetic illustrative workload mix, not a real firm trace.",
+  "limitations": "Two dedicated Stockholm GPU pools only: no verified interchangeable hardware or additional regional data supplied. Jobs/capacity synthetic. Reused forecasting periods; not a fresh accuracy holdout. Forecasts remain limited to six future hours even with 24-hour completion windows. Arrivals stop 24 hours before each 48-hour horizon ends.",
+  "optimizerConfig": {
+    "waitingPolicy": "LEGACY"
+  },
+  "policyVariant": "legacy",
+  "policySelectionRule": "All three fixed variants retained; no default deployment change from this experiment."
+}

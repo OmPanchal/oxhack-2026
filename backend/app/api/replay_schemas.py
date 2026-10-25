@@ -11,23 +11,46 @@ from app.api.schemas import (Contract, Decision, Forecast, Job, JobCreate, Marke
 STRATEGIES: list[Strategy] = ["FIFO", "CHEAPEST_NOW", "OPTIMIZER_WITH_NAIVE_FORECAST", "OPTIMIZER_WITH_ML"]
 
 
+class ReplayProvenance(Contract):
+    price_data_kind: Literal['OBSERVED', 'OBSERVED_WITH_SIMULATED_SHOCKS'] = 'OBSERVED'
+    capacity_data_kind: Literal['SIMULATED'] = 'SIMULATED'
+    workload_data_kind: Literal['SIMULATED'] = 'SIMULATED'
+    dataset_sha256: str = Field(pattern=r'^[0-9a-f]{64}$')
+    evaluation_status: Literal['REUSED_EVALUATION_PERIOD'] = 'REUSED_EVALUATION_PERIOD'
+    source_pools: list[str]
+    notes: str
+
+
+class ReplayScenarioOption(Contract):
+    id: str
+    description: str
+    available: bool
+    reason: str | None = None
+    start_slot: int = 0
+    end_slot: int | None = None
+
+
 class ReplayScenario(Contract):
     id: str
     description: str
     origin_utc: datetime
     end_slot: int = Field(gt=0, le=8760)
+    start_slot: int = Field(default=0, ge=0)
+    provenance: ReplayProvenance | None = None
     jobs: list[JobCreate]
     market: list[MarketSnapshot]
     interruption_probability: float = Field(default=0, ge=0, le=1)
 
     @model_validator(mode="after")
     def valid_scenario(self):
+        if self.start_slot >= self.end_slot:
+            raise ValueError('Replay start must precede its end')
         if self.origin_utc.utcoffset() is None or self.origin_utc.utcoffset().total_seconds() != 0:
             raise ValueError("Replay origin must be aware UTC")
         if len({job.id for job in self.jobs}) != len(self.jobs):
             raise ValueError("Scenario jobs must have unique IDs")
-        if any(job.arrival_slot >= self.end_slot for job in self.jobs):
-            raise ValueError("Every scenario job must arrive before replay ends")
+        if any(not self.start_slot <= job.arrival_slot < self.end_slot for job in self.jobs):
+            raise ValueError("Every scenario job must arrive in the scored replay window")
         keys = set()
         series = set()
         for row in self.market:
@@ -76,6 +99,9 @@ class ReplayShock(ReplayShockRequest):
 class ReplayCharge(Contract):
     slot: int
     job_id: str
+    # Actual allocated model, retained after the running reservation is released.
+    # Older single-model ledgers can still use the job's singular gpu_type.
+    gpu_type: str | None = None
     compute_usd: float = 0
     startup_usd: float = 0
     transfer_usd: float = 0
@@ -129,6 +155,8 @@ class ReplayView(ReplayState):
     description: str | None = None
     origin_utc: datetime | None = None
     end_slot: int | None = None
+    start_slot: int = 0
+    provenance: ReplayProvenance | None = None
     execution_mode: Literal["SIMULATED"] = "SIMULATED"
     data_kind: Literal["SIMULATED"] = "SIMULATED"
     strategy_states: list[ReplayStrategyView] = Field(default_factory=list)
@@ -146,3 +174,10 @@ class ReplaySession(Contract):
     config: OptimizerConfig = Field(default_factory=OptimizerConfig)
     events: list[ReplayShock] = Field(default_factory=list)
     history: list[MarketSnapshot] = Field(default_factory=list)
+
+
+def replay_provenance(session: ReplaySession):
+    provenance = session.scenario.provenance
+    if provenance is not None and any(event.kind == 'PRICE_SPIKE' for event in session.events):
+        return provenance.model_copy(update={'price_data_kind': 'OBSERVED_WITH_SIMULATED_SHOCKS'})
+    return provenance

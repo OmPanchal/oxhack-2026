@@ -9,10 +9,10 @@ import { SlotPriceChart } from "./SlotPriceChart";
 import { ValuePulse } from "./ValuePulse";
 import { MarketModal } from "./MarketModal";
 
-export function MarketChart({ market, forecasts, preview, currentSlot, modelMetrics, modelStatus }: { market: MarketSnapshot[]; forecasts: Forecast[]; preview: boolean; currentSlot: number; modelMetrics?: ModelMetrics; modelStatus?: ModelStatus }) {
+export function MarketChart({ market, forecasts, currentSlot, modelMetrics, modelStatus }: { market: MarketSnapshot[]; forecasts: Forecast[]; currentSlot: number; modelMetrics?: ModelMetrics; modelStatus?: ModelStatus }) {
   const resources = marketResources(market, forecasts, currentSlot);
   const [resourceChoice, setResourceChoice] = useState("");
-  const [kind, setKind] = useState<QuoteKind>(preview ? "SIMULATED" : "OBSERVED");
+  const [kind, setKind] = useState<QuoteKind>(market.some(row => row.dataKind === "OBSERVED") ? "OBSERVED" : market.some(row => row.dataKind === "SIMULATED") ? "SIMULATED" : "OBSERVED");
   const [unitsText, setUnitsText] = useState("1");
   const [regionChoice, setRegionChoice] = useState("");
   const [runChoice, setRunChoice] = useState("");
@@ -33,8 +33,8 @@ export function MarketChart({ market, forecasts, preview, currentSlot, modelMetr
   const selectedQuote = rows.find(row => row.region === region)?.quote;
   function selectRegion(value: string) { setRegionChoice(value); setRunChoice(""); setSlotChoice(null); }
   return <div className="market-workspace">
-    {!preview && modelStatus && <details className="model-metrics"><summary>Forecast model · {modelStatus.status === "READY" ? `${modelStatus.modelFamily ?? "ML"} ${modelStatus.engineEnabled ? "enabled" : "available, not enabled"}` : "Unavailable"}</summary><div className="panel-body"><p>{modelStatus.reason ?? `Current mode: ${modelStatus.engineForecastMode}. The selected model needs ${modelStatus.lookbackHours ?? 168} prior hours plus the current observation from the same instance and availability zone.`}</p>{modelStatus.history && <div><p>Historical inputs · {modelStatus.history.status === "READY" ? "Ready" : modelStatus.history.status === "WARMING" ? "Loading" : "Incomplete"}</p>{modelStatus.history.pools.map(pool => <p key={`${pool.region}-${pool.instanceType}-${pool.availabilityZone}`} className="muted">{pool.gpuType} · {pool.availabilityZone}: {pool.availableHours} / {pool.requiredHours} prior hours{pool.errorCode ? ` · ${pool.errorCode}` : ""}</p>)}</div>}<p className="muted">Each forecast names its actual model or persistence fallback. Packaged evaluation is exploratory post-holdout, not proof of scheduling savings.</p></div></details>}
-    {!preview && modelMetrics && <details className="model-metrics"><summary>Model evaluation · {modelMetrics.status}</summary>{modelMetrics.evaluation ? <div className="panel-body"><p>{modelMetrics.evaluation.modelVersion} · {modelMetrics.evaluation.sampleCount} samples · {modelMetrics.evaluation.dataSource}</p><p>MAE {modelMetrics.evaluation.mae.toFixed(6)} · Persistence MAE {modelMetrics.evaluation.persistenceMae.toFixed(6)} · RMSE {modelMetrics.evaluation.rmse.toFixed(6)}</p><p className="muted">Forecast evaluation is separate from scheduling savings.</p></div> : <p className="panel-body muted">{modelMetrics.reason ?? "No model evaluation supplied."}</p>}</details>}
+    {modelStatus && <details className="model-metrics"><summary>Forecast model · {modelStatus.status === "READY" ? `${modelStatus.modelFamily ?? "ML"} ${modelStatus.engineEnabled ? "enabled" : "available, not enabled"}` : "Unavailable"}</summary><div className="panel-body"><p>{modelStatus.reason ?? `Current mode: ${modelStatus.engineForecastMode}. The selected model needs ${modelStatus.lookbackHours ?? 168} prior hours plus the current observation from the same instance and availability zone.`}</p>{modelStatus.history && <div><p>Historical inputs · {modelStatus.history.status === "READY" ? "Ready" : modelStatus.history.status === "WARMING" ? "Loading" : "Incomplete"}</p>{modelStatus.history.pools.map(pool => <p key={`${pool.region}-${pool.instanceType}-${pool.availabilityZone}`} className="muted">{pool.gpuType} · {pool.availabilityZone}: {pool.availableHours} / {pool.requiredHours} prior hours{pool.errorCode ? ` · ${pool.errorCode}` : ""}</p>)}</div>}<p className="muted">Each forecast names its actual model or persistence fallback. Packaged evaluation is exploratory post-holdout, not proof of scheduling savings.</p></div></details>}
+    {modelMetrics && <details className="model-metrics"><summary>Model evaluation · {modelMetrics.status}</summary>{modelMetrics.evaluation ? <div className="panel-body"><p>{modelMetrics.evaluation.modelVersion} · {modelMetrics.evaluation.sampleCount} samples · {modelMetrics.evaluation.dataSource}</p><p>MAE {modelMetrics.evaluation.mae.toFixed(6)} · Persistence MAE {modelMetrics.evaluation.persistenceMae.toFixed(6)} · RMSE {modelMetrics.evaluation.rmse.toFixed(6)}</p><p className="muted">Forecast evaluation is separate from scheduling savings.</p></div> : <p className="panel-body muted">{modelMetrics.reason ?? "No model evaluation supplied."}</p>}</details>}
     <section aria-labelledby="regional-comparison-title">
       <div className="panel-heading"><h2 id="regional-comparison-title">Regional comparison</h2><span className="muted">As of slot {currentSlot} · USD / unit-hour</span></div>
       <div className="market-filters">
@@ -53,9 +53,9 @@ export function MarketChart({ market, forecasts, preview, currentSlot, modelMetr
       {!rows.length && <div className="empty"><h3>No matching regional data</h3><p>Try another resource or quote data selection. Quotes and forecasts appear here when supplied.</p></div>}
       <div className="panel-footer"><span>Only matching resource types and GPU models are compared. Stale quotes are not ranked as current opportunities.</span><span>Capacity is not a reservation.</span></div>
     </section>
-    {showDetails && region && resource && <MarketModal title={`${regionName(region)} · ${resourceLabel(resource)}`} description={`${region} · ${kind === "SIMULATED" ? "Simulated quotes" : "Observed quotes"} · ${preview ? "Hand-authored preview" : "Backend data"}`} onClose={() => setShowDetails(false)}><div className="market-inspection-layout">
+    {showDetails && region && resource && <MarketModal title={`${regionName(region)} · ${resourceLabel(resource)}`} description={`${region} · ${kind === "SIMULATED" ? "Simulated quotes" : "Observed quotes"}`} onClose={() => setShowDetails(false)}><div className="market-inspection-layout">
       <section aria-labelledby="trajectory-title">
-        <div className="panel-heading"><div><h2 id="trajectory-title">{regionName(region)} · {resourceLabel(resource)}</h2><p className="form-note">{preview ? "Example prices and predictions" : "Quotes and model predictions"} · USD / unit-hour</p></div><span className="muted">{region}</span></div>
+        <div className="panel-heading"><div><h2 id="trajectory-title">{regionName(region)} · {resourceLabel(resource)}</h2><p className="form-note">{"Quotes and model predictions"} · USD / unit-hour</p></div><span className="muted">{region}</span></div>
         <div className="market-price-lead">
           <div><p className="price-eyebrow">{selectedQuote ? selectedQuote.slot === currentSlot ? "Current quote" : "Last supplied quote" : "Quote unavailable"}{kind === "SIMULATED" ? " · Simulated" : " · Observed"}</p>
           <p className="market-price"><ValuePulse value={selectedQuote?.priceUsdPerUnitHour ?? "unavailable"}>{price(selectedQuote?.priceUsdPerUnitHour)}</ValuePulse><span>USD / unit-hour</span></p></div>
@@ -66,9 +66,9 @@ export function MarketChart({ market, forecasts, preview, currentSlot, modelMetr
         {run && <p className={`forecast-freshness ${run.issued < currentSlot ? "attention" : "muted"}`}>{run.issued === currentSlot ? "Issued at the current slot." : `Forecast issue is ${currentSlot - run.issued}h old.`} {predictions.length} of {horizon} future slots supplied in this window.</p>}
         {!predictions.length && <p className="forecast-freshness muted">No upcoming forecast points in this window. Available market history remains visible.</p>}
         <SlotPriceChart history={history} predictions={predictions} points={points} currentSlot={currentSlot} selectedSlot={point?.slot ?? null} onSelect={setSlotChoice} />
-        <div className="panel-footer">{preview ? "Simulated history and hand-authored forecast examples. No trained model is represented." : "Latest six hours of matching quotes; one selected model issue. Missing observations are left as gaps."}</div>
+        <div className="panel-footer">{"Latest six hours of matching quotes; one selected model issue. Missing observations are left as gaps."}</div>
       </section>
-      <ForecastInspector point={point} points={points} currentSlot={currentSlot} preview={preview} onSelect={setSlotChoice} />
+      <ForecastInspector point={point} points={points} currentSlot={currentSlot} onSelect={setSlotChoice} />
     </div></MarketModal>}
 
   </div>;

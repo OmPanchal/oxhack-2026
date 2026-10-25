@@ -5,11 +5,11 @@ See [startup instructions](../docs/STARTUP.md) for `--setup`, `--login` and `--c
 To run only the frontend, use `npm ci` and `npm run dev` here, then open
 http://localhost:3000.
 
-The page starts in **Design preview**, using labeled hand-authored examples in
-`lib/preview.ts`. Preview job creation remains in page memory; examples are never
-submitted to FastAPI and do not represent model results, benchmarks or execution.
-
-Select **Backend data** to use the merged FastAPI services. Full endpoint mapping,
+The page connects directly to FastAPI. Design preview, hand-authored frontend
+fixtures and the mock-data environment switch have been removed. Jobs are submitted
+to the backend; unavailable services show loading/errors rather than example data.
+Backend-supplied simulated market inputs and replay remain explicitly labeled.
+Full endpoint mapping,
 verification and limitations are recorded in [INTEGRATION.md](INTEGRATION.md).
 
 ## Local backend connection
@@ -46,6 +46,11 @@ allocation; simulated replay remains separate. No cloud provisioning is implemen
 
 ## Views
 
+Historical T4/A10G replay uses imported observed price data with simulated
+capacity/jobs. Its 168-hour warm-up is loaded before the scored window, and actual
+ML/fallback versions remain visible. The server catalog marks missing datasets
+unavailable. See [historical replay and recorded results](../docs/HISTORICAL_REPLAY.md).
+
 - **Overview:** portfolio counts, server projected cost, attention items and
   upcoming jobs. Projections are not realized spend or savings.
 - **Workloads:** Queue and Timeline tabs. Workload selection opens a modal with
@@ -56,7 +61,7 @@ allocation; simulated replay remains separate. No cloud provisioning is implemen
 - **Replay & execution:** Replay, Policy comparison and Execution views. Backend
   reset, step, playback and simulated shocks use the independent replay clock.
   Accounting and comparison eligibility come from the server. Real LOCAL task
-  records stay separate from simulated replay and prepared preview states. Choose
+  records stay separate from simulated replay. Choose
   Capacity pressure for shared GPU pools, shortages/recovery and competing jobs.
   The capacity table shows only the last processed slot. All scenario prices and
   capacity are simulated; live AWS inventory remains unknown.
@@ -112,5 +117,5 @@ npm run build
 
 These checks cover API paths/payloads/errors, clock separation, job requirements,
 market matching, null capacity, forecast grouping, decision evidence, interval
-packing and preview fixtures. A build is not browser or genuine Docker evidence.
+packing and forecast provenance labels. A build is not browser or genuine Docker evidence.
 See the integration report for the actual HTTP/process-restart verification.

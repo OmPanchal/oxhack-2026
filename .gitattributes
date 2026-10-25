@@ -1,0 +1,5 @@
+# These files are verified byte-for-byte by the selected ML model receipt.
+# Preserve LF on Windows so checkout conversion cannot invalidate the hashes.
+models/error-reduction-001/*.json text eol=lf
+models/error-reduction-001/*.txt text eol=lf
+backend/app/forecasting/error_search.py text eol=lf

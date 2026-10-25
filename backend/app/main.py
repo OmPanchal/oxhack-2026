@@ -14,7 +14,7 @@ from app.api.schemas import (
 )
 from app.database import Database
 from app.api.runtime_schemas import DecisionDetail, EngineState
-from app.api.replay_schemas import ReplayScenario, ReplayShock, ReplayShockRequest, ReplayView
+from app.api.replay_schemas import ReplayScenario, ReplayScenarioOption, ReplayShock, ReplayShockRequest, ReplayView
 from app.api.market_schemas import AwsSpotPrices, MarketCapabilities
 from app.api.metrics_schemas import LiveMetrics, ModelEvaluation, ModelMetrics, ReplayMetrics
 from app.engine.accounting import AccountingError
@@ -47,6 +47,8 @@ def create_app(database_path: str | Path | None = None, *,
                allow_local_dispatch: bool | None = None, forecast_service=None,
                enable_ml: bool | None = None) -> FastAPI:
     ml_enabled = os.getenv('COMPUTE_ENABLE_ML', '0') == '1' if enable_ml is None else enable_ml
+    if optimizer_config is None:
+        optimizer_config = OptimizerConfig(waiting_policy=os.getenv('COMPUTE_WAITING_POLICY', 'LEGACY'))
     model_loader = ModelLoader(os.getenv('PRICE_FORECAST_CONFIG'), os.getenv('PRICE_MODEL_DIR'))
     selected_service = forecast_service or (model_loader.load() if ml_enabled else None)
     providers = dict(forecast_services or {})
@@ -224,6 +226,10 @@ def create_app(database_path: str | Path | None = None, *,
     @app.get("/api/replay/state", response_model=ReplayView)
     def replay_state():
         return replay.state()
+
+    @app.get('/api/replay/scenarios', response_model=list[ReplayScenarioOption])
+    def replay_scenarios_catalog():
+        return replay.catalog()
 
     @app.post("/api/replay/reset", response_model=ReplayView)
     def replay_reset(payload: ReplayResetRequest):

@@ -5,7 +5,7 @@ import hashlib
 from threading import RLock
 
 from app.api.replay_schemas import (STRATEGIES, ReplayCharge, ReplayOutcome,
-    ReplayScenario, ReplaySession, ReplayShock, ReplayShockRequest, ReplayStrategyView, ReplayView, StrategyRun)
+    ReplayScenario, ReplaySession, ReplayShock, ReplayShockRequest, ReplayStrategyView, ReplayView, StrategyRun, replay_provenance)
 from app.api.schemas import ForecastRequest, Job, MarketSnapshot, OptimizationInput, OptimizerConfig, Reservation
 from app.database import Database
 from app.engine.forecast_bridge import EngineUnavailable, ForecastMode, PersistenceForecastProvider, predict_checked
@@ -25,6 +25,14 @@ class ReplayService:
         self.scenarios = scenarios if scenarios is not None else {
             "demo": demo_scenario(), "capacity-pressure": capacity_pressure_scenario(),
         }
+        self.historical_error = None
+        if scenarios is None:
+            from app.engine.historical_replay import configured_bundle_path, load_bundle
+            try:
+                historical = load_bundle(configured_bundle_path())
+                self.scenarios[historical.id] = historical
+            except (OSError, ValueError, KeyError) as exc:
+                self.historical_error = str(exc)
         self.templates = {"NAIVE": PersistenceForecastProvider(), **(forecast_services or {})}
         self.providers = {}
         self.config = config or OptimizerConfig()
@@ -45,16 +53,26 @@ class ReplayService:
         if session is None:
             return ReplayView(status="READY", current_slot=0, seed=42, strategies=STRATEGIES)
         return ReplayView(status="COMPLETED" if session.current_slot == session.scenario.end_slot else
-                          "READY" if session.current_slot == 0 else "RUNNING",
+                          "READY" if session.current_slot == session.scenario.start_slot else "RUNNING",
             current_slot=session.current_slot, seed=session.seed, strategies=STRATEGIES, initialized=True,
             scenario_id=session.scenario.id, description=session.scenario.description,
             origin_utc=session.scenario.origin_utc, end_slot=session.scenario.end_slot,
+            start_slot=session.scenario.start_slot, provenance=replay_provenance(session),
             strategy_states=[ReplayStrategyView(**run.model_dump(), metrics=totals(run)) for run in session.runs],
             events=session.events, observed_market=session.history)
 
     def state(self):
         with self.database.transaction() as connection:
             return self._view(self._load(connection))
+
+    def catalog(self):
+        rows = [dict(id=s.id, description=s.description, available=True, reason=None,
+                     startSlot=s.start_slot, endSlot=s.end_slot) for s in self.scenarios.values()]
+        if 'historical-t4-a10g' not in self.scenarios and self.historical_error is not None:
+            rows.append(dict(id='historical-t4-a10g', available=False, startSlot=168, endSlot=None,
+                description='Historical T4/A10G prices with simulated workloads and capacity',
+                reason='Historical price bundle is not prepared or failed validation. Import the real hourly dataset first.'))
+        return rows
 
     def metrics(self):
         from app.engine.metrics import replay_metrics
@@ -78,6 +96,8 @@ class ReplayService:
             runs[-1].error = "ML provider is not configured; no naive substitution"
         with self.lock, self.database.transaction() as connection:
             session = ReplaySession(scenario=scenario, seed=seed, runs=runs, config=self.config.model_copy(deep=True))
+            session.current_slot = scenario.start_slot
+            session.history = [row.model_copy(deep=True) for row in scenario.market if row.slot < scenario.start_slot]
             self._save(connection, session)
             self.providers = providers
             return self._view(session)
@@ -264,7 +284,7 @@ class ReplayService:
             row = indexed[resource_key(reservation)]
             if config.carbon_price_usd_per_kg and row.carbon_kg_per_unit_hour is None:
                 raise ValueError("Realized carbon valuation requires observed carbon data")
-            charge = ReplayCharge(slot=slot, job_id=job.id,
+            charge = ReplayCharge(slot=slot, job_id=job.id, gpu_type=reservation.gpu_type,
                 compute_usd=float(decimal_usd(Decimal(str(row.price_usd_per_unit_hour)) * job.resource_units)),
                 startup_usd=float(decimal_usd(config.startup_cost_usd)) if reservation.start_slot == slot else 0,
                 transfer_usd=float(decimal_usd(config.transfer_cost_usd)) if reservation.start_slot == slot

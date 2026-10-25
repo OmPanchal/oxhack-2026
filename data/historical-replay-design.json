@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "historical-replay-design-v1",
+  "scenarioId": "historical-t4-a10g",
+  "scoredStartUtc": "2026-10-24T00:00:00+00:00",
+  "scoredHours": 24,
+  "warmupHours": 168,
+  "workloadSeed": 42,
+  "arrivalEveryHours": 4,
+  "durationRangeHours": [1, 3],
+  "completeWithinHours": 6,
+  "capacityUnitsPerPool": 1,
+  "gpuTypes": ["NVIDIA T4", "NVIDIA A10G"],
+  "capacityDataKind": "SIMULATED",
+  "workloadDataKind": "SIMULATED",
+  "evaluationStatus": "REUSED_EVALUATION_PERIOD",
+  "selectionRule": "Fixed date and serving-config pools; no selection by replay savings",
+  "limitations": "Previously evaluated dates; a scheduling ablation, not fresh held-out accuracy evidence. One Stockholm pool per GPU model, constant synthetic capacity, no interruptions or recovery."
+}

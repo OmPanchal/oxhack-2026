@@ -183,6 +183,7 @@ def main():
                            COMPUTE_AWS_INSTANCE_TYPES='g4dn.xlarge,g5.xlarge',
                            COMPUTE_TICK_SECONDS='2', COMPUTE_ALLOW_LOCAL_DISPATCH='0')
         backend_env['COMPUTE_ENABLE_ML'] = '1' if args.ml else '0'
+        backend_env.setdefault('COMPUTE_WAITING_POLICY', 'CAUTIOUS')
         frontend_env = env.copy()
         frontend_env.update(API_PROXY_TARGET='http://127.0.0.1:8000',
                             NEXT_PUBLIC_API_BASE_URL='', NEXT_PUBLIC_USE_MOCKS='false')

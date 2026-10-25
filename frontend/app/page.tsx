@@ -1,9 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 import { api, loadBackendTerminal } from "@/lib/api";
-import { previewData } from "@/lib/preview";
 import { latestDecision, linkedDecisionDetail } from "@/lib/decisions";
-import type { Job, JobCreate, TerminalData } from "@/lib/types";
+import type { JobCreate, TerminalData } from "@/lib/types";
 import { AddJobModal } from "@/components/AddJobModal";
 import { WorkloadModal } from "@/components/WorkloadModal";
 import { deadlineAttention, formatTimeLeft, jobHardware, rebaseJob } from "@/lib/workloads";
@@ -11,7 +10,7 @@ import type { JobFilters } from "@/lib/workloads";
 import { Portfolio } from "@/components/Portfolio";
 import { MarketChart } from "@/components/MarketChart";
 import { JobBlotter } from "@/components/JobBlotter";
-import { ReplayWorkspace } from "@/components/ReplayWorkspace";
+import { BackendReplayWorkspace } from "@/components/BackendReplayWorkspace";
 import { WorkloadTimeline } from "@/components/WorkloadTimeline";
 import { EngineControls } from "@/components/EngineControls";
 
@@ -27,18 +26,15 @@ const workloadViews = [{ id: "queue", label: "Queue" }, { id: "timeline", label:
 export default function Home() {
   const [activeTab, setActiveTab] = useState<TabId>("overview");
   const [workloadView, setWorkloadView] = useState<typeof workloadViews[number]["id"]>("queue");
-  const [preview, setPreview] = useState(true);
   const [data, setData] = useState<TerminalData | null>(null);
-  const [previewJobs, setPreviewJobs] = useState<Job[]>(previewData.jobs);
   const [showAddJob, setShowAddJob] = useState(false);
   const [showJobDetails, setShowJobDetails] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
   const [filters, setFilters] = useState<JobFilters>({ query: "", resource: "ALL", status: "ALL", sort: "deadline" });
   const [error, setError] = useState<string | null>(null);
-  const [selectedId, setSelectedId] = useState<string | null>(previewData.jobs[0]?.id ?? null);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
   const [refresh, setRefresh] = useState(0);
   useEffect(() => {
-    if (preview) { setError(null); return; }
     let active = true;
     let timer: ReturnType<typeof setTimeout>;
     async function read() {
@@ -53,30 +49,22 @@ export default function Home() {
     }
     void read();
     return () => { active = false; clearTimeout(timer); };
-  }, [preview, refresh]);
-  // Hide previous-mode data immediately while the effect starts the new request.
-  const visible = preview ? { ...previewData, jobs: previewJobs } : data;
-  const currentSlot = preview ? previewData.replay.currentSlot : data?.engine?.currentSlot ?? 0;
+  }, [refresh]);
+  const visible = data;
+  const currentSlot = data?.engine?.currentSlot ?? 0;
   const regions = [...new Set([...(visible?.capabilities?.allowedRegions ?? []),...(visible?.market.map(row => row.region) ?? []), ...(visible?.jobs.flatMap(row => row.allowedRegions) ?? [])])].sort();
   const gpuTypes = [...new Set([
     ...(visible?.capabilities?.allowedGpuTypes ?? []),
     ...(visible?.market.flatMap(row => row.gpuType ? [row.gpuType] : []) ?? []),
     ...(visible?.jobs.flatMap(row => row.allowedGpuTypes?.length ? row.allowedGpuTypes : row.gpuType ? [row.gpuType] : []) ?? []),
-    ...(preview ? ["A100", "H100", "L4"] : []), // Illustrative preview catalog, not observed capacity.
   ])].sort();
   const attentionJobs = visible?.jobs.filter(row => deadlineAttention(row, currentSlot)) ?? [];
   function inspect(id: string) { setSelectedId(id); setShowJobDetails(true); }
   async function createJob(payload: JobCreate) {
-    if (preview) {
-      const job: Job = { ...payload, status: "PENDING" };
-      setPreviewJobs(jobs => [...jobs, job]);
-      setNotice(`Added “${job.name}” to the preview. This is an example job; reload resets preview changes.`);
-    } else {
-      const clock = await api.engineState();
-      const job = await api.createJob(rebaseJob(payload, clock.currentSlot));
-      setData(current => current ? { ...current, engine: clock, jobs: [...current.jobs.filter(row => row.id !== job.id), job] } : current);
-      setNotice(`Added “${job.name}” to the backend portfolio.`);
-    }
+    const clock = await api.engineState();
+    const job = await api.createJob(rebaseJob(payload, clock.currentSlot));
+    setData(current => current ? { ...current, engine: clock, jobs: [...current.jobs.filter(row => row.id !== job.id), job] } : current);
+    setNotice(`Added “${job.name}” to your portfolio.`);
     setSelectedId(payload.id); setActiveTab("workloads"); setWorkloadView("queue");
     setFilters({ query: "", resource: "ALL", status: "ALL", sort: "deadline" });
   }
@@ -94,22 +82,19 @@ export default function Home() {
           if (next !== null) { event.preventDefault(); setActiveTab(tabs[next].id); document.getElementById(`tab-${tabs[next].id}`)?.focus(); }
         }}>{tab.label}</button>)}
     </div>
-      <div className="header-controls"><label className="source-picker">Data source
-        <select value={preview ? "preview" : "backend"} onChange={event => { setShowJobDetails(false); setData(null); setNotice(null); setError(null); setPreview(event.target.value === "preview"); }}>
-          <option value="preview">Design preview</option><option value="backend">Backend data</option>
-        </select></label>{!preview && <button onClick={() => setRefresh(n => n + 1)}>Refresh</button>}</div>
+      <div className="header-controls"><button onClick={() => setRefresh(n => n + 1)}>Refresh</button></div>
     </header>
-    <div className="preview-note"><span className="tag">{preview ? "Simulated preview" : error ? "Backend error" : visible ? "Backend data" : "Connecting"}</span>
-      <span>{preview ? "Illustrative data. No model, benchmark or execution has run." : "State provided by FastAPI."}</span></div>
-    <div className="view-context"><p>{activeTab === "overview" && visible ? `${attentionJobs.length} ${attentionJobs.length === 1 ? "workload needs" : "workloads need"} attention · ${visible.jobs.filter(row => row.status === "PENDING").length} pending` : currentTab.description}</p><div className="view-actions"><span className="muted">{visible ? activeTab === "replay" && preview ? "Separate preview scenario · 1h slots" : `Slot ${currentSlot} · 1h intervals` : "Connecting…"}</span>{visible && (activeTab === "overview" || activeTab === "workloads") && <button className="primary-button" onClick={() => setShowAddJob(true)}>Add job</button>}</div></div>
+    {activeTab !== "replay" && <div className="data-note"><span className="tag">{error ? "Connection error" : visible ? visible.engine?.dataKind === "SIMULATED" ? "Simulated market data" : "Connected" : "Connecting"}</span>
+      {visible && <span>{visible.engine?.dataKind === "SIMULATED" ? "Market inputs are simulated. No cloud workload has been launched." : "Prices, forecasts and workload state from the connected service."}</span>}</div>}
+    <div className="view-context"><p>{activeTab === "overview" && visible ? `${attentionJobs.length} ${attentionJobs.length === 1 ? "workload needs" : "workloads need"} attention · ${visible.jobs.filter(row => row.status === "PENDING").length} pending` : currentTab.description}</p><div className="view-actions"><span className="muted">{visible ? activeTab === "replay" ? "Hourly replay" : `Slot ${currentSlot} · 1h intervals` : "Connecting…"}</span>{visible && (activeTab === "overview" || activeTab === "workloads") && <button className="primary-button" onClick={() => setShowAddJob(true)}>Add job</button>}</div></div>
     {notice && <div className="success-note" role="status"><span>{notice}</span><button className="text-button" onClick={() => setNotice(null)}>Dismiss</button></div>}
-    {!preview && error && <div role="alert" className="notice error">{error}</div>}
-    {!preview && data?.errors?.map(message => <div key={message} role="alert" className="notice error">{message}</div>)}
-    {!preview && data?.engine && <EngineControls state={data.engine} onRefresh={() => setRefresh(n => n + 1)} />}
+    {error && <div role="alert" className="notice error">{error}</div>}
+    {data?.errors?.map(message => <div key={message} role="alert" className="notice error">{message}</div>)}
+    {data?.engine && (activeTab === "replay" ? <details className="replay-more live-engine-settings"><summary>Live engine controls · separate from replay</summary><EngineControls state={data.engine} onRefresh={() => setRefresh(n => n + 1)} /></details> : <EngineControls state={data.engine} onRefresh={() => setRefresh(n => n + 1)} />)}
     {!visible && !error && <p className="empty" role="status">Connecting to backend…</p>}
     {visible && <div id={`panel-${activeTab}`} role="tabpanel" aria-labelledby={`tab-${activeTab}`}>
       {activeTab === "overview" && <div className="view-enter">
-        <Portfolio jobs={visible.jobs} preview={preview} currentSlot={currentSlot} metrics={preview ? undefined : visible.liveMetrics} />
+        <Portfolio jobs={visible.jobs} currentSlot={currentSlot} metrics={visible.liveMetrics} />
         <div className="overview-workloads">
         {attentionJobs.length > 0 && <section className="attention-list"><div className="panel-heading"><h2>Needs attention</h2><span className="muted">{attentionJobs.length} jobs</span></div>{attentionJobs.map(row => <div className="attention-item" key={row.id}><button className="text-button" onClick={() => inspect(row.id)}>{row.name}</button><span className="attention">{deadlineAttention(row, currentSlot)}</span></div>)}</section>}
         <section><div className="panel-heading"><h2>Upcoming workloads</h2><button className="text-button" onClick={() => setActiveTab("workloads")}>View all workloads →</button></div>
@@ -134,14 +119,14 @@ export default function Home() {
           {workloadView === "queue" && <JobBlotter jobs={visible.jobs} decisions={visible.decisions} selectedId={selectedId} onSelect={inspect} filters={filters} onFilters={setFilters} currentSlot={currentSlot} />}
         </div>
         <div id="workload-content-timeline" role="tabpanel" aria-labelledby="workload-view-timeline" hidden={workloadView !== "timeline"}>
-          {workloadView === "timeline" && <WorkloadTimeline jobs={visible.jobs} decisions={visible.decisions} currentSlot={currentSlot} selectedId={selectedId} onSelect={inspect} preview={preview} />}
+          {workloadView === "timeline" && <WorkloadTimeline jobs={visible.jobs} decisions={visible.decisions} currentSlot={currentSlot} selectedId={selectedId} onSelect={inspect} />}
         </div>
       </div>}
-      {activeTab === "market" && <div className="view-enter"><MarketChart market={visible.market} forecasts={visible.forecasts} preview={preview} currentSlot={currentSlot} modelMetrics={preview ? undefined : visible.modelMetrics} modelStatus={preview ? undefined : visible.modelStatus} /></div>}
-      <div className={activeTab === "replay" ? "view-enter" : undefined} hidden={activeTab !== "replay"}><ReplayWorkspace key={preview ? "preview" : "backend"} preview={preview} state={visible.replay} active={activeTab === "replay"} backendData={preview ? undefined : data ?? undefined} onRefresh={() => setRefresh(n => n + 1)} /></div>
+      {activeTab === "market" && <div className="view-enter"><MarketChart market={visible.market} forecasts={visible.forecasts} currentSlot={currentSlot} modelMetrics={visible.modelMetrics} modelStatus={visible.modelStatus} /></div>}
+      <div className={activeTab === "replay" ? "view-enter" : undefined} hidden={activeTab !== "replay"}><BackendReplayWorkspace data={visible} active={activeTab === "replay"} onRefresh={() => setRefresh(n => n + 1)} /></div>
     </div>}
-    {showAddJob && visible && <AddJobModal preview={preview} currentSlot={currentSlot} regions={regions} gpuTypes={gpuTypes} tasks={preview ? [] : visible.taskCatalog?.tasks} onClose={() => setShowAddJob(false)} onSubmit={createJob} />}
-    {showJobDetails && job && <WorkloadModal job={job} decision={decision} evidence={linkedDecisionDetail(visible?.decisions ?? [], visible?.decisionDetails ?? [], decision)} currentSlot={currentSlot} preview={preview} onClose={() => setShowJobDetails(false)} />}
-    <footer className="statusbar"><span>{preview ? "Hand-authored preview fixtures" : "FastAPI"}</span><span>Hourly scheduling · No paid cloud provisioning</span></footer>
+    {showAddJob && visible && <AddJobModal currentSlot={currentSlot} regions={regions} gpuTypes={gpuTypes} tasks={visible.taskCatalog?.tasks} onClose={() => setShowAddJob(false)} onSubmit={createJob} />}
+    {showJobDetails && job && <WorkloadModal job={job} decision={decision} evidence={linkedDecisionDetail(visible?.decisions ?? [], visible?.decisionDetails ?? [], decision)} currentSlot={currentSlot} onClose={() => setShowJobDetails(false)} />}
+    <footer className="statusbar"><span>Connected service</span><span>Hourly scheduling · No paid cloud provisioning</span></footer>
   </main>;
 }

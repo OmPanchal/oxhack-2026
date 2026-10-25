@@ -1,5 +1,5 @@
 """Deterministic portfolio search, independent of forecasting, storage and execution."""
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from math import prod
 
 from app.api.schemas import Decision, Forecast, OptimizationInput, Reservation
@@ -55,10 +55,16 @@ class Candidate:
     forecasts: tuple[Forecast, ...]
     price_fallback: bool = False
     gpu_type: str | None = None
+    waiting_penalty: float = 0.0
 
     @property
     def cost(self):
         return self.compute + self.startup + self.transfer + self.recovery + self.carbon
+
+    @property
+    def selection_cost(self):
+        # A planning preference, never part of projected or realized expenditure.
+        return self.cost + self.waiting_penalty
 
     @property
     def reliability_penalty(self):
@@ -131,7 +137,7 @@ class ConstrainedPortfolioOptimizer:
                 return
             if best_score is not None and lower_missing == best_score[0]:
                 lower_risk = tuple(risk + [0] * (len(jobs) - index))
-                lower_cost = cost + sum(min((row.cost for row in choices[job.id]), default=0)
+                lower_cost = cost + sum(min((row.selection_cost for row in choices[job.id]), default=0)
                                         for job in jobs[index:])
                 if lower_risk > best_score[1] or (lower_risk == best_score[1] and lower_cost > best_score[2]):
                     return
@@ -149,7 +155,7 @@ class ConstrainedPortfolioOptimizer:
                     continue
                 self._occupy(occupied, total, reservation, 1)
                 search(index + 1, selected + [candidate], missing + [0],
-                       risk + [candidate.reliability_penalty if urgent else 0], cost + candidate.cost)
+                       risk + [candidate.reliability_penalty if urgent else 0], cost + candidate.selection_cost)
                 self._occupy(occupied, total, reservation, -1)
             search(index + 1, selected + [None], missing + [1], risk + [0], cost)
 
@@ -278,8 +284,39 @@ class ConstrainedPortfolioOptimizer:
                  "CAPACITY_UNAVAILABLE" if not enough_units else
                  "CARBON_DATA_UNAVAILABLE" if carbon_missing and not priced_window else
                  "FORECAST_COVERAGE_MISSING" if not priced_window else "BUDGET_EXCEEDED")
+        if inputs.config.waiting_policy == 'CAUTIOUS':
+            candidates = self._cautious_waiting(job, candidates, inputs, market)
         return sorted(candidates, key=lambda row: (
-            row.reliability_penalty if urgent else 0, row.cost, row.start, row.region, row.gpu_type or "")), issue
+            row.reliability_penalty if urgent else 0, row.selection_cost, row.start, row.region, row.gpu_type or "")), issue
+
+    def _cautious_waiting(self, job, candidates, inputs, market):
+        occupied, total = {}, {}
+        for reservation in inputs.reservations:
+            self._occupy(occupied, total, reservation, 1)
+        feasible = [row for row in candidates if self._fits(self._reservation(job, row), inputs, market, occupied, total)]
+        if not feasible:
+            return candidates
+        earliest = min(row.start for row in feasible)
+        reference_cost = min(row.cost for row in feasible if row.start == earliest)
+        threshold = max(inputs.config.min_wait_savings_usd_per_hour,
+                        reference_cost * inputs.config.min_wait_savings_fraction_per_hour)
+        original_slack = max(0, job.deadline_slot - job.arrival_slot - job.duration_slots - inputs.config.safety_buffer_slots)
+        preferred_end = max(earliest, job.arrival_slot + min(inputs.config.max_speculative_wait_slots, original_slack // 2))
+        adjusted = []
+        for row in candidates:
+            observed = market[(row.region, job.resource_type, row.gpu_type)]
+            backlog = any(other.id != job.id and other.arrival_slot <= inputs.current_slot
+                and other.allowed_regions and row.region in other.allowed_regions and hardware_matches(other, observed)
+                and other.resource_units <= observed.available_units
+                and self._latest_start(other, inputs) >= inputs.current_slot for other in inputs.pending_jobs)
+            delay = max(0, row.start - earliest)
+            # Keep all candidates: waiting may be forced by committed capacity,
+            # per-job budgets or admitting the known portfolio. No hard constraint
+            # is relaxed, and admission still outranks these cost preferences.
+            penalty = delay * threshold
+            penalty += reference_cost * (delay if backlog else max(0, row.start - preferred_end))
+            adjusted.append(replace(row, waiting_penalty=penalty))
+        return adjusted
 
     @staticmethod
     def _reservation(job, candidate):
@@ -333,6 +370,8 @@ class ConstrainedPortfolioOptimizer:
                   "FALLBACK" if fallback else "ROUTE" if candidate.region != job.allowed_regions[0] else "RUN")
         reason = ("PERSISTENCE_COVERAGE_FALLBACK" if candidate.price_fallback else
                   "LOWER_RISK_AT_DEADLINE" if fallback else "LOWEST_COST_FEASIBLE_PORTFOLIO")
+        if inputs.config.waiting_policy == 'CAUTIOUS' and not fallback:
+            reason = 'CAUTIOUS_WAITING_POLICY'
         versions = sorted({row.model_version for row in candidate.forecasts})
         breakdown = dict(computeUsd=candidate.compute, startupUsd=candidate.startup,
                          transferUsd=candidate.transfer, expectedRecoveryUsd=candidate.recovery,
@@ -346,6 +385,8 @@ class ConstrainedPortfolioOptimizer:
             "Unknown risk is unpriced; known hourly interruption risk uses a one-restart cost scenario."
             + (" Missing price hours use an explicit latest-observed-price persistence assumption, not ML predictions."
                if candidate.price_fallback else "")
+            + (" Cautious waiting preferences preserve deadline slack and discourage idling with queued work; "
+               "planning penalties are not billed costs." if inputs.config.waiting_policy == 'CAUTIOUS' else "")
         )
         return Decision(**base, action=action, region=candidate.region, planned_start_slot=candidate.start,
                         planned_end_slot=candidate.end, projected_cost_usd=candidate.cost,

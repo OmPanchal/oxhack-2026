@@ -12,17 +12,17 @@ const actions: Record<Decision["action"], { title: string; detail: string }> = {
   INFEASIBLE: { title: "No feasible execution plan", detail: "The supplied decision cannot meet the workload requirements." },
 };
 
-export function DecisionInspector({ decision, job, evidence, preview, currentSlot }: {
-  decision?: Decision; job?: Job; evidence?: DecisionDetail; preview: boolean; currentSlot: number;
+export function DecisionInspector({ decision, job, evidence, currentSlot }: {
+  decision?: Decision; job?: Job; evidence?: DecisionDetail; currentSlot: number;
 }) {
   const headingId = useId();
   const plan = job && decision?.jobId === job.id && decision.decidedAtSlot <= currentSlot ? decision : undefined;
   const age = plan ? currentSlot - plan.decidedAtSlot : 0;
   return <section className="execution-plan" aria-labelledby={headingId}>
-    <div className="panel-heading"><h2 id={headingId}>Execution plan</h2><span className="tag">{preview ? "Example plan" : "Scheduling decision"}</span></div>
+    <div className="panel-heading"><h2 id={headingId}>Execution plan</h2><span className="tag">{"Scheduling decision"}</span></div>
     {!job ? <p className="empty">Select a workload to see its execution plan.</p> : !plan ? <div className="plan-lead">
       <p className="muted">{job.name} · {job.id}</p><h3>No plan available</h3>
-      <p>{preview ? "No example scheduling decision is supplied for this workload at this slot." : "No scheduling decision is available for this workload yet."}</p>
+      <p>{"No scheduling decision is available for this workload yet."}</p>
     </div> : <>
       <div className="plan-lead">
         <p className="muted">{job.name} · {job.id}</p>
@@ -54,7 +54,7 @@ export function DecisionInspector({ decision, job, evidence, preview, currentSlo
         </dl>
         {!evidence && <p className="plan-evidence-note">No linked forecast or risk evidence is available for this decision.</p>}
       </details>
-      <div className="panel-footer">{preview ? "Illustrative plan. No workload has executed." : "Projected cost is an estimate. Execution is reported separately."}</div>
+      <div className="panel-footer">{"Projected cost is an estimate. Execution is reported separately."}</div>
     </>}
   </section>;
 }

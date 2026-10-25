@@ -50,6 +50,44 @@ def test_wait_for_cheaper_window_and_provide_evidence():
     assert plan.evidence["a"].interruption_probability is None
 
 
+def cautious(request):
+    request.config.waiting_policy = 'CAUTIOUS'
+    return ConstrainedPortfolioOptimizer().plan(request)
+
+
+def test_cautious_waiting_rejects_negligible_savings_but_keeps_meaningful_one_hour_wait():
+    tiny = cautious(inputs(jobs=[job(deadline_slot=6)], forecasts=[forecast(slot=t, price=4.9999) for t in range(1, 7)]))
+    assert tiny.decisions[0].action == 'RUN'
+    substantial = cautious(inputs(jobs=[job(deadline_slot=6)], forecasts=[forecast(slot=1, price=1), forecast(slot=2, price=.5)]))
+    decision = substantial.decisions[0]
+    assert (decision.action, decision.planned_start_slot, decision.projected_cost_usd) == ('WAIT', 1, 1)
+    assert substantial.evidence['a'].cost_breakdown['computeUsd'] == 1
+    assert 'not billed' in decision.explanation
+
+
+def test_cautious_backlog_keeps_capacity_busy_without_dropping_known_jobs():
+    plan = cautious(inputs(jobs=[job('a'), job('b')],
+        forecasts=[forecast(slot=1, price=1), forecast(slot=2, price=.5)]))
+    assert all(d.planned_start_slot is not None for d in plan.decisions)
+    assert sorted(d.planned_start_slot for d in plan.decisions) == [0, 1]
+
+
+def test_cautious_waiting_does_not_reset_slack_allowance_each_tick():
+    plan = cautious(inputs(current_slot=1, jobs=[job(deadline_slot=6)], markets=[market(slot=1)],
+        forecasts=[forecast(slot=2, price=1, generated_at_slot=1)]))
+    assert plan.decisions[0].action == 'RUN'
+
+
+def test_cautious_waiting_retains_budget_forced_wait_and_committed_reservations():
+    budget = cautious(inputs(jobs=[job(max_budget_usd=2, deadline_slot=6)], forecasts=[forecast(slot=1, price=1)]))
+    assert (budget.decisions[0].action, budget.decisions[0].planned_start_slot) == ('WAIT', 1)
+    held = Reservation(job_id='external', region='west', resource_type='GPU', gpu_type='A100',
+        resource_units=1, start_slot=0, end_slot=3)
+    plan = cautious(inputs(jobs=[job(deadline_slot=6)], reservations=[held],
+        forecasts=[forecast(slot=t, price=1) for t in range(1, 6)]))
+    assert plan.decisions[0].planned_start_slot == 3
+
+
 def test_route_and_transfer_cost_choose_different_region():
     request = inputs(markets=[market(price=5), market("east", price=1)])
     decision = solve(request)[0]

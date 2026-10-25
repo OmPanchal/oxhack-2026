@@ -109,6 +109,10 @@ class Reservation(Contract):
         return self
 
 class OptimizerConfig(Contract):
+    waiting_policy: Literal['LEGACY', 'CAUTIOUS'] = 'LEGACY'
+    min_wait_savings_usd_per_hour: float = Field(default=0.01, ge=0)
+    min_wait_savings_fraction_per_hour: float = Field(default=0.02, ge=0, le=1)
+    max_speculative_wait_slots: int = Field(default=1, ge=0)
     startup_cost_usd: float = Field(default=0, ge=0)
     transfer_cost_usd: float = Field(default=0, ge=0)
     safety_buffer_slots: int = Field(default=0, ge=0)

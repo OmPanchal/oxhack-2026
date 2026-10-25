@@ -9,8 +9,8 @@ import { jobHardware } from "@/lib/workloads";
 
 type Hover = { jobs: Job[]; left: number; top?: number; bottom?: number; maxHeight: number };
 
-export function WorkloadTimeline({ jobs, decisions, currentSlot, selectedId, onSelect, preview }: {
-  jobs: Job[]; decisions: Decision[]; currentSlot: number; selectedId: string | null; onSelect: (id: string) => void; preview: boolean;
+export function WorkloadTimeline({ jobs, decisions, currentSlot, selectedId, onSelect }: {
+  jobs: Job[]; decisions: Decision[]; currentSlot: number; selectedId: string | null; onSelect: (id: string) => void;
 }) {
   const timeline = packedTimeline(jobs.map(job => ({ job, decision: latestDecision(decisions, job.id, currentSlot) })), currentSlot);
   const position = (slot: number) => (slot - timeline.origin) / (timeline.limit - timeline.origin) * 100;
@@ -60,7 +60,7 @@ export function WorkloadTimeline({ jobs, decisions, currentSlot, selectedId, onS
     };
   }
   return <section aria-labelledby="timeline-heading">
-    <div className="panel-heading"><h2 id="timeline-heading">Workload timeline</h2><span className="tag">{preview ? "Example plans" : "Planned windows"}</span></div>
+    <div className="panel-heading"><h2 id="timeline-heading">Workload timeline</h2><span className="tag">{"Planned windows"}</span></div>
     <div className="timeline-legend"><span><i className="legend-execution" />Planned execution</span><span><i className="legend-deadline deadline-dot-key" />Deadline</span><span>Solid line: now · slot {currentSlot}</span><span>Hover or focus for details · select a task for its full plan</span></div>
     {!jobs.length ? <div className="empty"><h3>No workloads to map</h3><p>Add a workload to see its deadline here. Execution bars appear when a plan is supplied.</p></div> : <>
       <div className="packed-scroll" role="region" aria-label="Compact workload timeline" tabIndex={0}>
@@ -79,7 +79,7 @@ export function WorkloadTimeline({ jobs, decisions, currentSlot, selectedId, onS
     <div className="panel-footer">Only overlapping execution windows use extra lanes. Hover or focus a coral dot to inspect its deadline and tasks. Bars show supplied plans.</div>
     {hover && createPortal(<div ref={card} id={hoverId} className="timeline-hover" role="region" aria-label="Timeline workload details" tabIndex={0} style={{ left: hover.left, top: hover.top, bottom: hover.bottom, maxHeight: hover.maxHeight }} onMouseEnter={keepOpen} onMouseLeave={closeSoon} onFocus={keepOpen} onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget as Node | null)) closeSoon(); }}>
       {hover.jobs.map(job => { const decision = latestDecision(decisions, job.id, currentSlot); return <div className="timeline-hover-job" key={job.id}>
-        <h3>{job.name}</h3><p className="muted">{job.id} · {job.status} · {preview ? "Example" : "Portfolio workload"}</p>
+        <h3>{job.name}</h3><p className="muted">{job.id} · {job.status} · {"Portfolio workload"}</p>
         <dl><div><dt>Hardware</dt><dd>{job.resourceUnits} × {jobHardware(job)}</dd></div><div><dt>Duration</dt><dd>{job.durationSlots}h</dd></div><div><dt>Deadline</dt><dd>Slot {job.deadlineSlot}</dd></div><div><dt>Planned window</dt><dd>{decision?.plannedStartSlot != null && decision.plannedEndSlot != null ? `${decision.plannedStartSlot}–${decision.plannedEndSlot}` : "Unavailable"}</dd></div><div><dt>Deadline buffer</dt><dd>{deadlineBuffer(job.deadlineSlot, decision?.plannedEndSlot ?? null)}</dd></div><div><dt>Budget</dt><dd>{job.maxBudgetUsd === null ? "No limit" : `$${job.maxBudgetUsd.toFixed(2)}`}</dd></div><div><dt>Projected cost</dt><dd>{decision?.projectedCostUsd == null ? "Unavailable" : `$${decision.projectedCostUsd.toFixed(2)}`}</dd></div><div><dt>Region</dt><dd>{decision?.region ?? "Not selected"}</dd></div></dl>
         <p className="muted">Allowed regions: {job.allowedRegions.join(", ")}</p>
         <p>{decision ? `${decision.action}: ${decision.explanation}` : "No scheduling decision supplied."}</p>

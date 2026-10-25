@@ -1,0 +1,381 @@
+{
+  "disclosure": "SELECTED SUCCESS EXAMPLE: chosen retrospectively from the 27-case legacy flexible-workload suite because ML won. Observed prices; simulated jobs and capacity. Reused evaluation period, not held-out evidence or general savings. Uses LEGACY waiting, not the active CAUTIOUS policy. Full-suite results remain in docs/FLEXIBLE_WORKLOAD_EXPERIMENT.md.",
+  "selectedCaseId": "20261015T00-flexible-seed-44",
+  "sourceScenario": "data\\processed\\flexible-workload-legacy-001\\scenarios\\20261015T00-flexible-seed-44.json",
+  "optimizerConfig": {
+    "waitingPolicy": "LEGACY",
+    "minWaitSavingsUsdPerHour": 0.01,
+    "minWaitSavingsFractionPerHour": 0.02,
+    "maxSpeculativeWaitSlots": 1,
+    "startupCostUsd": 0.0,
+    "transferCostUsd": 0.0,
+    "safetyBufferSlots": 0,
+    "carbonPriceUsdPerKg": 0.0,
+    "portfolioResourceLimit": null
+  },
+  "reproducible": true,
+  "fullReplayStatesIdentical": true,
+  "strategies": [
+    {
+      "strategy": "FIFO",
+      "modelVersions": [],
+      "totals": {
+        "computeSpendUsd": 4.8115,
+        "startupCostUsd": 0.0,
+        "transferCostUsd": 0.0,
+        "carbonCostUsd": 0.0,
+        "recoveryCostUsd": 0.0,
+        "totalSpendUsd": 4.8115,
+        "completedJobs": 14,
+        "failedJobs": 0,
+        "infeasibleJobs": 0,
+        "pendingJobs": 0,
+        "runningJobs": 0,
+        "unfinishedJobs": 0,
+        "missedDeadlines": 0
+      }
+    },
+    {
+      "strategy": "CHEAPEST_NOW",
+      "modelVersions": [],
+      "totals": {
+        "computeSpendUsd": 4.8115,
+        "startupCostUsd": 0.0,
+        "transferCostUsd": 0.0,
+        "carbonCostUsd": 0.0,
+        "recoveryCostUsd": 0.0,
+        "totalSpendUsd": 4.8115,
+        "completedJobs": 14,
+        "failedJobs": 0,
+        "infeasibleJobs": 0,
+        "pendingJobs": 0,
+        "runningJobs": 0,
+        "unfinishedJobs": 0,
+        "missedDeadlines": 0
+      }
+    },
+    {
+      "strategy": "OPTIMIZER_WITH_NAIVE_FORECAST",
+      "modelVersions": [
+        "integration-persistence-v1"
+      ],
+      "totals": {
+        "computeSpendUsd": 4.8115,
+        "startupCostUsd": 0.0,
+        "transferCostUsd": 0.0,
+        "carbonCostUsd": 0.0,
+        "recoveryCostUsd": 0.0,
+        "totalSpendUsd": 4.8115,
+        "completedJobs": 14,
+        "failedJobs": 0,
+        "infeasibleJobs": 0,
+        "pendingJobs": 0,
+        "runningJobs": 0,
+        "unfinishedJobs": 0,
+        "missedDeadlines": 0
+      }
+    },
+    {
+      "strategy": "OPTIMIZER_WITH_ML",
+      "modelVersions": [
+        "lightgbm-price-l1-v1-gpu-734be7a557de"
+      ],
+      "totals": {
+        "computeSpendUsd": 4.7819,
+        "startupCostUsd": 0.0,
+        "transferCostUsd": 0.0,
+        "carbonCostUsd": 0.0,
+        "recoveryCostUsd": 0.0,
+        "totalSpendUsd": 4.7819,
+        "completedJobs": 14,
+        "failedJobs": 0,
+        "infeasibleJobs": 0,
+        "pendingJobs": 0,
+        "runningJobs": 0,
+        "unfinishedJobs": 0,
+        "missedDeadlines": 0
+      }
+    }
+  ],
+  "comparisons": [
+    {
+      "strategy": "OPTIMIZER_WITH_ML",
+      "baseline": "FIFO",
+      "comparable": true,
+      "reasonCode": "COMPARABLE",
+      "explanation": "Completed workloads and lifecycle/deadline outcomes match; totals include failed work.",
+      "baselineSpendUsd": 4.8115,
+      "strategySpendUsd": 4.7819,
+      "costDifferenceUsd": 0.0296,
+      "savingsUsd": 0.0296,
+      "savingsPercent": 0.615193,
+      "sameCompletedJobs": true,
+      "sameOutcomes": true,
+      "allJobsCompleted": true
+    },
+    {
+      "strategy": "OPTIMIZER_WITH_ML",
+      "baseline": "CHEAPEST_NOW",
+      "comparable": true,
+      "reasonCode": "COMPARABLE",
+      "explanation": "Completed workloads and lifecycle/deadline outcomes match; totals include failed work.",
+      "baselineSpendUsd": 4.8115,
+      "strategySpendUsd": 4.7819,
+      "costDifferenceUsd": 0.0296,
+      "savingsUsd": 0.0296,
+      "savingsPercent": 0.615193,
+      "sameCompletedJobs": true,
+      "sameOutcomes": true,
+      "allJobsCompleted": true
+    },
+    {
+      "strategy": "OPTIMIZER_WITH_ML",
+      "baseline": "OPTIMIZER_WITH_NAIVE_FORECAST",
+      "comparable": true,
+      "reasonCode": "COMPARABLE",
+      "explanation": "Completed workloads and lifecycle/deadline outcomes match; totals include failed work.",
+      "baselineSpendUsd": 4.8115,
+      "strategySpendUsd": 4.7819,
+      "costDifferenceUsd": 0.0296,
+      "savingsUsd": 0.0296,
+      "savingsPercent": 0.615193,
+      "sameCompletedJobs": true,
+      "sameOutcomes": true,
+      "allJobsCompleted": true
+    }
+  ],
+  "jobComparisons": [
+    {
+      "jobId": "historical-t4-000",
+      "arrivalSlot": 168,
+      "durationSlots": 2,
+      "deadlineSlot": 192,
+      "fifoChargedSlots": [
+        168,
+        169
+      ],
+      "mlChargedSlots": [
+        187,
+        188
+      ],
+      "fifoComputeUsd": 0.1892,
+      "mlComputeUsd": 0.1816,
+      "savingsUsd": 0.0076
+    },
+    {
+      "jobId": "historical-a10g-000",
+      "arrivalSlot": 168,
+      "durationSlots": 1,
+      "deadlineSlot": 192,
+      "fifoChargedSlots": [
+        168
+      ],
+      "mlChargedSlots": [
+        170
+      ],
+      "fifoComputeUsd": 0.3382,
+      "mlComputeUsd": 0.3404,
+      "savingsUsd": -0.0022
+    },
+    {
+      "jobId": "historical-t4-004",
+      "arrivalSlot": 172,
+      "durationSlots": 3,
+      "deadlineSlot": 196,
+      "fifoChargedSlots": [
+        172,
+        173,
+        174
+      ],
+      "mlChargedSlots": [
+        184,
+        185,
+        186
+      ],
+      "fifoComputeUsd": 0.2801,
+      "mlComputeUsd": 0.2745,
+      "savingsUsd": 0.0056
+    },
+    {
+      "jobId": "historical-a10g-004",
+      "arrivalSlot": 172,
+      "durationSlots": 2,
+      "deadlineSlot": 196,
+      "fifoChargedSlots": [
+        172,
+        173
+      ],
+      "mlChargedSlots": [
+        172,
+        173
+      ],
+      "fifoComputeUsd": 0.6808,
+      "mlComputeUsd": 0.6808,
+      "savingsUsd": 0.0
+    },
+    {
+      "jobId": "historical-t4-008",
+      "arrivalSlot": 176,
+      "durationSlots": 3,
+      "deadlineSlot": 200,
+      "fifoChargedSlots": [
+        176,
+        177,
+        178
+      ],
+      "mlChargedSlots": [
+        190,
+        191,
+        192
+      ],
+      "fifoComputeUsd": 0.2787,
+      "mlComputeUsd": 0.272,
+      "savingsUsd": 0.0067
+    },
+    {
+      "jobId": "historical-a10g-008",
+      "arrivalSlot": 176,
+      "durationSlots": 1,
+      "deadlineSlot": 200,
+      "fifoChargedSlots": [
+        176
+      ],
+      "mlChargedSlots": [
+        176
+      ],
+      "fifoComputeUsd": 0.3404,
+      "mlComputeUsd": 0.3404,
+      "savingsUsd": 0.0
+    },
+    {
+      "jobId": "historical-t4-012",
+      "arrivalSlot": 180,
+      "durationSlots": 3,
+      "deadlineSlot": 204,
+      "fifoChargedSlots": [
+        180,
+        181,
+        182
+      ],
+      "mlChargedSlots": [
+        193,
+        194,
+        195
+      ],
+      "fifoComputeUsd": 0.2787,
+      "mlComputeUsd": 0.2712,
+      "savingsUsd": 0.0075
+    },
+    {
+      "jobId": "historical-a10g-012",
+      "arrivalSlot": 180,
+      "durationSlots": 1,
+      "deadlineSlot": 204,
+      "fifoChargedSlots": [
+        180
+      ],
+      "mlChargedSlots": [
+        180
+      ],
+      "fifoComputeUsd": 0.3448,
+      "mlComputeUsd": 0.3448,
+      "savingsUsd": 0.0
+    },
+    {
+      "jobId": "historical-t4-016",
+      "arrivalSlot": 184,
+      "durationSlots": 1,
+      "deadlineSlot": 208,
+      "fifoChargedSlots": [
+        184
+      ],
+      "mlChargedSlots": [
+        189
+      ],
+      "fifoComputeUsd": 0.0915,
+      "mlComputeUsd": 0.0908,
+      "savingsUsd": 0.0007
+    },
+    {
+      "jobId": "historical-a10g-016",
+      "arrivalSlot": 184,
+      "durationSlots": 1,
+      "deadlineSlot": 208,
+      "fifoChargedSlots": [
+        184
+      ],
+      "mlChargedSlots": [
+        184
+      ],
+      "fifoComputeUsd": 0.3448,
+      "mlComputeUsd": 0.3448,
+      "savingsUsd": 0.0
+    },
+    {
+      "jobId": "historical-t4-020",
+      "arrivalSlot": 188,
+      "durationSlots": 1,
+      "deadlineSlot": 212,
+      "fifoChargedSlots": [
+        188
+      ],
+      "mlChargedSlots": [
+        206
+      ],
+      "fifoComputeUsd": 0.0908,
+      "mlComputeUsd": 0.0881,
+      "savingsUsd": 0.0027
+    },
+    {
+      "jobId": "historical-a10g-020",
+      "arrivalSlot": 188,
+      "durationSlots": 3,
+      "deadlineSlot": 212,
+      "fifoChargedSlots": [
+        188,
+        189,
+        190
+      ],
+      "mlChargedSlots": [
+        201,
+        202,
+        203
+      ],
+      "fifoComputeUsd": 1.0323,
+      "mlComputeUsd": 1.0401,
+      "savingsUsd": -0.0078
+    },
+    {
+      "jobId": "historical-t4-024",
+      "arrivalSlot": 192,
+      "durationSlots": 2,
+      "deadlineSlot": 216,
+      "fifoChargedSlots": [
+        192,
+        193
+      ],
+      "mlChargedSlots": [
+        214,
+        215
+      ],
+      "fifoComputeUsd": 0.1808,
+      "mlComputeUsd": 0.172,
+      "savingsUsd": 0.0088
+    },
+    {
+      "jobId": "historical-a10g-024",
+      "arrivalSlot": 192,
+      "durationSlots": 1,
+      "deadlineSlot": 216,
+      "fifoChargedSlots": [
+        192
+      ],
+      "mlChargedSlots": [
+        193
+      ],
+      "fifoComputeUsd": 0.3404,
+      "mlComputeUsd": 0.3404,
+      "savingsUsd": 0.0
+    }
+  ]
+}

@@ -49,6 +49,8 @@ def test_multi_gpu_job_persistence_scheduling_and_selected_model_reservation(tmp
 
 def test_replay_policies_all_reserve_one_acceptable_gpu_model(tmp_path):
     rows = [quote(slot, model, cap) for slot in range(4) for model, cap in [("A100", 1), ("H100", 2)]]
+    for row in rows:
+        row.price_usd_per_unit_hour = 3 if row.gpu_type == 'H100' else 1
     scenario = ReplayScenario(id="alternatives", description="SIMULATED integration test", origin_utc=NOW,
         end_slot=4, jobs=[JobCreate.model_validate(workload())], market=rows)
     client = TestClient(create_app(tmp_path / "replay.sqlite3", replay_scenarios={"alternatives": scenario}, clock=lambda: NOW, tick_interval_seconds=0))
@@ -60,8 +62,28 @@ def test_replay_policies_all_reserve_one_acceptable_gpu_model(tmp_path):
             assert run["jobs"][0]["status"] == "RUNNING", run
             assert run["reservations"][0]["gpuType"] == "H100", run
             assert run["reservations"][0]["resourceUnits"] == 2
+    assert client.get('/api/metrics?scope=REPLAY').status_code == 200
     result = client.post("/api/replay/step", json={"slots": 3})
     assert result.status_code == 200
     for run in result.json()["strategyStates"]:
         if run["status"] == "ACTIVE":
             assert run["jobs"][0]["status"] == "COMPLETED", run
+    metrics = client.get('/api/metrics?scope=REPLAY')
+    assert metrics.status_code == 200, metrics.text
+    for run in metrics.json()['strategies']:
+        if run['status'] == 'ACTIVE':
+            assert run['totals']['totalSpendUsd'] == 12
+
+
+def test_cautious_deployment_config_reaches_live_and_replay_without_billing_penalties(tmp_path, monkeypatch):
+    monkeypatch.setenv('COMPUTE_WAITING_POLICY', 'CAUTIOUS')
+    app = create_app(tmp_path / 'cautious.sqlite3', market_source=MemoryMarketSource([quote(0, 'A100', 2)]),
+        clock=lambda: NOW, tick_interval_seconds=0)
+    client = TestClient(app)
+    assert app.state.engine.config.waiting_policy == app.state.replay.config.waiting_policy == 'CAUTIOUS'
+    payload = {**workload(), 'durationSlots': 1, 'deadlineSlot': 6, 'gpuType': 'A100', 'allowedGpuTypes': ['A100']}
+    assert client.post('/api/jobs', json=payload).status_code == 201
+    result = client.post('/api/optimize', json={'currentSlot': 0, 'executionMode': 'PAPER'})
+    assert result.status_code == 200, result.text
+    assert result.json()[0]['reasonCode'] == 'CAUTIOUS_WAITING_POLICY'
+    assert result.json()[0]['projectedCostUsd'] == 2

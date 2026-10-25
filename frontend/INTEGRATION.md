@@ -1,3 +1,26 @@
+# Current frontend mode
+
+Historical replay integration is now verified with the user-supplied original
+hourly dataset: the server catalog exposes Historical T4/A10G, reset preloads
+168 prior hours, and the UI reports progress over the 24 scored hours. The browser
+shows genuine ML usage and observed-price/simulated-capacity provenance. Four
+policies complete the same ten jobs; the actual frontend-proxy metrics exactly
+match the saved repeatable benchmark. ML costs $0.0043 more in the fixed window.
+See [historical replay](../docs/HISTORICAL_REPLAY.md). Checks: 179 backend engine/API
+tests, 42 frontend tests and production build passed. No cloud execution occurred.
+
+Design preview and its frontend fixtures have been removed at the user's request.
+The app now connects directly to FastAPI, submits jobs only to the backend, and
+shows explicit service errors. Backend-supplied simulations remain labeled.
+References to mode selection and preview isolation in the historical audit below
+describe earlier versions of the interface.
+
+Verification: 41 frontend tests passed (three obsolete preview-storyboard tests
+removed), production build passed, and a browser reload automatically loaded the
+backend portfolio with no source selector. The Add job dialog showed the backend
+task catalog and was closed without submitting a job. The preview font license
+notice is retained alongside the wordmark asset.
+
 # Current ML merge integration
 
 Selected LightGBM artifacts are now present. Use `./dev --ml`, then select ML in

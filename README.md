@@ -162,8 +162,8 @@ baseline benchmark, current UI/local execution checks and final demo work.
 | Milestone | Status / completion check |
 | --- | --- |
 | 1. Automatic live model inputs | Complete for current T4/A10G demo pools: automatic backfill and persisted rolling history; 168/168 prior hours per pool and 12 genuine live forecasts verified. Gap/hour rollover covered by tests; real restart reused saved inputs without new history fetches. |
-| 2. Meaningful ML replay | Pending: matching historical series, warm-up and valid model-availability dates, with clearly simulated capacity. The capacity-pressure fixture alone does not establish ML value. |
-| 3. Saved fair benchmark | Pending: all four policies on identical inputs, with scenario/seed/configuration, spend, completions, failed/infeasible/missed/unfinished jobs and fallback versions saved. Disclose experimental/reused evaluation periods; fresh held-out evaluation is required for new accuracy claims. |
+| 2. Meaningful ML replay | Implemented and verified on imported observed T4/A10G prices: 168-hour warm-up, valid dates, genuine ML through the production engine, simulated jobs/capacity and browser-accessible scenario. See [historical replay](docs/HISTORICAL_REPLAY.md). |
+| 3. Saved fair benchmark | Complete: preserved [legacy 27-case benchmark](docs/FAIR_BENCHMARK.md) and a separate [cautious-waiting evaluation](docs/CAUTIOUS_WAITING.md). On the new grid, cautious ML completes 444/468 versus legacy ML's 408/468, matching baseline outcomes and spend. No incremental ML savings claimed; all runs and audits retained. |
 | 4. Current UI/local execution check | Pending: run an allowlisted Docker CPU task through the current UI and verify logs, completion/exit code and failures. Earlier backend smoke evidence is separate. |
 | 5. Browser walkthrough | Pending: verify model inspection, workload/decision details, replay/reset/shocks, policy comparison and explicit loading/error states. |
 | 6. Three-minute demo rehearsal | Pending: reliable reset → predict → decide → explain → outcome → baseline comparison, plus a backup recording and honest provenance labels. |
@@ -172,3 +172,8 @@ Actual AWS provisioning is outside this demo scope. Capacity remains explicitly
 simulated in replay; Docker remains LOCAL. Passing tests does not establish cloud
 capacity, real savings or live model quality. [AGENTS.md](AGENTS.md) defines
 ownership and design rules.
+
+The subsequent [flexible/mixed-deadline experiment](docs/FLEXIBLE_WORKLOAD_EXPERIMENT.md)
+adds 3/12/24-hour completion windows and a fixed three-policy grid. Both cautious
+variants match the baselines; a separately labeled hindsight bound finds little
+price-only opportunity in these pools. All 81 cases and losses are retained.

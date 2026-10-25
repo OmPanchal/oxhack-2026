@@ -2,9 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import ts from "typescript";
-// The preview module is irrelevant to explicit backend reads; keep this loader independent of JSON module flags.
-const source = (await readFile(new URL("../lib/api.ts", import.meta.url), "utf8"))
-  .replace('import { mockData } from "./mock";', 'const mockData = { previewSentinel: true };');
+const source = await readFile(new URL("../lib/api.ts", import.meta.url), "utf8");
 const js = ts.transpileModule(source, { compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.ESNext } }).outputText;
 const { api, loadBackendTerminal, ApiError } = await import(`data:text/javascript;base64,${Buffer.from(js).toString("base64")}`);
 

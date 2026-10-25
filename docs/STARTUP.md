@@ -70,7 +70,14 @@ access to other regions. Verify access before changing it.
 The launcher sets live AWS mode, a two-second backend polling interval and the
 local frontend proxy. It clears inherited JSON-source and UTC-origin overrides.
 Automatic local Docker dispatch is disabled. Existing jobs/database are retained;
-an explicit `COMPUTE_DB_PATH` remains supported. The launcher does not change the
+an explicit `COMPUTE_DB_PATH` remains supported.
+
+The launcher defaults to `COMPUTE_WAITING_POLICY=CAUTIOUS`, respecting an explicit
+override. Direct FastAPI startup requires setting this variable to use the new
+policy; existing replay sessions must be reset after changing policy. See
+[cautious waiting](CAUTIOUS_WAITING.md).
+
+The launcher does not change the
 persisted forecast mode. `--ml` validates the selected artifacts, enables the
 provider for engine/replay and uses fixed instance/AZ live GPU pools. Plain `./dev`
 disables that provider and retains the regional price index. Select ML in the UI

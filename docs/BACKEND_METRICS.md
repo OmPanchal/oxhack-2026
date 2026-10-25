@@ -50,6 +50,16 @@ This intentionally retains small compute prices rather than rounding every hour
 to cents. Optimizer projections remain estimates; the earlier 1e-12 USD budget
 tolerance only suppresses floating-point noise in those feasibility checks.
 
+### Selected GPU identity in replay charges
+
+Replay charges retain the allocated `gpuType`, including for jobs with several
+acceptable models. Reconciliation uses that selected pool after reservations are
+released, checks hardware compatibility, and prohibits model changes during a
+non-preemptive run. Older single-model charges can use the job's singular model.
+Older alternative-model charges without allocation identity require a replay
+reset; the backend does not infer a GPU model from prices. Restart the backend
+after updating, then reset the affected replay. Live jobs are unaffected by reset.
+
 ## Comparisons and honest savings
 
 The six ordered comparisons are cheapest-now versus FIFO, naive optimizer versus

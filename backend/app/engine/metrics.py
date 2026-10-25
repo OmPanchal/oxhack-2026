@@ -6,7 +6,7 @@ from typing import Callable
 
 from app.api.metrics_schemas import (JobProjection, LifecycleCounts, LiveMetrics, ModelEvaluation, ModelMetrics,
     PolicyComparison, ReplayJobMetrics, ReplayMetrics, StrategyMetrics)
-from app.api.replay_schemas import ReplaySession, StrategyRun
+from app.api.replay_schemas import ReplaySession, StrategyRun, replay_provenance
 from app.api.schemas import Decision, Job
 from app.database import Database
 from app.engine.accounting import reconcile, replay_totals
@@ -92,6 +92,7 @@ def replay_metrics(session: ReplaySession | None) -> ReplayMetrics:
                    for index in range(len(summaries)) for base in range(index)]
     return ReplayMetrics(status="COMPLETED" if completed else "IN_PROGRESS", scenario_id=session.scenario.id,
         origin_utc=session.scenario.origin_utc, as_of_slot=session.current_slot, end_slot=session.scenario.end_slot,
+        start_slot=session.scenario.start_slot, provenance=replay_provenance(session),
         strategies=summaries, comparisons=comparisons)
 
 

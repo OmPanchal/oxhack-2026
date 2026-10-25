@@ -1,8 +1,8 @@
 import type { PlotPoint } from "@/lib/market";
 import { bounds, price, probability, slotLabel } from "@/lib/market";
 
-export function ForecastInspector({ point, points, currentSlot, preview, onSelect }: {
-  point?: PlotPoint; points: PlotPoint[]; currentSlot: number; preview: boolean; onSelect: (slot: number) => void;
+export function ForecastInspector({ point, points, currentSlot, onSelect }: {
+  point?: PlotPoint; points: PlotPoint[]; currentSlot: number; onSelect: (slot: number) => void;
 }) {
   const forecast = point?.forecast;
   const interval = forecast ? bounds(forecast) : null;
@@ -26,7 +26,7 @@ export function ForecastInspector({ point, points, currentSlot, preview, onSelec
           <div className="wide-detail"><dt>Source</dt><dd>{point.quote?.source ?? "Unknown"}</dd></div>
         </>}
       </dl>
-      <p className="panel-footer">{preview ? "Hand-authored example. Ranges are illustrative and uncalibrated." : forecast ? "Bounds and probabilities are supplied by the backend. Coverage/calibration is not provided." : "Capacity is a snapshot, not a reservation."}</p>
+      <p className="panel-footer">{forecast ? "Bounds and probabilities are supplied by the backend. Coverage/calibration is not provided." : "Capacity is a snapshot, not a reservation."}</p>
     </> : <p className="empty">Select a region with quotes or forecasts to inspect a slot.</p>}
   </section>;
 }

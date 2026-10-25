@@ -1,5 +1,15 @@
 # Milestone 3: constrained portfolio optimizer
 
+## Cautious waiting update
+
+The optional `OptimizerConfig.waitingPolicy = "CAUTIOUS"` adds unbilled planning
+preferences for minimum per-hour savings, arrival-anchored slack preservation,
+and keeping capacity busy with compatible queued work. Actual projected costs,
+budget checks and realized charges exclude these preferences. Candidate windows
+and admission ordering remain intact, so forced waits and portfolio constraints
+still work. The legacy policy remains available. See
+[rules, activation and paired evaluation](CAUTIOUS_WAITING.md).
+
 The optimizer and atomic scheduling service are implemented. This milestone used
 constructed forecast inputs; it does not train models, execute containers, run
 historical replay, or implement autonomous ticks. POST optimize returned 501 at

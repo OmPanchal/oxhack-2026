@@ -1,10 +1,8 @@
-import { mockData } from "./mock";
 import type { Decision, Forecast, Health, Job, JobCreate, MarketSnapshot, OptimizeRequest,
   ReplayResetRequest, ReplayState, ReplayStepRequest, ShockRequest, TerminalData } from "./types";
 import type { DecisionDetail, EngineState, LocalExecution, MarketCapabilities, TaskCatalog,
-  ReplayMetrics, LiveMetrics, ModelMetrics, ModelStatus, ReplayShock } from "./backend-types";
+  ReplayMetrics, LiveMetrics, ModelMetrics, ModelStatus, ReplayShock, ReplayScenarioOption } from "./backend-types";
 
-export const useMocks = process.env.NEXT_PUBLIC_USE_MOCKS === "true";
 const baseUrl = (process.env.NEXT_PUBLIC_API_BASE_URL ?? "").replace(/\/$/, "");
 export class ApiError extends Error {
   constructor(public status: number, public code: string | null, message: string) { super(message); this.name = "ApiError"; }
@@ -35,6 +33,7 @@ export const api = {
   pause: () => request<EngineState>("/engine/pause", {}), resume: () => request<EngineState>("/engine/resume", {}),
   capabilities: () => request<MarketCapabilities>("/capabilities"),
   replayState: () => request<ReplayState>("/replay/state"),
+  replayScenarios: () => request<ReplayScenarioOption[]>("/replay/scenarios"),
   resetReplay: (input: ReplayResetRequest = {}) => request<ReplayState>("/replay/reset", input),
   stepReplay: (input: ReplayStepRequest = {}) => request<ReplayState>("/replay/step", input),
   shock: (input: ShockRequest) => request<ReplayShock>("/replay/shock", input),
@@ -53,16 +52,14 @@ export async function loadBackendTerminal(): Promise<TerminalData> {
   async function optional<T>(label: string, read: () => Promise<T>, fallback: T): Promise<T> {
     try { return await read(); } catch (error) { errors.push(`${label}: ${error instanceof Error ? error.message : String(error)}`); return fallback; }
   }
-  const [market, forecasts, decisions, replay, capabilities, decisionDetails, taskCatalog, executions, replayMetrics, liveMetrics, modelMetrics, modelStatus] = await Promise.all([
+  const [market, forecasts, decisions, replay, capabilities, decisionDetails, taskCatalog, executions, replayMetrics, liveMetrics, modelMetrics, modelStatus, replayScenarios] = await Promise.all([
     optional("Market", api.market, []), optional("Forecasts", api.forecasts, []), optional("Decisions", api.decisions, []),
     optional<ReplayState>("Replay", api.replayState, { status: "NOT_IMPLEMENTED", currentSlot: 0, seed: 42, strategies: [] }),
     optional("Capabilities", api.capabilities, undefined), optional("Decision details", api.decisionDetails, []),
     optional("Task catalog", api.taskCatalog, undefined), optional("Executions", api.executions, []),
     optional("Replay metrics", api.metrics, undefined), optional("Portfolio metrics", api.liveMetrics, undefined), optional("Model metrics", api.modelMetrics, undefined),
     optional("Model status", api.modelStatus, undefined),
+    optional("Replay scenarios", api.replayScenarios, undefined),
   ]);
-  return { engine, jobs, market, forecasts, decisions, replay, capabilities, decisionDetails, taskCatalog, executions, replayMetrics, liveMetrics, modelMetrics, modelStatus, errors };
-}
-export async function loadTerminal(): Promise<TerminalData> {
-  return useMocks ? structuredClone(mockData) : loadBackendTerminal();
+  return { engine, jobs, market, forecasts, decisions, replay, capabilities, decisionDetails, taskCatalog, executions, replayMetrics, liveMetrics, modelMetrics, modelStatus, replayScenarios, errors };
 }

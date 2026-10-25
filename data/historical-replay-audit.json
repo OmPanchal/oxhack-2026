@@ -1,0 +1,12 @@
+{
+  "status": "VERIFIED",
+  "datasetSha256": "618ed38329ec8b4934c7fd40a0e77e61b3dcd9d3850b2df87299af5827903a36",
+  "priceRowsVerified": 384,
+  "policyExecutionsVerified": 40,
+  "chargedHoursVerified": 68,
+  "identicalCompletedJobIds": true,
+  "repeatedReplayStatesIdentical": true,
+  "allScoredMlVersionsGenuine": true,
+  "scope": "Observed historical prices; simulated jobs/capacity; previously evaluated dates; no cloud spend or fresh accuracy claim",
+  "frontendProxyMetricsMatchSavedBenchmark": true
+}

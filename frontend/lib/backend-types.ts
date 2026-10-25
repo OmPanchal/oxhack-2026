@@ -1,5 +1,13 @@
 import type { Decision, ExecutionMode, Forecast, Job, JobCreate, ResourceType, Strategy } from "./types";
 
+export type ReplayProvenance = {
+  priceDataKind: "OBSERVED" | "OBSERVED_WITH_SIMULATED_SHOCKS"; capacityDataKind: "SIMULATED"; workloadDataKind: "SIMULATED";
+  datasetSha256: string; evaluationStatus: "REUSED_EVALUATION_PERIOD"; sourcePools: string[]; notes: string;
+};
+export type ReplayScenarioOption = {
+  id: string; description: string; available: boolean; reason: string | null; startSlot: number; endSlot: number | null;
+};
+
 export type ModelStatus = {
   status: "READY" | "UNAVAILABLE"; reason?: string; engineEnabled: boolean; engineForecastMode: "NAIVE" | "ML";
   modelFamily?: string; lookbackHours?: number; originUtc?: string; validationStatus?: string;
@@ -50,6 +58,7 @@ export type ReplayShock = { kind: "PRICE_SPIKE" | "CAPACITY_SHORTAGE" | "INTERRU
   slot: number; region?: string | null; magnitude: number; dataKind: "SIMULATED"; durationSlots?: number;
   resourceType?: ResourceType | null; gpuType?: string | null; jobId?: string | null; job?: JobCreate | null; eventId: string };
 export type ReplayMetrics = { scope: "REPLAY"; status: "NOT_INITIALIZED" | "IN_PROGRESS" | "COMPLETED";
+  startSlot?: number; provenance?: ReplayProvenance | null;
   executionMode: "SIMULATED"; costBasis: "SIMULATED_REALIZED"; dataKind: "SIMULATED";
   currency: "USD"; scenarioId: string | null; asOfSlot: number; endSlot: number | null;
   strategies: { strategy: Strategy; status: "ACTIVE" | "UNAVAILABLE" | "ERROR"; error: string | null;

@@ -1,0 +1,13 @@
+{
+  "status": "VERIFIED",
+  "caseCount": 27,
+  "datasetSha256": "618ed38329ec8b4934c7fd40a0e77e61b3dcd9d3850b2df87299af5827903a36",
+  "scenarioPriceRowsChecked": 10368,
+  "policyJobOutcomesChecked": 1872,
+  "policyExecutionsChecked": 1743,
+  "chargedHoursChecked": 3297,
+  "fullRepeatedStatesIdentical": true,
+  "engineCodeUnchangedAcrossCases": true,
+  "allScoredMlVersionsGenuine": true,
+  "scope": "Observed prices; simulated workloads/capacity; reused evaluation periods"
+}

@@ -51,24 +51,35 @@ class Example:
     features: dict[str, float | str]
 
 
+def _verified_rows(path: Path, expected_hash: str):
+    """Verify before decoding, then stream rows without retaining JSON payloads."""
+    with path.open("rb") as stream:
+        if hashlib.file_digest(stream, "sha256").hexdigest() != expected_hash:
+            raise ValueError("Hourly dataset checksum mismatch")
+        stream.seek(0)
+        digest = hashlib.sha256()
+        for line in stream:
+            digest.update(line)
+            if line.strip():
+                yield json.loads(line)
+        if digest.hexdigest() != expected_hash:
+            raise ValueError("Hourly dataset changed during reading; checksum mismatch")
+
+
 def load_prepared_dataset(directory: Path, *, allow_simulated: bool = False) -> PriceDataset:
     manifest = json.loads((directory / "manifest.json").read_text())
     if manifest.get("schemaVersion") != "hourly-price-data-v1" or manifest.get("slotDurationSeconds") != 3600:
         raise ValueError("Unsupported hourly dataset schema")
-    payload = (directory / "hourly-prices.jsonl").read_bytes()
-    fingerprint = hashlib.sha256(payload).hexdigest()
-    if fingerprint != manifest["sha256"]:
-        raise ValueError("Hourly dataset checksum mismatch")
+    fingerprint = manifest["sha256"]
     origin = timestamp_for_slot(manifest["originUtc"], 0)
     delta = utc(manifest["endUtc"]) - origin
     if delta <= timedelta(0) or delta % timedelta(hours=1):
         raise ValueError("Invalid hourly dataset window")
     end_slot = delta // timedelta(hours=1)
     groups, kinds = {}, set()
-    rows = [json.loads(line) for line in payload.splitlines() if line.strip()]
-    if not rows or len(rows) != manifest["rowCount"]:
-        raise ValueError("Empty dataset or incorrect row count")
-    for row in rows:
+    row_count = 0
+    for row in _verified_rows(directory / "hourly-prices.jsonl", fingerprint):
+        row_count += 1
         identity = SeriesIdentity.from_row(row)
         slot = row["slot"]
         if type(slot) is not int or not 0 <= slot < end_slot:
@@ -90,6 +101,8 @@ def load_prepared_dataset(directory: Path, *, allow_simulated: bool = False) -> 
             prices[slot] = None
         else:
             raise ValueError("Unknown or inconsistent price status")
+    if not row_count or row_count != manifest["rowCount"]:
+        raise ValueError("Empty dataset or incorrect row count")
     if len(kinds) != 1 or (kinds != {"OBSERVED"} and not allow_simulated):
         raise ValueError("Training requires observed prices; synthetic tests must opt in explicitly")
     for prices in groups.values():

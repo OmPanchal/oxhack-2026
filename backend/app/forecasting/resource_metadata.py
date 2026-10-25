@@ -48,6 +48,17 @@ def _hardware(raw: dict) -> dict:
     instance = _text(raw["InstanceType"], "InstanceType")
     vcpus = _positive_integer(raw["VCpuInfo"]["DefaultVCpus"], "DefaultVCpus")
     memory = _positive_integer(raw["MemoryInfo"]["SizeInMiB"], "SizeInMiB")
+    processor = raw.get("ProcessorInfo", {})
+    architectures = processor.get("SupportedArchitectures")
+    if architectures is not None:
+        if not isinstance(architectures, list) or not architectures or any(
+            not isinstance(value, str) or not value.strip() for value in architectures
+        ) or len(set(architectures)) != len(architectures):
+            raise ValueError("Invalid supported CPU architectures")
+        architectures = sorted(architectures)
+    manufacturer = processor.get("Manufacturer")
+    if manufacturer is not None:
+        manufacturer = _text(manufacturer, "Processor Manufacturer")
     for field in ("FpgaInfo", "InferenceAcceleratorInfo", "NeuronInfo"):
         if raw.get(field):
             raise ValueError(f"Unsupported accelerator mapping for {instance}: {field}")
@@ -72,6 +83,7 @@ def _hardware(raw: dict) -> dict:
         gpu_type = f"{manufacturer} {name}"
     units = gpu_count or vcpus
     return dict(instanceType=instance, vcpuCount=vcpus, memoryMiB=memory,
+                supportedArchitectures=architectures, processorManufacturer=manufacturer,
                 gpuCount=gpu_count, gpuType=gpu_type, gpuMemoryMiBPerDevice=gpu_memory,
                 resourceType="GPU" if gpu_count else "CPU", resourceUnitsPerInstance=units,
                 allocationGranularityUnits=units, unit="GPU-hour" if gpu_count else "vCPU-hour")

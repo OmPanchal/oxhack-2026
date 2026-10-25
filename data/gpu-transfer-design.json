@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "frozen-gpu-transfer-design-v1",
+  "status": "RETROSPECTIVE_REUSED_COHORT_NO_REFIT",
+  "resource": "GPU",
+  "startSlot": 1257,
+  "endSlotExclusive": 1560,
+  "originUtc": "2026-07-28T00:00:00Z",
+  "primaryMethod": "missing-pool-category",
+  "secondaryMethod": "mean-exact-instance-stockholm-proxies",
+  "methods": [
+    "persistence",
+    "missing-pool-category",
+    "mean-exact-instance-stockholm-proxies",
+    "multi-region-trained"
+  ],
+  "unknownPoolPolicy": "Primary: categorical pool value -1 (missing). Preserve actual observed price features and known GPU category.",
+  "proxyPolicy": "Secondary: average un-clipped predicted deltas across all trained Stockholm pools with the exact instance type; then rescale/add current price/clip once. Never choose a proxy using evaluation errors.",
+  "unseenHardwarePolicy": "GPU family absent from supported training identities uses persistence; do not conflate new hardware with new regions.",
+  "correctionWeight": 1.0,
+  "selectionPolicy": "No retraining, calibration, blend tuning, model selection or deployment from these scores.",
+  "oldModelSha256": "734be7a557defad2d6e3e7989c252b810568ea2b745faa2853ee241cfc7269c9",
+  "multiRegionModelSha256": "363de7df3f4b7f1e7885d3af1f2490388bed9cc4e358f6d75ebc722b15c7ef83",
+  "publicManifestSha256": "09b7fc171728ac29df51bfaed5c9508e05292378e2bfbdbf62bac476e8787f3b",
+  "referenceComparisonSha256": "a4b7ba2c73f932bc52db040812c11bb90838628c12aec2538ab74281011c2258",
+  "limitations": [
+    "Cohort previously scored; recipe selected using contemporaneous Stockholm outcomes, so not a fresh blind or operational replay test.",
+    "Diagnostic bypasses only the offline unsupported-pool guard. Backend guard, model weights and configuration remain unchanged."
+  ]
+}

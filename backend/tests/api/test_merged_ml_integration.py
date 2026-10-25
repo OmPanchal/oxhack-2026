@@ -20,12 +20,12 @@ def model():
 
 def history(current=291, *, kind='SIMULATED', source='SIMULATED integration test'):
     return [MarketSnapshot(slot=t, region='eu-north-1', resource_type='GPU', gpu_type='T4',
-        price_usd_per_unit_hour=.05 + ((t + 1500) % 17) * .0001,
+        price_usd_per_unit_hour=.05 + ((t + 1909) % 17) * .0001,
         available_units=1, source=source, data_kind=kind) for t in range(current - 168, current + 1)]
 
 
 def test_actual_model_flows_through_engine_with_rebased_clock_and_gpu_alias(model, tmp_path, monkeypatch):
-    origin = datetime.fromisoformat(model.origin_utc) + timedelta(hours=1500)
+    origin = datetime.fromisoformat(model.origin_utc) + timedelta(hours=1909)
     monkeypatch.setenv('COMPUTE_ORIGIN_UTC', origin.isoformat())
     rows = history()
     app = create_app(tmp_path / 'merged.sqlite3', forecast_service=model,
@@ -39,8 +39,8 @@ def test_actual_model_flows_through_engine_with_rebased_clock_and_gpu_alias(mode
     assert all(row['modelVersion'].startswith('lightgbm-price-l1-v1-gpu-') for row in forecasts)
     assert all(row['gpuType'] == 'T4' and row['generatedAtSlot'] == 291 for row in forecasts)
     assert [row['targetSlot'] for row in forecasts] == list(range(292, 298))
-    native = model.predict(ForecastRequest(current_slot=1791, history=[r.model_copy(update={
-        'slot': r.slot + 1500, 'gpu_type': 'NVIDIA T4'}) for r in rows]))
+    native = model.predict(ForecastRequest(current_slot=2200, history=[r.model_copy(update={
+        'slot': r.slot + 1909, 'gpu_type': 'NVIDIA T4'}) for r in rows]))
     assert [row['predictedPriceUsdPerUnitHour'] for row in forecasts] == pytest.approx(
         [r.predicted_price_usd_per_unit_hour for r in native])
     details = client.get('/api/decisions/details').json()
@@ -57,13 +57,13 @@ def test_actual_model_flows_through_engine_with_rebased_clock_and_gpu_alias(mode
 
 def test_regional_index_cannot_be_fed_to_fixed_az_model(model):
     request = ForecastRequest(current_slot=291, history=history(kind='OBSERVED', source='AWS EC2 OBSERVED PRICE INDEX; g4dn.xlarge; eu-north-1a'))
-    origin = datetime.fromisoformat(model.origin_utc) + timedelta(hours=1500)
+    origin = datetime.fromisoformat(model.origin_utc) + timedelta(hours=1909)
     rows = SelectedModelProvider(model).predict_at(request, origin)
     assert all(r.model_version == 'persistence-v1:fallback-source-identity-mismatch' for r in rows)
 
 
 def test_ml_replay_can_warm_up_from_fallback_to_actual_model(model, tmp_path):
-    origin = datetime.fromisoformat(model.origin_utc) + timedelta(hours=1791)
+    origin = datetime.fromisoformat(model.origin_utc) + timedelta(hours=2200)
     scenario = ReplayScenario(id='ml-warmup', description='SIMULATED ML integration, not evaluation',
         origin_utc=origin, end_slot=170, jobs=[JobCreate(id='late', name='late', arrival_slot=168,
             duration_slots=1, deadline_slot=170, resource_type='GPU', gpu_type='T4', resource_units=1,

@@ -33,13 +33,14 @@ class SelectedModelProvider:
             raise ValueError('Engine/model origins must align to whole hours')
         offset = int(delta)
         results = []
-        pools = {(r.region, r.resource_type, r.gpu_type) for r in request.history}
+        pools = {}
+        for row in request.history:
+            pools.setdefault((row.region, row.resource_type, row.gpu_type), []).append(row)
+        selections = {(s.region, s.resource_type, gpu_name(s.gpu_type)): s for s in self.service.selections.values()}
         for region, resource, gpu in sorted(pools, key=repr):
-            rows = [r for r in request.history if (r.region, r.resource_type, r.gpu_type) == (region, resource, gpu)]
+            rows = pools[(region, resource, gpu)]
             current = max(rows, key=lambda r: r.slot)
-            selection = next((s for s in self.service.selections.values()
-                              if s.region == region and s.resource_type == resource
-                              and gpu_name(s.gpu_type) == gpu_name(gpu)), None)
+            selection = selections.get((region, resource, gpu_name(gpu)))
             reason = None
             if current.slot != request.current_slot:
                 reason = 'stale-pool'

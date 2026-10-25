@@ -14,7 +14,7 @@
 
 ## Status and intended deliverable
 
-This is an implementation plan, not a results report. Numerical thresholds below are proposed acceptance targets, not achieved measurements. At the time of planning, the forecasting modules are scaffold placeholders; no trained model, forecasting benchmark, scheduling savings, or execution outcome is established by this document.
+This document preserves the original implementation plan and its proposed acceptance targets. The current implementation update below supersedes the historical scaffold status; measured forecasting results are linked separately and do not establish scheduling savings.
 
 Person 1's deliverable is a reproducible forecasting service providing 1–6-hour price predictions, uncertainty where supported, honest risk estimates, and model provenance. Evaluation must establish whether forecasts improve—or fail to improve—prediction accuracy and scheduling outcomes.
 
@@ -59,26 +59,73 @@ milestone descriptions and targets remain as the original plan.
   and shared request/response schemas are unchanged. Native weight/metadata
   checksums, fixed source-pool identity, UTC origin, model-selection availability,
   finite output, explicit fallbacks and stale/future/conflicting history checks
-  are enforced. The serving parity and latency evidence is in
-  [forecast-serving-validation.json](forecast-serving-validation.json).
-- **Step 16, backend handoff:** at the user's explicit request to connect the
-  backend, the integration owner composition in `main.py` now wires this service
-  through a thin `POST /api/forecasts` route, defaulting to ML. The existing GET
-  returns the latest generated forecasts. `forecastMode=NAIVE` remains available.
-  `/api/models/metrics` exposes the clock, model hashes, selected source identities
-  and verified evaluation metrics. This is the scoped API integration handoff;
-  optimizer, live market ingestion, replay, execution and frontend modules are
-  not implemented or changed by this integration.
+  are enforced. Current router parity and latency evidence is in
+  [best-model-serving-validation.json](best-model-serving-validation.json);
+  the original v1 measurement remains a historical record.
+- **Step 16, backend handoff:** integrated with the pulled operational backend
+  through its existing model loader and clock/source adapter. `./dev --ml` enables
+  ML for the engine; plain startup retains persistence. GET forecasts remain the
+  authoritative persisted engine output; explicit POST inference is isolated.
+  SQLite history/restart behavior, replay isolation, optimizer, Docker adapter and
+  frontend contracts are preserved. `/api/models/status` reports route-specific
+  hashes and source identities. `/api/models/metrics` correctly remains unavailable
+  for this exploratory selection rather than claiming disjoint held-out results.
 - **Steps 17 and 19:** evaluation reports, frozen selected weights, metadata,
   serving configuration and reproduction instructions are packaged. The original
   test and final extra day have now been evaluated; neither is untouched. No
   claim of a new blind test, guaranteed generalization or current-model scheduling
   savings follows from these forecast scores.
+- **Public regional-data augmentation:** five additional regions were imported
+  from Eric Pauley's pinned CC-BY-4.0 Zenodo archive without changing the AWS
+  account plan. The research dataset now has 353 pools across six regions. A
+  fixed-recipe candidate was trained on 2,203,776 examples: Stockholm CPU MAE
+  improves 0.87% versus the previous best, while GPU MAE worsens 2.71% on the same
+  October comparison period. New-region September results are retrospective
+  coverage diagnostics against incumbent persistence fallback. Candidates are
+  preserved with original experiment receipts. The serving router now selects the
+  augmented CPU model in every configured region, the original GPU model in
+  Stockholm, and the augmented GPU model in the five added regions. See the
+  [comparison and reproducibility record](public-region-comparison.md).
+- **Bounded policy experiment:** regional specialists and horizon-specific
+  persistence blending were selected from two earlier rolling windows and frozen
+  before later scoring. The selected router produced only small new-region gains
+  and regressed on Stockholm, so it was rejected as an overall replacement. The
+  conservative blend was essentially flat. Neither rejected policy is deployed.
+  See [the experiment and audit](regional-policy-experiment.md) and the
+  [reserved forward-evaluation protocol](regional-policy-forward-plan.json).
+  No fresh-date validation or deployment is claimed.
 - **Still open:** empirical interval calibration (Step 11), genuine labeled risk
-  evidence (Step 12; probabilities remain null), Person 2's production optimizer/
-  replay and the new model's scheduling ablation (Steps 13/18), frontend chart
+  evidence (Step 12; probabilities remain null), the new router's scheduling
+  ablation (Steps 13/18; the pulled optimizer/replay are implemented), frontend chart
   tracing and complete demo rehearsals (Steps 16/20–22). Previous offline scheduler
   comparisons used the earlier model and cannot be attributed to this one.
+
+- **Fixed router deployment:** v2 serving config verifies both native bundles and
+  selection-evidence checksums, selects 42 fixed source pools across six regions,
+  and leaves unsupported Stockholm B200 on explicit persistence. The historical
+  v1 config is retained for reproducibility. Routing was chosen using October
+  diagnostics, so it becomes available only at slot 2136 (25 October 00:00 UTC),
+  after all selection outcomes; earlier replay must fall back. This is a serving
+  implementation, not a new training run or an untouched accuracy test.
+- **Current verification:** 399 backend tests and 53 subtests passed (1 skip).
+  After expanding the fixture to one job per pool, all five affected expanded
+  integration tests passed again. Frontend type checking/tests and five launcher
+  tests passed. The earlier warm SIMULATED inference
+  p95 was 36.1 ms for nine Stockholm pools and 225.0 ms for all 42 pools, below
+  the proposed 250 ms target. These checks do not establish fresh accuracy.
+- **Expanded optimiser handoff:** the fixed-pool AWS reader now accepts CPU
+  sources with verified vCPU normalization and resolves public global AZ IDs via
+  AWS metadata within explicitly configured regions. Current and historical
+  inputs preserve the model's exact source identity; price/history errors are
+  reported per pool. The existing optimiser and API keys are preserved, including
+  independent CPU/GPU capacity pools and GPU alternatives. Unknown live capacity
+  remains unknown, so real allocation is not inferred from price observations.
+- **Expanded replay coverage:** `model-coverage` exercises all 42 configured
+  pools and six regions using clearly SIMULATED inputs and 168 earlier warmup
+  hours. Jobs arrive after warmup; future rows are not exposed to prediction.
+  This does not establish fresh accuracy, real regional access or scheduling
+  savings. A UI recovery action resets incompatible legacy replay ledgers without
+  deleting live jobs/history or the application database.
 
 Use [the current serving handoff](forecast-serving.md) rather than the original
 Milestone 2 artifact/clock examples. With the existing API pool key, one fixed
@@ -141,7 +188,7 @@ Include normal operation, price spikes, capacity shortage, interruption, and dea
 - Scenario generation does not inspect which strategy benefits.
 - Include both feasible and deliberately infeasible workloads.
 
-**Coordinate immediately:** `MarketSnapshot.availableUnits` is mandatory, but historical prices contain no capacity counts. Agree with Person 2 how observed prices and simulated capacity will be combined without presenting the combined record as entirely observed.
+**Current contract:** `MarketSnapshot.availableUnits` may be null. Historical prices do not establish capacity; preserve unknown capacity and label synthetic capacity as SIMULATED.
 
 ### 4. Optional: genuine capacity or interruption observations
 

@@ -45,7 +45,7 @@ class ReplayService:
         if session is None:
             return ReplayView(status="READY", current_slot=0, seed=42, strategies=STRATEGIES)
         return ReplayView(status="COMPLETED" if session.current_slot == session.scenario.end_slot else
-                          "READY" if session.current_slot == 0 else "RUNNING",
+                          "READY" if session.current_slot == session.scenario.warmup_slots else "RUNNING",
             current_slot=session.current_slot, seed=session.seed, strategies=STRATEGIES, initialized=True,
             scenario_id=session.scenario.id, description=session.scenario.description,
             origin_utc=session.scenario.origin_utc, end_slot=session.scenario.end_slot,
@@ -77,7 +77,9 @@ class ReplayService:
             runs[-1].status = "UNAVAILABLE"
             runs[-1].error = "ML provider is not configured; no naive substitution"
         with self.lock, self.database.transaction() as connection:
-            session = ReplaySession(scenario=scenario, seed=seed, runs=runs, config=self.config.model_copy(deep=True))
+            session = ReplaySession(scenario=scenario, seed=seed, runs=runs, config=self.config.model_copy(deep=True),
+                current_slot=scenario.warmup_slots,
+                history=[r.model_copy(deep=True) for r in scenario.market if r.slot < scenario.warmup_slots])
             self._save(connection, session)
             self.providers = providers
             return self._view(session)
@@ -264,7 +266,7 @@ class ReplayService:
             row = indexed[resource_key(reservation)]
             if config.carbon_price_usd_per_kg and row.carbon_kg_per_unit_hour is None:
                 raise ValueError("Realized carbon valuation requires observed carbon data")
-            charge = ReplayCharge(slot=slot, job_id=job.id,
+            charge = ReplayCharge(slot=slot, job_id=job.id, gpu_type=reservation.gpu_type,
                 compute_usd=float(decimal_usd(Decimal(str(row.price_usd_per_unit_hour)) * job.resource_units)),
                 startup_usd=float(decimal_usd(config.startup_cost_usd)) if reservation.start_slot == slot else 0,
                 transfer_usd=float(decimal_usd(config.transfer_cost_usd)) if reservation.start_slot == slot

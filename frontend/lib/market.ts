@@ -1,7 +1,12 @@
 import type { Forecast, MarketSnapshot } from "./types";
 
 export type QuoteKind = "OBSERVED" | "SIMULATED";
-export const regionName = (region: string) => ({ "eu-west-1": "Ireland", "eu-central-1": "Frankfurt", "us-east-1": "N. Virginia" } as Record<string, string>)[region] ?? region;
+export function defaultQuoteKind(market: MarketSnapshot[], resource: string | undefined, currentSlot: number): QuoteKind {
+  const relevant = market.filter(row => (!resource || resourceKey(row) === resource) && row.slot <= currentSlot);
+  return relevant.some(row => row.dataKind === 'OBSERVED') ? 'OBSERVED'
+    : relevant.some(row => row.dataKind === 'SIMULATED') ? 'SIMULATED' : 'OBSERVED';
+}
+export const regionName = (region: string) => ({ "eu-north-1": "Stockholm", "eu-west-1": "Ireland", "eu-west-2": "London", "eu-central-1": "Frankfurt", "us-east-1": "N. Virginia", "us-west-2": "Oregon", local: 'Local machine' } as Record<string, string>)[region] ?? region;
 export const resourceKey = (row: Pick<MarketSnapshot, "resourceType" | "gpuType">) => JSON.stringify([row.resourceType, row.resourceType === "GPU" ? row.gpuType ?? null : null]);
 export function resourceLabel(key: string): string {
   const [type, model] = JSON.parse(key) as [string, string | null];

@@ -4,7 +4,7 @@ import { readFile } from "node:fs/promises";
 import ts from "typescript";
 const source = await readFile(new URL("../lib/decisions.ts", import.meta.url), "utf8");
 const js = ts.transpileModule(source, { compilerOptions: { target: ts.ScriptTarget.ES2020, module: ts.ModuleKind.ESNext } }).outputText;
-const { latestDecision, slotLabel, deadlineBuffer, linkedDecisionDetail } = await import(`data:text/javascript;base64,${Buffer.from(js).toString("base64")}`);
+const { decisionSummary, latestDecision, slotLabel, deadlineBuffer, linkedDecisionDetail } = await import(`data:text/javascript;base64,${Buffer.from(js).toString("base64")}`);
 
 test("plan selection excludes future decisions and selects the newest issue for this job", () => {
   const old = { jobId: "a", decidedAtSlot: 4, action: "RUN" };
@@ -46,4 +46,14 @@ test("decision evidence requires a complete matching ordered snapshot", () => {
   assert.equal(linkedDecisionDetail([a, b], details, b), details[1]);
   assert.equal(linkedDecisionDetail([a, b], details.slice(0, 1), b), undefined);
   assert.equal(linkedDecisionDetail([a, b], [{ ...details[0], executionMode: "LOCAL" }, details[1]], b), undefined);
+});
+
+
+test("unverified capacity is blocked while a priced future window is an actual wait", () => {
+  assert.equal(decisionSummary({ action: 'WAIT', reasonCode: 'LOCAL_EXECUTION_REQUIRED', plannedStartSlot: null }).label, 'READY FOR LOCAL');
+  assert.deepEqual(decisionSummary({ action: "WAIT", reasonCode: "CAPACITY_UNKNOWN", plannedStartSlot: null }),
+    { label: "BLOCKED", detail: "Available capacity is unverified" });
+  assert.equal(decisionSummary({ action: "WAIT", reasonCode: "NO_COMPATIBLE_MARKET_DATA", plannedStartSlot: null }).label, "BLOCKED");
+  assert.equal(decisionSummary({ action: "WAIT", reasonCode: "LOWEST_COST_FEASIBLE_PORTFOLIO", plannedStartSlot: 3 }).label, "WAIT");
+  assert.equal(decisionSummary({ action: "RUN", reasonCode: "LOWEST_COST_FEASIBLE_PORTFOLIO", plannedStartSlot: 0 }).label, "RUN");
 });

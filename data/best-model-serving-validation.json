@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "fixed-router-serving-validation-v1",
+  "inputKind": "SIMULATED",
+  "notAccuracyOrSchedulingBenchmark": true,
+  "currentSlot": 2200,
+  "cases": {
+    "allRegions": {
+      "pools": 42,
+      "forecasts": 252,
+      "mlForecasts": 246,
+      "warmRuns": 30,
+      "warmLatencyMs": {
+        "median": 171.75862249860074,
+        "p95": 225.02649200032465,
+        "max": 225.70653200091328
+      },
+      "targetP95Ms": 250,
+      "targetMet": true
+    },
+    "stockholmDemo": {
+      "pools": 9,
+      "forecasts": 54,
+      "mlForecasts": 48,
+      "warmRuns": 30,
+      "warmLatencyMs": {
+        "median": 34.317335001105675,
+        "p95": 36.124204998486675,
+        "max": 70.72744699689792
+      },
+      "targetP95Ms": 250,
+      "targetMet": true
+    }
+  },
+  "platform": "Linux-7.0.0-38-generic-x86_64-with-glibc2.39",
+  "configSha256": "2d9c2d41c69aca01461d178dff4d1d908c99deed69c801e247ec08cdbcd75d49",
+  "implementationSha256": "bcaeaa6a918d2281a3c2f5a8bdc21db4f25cfb2667ad21687dce22534c693b65",
+  "limitations": [
+    "Local single-threaded warm inference; model loading excluded; latency depends on machine.",
+    "No fresh observed accuracy, AWS live mapping or scheduling savings measured."
+  ],
+  "tests": {
+    "fullBackendPassed": 386,
+    "fullBackendSkipped": 2,
+    "subtestsPassed": 53,
+    "finalAffectedTestsPassed": 29,
+    "launcherTestsPassed": 5,
+    "notes": [
+      "Full backend suite passed before final history-grouping optimization; all 29 affected serving/API/replay tests passed again afterward.",
+      "API tests require local sockets outside this sandbox; AWS clients were mocked.",
+      "Existing httpx TestClient deprecation warning remains."
+    ]
+  }
+}

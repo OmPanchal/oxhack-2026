@@ -43,6 +43,7 @@ export type ReplayState = {
 };
 export type Health = { status: "ok"; stage: "SCAFFOLD" };
 export type TerminalData = { jobs: Job[]; market: MarketSnapshot[]; forecasts: Forecast[]; decisions: Decision[]; replay: ReplayState;
+  acquisitions?: import('./backend-types').Acquisition[];
   engine?: EngineState; capabilities?: MarketCapabilities; decisionDetails?: DecisionDetail[];
   taskCatalog?: TaskCatalog; executions?: LocalExecution[]; replayMetrics?: ReplayMetrics; liveMetrics?: LiveMetrics;
-  modelMetrics?: ModelMetrics; modelStatus?: ModelStatus; errors?: string[] };
+  modelMetrics?: ModelMetrics; modelStatus?: ModelStatus; errors?: string[]; requestedAt?: number };

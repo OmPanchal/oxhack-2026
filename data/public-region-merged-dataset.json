@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "referenced-merged-price-dataset-v1",
+  "originUtc": "2026-07-28T00:00:00Z",
+  "endSlot": 2136,
+  "seriesCount": 353,
+  "knownHourlyPriceCount": 655396,
+  "mergedDatasetSha256": "e932632bcf73fa5c0af31c9372e6dd0fde0b7a5683c40af8d7c908604c0bf6b0",
+  "components": [
+    {
+      "path": "data/processed/hourly-prices-hardware-v3-001",
+      "sha256": "618ed38329ec8b4934c7fd40a0e77e61b3dcd9d3850b2df87299af5827903a36",
+      "source": "Original AWS export",
+      "seriesCount": 208
+    },
+    {
+      "path": "data/processed/public-region-hourly-001",
+      "manifestSha256": "09b7fc171728ac29df51bfaed5c9508e05292378e2bfbdbf62bac476e8787f3b",
+      "source": "Eric Pauley / Zenodo 23082767, CC-BY-4.0",
+      "seriesCount": 145
+    }
+  ],
+  "loadingInterface": "app.forecasting.public_spot_data.load_augmented(original, public)",
+  "note": "Components are combined at load time; original data is immutable and missing hours remain unknown."
+}

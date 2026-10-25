@@ -1,4 +1,10 @@
 import type { Decision, Job, MarketSnapshot } from "./types";
+import type { ReplayMetrics } from './backend-types';
+import type { ReplayState } from './types';
+
+export function metricsMatchReplay(metrics: ReplayMetrics, state: ReplayState): boolean {
+  return metrics.scenarioId === (state.scenarioId ?? null) && metrics.asOfSlot === state.currentSlot;
+}
 
 // Frontend presentation types, not a proposed backend API contract.
 export type ExecutionView = {

@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "collector-bundle-v1",
+  "filesSha256": {
+    "README.md": "61d60d157d2cc515ee9dd9062a109bcdb1f81f4d02599d49bbb0a1530df8a9aa",
+    "backend/app/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "backend/app/forecasting/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "backend/app/forecasting/collect_expanded.py": "e6bbe5fdcfa3c24e536b4c69a2fe26f3e4a434cd9d69b371f83784a6727133b2",
+    "backend/app/forecasting/collect_locations.py": "31be9ae4db5559ab6c12da434f52884f7c504a3df28ca18be7a6b5d14f3ccf7d",
+    "backend/app/forecasting/collect_spot.py": "2a4cc75e3caa872b8acfc4a758926a2bf8f2d43c5d3fa5e7e2a04b3172b2cb1f",
+    "backend/app/forecasting/resource_metadata.py": "fd5ce603712fc7e643f9923bb55b83a3e534901d51b7f93c5b43d98ca0b476e7",
+    "multi-region-collection.json": "7a1abc5f07bf600f0f37c938c4f74296c8dbcaa0d8373c99d3fda28d7d7e0fe5",
+    "read-only-policy.json": "01ad05ae5c80922cb42164a4af4a3a0005aaab70daab55f5b8edc8b02c31c315",
+    "run.sh": "1e26892c636d3fe5b2b67e8de5193fe46beb2c8edc4adebf187dd13acef33dd7"
+  }
+}

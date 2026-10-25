@@ -1,10 +1,33 @@
 """Server-side scenario registry; no frontend-supplied file paths."""
 from datetime import datetime, timezone
+from datetime import timedelta
 import json
 from pathlib import Path
 
 from app.api.replay_schemas import ReplayScenario
 from app.api.schemas import JobCreate, MarketSnapshot
+
+
+def model_coverage_scenario(service) -> ReplayScenario:
+    """Exercise the configured model/optimizer boundary; never an accuracy benchmark."""
+    warmup, end = 168, 176
+    selections = sorted(service.selections.values(), key=lambda s: s.api_key)
+    rows = [MarketSnapshot(slot=slot, region=s.region, resource_type=s.resource_type,
+        gpu_type=s.gpu_type.removeprefix('NVIDIA ') or None,
+        price_usd_per_unit_hour=(.03 if s.resource_type == 'CPU' else .2) + (slot % 17) * .001,
+        available_units=4 if s.resource_type == 'CPU' else 2,
+        source='SIMULATED model-coverage-v1; illustrative per-vCPU/GPU-hour prices and capacity; not AWS inventory',
+        data_kind='SIMULATED') for s in selections for slot in range(end)]
+    jobs = [JobCreate(id=f'{s.region}-{s.resource_type}-{s.gpu_type or "vCPU"}',
+        name=f'{s.region} {s.gpu_type or "CPU"} integration',
+        arrival_slot=warmup, duration_slots=1, deadline_slot=warmup + 1,
+        resource_type=s.resource_type, resource_units=1, allowed_regions=[s.region],
+        allowed_gpu_types=[s.gpu_type.removeprefix('NVIDIA ')] if s.resource_type == 'GPU' else [])
+        for s in selections]
+    return ReplayScenario(id='model-coverage', origin_utc=datetime.fromisoformat(service.origin_utc)
+        + timedelta(hours=service.available_from_slot), warmup_slots=warmup, end_slot=end,
+        jobs=jobs, market=rows, description='SIMULATED configured model coverage: CPU/GPU pools across '
+        'all configured regions, 168 prior hours for ML warmup. Illustrative inputs; not accuracy or savings evidence.')
 
 
 def demo_scenario() -> ReplayScenario:

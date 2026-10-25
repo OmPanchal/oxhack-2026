@@ -51,3 +51,44 @@ test("backend errors preserve their status/code and expose FastAPI field validat
   globalThis.fetch.mock.mockImplementation(async () => Response.json({ detail: [{ loc: ["body", "durationSlots"], msg: "Must be positive" }] }, { status: 422 }));
   await assert.rejects(api.createJob({}), /body.durationSlots: Must be positive/);
 });
+
+
+test("network failures identify the endpoint and never retry writes automatically", async t => {
+  let calls = 0;
+  t.mock.method(globalThis, "fetch", async () => { calls++; throw new TypeError("Failed to fetch"); });
+  await assert.rejects(api.modelStatus(), error => error.code === "BACKEND_UNREACHABLE" && error.message.includes("/models/status"));
+  await assert.rejects(api.createJob({}), /request outcome is unknown/i);
+  assert.equal(calls, 2);
+});
+
+
+test("auxiliary outages preserve last known data with a stale warning", async t => {
+  t.mock.method(globalThis, "fetch", async url => {
+    if (url === "/api/engine/state") return Response.json({currentSlot:12, forecastMode:"ML"});
+    if (url === "/api/jobs") return Response.json([]);
+    if (url === "/api/market" || url === "/api/forecasts") return Response.json({detail:"temporarily offline"},{status:503});
+    return Response.json([]);
+  });
+  const old = {engine:{forecastMode:"ML"},market:[{slot:11}],forecasts:[{modelVersion:"old-ML"}]};
+  const result = await loadBackendTerminal(old);
+  assert.deepEqual(result.market,old.market);
+  assert.deepEqual(result.forecasts,old.forecasts);
+  assert.ok(result.errors.some(error => error.includes("may be stale")));
+  const changed = await loadBackendTerminal({...old,engine:{forecastMode:"NAIVE"}});
+  assert.deepEqual(changed.forecasts,[]);
+});
+
+test("mismatched replay and live metric snapshots are never rendered as current totals", async t => {
+  t.mock.method(globalThis,"fetch", async url => {
+    if (url === "/api/engine/state") return Response.json({currentSlot:12});
+    if (url === "/api/jobs") return Response.json([{id:"new",status:"PENDING"}]);
+    if (url === "/api/replay/state") return Response.json({currentSlot:2,scenarioId:"new"});
+    if (url === "/api/metrics?scope=REPLAY") return Response.json({scope:"REPLAY",scenarioId:"old",asOfSlot:3});
+    if (url === "/api/metrics?scope=LIVE") return Response.json({scope:"LIVE",asOfSlot:12,jobCounts:{pendingJobs:0}});
+    return Response.json([]);
+  });
+  const result=await loadBackendTerminal();
+  assert.equal(result.replayMetrics,undefined);
+  assert.equal(result.liveMetrics,undefined);
+  assert.ok(result.errors.some(error => error.includes("mismatched")));
+});

@@ -1,5 +1,24 @@
 import type { Decision } from "./types";
 
+export function decisionSummary(decision?: Decision): { label: string; detail: string } {
+  if (!decision) return { label: 'Awaiting plan', detail: '' };
+  if (decision.reasonCode === 'LOCAL_EXECUTION_REQUIRED')
+    return {label: 'READY FOR LOCAL', detail: 'Start with Run local task · Docker Desktop required'};
+  const blockers: Record<string, string> = {
+    LOCAL_EXECUTION_REQUIRED: 'Start this task with Run local task (real Docker)',
+    CAPACITY_UNKNOWN: 'Available capacity is unverified',
+    CAPACITY_UNAVAILABLE: 'Insufficient available capacity',
+    NO_COMPATIBLE_MARKET_DATA: 'No matching region/hardware prices',
+    FORECAST_COVERAGE_MISSING: 'Forecast coverage is incomplete',
+    PORTFOLIO_CAPACITY_CONFLICT: 'Capacity is reserved by other workloads',
+    CARBON_DATA_UNAVAILABLE: 'Required carbon data is unavailable',
+    BUDGET_EXCEEDED: 'No affordable execution window',
+  };
+  if (decision.action === 'WAIT' && decision.plannedStartSlot === null && blockers[decision.reasonCode])
+    return { label: 'BLOCKED', detail: blockers[decision.reasonCode] };
+  return { label: decision.action, detail: decision.action === 'WAIT' ? `Planned start: slot ${decision.plannedStartSlot ?? 'unknown'}` : '' };
+}
+
 // Presentation only: select an issued decision, never calculate an allocation.
 export function latestDecision(decisions: Decision[], jobId: string | null, currentSlot: number): Decision | undefined {
   return decisions.filter(row => row.jobId === jobId && row.decidedAtSlot <= currentSlot)

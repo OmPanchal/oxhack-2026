@@ -61,6 +61,25 @@ The naive optimizer can spend more or lose more work than an immediate policy
 in this scenario. Display the received outcomes; do not turn the demonstration
 into a guaranteed-savings claim. Missing ML stays UNAVAILABLE.
 
+## Replay metrics and GPU alternatives
+
+Replay charge records retain the actual allocated `gpuType`. Accounting uses
+that pool's realized observation rather than the job's optional singular GPU
+requirement. This matters for `allowedGpuTypes` jobs, including `gpu-choice`,
+whose singular `gpuType` is null. Price, compatibility and budget reconciliation
+remain enforced; GPU models cannot change mid-execution.
+
+If a replay saved before this fix lacks an allocated GPU type, accounting accepts
+it only when the compatible realized pool is unambiguous. Otherwise the API
+returns `METRICS_LEDGER_MISMATCH` with instructions to reset replay. Restart the
+backend with the updated code, then press **Reset** in Replay and run it again.
+This resets the simulated replay, not live jobs or market history. Do not delete
+the application database to fix this error.
+
+Regression coverage includes metrics after every capacity-pressure slot, all four
+strategies, restart persistence, old-ledger handling and rejection of corrupted
+GPU prices/identities or missing observations.
+
 ## Still separate
 
 Live AWS quotes retain `availableUnits: null`. No live-price/simulated-capacity
@@ -70,3 +89,26 @@ state, model training data, local Docker capacity or cloud provisioning.
 The next milestone is a saved reproducible baseline benchmark with explicit
 scenario/seed/configuration and all completion/failure counts. This scenario can
 be one test case, but it is not a representative performance benchmark by itself.
+
+## All configured model regions
+
+With `./dev --ml`, choose **All model regions · CPU/GPU · simulated**, then press
+**Reset** and **Step +1h**. This server-owned `model-coverage` fixture uses every
+configured serving pool (currently 42 across six regions), with one job per pool.
+It exercises CPU vCPU-hour inputs, each configured GPU model, regional routing,
+per-pool capacity, all six forecast horizons, and persisted accounting. Unsupported
+Stockholm B200 is explicitly forecast with persistence. Its prices and capacity
+are entirely SIMULATED; this is an integration demonstration, not an accuracy or
+savings benchmark or evidence of AWS access in those regions.
+
+Reset starts at slot 168 with 168 prior simulated hours available for causal model
+features. Every job arrives at or after slot 168. Only prior rows are preloaded;
+future rows remain inside the scenario and are revealed as replay steps. The UTC
+origin is after the serving router's selection cutoff. This warmup is independent
+of live historical backfill and requires no AWS calls. Existing demo/capacity
+scenarios retain their slot-zero reset behavior.
+
+An incompatible old ledger now has a **Reset saved replay** action beside its
+error on the Overview page. It resets that scenario with its existing seed and
+clears simulated results only. Run the replay again afterward; live jobs, market
+history and the application database are preserved.

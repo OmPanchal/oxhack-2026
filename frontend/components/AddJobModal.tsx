@@ -7,9 +7,10 @@ import type { JobCreate } from "@/lib/types";
 import { prepareJob } from "@/lib/workloads";
 import type { DraftErrors, JobDraft } from "@/lib/workloads";
 
-export function AddJobModal({ preview, currentSlot, regions, gpuTypes, tasks = [], onClose, onSubmit }: {
+export function AddJobModal({ preview, currentSlot, regions, gpuTypes, tasks = [], simulationSlotSeconds, onClose, onSubmit }: {
   preview: boolean; currentSlot: number; regions: string[]; gpuTypes: string[]; tasks?: LocalTask[];
   onClose: () => void; onSubmit: (payload: JobCreate) => Promise<void>;
+  simulationSlotSeconds?: number | null;
 }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const id = useRef<string | null>(null);
@@ -60,7 +61,7 @@ export function AddJobModal({ preview, currentSlot, regions, gpuTypes, tasks = [
   const attrs = (key: keyof JobDraft) => ({ "aria-invalid": Boolean(errors[key]), "aria-describedby": errors[key] ? `error-${key}` : undefined });
   return <dialog ref={dialog} className="job-modal" aria-labelledby="add-job-title" aria-describedby="add-job-description" onCancel={event => { event.preventDefault(); if (!busy.current) onClose(); }}>
     <form noValidate onSubmit={submit}>
-      <div className="modal-heading"><div><h2 id="add-job-title">Add job</h2><p id="add-job-description">{preview ? "Create an example workload in this preview session." : "Submit a workload to the scheduling portfolio."}</p></div><button type="button" disabled={submitting} onClick={onClose}>Close</button></div>
+      <div className="modal-heading"><div><h2 id="add-job-title">Add job</h2><p id="add-job-description">{preview ? "Create an example workload in this preview session." : simulationSlotSeconds ? `SIMULATED execution: each scheduling hour takes ${simulationSlotSeconds} seconds. No real compute is purchased.` : "Submit a workload to the scheduling portfolio."}</p></div><button type="button" disabled={submitting} onClick={onClose}>Close</button></div>
       <fieldset className="modal-fields" disabled={submitting}>
         <label>Job name<input autoFocus maxLength={120} value={draft.name} onChange={e => field("name", e.target.value)} {...attrs("name")} placeholder="e.g. nightly embeddings" />{error("name")}</label>
         {!preview && tasks.length > 0 && <label>Execution task<select value={taskId} onChange={event => { setTaskId(event.target.value); setErrors({}); setSubmitError(null); }}><option value="">Scheduling workload</option>{tasks.map(task => <option key={task.id} value={task.id}>{task.name} · LOCAL</option>)}</select></label>}

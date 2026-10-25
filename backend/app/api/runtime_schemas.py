@@ -17,6 +17,7 @@ class DispatchState(Contract):
 
 class EngineState(Contract):
     current_slot: int
+    wall_clock_slot: int = Field(ge=0)
     origin_utc: datetime
     forecast_mode: Literal["NAIVE", "ML"]
     execution_mode: ExecutionMode
@@ -26,6 +27,8 @@ class EngineState(Contract):
     ml_configured: bool = False
     data_kind: Literal["OBSERVED", "SIMULATED", "MIXED"] | None = None
     dispatch: DispatchState = Field(default_factory=DispatchState)
+    acquisition_mode: Literal['DISABLED', 'SIMULATED'] = 'DISABLED'
+    simulation_slot_seconds: float | None = None
 
 
 class DecisionDetail(Contract):

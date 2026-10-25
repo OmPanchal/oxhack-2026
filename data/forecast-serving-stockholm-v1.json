@@ -1,0 +1,83 @@
+{
+  "schemaVersion": "error-price-serving-v1",
+  "modelsDirectory": "models/error-reduction-001",
+  "artifactReceipt": "data/error-model-artifacts.json",
+  "originUtc": "2026-07-28T00:00:00+00:00",
+  "availableFromSlot": 1578,
+  "selectedUsingValidationThroughSlot": 1577,
+  "poolSelections": [
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "m5.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "g4dn.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA T4"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "g5.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA A10G"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "g6.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA L4"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "g6e.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA L40S"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "p4d.24xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA A100"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "p5.48xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA H100"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "p5e.48xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA H200"
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "p6-b200.48xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA B200"
+    }
+  ],
+  "evaluationReport": "data/error-model-test-results.json"
+}

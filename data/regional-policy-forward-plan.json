@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "reserved-regional-policy-forward-evaluation-v1",
+  "status": "RESERVED_NO_NEW_OUTCOME_DATA_FETCHED_OR_SCORED",
+  "frozenSelectionSha256": "442301ccfd2dbc0b91563ac864c942381b60a67435db6990076b6bb1bddaf939",
+  "frozenPolicySha256": "d94656fcc437dfaf7bc386614a193f3417c6c83b2ddf791cab96e51da482ef97",
+  "candidates": [
+    "reference",
+    "reference-blend",
+    "validation-route-blend"
+  ],
+  "primaryCandidate": "validation-route-blend",
+  "targetDates": {
+    "stockholm": "2026-10-25T00:00:00Z or later",
+    "newRegions": "2026-10-01T00:00:00Z or later"
+  },
+  "minimumCompleteDaysPerCohort": 14,
+  "rules": [
+    "Do not tune or change frozen weights, routing, horizons or model parameters after importing new outcomes.",
+    "Preserve July 28 UTC origin and source-pool identities. New unknown hardware/pools remain explicit persistence fallback.",
+    "Use identical observations, price units, origins and targets; purge six-hour boundary crossings.",
+    "Report CPU and GPU independently, Stockholm and new regional cohorts separately, plus all horizons/regions/pool losses.",
+    "Use chronological time blocks rather than treating overlapping forecasts as iid samples.",
+    "Do not deploy a policy that regresses Stockholm aggregate MAE for a resource merely because another region improves.",
+    "No stop-when-winning or automatic promotion; report the full fixed interval even if results are unfavorable."
+  ],
+  "limitations": [
+    "New-region October dates are unscored regional outcomes but contemporaneous Stockholm dates were previously examined; disclose this dependence.",
+    "Requires new prepared data/import and a forward-scoring run. This file is a protocol, not a completed result or a scheduled collection.",
+    "A public archive may not yet be published; no account upgrade or paid cloud provisioning is authorized or required."
+  ]
+}

@@ -4,7 +4,7 @@ import { readFile } from "node:fs/promises";
 import ts from "typescript";
 const source = await readFile(new URL("../lib/market.ts", import.meta.url), "utf8");
 const js = ts.transpileModule(source, { compilerOptions: { target: ts.ScriptTarget.ES2020, module: ts.ModuleKind.ESNext } }).outputText;
-const { resourceKey, marketResources, compareRegions, lowestCurrentQuote, forecastRuns, upcomingPoints, plotPoints, stepPath, bounds, probability, price, priceAxis } = await import(`data:text/javascript;base64,${Buffer.from(js).toString("base64")}`);
+const { defaultQuoteKind, resourceKey, marketResources, compareRegions, lowestCurrentQuote, forecastRuns, upcomingPoints, plotPoints, stepPath, bounds, probability, price, priceAxis } = await import(`data:text/javascript;base64,${Buffer.from(js).toString("base64")}`);
 const quote = (overrides = {}) => ({ slot: 8, region: "eu-west-1", resourceType: "GPU", gpuType: "A100", priceUsdPerUnitHour: 1.4, availableUnits: 4, carbonKgPerUnitHour: null, source: "test observations", dataKind: "OBSERVED", ...overrides });
 const prediction = (overrides = {}) => ({ generatedAtSlot: 8, targetSlot: 9, region: "eu-west-1", resourceType: "GPU", gpuType: "A100", predictedPriceUsdPerUnitHour: 1.2, priceLowerBound: 1, priceUpperBound: 1.4, availabilityProbability: null, interruptionProbability: null, modelVersion: "model-v1", ...overrides });
 const resource = resourceKey(quote());
@@ -90,4 +90,11 @@ test("unknown capacity remains unavailable and can never qualify as a current op
     quote({ region: "known", availableUnits: 1 })], [], resource, "OBSERVED", 8);
   assert.equal(rows.find(row => row.region === "unknown").quote.availableUnits, null);
   assert.equal(lowestCurrentQuote(rows, 8, 1).region, "known");
+});
+
+
+test("backend-fed simulated markets default to simulated without mixing quote kinds", () => {
+  assert.equal(defaultQuoteKind([quote({dataKind:"SIMULATED"})], resource, 8), "SIMULATED");
+  assert.equal(defaultQuoteKind([quote({dataKind:"SIMULATED",slot:9})], resource, 8), "OBSERVED");
+  assert.equal(defaultQuoteKind([quote(),quote({dataKind:"SIMULATED"})],resource,8), "OBSERVED");
 });

@@ -55,6 +55,7 @@ class RollingScheduler:
         self.dispatch = DispatchControl(database, self._now)
         self.local_dispatcher = None
         self.local_monitor = None
+        self.acquisition_provider = None
 
     def _now(self):
         now = self.clock()
@@ -84,8 +85,11 @@ class RollingScheduler:
             dispatch.automatic_local_dispatch_enabled = self.local_dispatcher is not None
         return EngineState.model_validate({
             **{key: value for key, value in state.items() if key != "fingerprint"},
+            "wallClockSlot": max(state['currentSlot'], int((self._now() - datetime.fromisoformat(state['originUtc'])).total_seconds() // 3600)),
             "autoTickEnabled": self.auto_tick_enabled, "mlConfigured": self.providers.get("ML") is not None,
             "dispatch": dispatch,
+            "acquisitionMode": 'SIMULATED' if self.acquisition_provider is not None else 'DISABLED',
+            "simulationSlotSeconds": getattr(self.clock, 'slot_seconds', None),
         })
 
     def pause(self):
@@ -337,6 +341,8 @@ class RollingScheduler:
                                     local_starts.append((decision.job_id, row["id"]))
                 # The adapter rechecks the persisted plan after image preparation
                 # at its shared final pause/claim/start boundary, outside SQLite.
+                if self.acquisition_provider is not None and execution == 'SIMULATED':
+                    self.acquisition_provider.dispatch(plan, slot)
                 for job_id, decision_id in local_starts:
                     try:
                         self.local_dispatcher.execute(job_id, decision_id=decision_id,

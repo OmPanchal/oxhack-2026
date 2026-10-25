@@ -10,6 +10,12 @@ import dev
 
 
 class StartupTests(unittest.TestCase):
+    def test_demo_readiness_cannot_accept_live_or_unconfigured_sources(self):
+        state = dict(acquisitionMode='SIMULATED', executionMode='SIMULATED')
+        self.assertTrue(dev.demo_ready(state, [dict(dataKind='SIMULATED')]))
+        self.assertFalse(dev.demo_ready(state, [dict(dataKind='OBSERVED')]))
+        self.assertFalse(dev.demo_ready(state, []))
+        self.assertFalse(dev.demo_ready(dict(acquisitionMode='DISABLED'), [dict(dataKind='SIMULATED')]))
     def test_occupied_port_fails_without_disturbing_listener(self):
         with socket.socket() as listener:
             listener.bind(('127.0.0.1', 0))

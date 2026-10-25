@@ -39,6 +39,21 @@ def solve(request):
     return ConstrainedPortfolioOptimizer().optimize(request)
 
 
+@pytest.mark.parametrize('gpu', ['H100', 'A100', 'T4', 'A10G'])
+def test_deadline_critical_job_starts_now_with_confirmed_capacity_even_if_future_prices_are_cheaper(gpu):
+    request = inputs(jobs=[job(gpu_type=gpu, deadline_slot=1)],
+        markets=[market(gpu_type=gpu)], forecasts=[forecast(gpu_type=gpu, price=.001)])
+    decision = solve(request)[0]
+    assert decision.action == 'RUN'
+    assert (decision.planned_start_slot, decision.planned_end_slot) == (0, 1)
+    request.market[0].available_units = None
+    blocked = solve(request)[0]
+    assert blocked.action == 'WAIT' and blocked.reason_code == 'CAPACITY_UNKNOWN'
+    assert blocked.planned_start_slot is None
+    assert 'must start now' in blocked.explanation
+    assert 'not a decision to wait for a cheaper price' in blocked.explanation
+
+
 def test_wait_for_cheaper_window_and_provide_evidence():
     plan = ConstrainedPortfolioOptimizer().plan(inputs(
         forecasts=[forecast(slot=1, price=2), forecast(slot=2, price=1)]))

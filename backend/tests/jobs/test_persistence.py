@@ -26,6 +26,24 @@ def payload():
                      resource_units=1, allowed_regions=["eu-west-1"], max_budget_usd=10)
 
 
+@pytest.mark.parametrize('gpu,accepted', [('A100', True), ('H100', True), ('T4', False)])
+def test_job_store_preserves_gpu_alternatives_when_recording_a_start(database, gpu, accepted):
+    store = JobStore(database)
+    job = JobCreate(id='flex', name='Flexible', arrival_slot=0, duration_slots=1,
+        deadline_slot=2, resource_type='GPU', resource_units=1,
+        allowed_gpu_types=['A100', 'H100'], allowed_regions=['eu-west-1'])
+    store.create(job)
+    allocation = Reservation(job_id='flex', region='eu-west-1', resource_type='GPU',
+        gpu_type=gpu, resource_units=1, start_slot=0, end_slot=1)
+    if accepted:
+        assert store.start('flex', allocation, 'SIMULATED').status == 'RUNNING'
+        assert store.get('flex').allowed_gpu_types == ['A100', 'H100']
+    else:
+        with pytest.raises(ValueError, match='requirements'):
+            store.start('flex', allocation, 'SIMULATED')
+        assert store.get('flex').status == 'PENDING'
+
+
 @pytest.fixture
 def reservation():
     return Reservation(job_id="job", region="eu-west-1", resource_type="GPU",

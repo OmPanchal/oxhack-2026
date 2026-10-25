@@ -36,6 +36,16 @@ class SchedulingService:
                         connection.execute("SELECT payload FROM reservations ORDER BY job_id")]
         pending = [job for job in jobs if job.status == "PENDING"]
         unsupported = []
+        manual_local = []
+        running = [job for job in jobs if job.status == 'RUNNING']
+        if execution_mode != 'LOCAL' or not getattr(self, 'automatic_local_dispatch', False):
+            manual_local = [job for job in pending if job.docker_task_id is not None]
+            pending = [job for job in pending if job.docker_task_id is None]
+            # Local containers have their own real-time capacity/monitoring.
+            # Their reservations must not expire on the accelerated cloud clock.
+            local_ids = {job.id for job in running if job.docker_task_id is not None}
+            running = [job for job in running if job.id not in local_ids]
+            reservations = [row for row in reservations if row.job_id not in local_ids]
         if execution_mode == "LOCAL":
             supported = []
             for job in pending:
@@ -54,11 +64,16 @@ class SchedulingService:
                          if row.region == "local" and row.resource_type == "CPU" and row.gpu_type is None]
         inputs = OptimizationInput(
             current_slot=current_slot, pending_jobs=pending,
-            running_jobs=[job for job in jobs if job.status == "RUNNING"], market=market,
+            running_jobs=running, market=market,
             forecasts=forecasts, reservations=reservations, config=config or OptimizerConfig(),
             execution_mode=execution_mode,
         )
         plan = self.optimizer.plan(inputs)
+        for job in manual_local:
+            plan.decisions.append(Decision(job_id=job.id, decided_at_slot=current_slot, action='WAIT',
+                reason_code='LOCAL_EXECUTION_REQUIRED', execution_mode='LOCAL',
+                explanation='This task uses the separate local Docker executor, not a cloud market pool. Use Run local task to start it. Cloud region/hardware coverage does not determine local capacity.'))
+            plan.evidence[job.id] = DecisionEvidence(None, (), None, None, None)
         for job in unsupported:
             plan.decisions.append(Decision(job_id=job.id, decided_at_slot=current_slot, action="WAIT",
                 reason_code="LOCAL_TASK_UNSUPPORTED", execution_mode="LOCAL",
@@ -74,7 +89,7 @@ class SchedulingService:
             evidence = plan.evidence[decision.job_id]
             detail = DecisionDetail(
                 decision_id=cursor.lastrowid, job_id=decision.job_id, decided_at_slot=current_slot,
-                forecast_mode=forecast_mode, execution_mode=execution_mode,
+                forecast_mode=forecast_mode, execution_mode=decision.execution_mode,
                 deadline_slack_slots=evidence.deadline_slack_slots, forecasts_used=list(evidence.forecasts),
                 cost_breakdown=evidence.cost_breakdown, availability_probability=evidence.availability_probability,
                 interruption_probability=evidence.interruption_probability, data_kind=data_kind,
@@ -89,6 +104,8 @@ class SchedulingService:
                          decision.model_dump(mode="json", by_alias=True), execution_mode)
             if execution_mode == "PAPER" or dispatch_paused:
                 continue
+            if execution_mode == 'SIMULATED' and getattr(self, 'defer_simulated_starts', False) and decision.action in {'RUN', 'ROUTE', 'FALLBACK'}:
+                continue  # A recommendation is not a successfully acquired lease.
             if execution_mode == "LOCAL" and decision.action != "INFEASIBLE":
                 continue
             job = by_id[decision.job_id]

@@ -11,6 +11,8 @@ submitted to FastAPI and do not represent model results, benchmarks or execution
 
 Select **Backend data** to use the merged FastAPI services. Full endpoint mapping,
 verification and limitations are recorded in [INTEGRATION.md](INTEGRATION.md).
+For a disposable full-stack check without AWS credentials or Docker, follow
+[the integration fixture instructions](../docs/INTEGRATION_CHECKS.md).
 
 ## Local backend connection
 
@@ -53,7 +55,11 @@ allocation; simulated replay remains separate. No cloud provisioning is implemen
 - **Market:** compare matching resources/GPUs and separate observed/simulated
   quotes. Selecting a region opens history, forecast issue/horizon and slot
   inspection. Unknown capacity is never treated as schedulable capacity.
-- **Replay & execution:** Replay, Policy comparison and Execution views. Backend
+- **Replay & execution:** Demo replay and Local execution subtabs. The guided
+  demo orders Workload → Decision → Outcome → Policy comparison and defaults to ML.
+  FIFO, Cheapest now and ML are visible; persistence replay remains supported by
+  the backend, and persistence fallbacks remain explicit in ML provenance. Advanced
+  settings, capacity, shocks and issued decision history are collapsed. Backend
   reset, step, playback and simulated shocks use the independent replay clock.
   Accounting and comparison eligibility come from the server. Real LOCAL task
   records stay separate from simulated replay and prepared preview states. Choose
@@ -81,7 +87,7 @@ reservations and replay policies enforce this contract.
 
 Backend Add job also offers server-allowlisted LOCAL CPU tasks. Selecting a task
 uses its fixed hardware and local region. Execution follows the backend dispatch
-policy, or an explicit Run local task action in the Execution view. Users cannot
+policy, or an explicit Run local task action in Local execution. Users cannot
 enter commands/images. Engine controls show backend-confirmed pause/resume,
 forecast availability, current mode and errors. Pausing new starts does not stop
 running work or monitoring.

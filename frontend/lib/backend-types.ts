@@ -3,17 +3,24 @@ import type { Decision, ExecutionMode, Forecast, Job, JobCreate, ResourceType, S
 export type ModelStatus = {
   status: "READY" | "UNAVAILABLE"; reason?: string; engineEnabled: boolean; engineForecastMode: "NAIVE" | "ML";
   modelFamily?: string; lookbackHours?: number; originUtc?: string; validationStatus?: string;
+  marketReadErrors?: { region: string; instanceType: string; resourceType: string; code: string }[];
   history?: { status: "READY" | "WARMING" | "PARTIAL"; lookbackHours: number;
-    pools: { region: string; instanceType: string; availabilityZone: string; gpuType: string;
+    pools: { region: string; instanceType: string; availabilityZone: string; gpuType: string | null; resourceType?: "CPU" | "GPU";
       status: "READY" | "PARTIAL"; requiredHours: number; availableHours: number; errorCode: string | null }[] } | null;
 };
 
 export type EngineState = {
-  currentSlot: number; originUtc: string; forecastMode: "NAIVE" | "ML"; executionMode: ExecutionMode;
+  acquisitionMode?: 'DISABLED' | 'SIMULATED'; simulationSlotSeconds?: number | null;
+  currentSlot: number; wallClockSlot?: number; originUtc: string; forecastMode: "NAIVE" | "ML"; executionMode: ExecutionMode;
   lastTickAtUtc: string | null; lastError: { code: string; message: string } | null;
   autoTickEnabled: boolean; mlConfigured: boolean; dataKind: "OBSERVED" | "SIMULATED" | "MIXED" | null;
   dispatch: { paused: boolean; revision: number; changedAtUtc: string | null; lastResumedAtUtc: string | null;
     lastResumeError: { code: string; message: string } | null; automaticLocalDispatchEnabled: boolean };
+};
+export type Acquisition = {
+  id: string; jobId: string; region: string; resourceType: 'CPU' | 'GPU'; gpuType: string | null;
+  resourceUnits: number; requestedAtSlot: number; endSlot: number;
+  status: 'ACQUIRED' | 'REJECTED' | 'COMPLETED'; executionMode: 'SIMULATED'; reason: string; stages: string[];
 };
 export type DecisionDetail = {
   decisionId: number; jobId: string; decidedAtSlot: number; forecastMode: "NAIVE" | "ML" | null;
@@ -33,6 +40,7 @@ export type LocalExecution = {
   id: string; jobId: string; taskId: string; executionMode: "LOCAL"; region: "local";
   status: "STARTING" | "RUNNING" | "COMPLETED" | "FAILED"; containerName: string;
   containerId: string | null; imageId: string; requestedAtUtc: string; startedAtUtc: string | null;
+  dockerEndpoint?: string | null;
   completedAtUtc: string | null; exitCode: number | null; stdout: string; stderr: string;
   stdoutTruncated: boolean; stderrTruncated: boolean; failureReason: string | null;
   lastMonitorError: string | null; timeoutRequested: boolean;

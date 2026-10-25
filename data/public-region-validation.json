@@ -1,0 +1,18 @@
+{
+  "fullForecastingAndEngineTestsPassed": 171,
+  "subtestsPassed": 53,
+  "subsequentTargetedPublicDataTestsPassed": 5,
+  "cumulativeUniqueTestsPassed": 172,
+  "note": "One downloader checksum test was added after the full 171-test suite; the targeted five-test public suite then passed.",
+  "audit": {
+    "publicEventToHourlyPricesChecked": 212280,
+    "scoredPredictionsChecked": 673974,
+    "originalIncumbentPredictionsExactlyReproduced": true,
+    "newRegionIncumbentFallbackVerified": true,
+    "packagedAugmentedInferenceMatchesBatch": true,
+    "allTargetAndCurrentPricesMatchSource": true,
+    "independentMaeRecalculation": true,
+    "originalServingArtifactsUnchanged": true,
+    "sourceReportSha256": "1f0c152226fb3f9cfc42d8afc306514a7416692b935a10a41008366c12be970f"
+  }
+}

@@ -1,17 +1,21 @@
 "use client";
 import { useEffect, useId, useState } from "react";
 import { BackendReplayWorkspace } from "./BackendReplayWorkspace";
-import type { ReplayState, TerminalData } from "@/lib/types";
+import type { ReplayState, Strategy, TerminalData } from "@/lib/types";
 import { replayScenarios } from "@/lib/preview";
 import { nextFrame } from "@/lib/replay-view";
 import { ReplayPanel } from "./ReplayPanel";
 import { ExecutionMonitor } from "./ExecutionMonitor";
 import { DecisionInspector } from "./DecisionInspector";
-import { PolicyComparison } from "./PolicyComparison";
+import { ReplayNarrative } from "./ReplayNarrative";
+import { demoPolicies } from "@/lib/replay-narrative";
+import { PolicyComparison, policyLabel } from "./PolicyComparison";
 
-const views = ["Replay", "Policy comparison", "Execution"] as const;
+const views = ["Demo replay", "Local execution"] as const;
 
 export function ReplayWorkspace({ preview, state, active, backendData, onRefresh = () => {} }: { preview: boolean; state: ReplayState; active: boolean; backendData?: TerminalData; onRefresh?: () => void }) {
+  const [policy, setPolicy] = useState<Strategy>("OPTIMIZER_WITH_ML");
+  const [jobId, setJobId] = useState("");
   const [scenarioId, setScenarioId] = useState("normal");
   const [index, setIndex] = useState(0);
   const [playing, setPlaying] = useState(false);
@@ -20,7 +24,8 @@ export function ReplayWorkspace({ preview, state, active, backendData, onRefresh
   const viewId = useId();
   const scenario = replayScenarios.find(row => row.id === scenarioId)!;
   const frame = preview ? scenario.frames[index] : undefined;
-  const decision = frame?.decisions[0];
+  const job = frame?.jobs.find(row=>row.id===jobId) ?? frame?.jobs[0];
+  const decision = frame?.decisions.filter(row=>row.jobId===job?.id).at(-1);
   const complete = index === scenario.frames.length - 1;
   useEffect(() => {
     if (!active || !preview || complete || view !== 0) setPlaying(false);
@@ -31,8 +36,8 @@ export function ReplayWorkspace({ preview, state, active, backendData, onRefresh
   function reset() { setPlaying(false); setIndex(0); }
   function selectScenario(id: string) { reset(); setScenarioId(id); }
   if (!preview) return backendData ? <BackendReplayWorkspace data={backendData} active={active} onRefresh={onRefresh} /> : <p className="empty">Loading replay state…</p>;
-  return <div className="stack replay-simple">
-    <div className="tabs replay-view-tabs" role="tablist" aria-label="Replay and execution views">
+  return <div className="stack replay-simple replay-workspace guided-replay">
+    <div className="tabs replay-view-tabs" role="tablist" aria-label="Replay and execution views" style={{padding: "10px 12px"}}>
       {views.map((label, i) => <button key={label} id={`${viewId}-tab-${i}`} role="tab" aria-selected={view === i} aria-controls={`${viewId}-panel-${i}`} tabIndex={view === i ? 0 : -1} onClick={() => setView(i)} onKeyDown={event => {
         const next = event.key === "ArrowRight" ? (i + 1) % views.length : event.key === "ArrowLeft" ? (i + views.length - 1) % views.length : event.key === "Home" ? 0 : event.key === "End" ? views.length - 1 : null;
         if (next !== null) { event.preventDefault(); setView(next); document.getElementById(`${viewId}-tab-${next}`)?.focus(); }
@@ -41,23 +46,19 @@ export function ReplayWorkspace({ preview, state, active, backendData, onRefresh
     <div id={`${viewId}-panel-0`} role="tabpanel" aria-labelledby={`${viewId}-tab-0`} hidden={view !== 0}>
       <div className="stack">
         <ReplayPanel state={frame ? { ...state, currentSlot: frame.slot } : state} scenarios={preview ? replayScenarios : []} scenarioId={preview ? scenarioId : undefined} index={index} playing={playing} speed={speed} onScenario={selectScenario} onReset={reset} onStep={() => setIndex(value => nextFrame(value, scenario.frames.length))} onPlay={() => setPlaying(value => !value)} onSpeed={setSpeed} />
-        {frame ? <section className="replay-story" aria-label="Replay event, response and outcome">
-          <div className="replay-story-block"><div className="replay-story-heading"><h2>Current event</h2><span className="tag">Slot {frame.slot} · Simulated</span></div><p role="status">{frame.event}</p></div>
-          <div className="replay-story-block"><div className="replay-story-heading"><h2>Scheduler response</h2><span className="muted">{decision?.action ?? "No new decision"}</span></div>
-            <p>{decision?.explanation ?? "No further scheduling decision is supplied for this event."}</p>
-            {decision && <dl className="replay-plan-summary"><div><dt>Region</dt><dd>{decision.region ?? "Unavailable"}</dd></div><div><dt>Planned window</dt><dd>{decision.plannedStartSlot != null && decision.plannedEndSlot != null ? `Slots ${decision.plannedStartSlot}–${decision.plannedEndSlot}` : "Unavailable"}</dd></div><div><dt>Projected cost</dt><dd>{decision.projectedCostUsd === null ? "Unavailable" : `$${decision.projectedCostUsd.toFixed(2)}`}</dd></div></dl>}
-          </div>
-          <div className="replay-story-block"><div className="replay-story-heading"><h2>Workload outcome</h2><span className={frame.execution.status === "FAILED" ? "attention" : "muted"}>{frame.execution.status}</span></div>
-            <p>{frame.jobs[0].name} <span className="muted">· {frame.jobs[0].id}</span></p>
-            <p className={frame.execution.failureReason ? "attention" : "muted"}>{frame.execution.failureReason ?? (frame.execution.status === "COMPLETED" ? `Example completion at ${frame.execution.completedAt}.` : frame.execution.status === "RUNNING" ? "Example task is running; completion is pending." : "Execution has not started in this example.")}</p>
-          </div>
-          <details className="replay-more"><summary>Full execution plan</summary><DecisionInspector job={frame.jobs[0]} decision={decision} currentSlot={frame.slot} preview /></details>
-          <details className="replay-more"><summary>Event history · {index + 1} events</summary><ol className="replay-history">{scenario.frames.slice(0, index + 1).map((row, i) => <li key={row.slot}><button className="text-button" aria-current={i === index ? "step" : undefined} onClick={() => { setPlaying(false); setIndex(i); }}>Slot {row.slot}</button><p>{row.event}</p></li>)}</ol></details>
-          <div className="panel-footer">Prepared examples only. No simulator, optimizer or Docker task runs.</div>
-        </section> : <section><div className="empty"><h3>No replay results yet</h3><p>Events, scheduling responses and outcomes will appear when replay is connected.</p></div></section>}
+        {frame && <>
+          <p className="notice" role="status">SIMULATED storyboard · {frame.event}</p>
+          <div className="replay-demo-story"><ReplayNarrative decisionDetails={<details className="replay-more"><summary>Full execution plan and decision history</summary>{policy === "OPTIMIZER_WITH_ML" ? <><DecisionInspector job={job} decision={decision} currentSlot={frame.slot} preview /><ol className="replay-history">{scenario.frames.slice(0,index+1).flatMap(row=>row.decisions).filter(row=>row.jobId===job?.id).map((row,i)=><li key={i}>Issued slot {row.decidedAtSlot} · {row.action}<p>{row.explanation}</p></li>)}</ol></> : <p className="panel-body">No issued decisions for this preview policy.</p>}</details>} preview job={policy === "OPTIMIZER_WITH_ML" ? job : undefined} decision={policy === "OPTIMIZER_WITH_ML" ? decision : undefined} market={frame.market} run={{strategy:policy,status:policy === "OPTIMIZER_WITH_ML" ? "ACTIVE" : "UNAVAILABLE",error:policy === "OPTIMIZER_WITH_ML" ? null : "No policy result supplied in this prepared preview.",decisions:scenario.frames.slice(0,index+1).flatMap(row=>row.decisions),forecasts:[],modelVersionsUsed:["illustrative-not-trained"],outcomes: frame.execution.completedAt?.match(/^Slot (\d+)$/) && job?.status === "COMPLETED" ? [{jobId:job.id,status:"COMPLETED",slot:Number(frame.execution.completedAt.match(/^Slot (\d+)$/)![1]),reason:"Prepared example"}] : []}}>
+            <div className="guided-selectors"><label>Policy<select value={policy} onChange={event=>setPolicy(event.target.value as Strategy)}>{demoPolicies.map(row=><option key={row} value={row}>{policyLabel(row)}</option>)}</select></label><label>Workload<select value={job?.id ?? ""} onChange={event=>setJobId(event.target.value)}>{frame.jobs.map(row=><option key={row.id} value={row.id}>{row.name}</option>)}</select></label></div>
+          </ReplayNarrative>
+          <section className="replay-advanced">
+          <details className="replay-more"><summary>Capacity by pool</summary><p className="panel-body">Illustrative SIMULATED inputs, not observed AWS inventory.</p><div className="table-scroll"><table><thead><tr><th>Region</th><th>Hardware</th><th>Units</th></tr></thead><tbody>{frame.market.map((row,i)=><tr key={i}><td>{row.region}</td><td>{row.gpuType ?? row.resourceType}</td><td>{row.availableUnits ?? "Unknown"}</td></tr>)}</tbody></table></div></details>
+          <details className="replay-more"><summary>Simulated shocks</summary><p className="panel-body">Preview shocks are prepared examples. Choose a scenario in replay settings to inspect its storyboard. No backend shock is injected.</p></details></section></div>
+          <PolicyComparison />
+        </>}
+
       </div>
     </div>
-    <div id={`${viewId}-panel-1`} role="tabpanel" aria-labelledby={`${viewId}-tab-1`} hidden={view !== 1}><PolicyComparison /></div>
-    <div id={`${viewId}-panel-2`} role="tabpanel" aria-labelledby={`${viewId}-tab-2`} hidden={view !== 2}><ExecutionMonitor execution={frame?.execution} preview={preview} /></div>
+    <div id={`${viewId}-panel-1`} role="tabpanel" aria-labelledby={`${viewId}-tab-1`} hidden={view !== 1}><p className="notice">Choose Backend data to run genuine local Docker tasks and inspect their records. Preview telemetry below is illustrative.</p><ExecutionMonitor execution={frame?.execution} preview /></div>
   </div>;
 }

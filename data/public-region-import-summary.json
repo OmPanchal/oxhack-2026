@@ -1,0 +1,2547 @@
+{
+  "source": {
+    "schemaVersion": "public-hourly-price-v1",
+    "originUtc": "2026-07-28T00:00:00+00:00",
+    "endSlot": 2136,
+    "sourceRecord": 23082767,
+    "sourceDoi": "10.5281/zenodo.23082767",
+    "sourceCreator": "Eric Pauley",
+    "sourceLicense": "CC-BY-4.0",
+    "sourceFiles": [
+      {
+        "selectedInputEvents": 18212,
+        "identicalDuplicates": 0,
+        "outsideMonthEventsExcluded": 0,
+        "file": "2026-08.tsv.zst",
+        "seriesCount": 145,
+        "sourceSha256": "a5d4e870530b575ef171adf9d71bfb1f91ad887de2daafbaf102347b7dbe5bf2"
+      },
+      {
+        "selectedInputEvents": 17506,
+        "identicalDuplicates": 0,
+        "outsideMonthEventsExcluded": 0,
+        "file": "2026-09.tsv.zst",
+        "seriesCount": 145,
+        "sourceSha256": "e80cf3c1f1ca3fc8ebae5ffa09b0b50872359a3a8de026fa06c327411247d903"
+      }
+    ],
+    "originalDatasetSha256": "618ed38329ec8b4934c7fd40a0e77e61b3dcd9d3850b2df87299af5827903a36",
+    "hardwareMetadataSha256": "4c489d0b9a4534f18e20dd311dfbbfe1942c34d8e65474872cfd799f0d81fda6",
+    "designSha256": "298b9dc9eb7bf950c8b791d292e4692874f9201b5b08ce332b863f7176e76aa1",
+    "dataKind": "OBSERVED",
+    "hasCapacityObservations": false,
+    "knownHourlyRowCount": 212280,
+    "missingHourlyRowCount": 97440,
+    "series": [
+      {
+        "identity": {
+          "region": "eu-central-1",
+          "availability_zone": "euc1-az1",
+          "instance_type": "c6i.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "CPU",
+          "gpu_type": ""
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "CPU",
+          "gpuType": null,
+          "resourceUnitsPerInstance": 4,
+          "unit": "vCPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-central-1",
+          "availability_zone": "euc1-az1",
+          "instance_type": "g4dn.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA T4"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA T4",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-central-1",
+          "availability_zone": "euc1-az1",
+          "instance_type": "g5.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA A10G"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA A10G",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-central-1",
+          "availability_zone": "euc1-az1",
+          "instance_type": "g6.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA L4"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA L4",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-central-1",
+          "availability_zone": "euc1-az1",
+          "instance_type": "g6e.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA L40S"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA L40S",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-central-1",
+          "availability_zone": "euc1-az1",
+          "instance_type": "m5.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "CPU",
+          "gpu_type": ""
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "CPU",
+          "gpuType": null,
+          "resourceUnitsPerInstance": 4,
+          "unit": "vCPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-central-1",
+          "availability_zone": "euc1-az1",
+          "instance_type": "p4d.24xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA A100"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA A100",
+          "resourceUnitsPerInstance": 8,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-central-1",
+          "availability_zone": "euc1-az1",
+          "instance_type": "r6i.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "CPU",
+          "gpu_type": ""
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "CPU",
+          "gpuType": null,
+          "resourceUnitsPerInstance": 4,
+          "unit": "vCPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-central-1",
+          "availability_zone": "euc1-az2",
+          "instance_type": "c6i.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "CPU",
+          "gpu_type": ""
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "CPU",
+          "gpuType": null,
+          "resourceUnitsPerInstance": 4,
+          "unit": "vCPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-central-1",
+          "availability_zone": "euc1-az2",
+          "instance_type": "g4dn.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA T4"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA T4",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-central-1",
+          "availability_zone": "euc1-az2",
+          "instance_type": "g5.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA A10G"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA A10G",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-central-1",
+          "availability_zone": "euc1-az2",
+          "instance_type": "g6.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA L4"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA L4",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-central-1",
+          "availability_zone": "euc1-az2",
+          "instance_type": "g6e.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA L40S"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA L40S",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-central-1",
+          "availability_zone": "euc1-az2",
+          "instance_type": "m5.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "CPU",
+          "gpu_type": ""
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "CPU",
+          "gpuType": null,
+          "resourceUnitsPerInstance": 4,
+          "unit": "vCPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-central-1",
+          "availability_zone": "euc1-az2",
+          "instance_type": "p4d.24xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA A100"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA A100",
+          "resourceUnitsPerInstance": 8,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-central-1",
+          "availability_zone": "euc1-az2",
+          "instance_type": "r6i.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "CPU",
+          "gpu_type": ""
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "CPU",
+          "gpuType": null,
+          "resourceUnitsPerInstance": 4,
+          "unit": "vCPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-central-1",
+          "availability_zone": "euc1-az3",
+          "instance_type": "c6i.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "CPU",
+          "gpu_type": ""
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "CPU",
+          "gpuType": null,
+          "resourceUnitsPerInstance": 4,
+          "unit": "vCPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-central-1",
+          "availability_zone": "euc1-az3",
+          "instance_type": "g4dn.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA T4"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA T4",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-central-1",
+          "availability_zone": "euc1-az3",
+          "instance_type": "g5.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA A10G"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA A10G",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-central-1",
+          "availability_zone": "euc1-az3",
+          "instance_type": "g6.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA L4"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA L4",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-central-1",
+          "availability_zone": "euc1-az3",
+          "instance_type": "g6e.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA L40S"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA L40S",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-central-1",
+          "availability_zone": "euc1-az3",
+          "instance_type": "m5.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "CPU",
+          "gpu_type": ""
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "CPU",
+          "gpuType": null,
+          "resourceUnitsPerInstance": 4,
+          "unit": "vCPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-central-1",
+          "availability_zone": "euc1-az3",
+          "instance_type": "p4d.24xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA A100"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA A100",
+          "resourceUnitsPerInstance": 8,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-central-1",
+          "availability_zone": "euc1-az3",
+          "instance_type": "r6i.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "CPU",
+          "gpu_type": ""
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "CPU",
+          "gpuType": null,
+          "resourceUnitsPerInstance": 4,
+          "unit": "vCPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-west-1",
+          "availability_zone": "euw1-az1",
+          "instance_type": "c6i.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "CPU",
+          "gpu_type": ""
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "CPU",
+          "gpuType": null,
+          "resourceUnitsPerInstance": 4,
+          "unit": "vCPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-west-1",
+          "availability_zone": "euw1-az1",
+          "instance_type": "g4dn.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA T4"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA T4",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-west-1",
+          "availability_zone": "euw1-az1",
+          "instance_type": "g5.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA A10G"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA A10G",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-west-1",
+          "availability_zone": "euw1-az1",
+          "instance_type": "m5.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "CPU",
+          "gpu_type": ""
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "CPU",
+          "gpuType": null,
+          "resourceUnitsPerInstance": 4,
+          "unit": "vCPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-west-1",
+          "availability_zone": "euw1-az1",
+          "instance_type": "r6i.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "CPU",
+          "gpu_type": ""
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "CPU",
+          "gpuType": null,
+          "resourceUnitsPerInstance": 4,
+          "unit": "vCPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-west-1",
+          "availability_zone": "euw1-az2",
+          "instance_type": "c6i.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "CPU",
+          "gpu_type": ""
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "CPU",
+          "gpuType": null,
+          "resourceUnitsPerInstance": 4,
+          "unit": "vCPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-west-1",
+          "availability_zone": "euw1-az2",
+          "instance_type": "g4dn.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA T4"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA T4",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-west-1",
+          "availability_zone": "euw1-az2",
+          "instance_type": "g5.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA A10G"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA A10G",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-west-1",
+          "availability_zone": "euw1-az2",
+          "instance_type": "m5.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "CPU",
+          "gpu_type": ""
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "CPU",
+          "gpuType": null,
+          "resourceUnitsPerInstance": 4,
+          "unit": "vCPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-west-1",
+          "availability_zone": "euw1-az2",
+          "instance_type": "p4d.24xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA A100"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA A100",
+          "resourceUnitsPerInstance": 8,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-west-1",
+          "availability_zone": "euw1-az2",
+          "instance_type": "r6i.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "CPU",
+          "gpu_type": ""
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "CPU",
+          "gpuType": null,
+          "resourceUnitsPerInstance": 4,
+          "unit": "vCPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-west-1",
+          "availability_zone": "euw1-az3",
+          "instance_type": "c6i.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "CPU",
+          "gpu_type": ""
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "CPU",
+          "gpuType": null,
+          "resourceUnitsPerInstance": 4,
+          "unit": "vCPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-west-1",
+          "availability_zone": "euw1-az3",
+          "instance_type": "g4dn.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA T4"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA T4",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-west-1",
+          "availability_zone": "euw1-az3",
+          "instance_type": "g5.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA A10G"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA A10G",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-west-1",
+          "availability_zone": "euw1-az3",
+          "instance_type": "m5.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "CPU",
+          "gpu_type": ""
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "CPU",
+          "gpuType": null,
+          "resourceUnitsPerInstance": 4,
+          "unit": "vCPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-west-1",
+          "availability_zone": "euw1-az3",
+          "instance_type": "r6i.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "CPU",
+          "gpu_type": ""
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "CPU",
+          "gpuType": null,
+          "resourceUnitsPerInstance": 4,
+          "unit": "vCPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-west-2",
+          "availability_zone": "euw2-az1",
+          "instance_type": "c6i.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "CPU",
+          "gpu_type": ""
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "CPU",
+          "gpuType": null,
+          "resourceUnitsPerInstance": 4,
+          "unit": "vCPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-west-2",
+          "availability_zone": "euw2-az1",
+          "instance_type": "g4dn.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA T4"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA T4",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-west-2",
+          "availability_zone": "euw2-az1",
+          "instance_type": "g6.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA L4"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA L4",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-west-2",
+          "availability_zone": "euw2-az1",
+          "instance_type": "m5.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "CPU",
+          "gpu_type": ""
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "CPU",
+          "gpuType": null,
+          "resourceUnitsPerInstance": 4,
+          "unit": "vCPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-west-2",
+          "availability_zone": "euw2-az1",
+          "instance_type": "p5.48xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA H100"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA H100",
+          "resourceUnitsPerInstance": 8,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-west-2",
+          "availability_zone": "euw2-az1",
+          "instance_type": "r6i.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "CPU",
+          "gpu_type": ""
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "CPU",
+          "gpuType": null,
+          "resourceUnitsPerInstance": 4,
+          "unit": "vCPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-west-2",
+          "availability_zone": "euw2-az2",
+          "instance_type": "c6i.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "CPU",
+          "gpu_type": ""
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "CPU",
+          "gpuType": null,
+          "resourceUnitsPerInstance": 4,
+          "unit": "vCPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-west-2",
+          "availability_zone": "euw2-az2",
+          "instance_type": "g4dn.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA T4"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA T4",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-west-2",
+          "availability_zone": "euw2-az2",
+          "instance_type": "g5.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA A10G"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA A10G",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-west-2",
+          "availability_zone": "euw2-az2",
+          "instance_type": "g6.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA L4"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA L4",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-west-2",
+          "availability_zone": "euw2-az2",
+          "instance_type": "m5.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "CPU",
+          "gpu_type": ""
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "CPU",
+          "gpuType": null,
+          "resourceUnitsPerInstance": 4,
+          "unit": "vCPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-west-2",
+          "availability_zone": "euw2-az2",
+          "instance_type": "p4d.24xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA A100"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA A100",
+          "resourceUnitsPerInstance": 8,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-west-2",
+          "availability_zone": "euw2-az2",
+          "instance_type": "p5.48xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA H100"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA H100",
+          "resourceUnitsPerInstance": 8,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-west-2",
+          "availability_zone": "euw2-az2",
+          "instance_type": "r6i.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "CPU",
+          "gpu_type": ""
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "CPU",
+          "gpuType": null,
+          "resourceUnitsPerInstance": 4,
+          "unit": "vCPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-west-2",
+          "availability_zone": "euw2-az3",
+          "instance_type": "c6i.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "CPU",
+          "gpu_type": ""
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "CPU",
+          "gpuType": null,
+          "resourceUnitsPerInstance": 4,
+          "unit": "vCPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-west-2",
+          "availability_zone": "euw2-az3",
+          "instance_type": "g4dn.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA T4"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA T4",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-west-2",
+          "availability_zone": "euw2-az3",
+          "instance_type": "g5.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA A10G"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA A10G",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-west-2",
+          "availability_zone": "euw2-az3",
+          "instance_type": "g6.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA L4"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA L4",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-west-2",
+          "availability_zone": "euw2-az3",
+          "instance_type": "m5.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "CPU",
+          "gpu_type": ""
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "CPU",
+          "gpuType": null,
+          "resourceUnitsPerInstance": 4,
+          "unit": "vCPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-west-2",
+          "availability_zone": "euw2-az3",
+          "instance_type": "p4d.24xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA A100"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA A100",
+          "resourceUnitsPerInstance": 8,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-west-2",
+          "availability_zone": "euw2-az3",
+          "instance_type": "p5.48xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA H100"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA H100",
+          "resourceUnitsPerInstance": 8,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "eu-west-2",
+          "availability_zone": "euw2-az3",
+          "instance_type": "r6i.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "CPU",
+          "gpu_type": ""
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "CPU",
+          "gpuType": null,
+          "resourceUnitsPerInstance": 4,
+          "unit": "vCPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-east-1",
+          "availability_zone": "use1-az1",
+          "instance_type": "c6i.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "CPU",
+          "gpu_type": ""
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "CPU",
+          "gpuType": null,
+          "resourceUnitsPerInstance": 4,
+          "unit": "vCPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-east-1",
+          "availability_zone": "use1-az1",
+          "instance_type": "g4dn.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA T4"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA T4",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-east-1",
+          "availability_zone": "use1-az1",
+          "instance_type": "g5.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA A10G"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA A10G",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-east-1",
+          "availability_zone": "use1-az1",
+          "instance_type": "g6.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA L4"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA L4",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-east-1",
+          "availability_zone": "use1-az1",
+          "instance_type": "g6e.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA L40S"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA L40S",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-east-1",
+          "availability_zone": "use1-az1",
+          "instance_type": "m5.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "CPU",
+          "gpu_type": ""
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "CPU",
+          "gpuType": null,
+          "resourceUnitsPerInstance": 4,
+          "unit": "vCPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-east-1",
+          "availability_zone": "use1-az1",
+          "instance_type": "p4d.24xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA A100"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA A100",
+          "resourceUnitsPerInstance": 8,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-east-1",
+          "availability_zone": "use1-az1",
+          "instance_type": "p5.48xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA H100"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA H100",
+          "resourceUnitsPerInstance": 8,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-east-1",
+          "availability_zone": "use1-az1",
+          "instance_type": "r6i.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "CPU",
+          "gpu_type": ""
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "CPU",
+          "gpuType": null,
+          "resourceUnitsPerInstance": 4,
+          "unit": "vCPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-east-1",
+          "availability_zone": "use1-az2",
+          "instance_type": "c6i.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "CPU",
+          "gpu_type": ""
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "CPU",
+          "gpuType": null,
+          "resourceUnitsPerInstance": 4,
+          "unit": "vCPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-east-1",
+          "availability_zone": "use1-az2",
+          "instance_type": "g4dn.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA T4"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA T4",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-east-1",
+          "availability_zone": "use1-az2",
+          "instance_type": "g5.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA A10G"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA A10G",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-east-1",
+          "availability_zone": "use1-az2",
+          "instance_type": "g6.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA L4"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA L4",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-east-1",
+          "availability_zone": "use1-az2",
+          "instance_type": "g6e.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA L40S"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA L40S",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-east-1",
+          "availability_zone": "use1-az2",
+          "instance_type": "m5.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "CPU",
+          "gpu_type": ""
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "CPU",
+          "gpuType": null,
+          "resourceUnitsPerInstance": 4,
+          "unit": "vCPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-east-1",
+          "availability_zone": "use1-az2",
+          "instance_type": "p4d.24xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA A100"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA A100",
+          "resourceUnitsPerInstance": 8,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-east-1",
+          "availability_zone": "use1-az2",
+          "instance_type": "p5.48xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA H100"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA H100",
+          "resourceUnitsPerInstance": 8,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-east-1",
+          "availability_zone": "use1-az2",
+          "instance_type": "r6i.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "CPU",
+          "gpu_type": ""
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "CPU",
+          "gpuType": null,
+          "resourceUnitsPerInstance": 4,
+          "unit": "vCPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-east-1",
+          "availability_zone": "use1-az3",
+          "instance_type": "p5.48xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA H100"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA H100",
+          "resourceUnitsPerInstance": 8,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-east-1",
+          "availability_zone": "use1-az4",
+          "instance_type": "c6i.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "CPU",
+          "gpu_type": ""
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "CPU",
+          "gpuType": null,
+          "resourceUnitsPerInstance": 4,
+          "unit": "vCPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-east-1",
+          "availability_zone": "use1-az4",
+          "instance_type": "g4dn.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA T4"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA T4",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-east-1",
+          "availability_zone": "use1-az4",
+          "instance_type": "g5.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA A10G"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA A10G",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-east-1",
+          "availability_zone": "use1-az4",
+          "instance_type": "g6.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA L4"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA L4",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-east-1",
+          "availability_zone": "use1-az4",
+          "instance_type": "g6e.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA L40S"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA L40S",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-east-1",
+          "availability_zone": "use1-az4",
+          "instance_type": "m5.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "CPU",
+          "gpu_type": ""
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "CPU",
+          "gpuType": null,
+          "resourceUnitsPerInstance": 4,
+          "unit": "vCPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-east-1",
+          "availability_zone": "use1-az4",
+          "instance_type": "p4d.24xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA A100"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA A100",
+          "resourceUnitsPerInstance": 8,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-east-1",
+          "availability_zone": "use1-az4",
+          "instance_type": "p5.48xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA H100"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA H100",
+          "resourceUnitsPerInstance": 8,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-east-1",
+          "availability_zone": "use1-az4",
+          "instance_type": "r6i.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "CPU",
+          "gpu_type": ""
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "CPU",
+          "gpuType": null,
+          "resourceUnitsPerInstance": 4,
+          "unit": "vCPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-east-1",
+          "availability_zone": "use1-az5",
+          "instance_type": "c6i.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "CPU",
+          "gpu_type": ""
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "CPU",
+          "gpuType": null,
+          "resourceUnitsPerInstance": 4,
+          "unit": "vCPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-east-1",
+          "availability_zone": "use1-az5",
+          "instance_type": "g4dn.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA T4"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA T4",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-east-1",
+          "availability_zone": "use1-az5",
+          "instance_type": "g5.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA A10G"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA A10G",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-east-1",
+          "availability_zone": "use1-az5",
+          "instance_type": "g6.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA L4"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA L4",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-east-1",
+          "availability_zone": "use1-az5",
+          "instance_type": "m5.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "CPU",
+          "gpu_type": ""
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "CPU",
+          "gpuType": null,
+          "resourceUnitsPerInstance": 4,
+          "unit": "vCPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-east-1",
+          "availability_zone": "use1-az5",
+          "instance_type": "p5.48xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA H100"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA H100",
+          "resourceUnitsPerInstance": 8,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-east-1",
+          "availability_zone": "use1-az5",
+          "instance_type": "r6i.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "CPU",
+          "gpu_type": ""
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "CPU",
+          "gpuType": null,
+          "resourceUnitsPerInstance": 4,
+          "unit": "vCPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-east-1",
+          "availability_zone": "use1-az6",
+          "instance_type": "c6i.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "CPU",
+          "gpu_type": ""
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "CPU",
+          "gpuType": null,
+          "resourceUnitsPerInstance": 4,
+          "unit": "vCPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-east-1",
+          "availability_zone": "use1-az6",
+          "instance_type": "g4dn.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA T4"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA T4",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-east-1",
+          "availability_zone": "use1-az6",
+          "instance_type": "g5.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA A10G"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA A10G",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-east-1",
+          "availability_zone": "use1-az6",
+          "instance_type": "g6.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA L4"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA L4",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-east-1",
+          "availability_zone": "use1-az6",
+          "instance_type": "g6e.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA L40S"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA L40S",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-east-1",
+          "availability_zone": "use1-az6",
+          "instance_type": "m5.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "CPU",
+          "gpu_type": ""
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "CPU",
+          "gpuType": null,
+          "resourceUnitsPerInstance": 4,
+          "unit": "vCPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-east-1",
+          "availability_zone": "use1-az6",
+          "instance_type": "p4d.24xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA A100"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA A100",
+          "resourceUnitsPerInstance": 8,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-east-1",
+          "availability_zone": "use1-az6",
+          "instance_type": "p5.48xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA H100"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA H100",
+          "resourceUnitsPerInstance": 8,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-east-1",
+          "availability_zone": "use1-az6",
+          "instance_type": "p6-b200.48xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA B200"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA B200",
+          "resourceUnitsPerInstance": 8,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-east-1",
+          "availability_zone": "use1-az6",
+          "instance_type": "r6i.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "CPU",
+          "gpu_type": ""
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "CPU",
+          "gpuType": null,
+          "resourceUnitsPerInstance": 4,
+          "unit": "vCPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-west-2",
+          "availability_zone": "usw2-az1",
+          "instance_type": "c6i.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "CPU",
+          "gpu_type": ""
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "CPU",
+          "gpuType": null,
+          "resourceUnitsPerInstance": 4,
+          "unit": "vCPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-west-2",
+          "availability_zone": "usw2-az1",
+          "instance_type": "g4dn.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA T4"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA T4",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-west-2",
+          "availability_zone": "usw2-az1",
+          "instance_type": "g5.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA A10G"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA A10G",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-west-2",
+          "availability_zone": "usw2-az1",
+          "instance_type": "g6.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA L4"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA L4",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-west-2",
+          "availability_zone": "usw2-az1",
+          "instance_type": "g6e.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA L40S"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA L40S",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-west-2",
+          "availability_zone": "usw2-az1",
+          "instance_type": "m5.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "CPU",
+          "gpu_type": ""
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "CPU",
+          "gpuType": null,
+          "resourceUnitsPerInstance": 4,
+          "unit": "vCPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-west-2",
+          "availability_zone": "usw2-az1",
+          "instance_type": "p4d.24xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA A100"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA A100",
+          "resourceUnitsPerInstance": 8,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-west-2",
+          "availability_zone": "usw2-az1",
+          "instance_type": "p5.48xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA H100"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA H100",
+          "resourceUnitsPerInstance": 8,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-west-2",
+          "availability_zone": "usw2-az1",
+          "instance_type": "p6-b200.48xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA B200"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA B200",
+          "resourceUnitsPerInstance": 8,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-west-2",
+          "availability_zone": "usw2-az1",
+          "instance_type": "r6i.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "CPU",
+          "gpu_type": ""
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "CPU",
+          "gpuType": null,
+          "resourceUnitsPerInstance": 4,
+          "unit": "vCPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-west-2",
+          "availability_zone": "usw2-az2",
+          "instance_type": "c6i.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "CPU",
+          "gpu_type": ""
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "CPU",
+          "gpuType": null,
+          "resourceUnitsPerInstance": 4,
+          "unit": "vCPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-west-2",
+          "availability_zone": "usw2-az2",
+          "instance_type": "g4dn.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA T4"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA T4",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-west-2",
+          "availability_zone": "usw2-az2",
+          "instance_type": "g5.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA A10G"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA A10G",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-west-2",
+          "availability_zone": "usw2-az2",
+          "instance_type": "g6.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA L4"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA L4",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-west-2",
+          "availability_zone": "usw2-az2",
+          "instance_type": "g6e.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA L40S"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA L40S",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-west-2",
+          "availability_zone": "usw2-az2",
+          "instance_type": "m5.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "CPU",
+          "gpu_type": ""
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "CPU",
+          "gpuType": null,
+          "resourceUnitsPerInstance": 4,
+          "unit": "vCPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-west-2",
+          "availability_zone": "usw2-az2",
+          "instance_type": "p4d.24xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA A100"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA A100",
+          "resourceUnitsPerInstance": 8,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-west-2",
+          "availability_zone": "usw2-az2",
+          "instance_type": "p5.48xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA H100"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA H100",
+          "resourceUnitsPerInstance": 8,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-west-2",
+          "availability_zone": "usw2-az2",
+          "instance_type": "p6-b200.48xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA B200"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA B200",
+          "resourceUnitsPerInstance": 8,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-west-2",
+          "availability_zone": "usw2-az2",
+          "instance_type": "r6i.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "CPU",
+          "gpu_type": ""
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "CPU",
+          "gpuType": null,
+          "resourceUnitsPerInstance": 4,
+          "unit": "vCPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-west-2",
+          "availability_zone": "usw2-az3",
+          "instance_type": "c6i.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "CPU",
+          "gpu_type": ""
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "CPU",
+          "gpuType": null,
+          "resourceUnitsPerInstance": 4,
+          "unit": "vCPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-west-2",
+          "availability_zone": "usw2-az3",
+          "instance_type": "g4dn.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA T4"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA T4",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-west-2",
+          "availability_zone": "usw2-az3",
+          "instance_type": "g5.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA A10G"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA A10G",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-west-2",
+          "availability_zone": "usw2-az3",
+          "instance_type": "g6.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA L4"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA L4",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-west-2",
+          "availability_zone": "usw2-az3",
+          "instance_type": "g6e.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA L40S"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA L40S",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-west-2",
+          "availability_zone": "usw2-az3",
+          "instance_type": "m5.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "CPU",
+          "gpu_type": ""
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "CPU",
+          "gpuType": null,
+          "resourceUnitsPerInstance": 4,
+          "unit": "vCPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-west-2",
+          "availability_zone": "usw2-az3",
+          "instance_type": "p4d.24xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA A100"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA A100",
+          "resourceUnitsPerInstance": 8,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-west-2",
+          "availability_zone": "usw2-az3",
+          "instance_type": "p5.48xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA H100"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA H100",
+          "resourceUnitsPerInstance": 8,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-west-2",
+          "availability_zone": "usw2-az3",
+          "instance_type": "p5e.48xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA H200"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA H200",
+          "resourceUnitsPerInstance": 8,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-west-2",
+          "availability_zone": "usw2-az3",
+          "instance_type": "r6i.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "CPU",
+          "gpu_type": ""
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "CPU",
+          "gpuType": null,
+          "resourceUnitsPerInstance": 4,
+          "unit": "vCPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-west-2",
+          "availability_zone": "usw2-az4",
+          "instance_type": "c6i.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "CPU",
+          "gpu_type": ""
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "CPU",
+          "gpuType": null,
+          "resourceUnitsPerInstance": 4,
+          "unit": "vCPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-west-2",
+          "availability_zone": "usw2-az4",
+          "instance_type": "g6.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA L4"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA L4",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-west-2",
+          "availability_zone": "usw2-az4",
+          "instance_type": "g6e.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA L40S"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA L40S",
+          "resourceUnitsPerInstance": 1,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-west-2",
+          "availability_zone": "usw2-az4",
+          "instance_type": "m5.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "CPU",
+          "gpu_type": ""
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "CPU",
+          "gpuType": null,
+          "resourceUnitsPerInstance": 4,
+          "unit": "vCPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-west-2",
+          "availability_zone": "usw2-az4",
+          "instance_type": "p4d.24xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA A100"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA A100",
+          "resourceUnitsPerInstance": 8,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-west-2",
+          "availability_zone": "usw2-az4",
+          "instance_type": "p5.48xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA H100"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA H100",
+          "resourceUnitsPerInstance": 8,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-west-2",
+          "availability_zone": "usw2-az4",
+          "instance_type": "p6-b200.48xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "GPU",
+          "gpu_type": "NVIDIA B200"
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "GPU",
+          "gpuType": "NVIDIA B200",
+          "resourceUnitsPerInstance": 8,
+          "unit": "GPU-hour"
+        }
+      },
+      {
+        "identity": {
+          "region": "us-west-2",
+          "availability_zone": "usw2-az4",
+          "instance_type": "r6i.xlarge",
+          "product_description": "Linux/UNIX",
+          "resource_type": "CPU",
+          "gpu_type": ""
+        },
+        "knownHours": 1464,
+        "hardware": {
+          "resourceType": "CPU",
+          "gpuType": null,
+          "resourceUnitsPerInstance": 4,
+          "unit": "vCPU-hour"
+        }
+      }
+    ],
+    "sha256": "a62e9fddaf0f44306843658dfdae1aca78fb524086b322f6fd869c5d2b3885fb",
+    "eventsSha256": "ecbae1e2ac00ae9b44c24148cd1c21262f29d2b69ffef956d1a0011c734ee29e",
+    "limitations": [
+      "Third-party AWS event archive under CC-BY-4.0; monthly anchors may have source-adjusted timestamps.",
+      "Global AZ IDs are preserved; no mapping to account-specific AZ letters is assumed.",
+      "Verified original instance-type hardware counts are reused; no claim of current regional capacity/offerings.",
+      "Hourly carry-forward assumes source completeness within a month; no fill into absent months or October."
+    ]
+  },
+  "download": {
+    "recordId": 23082767,
+    "doi": "10.5281/zenodo.23082767",
+    "creator": [
+      {
+        "name": "Pauley, Eric",
+        "affiliation": "University of Wisconsin\u2013Madison",
+        "orcid": "0000-0002-2197-9137"
+      }
+    ],
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "files": [
+      {
+        "file": "2026-08.tsv.zst",
+        "url": "https://zenodo.org/api/records/23082767/files/2026-08.tsv.zst/content",
+        "size": 256656312,
+        "md5": "e45475d16af7e68f81335162f1dd65fd",
+        "sha256": "a5d4e870530b575ef171adf9d71bfb1f91ad887de2daafbaf102347b7dbe5bf2"
+      },
+      {
+        "file": "2026-09.tsv.zst",
+        "url": "https://zenodo.org/api/records/23082767/files/2026-09.tsv.zst/content",
+        "size": 251753453,
+        "md5": "0c7b9bc02224a6fb12f3f544c4f53950",
+        "sha256": "e80cf3c1f1ca3fc8ebae5ffa09b0b50872359a3a8de026fa06c327411247d903"
+      }
+    ]
+  },
+  "preparedPath": "data/processed/public-region-hourly-001",
+  "originalPath": "data/processed/hourly-prices-hardware-v3-001",
+  "mergedPoolCount": 353,
+  "originalKnownHourlyRows": 443116,
+  "publicKnownHourlyRows": 212280,
+  "mergedKnownHourlyRows": 655396
+}

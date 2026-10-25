@@ -1,10 +1,8 @@
 {
-  "schemaVersion": "error-price-serving-v1",
-  "modelsDirectory": "models/error-reduction-001",
-  "artifactReceipt": "data/error-model-artifacts.json",
+  "schemaVersion": "error-price-serving-v2",
   "originUtc": "2026-07-28T00:00:00+00:00",
-  "availableFromSlot": 1578,
-  "selectedUsingValidationThroughSlot": 1577,
+  "availableFromSlot": 2136,
+  "selectedUsingValidationThroughSlot": 2135,
   "poolSelections": [
     {
       "region": "eu-north-1",
@@ -77,7 +75,352 @@
       "product_description": "Linux/UNIX",
       "resource_type": "GPU",
       "gpu_type": "NVIDIA B200"
+    },
+    {
+      "region": "eu-central-1",
+      "availability_zone": "euc1-az1",
+      "instance_type": "m5.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-central-1",
+      "availability_zone": "euc1-az1",
+      "instance_type": "p4d.24xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA A100"
+    },
+    {
+      "region": "eu-central-1",
+      "availability_zone": "euc1-az1",
+      "instance_type": "g5.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA A10G"
+    },
+    {
+      "region": "eu-central-1",
+      "availability_zone": "euc1-az1",
+      "instance_type": "g6.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA L4"
+    },
+    {
+      "region": "eu-central-1",
+      "availability_zone": "euc1-az1",
+      "instance_type": "g6e.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA L40S"
+    },
+    {
+      "region": "eu-central-1",
+      "availability_zone": "euc1-az1",
+      "instance_type": "g4dn.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA T4"
+    },
+    {
+      "region": "eu-west-1",
+      "availability_zone": "euw1-az1",
+      "instance_type": "m5.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-west-1",
+      "availability_zone": "euw1-az2",
+      "instance_type": "p4d.24xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA A100"
+    },
+    {
+      "region": "eu-west-1",
+      "availability_zone": "euw1-az1",
+      "instance_type": "g5.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA A10G"
+    },
+    {
+      "region": "eu-west-1",
+      "availability_zone": "euw1-az1",
+      "instance_type": "g4dn.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA T4"
+    },
+    {
+      "region": "eu-west-2",
+      "availability_zone": "euw2-az1",
+      "instance_type": "m5.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-west-2",
+      "availability_zone": "euw2-az2",
+      "instance_type": "p4d.24xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA A100"
+    },
+    {
+      "region": "eu-west-2",
+      "availability_zone": "euw2-az2",
+      "instance_type": "g5.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA A10G"
+    },
+    {
+      "region": "eu-west-2",
+      "availability_zone": "euw2-az1",
+      "instance_type": "p5.48xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA H100"
+    },
+    {
+      "region": "eu-west-2",
+      "availability_zone": "euw2-az1",
+      "instance_type": "g6.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA L4"
+    },
+    {
+      "region": "eu-west-2",
+      "availability_zone": "euw2-az1",
+      "instance_type": "g4dn.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA T4"
+    },
+    {
+      "region": "us-east-1",
+      "availability_zone": "use1-az1",
+      "instance_type": "m5.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "us-east-1",
+      "availability_zone": "use1-az1",
+      "instance_type": "p4d.24xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA A100"
+    },
+    {
+      "region": "us-east-1",
+      "availability_zone": "use1-az1",
+      "instance_type": "g5.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA A10G"
+    },
+    {
+      "region": "us-east-1",
+      "availability_zone": "use1-az6",
+      "instance_type": "p6-b200.48xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA B200"
+    },
+    {
+      "region": "us-east-1",
+      "availability_zone": "use1-az1",
+      "instance_type": "p5.48xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA H100"
+    },
+    {
+      "region": "us-east-1",
+      "availability_zone": "use1-az1",
+      "instance_type": "g6.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA L4"
+    },
+    {
+      "region": "us-east-1",
+      "availability_zone": "use1-az1",
+      "instance_type": "g6e.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA L40S"
+    },
+    {
+      "region": "us-east-1",
+      "availability_zone": "use1-az1",
+      "instance_type": "g4dn.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA T4"
+    },
+    {
+      "region": "us-west-2",
+      "availability_zone": "usw2-az1",
+      "instance_type": "m5.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "us-west-2",
+      "availability_zone": "usw2-az1",
+      "instance_type": "p4d.24xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA A100"
+    },
+    {
+      "region": "us-west-2",
+      "availability_zone": "usw2-az1",
+      "instance_type": "g5.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA A10G"
+    },
+    {
+      "region": "us-west-2",
+      "availability_zone": "usw2-az1",
+      "instance_type": "p6-b200.48xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA B200"
+    },
+    {
+      "region": "us-west-2",
+      "availability_zone": "usw2-az1",
+      "instance_type": "p5.48xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA H100"
+    },
+    {
+      "region": "us-west-2",
+      "availability_zone": "usw2-az3",
+      "instance_type": "p5e.48xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA H200"
+    },
+    {
+      "region": "us-west-2",
+      "availability_zone": "usw2-az1",
+      "instance_type": "g6.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA L4"
+    },
+    {
+      "region": "us-west-2",
+      "availability_zone": "usw2-az1",
+      "instance_type": "g6e.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA L40S"
+    },
+    {
+      "region": "us-west-2",
+      "availability_zone": "usw2-az1",
+      "instance_type": "g4dn.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "GPU",
+      "gpu_type": "NVIDIA T4"
     }
   ],
-  "evaluationReport": "data/error-model-test-results.json"
+  "modelBundles": {
+    "stockholm": {
+      "modelsDirectory": "models/error-reduction-001",
+      "artifactReceipt": "data/error-model-artifacts.json"
+    },
+    "multi-region": {
+      "modelsDirectory": "models/public-region-001",
+      "artifactReceipt": "data/public-region-model-artifacts.json"
+    }
+  },
+  "selectionEvidence": [
+    {
+      "path": "data/public-region-comparison-results.json",
+      "sha256": "a4b7ba2c73f932bc52db040812c11bb90838628c12aec2538ab74281011c2258"
+    },
+    {
+      "path": "data/regional-policy-results.json",
+      "sha256": "2d2425e97bd10f757ce586009c1afbb5b029660ce0b10bba6a4c60f6f7ba88e8"
+    }
+  ],
+  "routes": [
+    {
+      "region": "eu-central-1",
+      "resourceType": "CPU",
+      "bundle": "multi-region"
+    },
+    {
+      "region": "eu-central-1",
+      "resourceType": "GPU",
+      "bundle": "multi-region"
+    },
+    {
+      "region": "eu-north-1",
+      "resourceType": "CPU",
+      "bundle": "multi-region"
+    },
+    {
+      "region": "eu-north-1",
+      "resourceType": "GPU",
+      "bundle": "stockholm"
+    },
+    {
+      "region": "eu-west-1",
+      "resourceType": "CPU",
+      "bundle": "multi-region"
+    },
+    {
+      "region": "eu-west-1",
+      "resourceType": "GPU",
+      "bundle": "multi-region"
+    },
+    {
+      "region": "eu-west-2",
+      "resourceType": "CPU",
+      "bundle": "multi-region"
+    },
+    {
+      "region": "eu-west-2",
+      "resourceType": "GPU",
+      "bundle": "multi-region"
+    },
+    {
+      "region": "us-east-1",
+      "resourceType": "CPU",
+      "bundle": "multi-region"
+    },
+    {
+      "region": "us-east-1",
+      "resourceType": "GPU",
+      "bundle": "multi-region"
+    },
+    {
+      "region": "us-west-2",
+      "resourceType": "CPU",
+      "bundle": "multi-region"
+    },
+    {
+      "region": "us-west-2",
+      "resourceType": "GPU",
+      "bundle": "multi-region"
+    }
+  ]
 }

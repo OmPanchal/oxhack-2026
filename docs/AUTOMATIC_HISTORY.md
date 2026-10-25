@@ -70,3 +70,18 @@ Backend suite: 360 passed / 1 skipped / 53 subtests passed. Frontend: 40 passed;
 production build passed. Startup regressions: 5 passed. Existing warnings remain.
 This verifies live inference and data recovery, not accuracy, cost savings or a
 new browser/Docker/cloud-execution demonstration.
+
+## Expanded fixed-pool support
+
+The reader also handles selected CPU pools, normalizing Spot instance-hour prices
+using the verified EC2 vCPU count. Persisted samples record resource type, unit
+count and per-unit price. Existing GPU history remains readable. Current and
+historical requests resolve a global AZ ID using AWS metadata and validate the
+returned project-specific AZ name; the original model identity stays in source
+provenance. No AZ letter is guessed.
+
+Only explicitly configured regions are queried. CPU or AZ metadata failures are
+reported in `/api/models/status.marketReadErrors` and shown under Market model
+details, with retry backoff. Partial successful pools remain usable. All live
+capacity remains unknown. These changes were verified with mocked AWS responses;
+no new live regional-access or real allocation verification is claimed.

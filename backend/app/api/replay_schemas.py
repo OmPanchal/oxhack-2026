@@ -16,12 +16,15 @@ class ReplayScenario(Contract):
     description: str
     origin_utc: datetime
     end_slot: int = Field(gt=0, le=8760)
+    warmup_slots: int = Field(default=0, ge=0)
     jobs: list[JobCreate]
     market: list[MarketSnapshot]
     interruption_probability: float = Field(default=0, ge=0, le=1)
 
     @model_validator(mode="after")
     def valid_scenario(self):
+        if self.warmup_slots >= self.end_slot or any(job.arrival_slot < self.warmup_slots for job in self.jobs):
+            raise ValueError('Replay warmup must precede the horizon and all job arrivals')
         if self.origin_utc.utcoffset() is None or self.origin_utc.utcoffset().total_seconds() != 0:
             raise ValueError("Replay origin must be aware UTC")
         if len({job.id for job in self.jobs}) != len(self.jobs):
@@ -74,6 +77,9 @@ class ReplayShock(ReplayShockRequest):
 
 
 class ReplayCharge(Contract):
+    # Actual allocated pool, which can differ from a flexible job's gpuType.
+    # Optional for CPU charges and backwards-compatible persisted replay reads.
+    gpu_type: str | None = None
     slot: int
     job_id: str
     compute_usd: float = 0

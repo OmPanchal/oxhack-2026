@@ -45,10 +45,12 @@ def create_app(database_path: str | Path | None = None, *,
                model_metrics_provider: Callable[[], ModelEvaluation] | None = None,
                tick_interval_seconds: float | None = None, execution_adapter=None,
                allow_local_dispatch: bool | None = None, forecast_service=None,
-               enable_ml: bool | None = None) -> FastAPI:
+               enable_ml: bool | None = None, demo_mode: bool | None = None,
+               demo_slot_seconds: float | None = None) -> FastAPI:
+    demo_enabled = os.getenv('COMPUTE_DEMO', '0') == '1' if demo_mode is None else demo_mode
     ml_enabled = os.getenv('COMPUTE_ENABLE_ML', '0') == '1' if enable_ml is None else enable_ml
     model_loader = ModelLoader(os.getenv('PRICE_FORECAST_CONFIG'), os.getenv('PRICE_MODEL_DIR'))
-    selected_service = forecast_service or (model_loader.load() if ml_enabled else None)
+    selected_service = forecast_service or (model_loader.load() if ml_enabled or demo_enabled else None)
     providers = dict(forecast_services or {})
     if selected_service is not None:
         providers.setdefault('ML', SelectedModelProvider(selected_service))
@@ -89,10 +91,20 @@ def create_app(database_path: str | Path | None = None, *,
     database = Database(database_path if database_path is not None else os.getenv(
         "COMPUTE_DB_PATH", str(Path(__file__).resolve().parents[1] / "state" / "engine.sqlite3"),
     ))
+    if demo_enabled and database_path is None:
+        database = Database(os.getenv('COMPUTE_DEMO_DB_PATH', str(Path(__file__).resolve().parents[1] / 'state' / 'demo.sqlite3')))
     store = JobStore(database)
     decision_store = DecisionStore(database)
     source_path = os.getenv("COMPUTE_MARKET_FILE")
     source_mode = os.getenv("COMPUTE_MARKET_SOURCE", "json" if source_path else "none").lower()
+    demo_origin = None
+    if demo_enabled:
+        if market_source is not None or aws_market is not None or monitor is not None or local_dispatch_enabled:
+            raise ValueError('Demo mode cannot mix live sources, execution monitors or local dispatch')
+        from app.market.demo import prepare_demo
+        market_source, clock, demo_origin = prepare_demo(database, selected_service,
+            slot_seconds=demo_slot_seconds if demo_slot_seconds is not None else float(os.getenv('COMPUTE_DEMO_SLOT_SECONDS', '10')))
+        source_mode = 'none'
     if source_mode not in {"none", "json", "aws"}:
         raise ValueError("COMPUTE_MARKET_SOURCE must be none, json or aws")
     if aws_market is not None and market_source is not None and market_source is not aws_market:
@@ -108,21 +120,39 @@ def create_app(database_path: str | Path | None = None, *,
         aws_market.quote_archive = AwsQuoteArchive(database)
     if aws_market is not None and selected_service is not None:
         aws_market.pool_selections = list(selected_service.selections.values())
+        aws_market.instance_types = sorted(set(aws_market.instance_types) | {
+            s.instance_type for s in selected_service.selections.values()
+            if s.region in aws_market.regions and s.resource_type == 'GPU'})
         aws_market.model_history = AwsModelHistory(database, aws_market._client, aws_market._now)
     live_providers = dict(forecast_services)
     if aws_market is not None and selected_service is not None and aws_market.model_history is not None:
         live_providers['ML'] = SelectedModelProvider(selected_service, history_source=aws_market.model_history)
     source = market_source if market_source is not None else aws_market if aws_market is not None else (
         JsonMarketSource(source_path) if source_mode == "json" else None)
-    origin = datetime.fromisoformat(os.environ["COMPUTE_ORIGIN_UTC"]) if os.getenv("COMPUTE_ORIGIN_UTC") else None
+    origin = demo_origin or (datetime.fromisoformat(os.environ["COMPUTE_ORIGIN_UTC"]) if os.getenv("COMPUTE_ORIGIN_UTC") else None)
+    acquisition = None
+    if demo_enabled:
+        from app.execution.acquisition import SimulatedAcquisition
+        acquisition = SimulatedAcquisition(database, market_source.capacity)
+        monitor = acquisition
     engine = RollingScheduler(database, market_source=source, forecast_services=live_providers,
                               monitor=monitor, clock=clock, config=optimizer_config,
                               auto_tick_enabled=interval > 0, origin_utc=origin)
     app.state.engine = engine
+    if acquisition is not None:
+        engine.acquisition_provider = acquisition
+        engine.scheduling.defer_simulated_starts = True
+        from app.market.demo import seed_demo_jobs
+        seed_demo_jobs(database, engine.state().current_slot)
     executions = LocalExecutionService(database, engine, adapter=execution_adapter)
     engine.local_dispatcher = executions if local_dispatch_enabled else None
     engine.local_monitor = executions
     app.state.executions = executions
+    engine.scheduling.automatic_local_dispatch = local_dispatch_enabled
+    if replay_scenarios is None and selected_service is not None:
+        from app.engine.replay_scenarios import capacity_pressure_scenario, demo_scenario, model_coverage_scenario
+        replay_scenarios = {s.id: s for s in [capacity_pressure_scenario(), demo_scenario(),
+                                             model_coverage_scenario(selected_service)]}
     replay = ReplayService(database, scenarios=replay_scenarios, forecast_services=forecast_services,
                            config=optimizer_config)
     app.state.replay = replay
@@ -152,7 +182,11 @@ def create_app(database_path: str | Path | None = None, *,
     @app.post("/api/jobs", response_model=Job, status_code=201)
     def create_job(payload: JobCreate):
         try:
-            return store.create(payload)
+            created = store.create(payload)
+            if demo_enabled and created.docker_task_id is None:
+                engine.poll()  # Fast admission after submission in accelerated demo time.
+                return store.get(created.id)
+            return created
         except ValueError as exc:
             raise HTTPException(409, detail=str(exc)) from exc
 
@@ -263,11 +297,18 @@ def create_app(database_path: str | Path | None = None, *,
         status = selected_service.status() if selected_service is not None else model_loader.status()
         return {**status, 'engineEnabled': engine.providers.get('ML') is not None,
                 'engineForecastMode': engine.state().forecast_mode,
+                'marketReadErrors': getattr(getattr(aws_market, 'fixed_pool_reader', None), 'errors', []),
                 'history': aws_market.model_history.status() if aws_market is not None and aws_market.model_history is not None else None}
 
     @app.get("/api/execution/tasks", response_model=TaskCatalog)
     def execution_tasks():
         return TaskCatalog(tasks=[TASK], automatic_dispatch_enabled=engine.local_dispatcher is not None)
+
+    from app.execution.acquisition import Acquisition
+
+    @app.get('/api/acquisitions', response_model=list[Acquisition])
+    def acquisitions():
+        return acquisition.list() if acquisition is not None else []
 
     @app.get("/api/executions", response_model=list[LocalExecution])
     def local_executions():

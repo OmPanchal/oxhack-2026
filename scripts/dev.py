@@ -78,17 +78,23 @@ def live_ready(capabilities, quotes, region):
                     for q in quotes.get('quotes', [])))
 
 
+def demo_ready(state, market):
+    return (state.get('acquisitionMode') == 'SIMULATED' and state.get('executionMode') == 'SIMULATED'
+            and isinstance(market, list) and bool(market)
+            and all(isinstance(row, dict) and row.get('dataKind') == 'SIMULATED' for row in market))
+
+
 def read_json(url):
     with urllib.request.urlopen(url, timeout=5) as response:
         return json.load(response)
 
 
-def wait_ready(processes, timeout=120):
+def wait_ready(processes, timeout=120, port=8000):
     deadline = time.monotonic() + timeout
     while time.monotonic() < deadline:
         check_processes(processes)
         try:
-            read_json('http://127.0.0.1:8000/api/health')
+            read_json(f'http://127.0.0.1:{port}/api/health')
             return
         except (OSError, ValueError):
             time.sleep(.5)
@@ -99,7 +105,8 @@ def check_processes(processes):
     for name, proc in processes:
         code = proc.poll()
         if code is not None:
-            raise StartupError(f'{name} stopped (exit {code}). See .arbitr/{name}.log.')
+            log_path = getattr(proc, 'arbitr_log_path', f'.arbitr/{name}.log')
+            raise StartupError(f'{name} stopped (exit {code}). See {log_path}.')
 
 
 def stop_processes(processes):
@@ -129,34 +136,42 @@ def main():
     parser.add_argument('--profile', default='arbitr')
     parser.add_argument('--region', default='eu-north-1')
     parser.add_argument('--ml', action='store_true', help='Enable selected LightGBM models and fixed instance/AZ price pools.')
+    parser.add_argument('--demo', action='store_true', help='Run a free, accelerated, isolated simulation with ML and acquisition; no AWS or Docker needed.')
+    parser.add_argument('--backend-port', type=int, default=8000)
+    parser.add_argument('--frontend-port', type=int, default=3000)
     args = parser.parse_args()
+    args.ml = args.ml or args.demo
     processes = []
     handles = []
     try:
+        if not all(1 <= port <= 65535 for port in (args.backend_port, args.frontend_port)) or args.backend_port == args.frontend_port:
+            raise StartupError('Choose distinct backend/frontend ports between 1 and 65535.')
         if os.name != 'posix':
             raise StartupError('This launcher supports macOS/Linux. See docs/AWS_MARKET.md for Windows commands.')
-        for tool in ('aws', 'node', 'npm'):
+        for tool in (('node', 'npm') if args.demo else ('aws', 'node', 'npm')):
             if not shutil.which(tool):
                 raise StartupError(f'Missing {tool}. Install it before running ./dev; see docs/STARTUP.md.')
         node = run(['node', '-p', 'process.versions.node'], capture_output=True, text=True).stdout.strip()
         if tuple(map(int, node.split('.')[:2])) < (20, 9):
             raise StartupError('Node.js 20.9 or newer is required.')
-        aws_version = run(['aws', '--version'], capture_output=True, text=True)
-        version = re.search(r'aws-cli/(\d+)\.(\d+)\.(\d+)', aws_version.stdout + aws_version.stderr)
-        if not version or tuple(map(int, version.groups())) < (2, 32, 0):
-            raise StartupError('AWS CLI v2.32 or newer is required for project browser login; see docs/STARTUP.md.')
+        if not args.demo:
+            aws_version = run(['aws', '--version'], capture_output=True, text=True)
+            version = re.search(r'aws-cli/(\d+)\.(\d+)\.(\d+)', aws_version.stdout + aws_version.stderr)
+            if not version or tuple(map(int, version.groups())) < (2, 32, 0):
+                raise StartupError('AWS CLI v2.32 or newer is required for project browser login; see docs/STARTUP.md.')
         if not args.check or args.setup:
-            check_ports((8000, 3000))
+            check_ports((args.backend_port, args.frontend_port))
         venv = ROOT / 'backend/.venv/bin/python'
         if args.setup:
             if not venv.exists():
                 run([sys.executable, '-m', 'venv', str(ROOT / 'backend/.venv')])
-            extras = '.[dev,aws,ml]' if args.ml else '.[dev,aws]'
-            run([str(venv), '-m', 'pip', 'install', '-e', extras, 'botocore[crt]'], cwd=ROOT / 'backend')
+            extras = '.[dev,ml,execution]' if args.demo else '.[dev,aws,ml]' if args.ml else '.[dev,aws]'
+            packages = ['-e', extras] + ([] if args.demo else ['botocore[crt]'])
+            run([str(venv), '-m', 'pip', 'install', *packages], cwd=ROOT / 'backend')
             run(['npm', 'ci'], cwd=ROOT / 'frontend')
         python = str(venv) if venv.exists() else sys.executable
         probe = subprocess.run([python, '-c',
-            'import sys; assert sys.version_info >= (3,11); import fastapi, uvicorn, pydantic, boto3, awscrt'],
+            'import sys; assert sys.version_info >= (3,11); import fastapi, uvicorn, pydantic' + ('' if args.demo else ', boto3, awscrt')],
             capture_output=True, text=True)
         if probe.returncode or not (ROOT / 'frontend/node_modules/next/package.json').exists():
             raise StartupError('Dependencies are missing or Python is below 3.11. Run ./dev --setup (Python 3.11/3.12 recommended).')
@@ -169,13 +184,17 @@ def main():
                     raise StartupError('LightGBM needs OpenMP on macOS. Run brew install libomp, then ./dev --ml. See docs/STARTUP.md.')
                 raise StartupError('ML artifacts/dependencies failed validation. Run ./dev --setup --ml; check data/forecast-serving.md and any PRICE_MODEL_DIR override.')
         env = aws_environment(args.profile, args.region)
+        if args.login and args.demo:
+            raise StartupError('--demo uses no AWS login. Run ./dev --demo instead.')
         if args.login:
             run(['aws', 'login', '--region', args.region, '--profile', args.profile], env=env)
-        check_credentials(args.profile, args.region, env)
+        if not args.demo:
+            check_credentials(args.profile, args.region, env)
         if args.check:
-            print('Dependency and credential checks passed. No servers started.')
+            print('Demo dependencies and model artifacts verified; no AWS credentials needed. No servers started.' if args.demo else 'Dependency and credential checks passed. No servers started.')
             return 0
-        LOGS.mkdir(exist_ok=True)
+        log_dir = LOGS / f'demo-{args.frontend_port}' if args.demo else LOGS
+        log_dir.mkdir(parents=True, exist_ok=True)
         backend_env = env.copy()
         for key in ('COMPUTE_MARKET_FILE', 'COMPUTE_ORIGIN_UTC'):
             backend_env.pop(key, None)
@@ -183,32 +202,45 @@ def main():
                            COMPUTE_AWS_INSTANCE_TYPES='g4dn.xlarge,g5.xlarge',
                            COMPUTE_TICK_SECONDS='2', COMPUTE_ALLOW_LOCAL_DISPATCH='0')
         backend_env['COMPUTE_ENABLE_ML'] = '1' if args.ml else '0'
+        backend_env['COMPUTE_DEMO'] = '1' if args.demo else '0'
+        if args.demo:
+            backend_env['COMPUTE_MARKET_SOURCE'] = 'none'
         frontend_env = env.copy()
-        frontend_env.update(API_PROXY_TARGET='http://127.0.0.1:8000',
+        frontend_env.update(API_PROXY_TARGET=f'http://127.0.0.1:{args.backend_port}',
                             NEXT_PUBLIC_API_BASE_URL='', NEXT_PUBLIC_USE_MOCKS='false')
+        if args.frontend_port != 3000:
+            frontend_env['NEXT_DIST_DIR'] = f'.next-{args.frontend_port}'
         for name, command, directory, child_env in [
-            ('backend', [python, '-m', 'uvicorn', 'app.main:app', '--host', '127.0.0.1', '--port', '8000'], ROOT / 'backend', backend_env),
-            ('frontend', ['npm', 'run', 'dev', '--', '--hostname', '127.0.0.1', '--port', '3000'], ROOT / 'frontend', frontend_env),
+            ('backend', [python, '-m', 'uvicorn', 'app.main:app', '--host', '127.0.0.1', '--port', str(args.backend_port)], ROOT / 'backend', backend_env),
+            ('frontend', ['npm', 'run', 'dev', '--', '--hostname', '127.0.0.1', '--port', str(args.frontend_port)], ROOT / 'frontend', frontend_env),
         ]:
-            handle = (LOGS / f'{name}.log').open('w')
+            handle = (log_dir / f'{name}.log').open('w')
             handles.append(handle)
             proc = subprocess.Popen(command, cwd=directory, env=child_env,
                                     stdout=handle, stderr=subprocess.STDOUT, start_new_session=True)
             processes.append((name, proc))
-            print(f'Starting {name}; log: .arbitr/{name}.log', flush=True)
-        wait_ready(processes)
-        print('Waiting for authenticated AWS prices and the frontend proxy…', flush=True)
+            proc.arbitr_log_path = str(log_dir / f'{name}.log')
+            print(f'Starting {name}; log: {proc.arbitr_log_path}', flush=True)
+        wait_ready(processes, port=args.backend_port)
+        print('Waiting for simulated acquisition and the frontend proxy…' if args.demo else 'Waiting for authenticated AWS prices and the frontend proxy…', flush=True)
         deadline = time.monotonic() + 120
         last_codes = []
         while time.monotonic() < deadline:
             check_processes(processes)
             try:
-                cap = read_json('http://127.0.0.1:3000/api/capabilities')
-                quotes = read_json('http://127.0.0.1:3000/api/market/aws/spot')
+                if args.demo:
+                    state = read_json(f'http://127.0.0.1:{args.frontend_port}/api/engine/state')
+                    market = read_json(f'http://127.0.0.1:{args.frontend_port}/api/market')
+                    if demo_ready(state, market):
+                        break
+                    time.sleep(1)
+                    continue
+                cap = read_json(f'http://127.0.0.1:{args.frontend_port}/api/capabilities')
+                quotes = read_json(f'http://127.0.0.1:{args.frontend_port}/api/market/aws/spot')
                 last_codes = sorted({str(e.get('code', 'UNKNOWN')) for d in (cap, quotes) for e in d.get('errors', [])})
                 if live_ready(cap, quotes, args.region):
                     if args.ml:
-                        status = read_json('http://127.0.0.1:3000/api/models/status')
+                        status = read_json(f'http://127.0.0.1:{args.frontend_port}/api/models/status')
                         history = status.get('history') or {}
                         if not status.get('engineEnabled') or history.get('status') != 'READY':
                             last_codes = sorted({p.get('errorCode') for p in history.get('pools', []) if p.get('errorCode')}) or ['MODEL_HISTORY_INCOMPLETE']
@@ -219,13 +251,13 @@ def main():
                 pass
             time.sleep(1)
         else:
-            raise StartupError('Live AWS readiness timed out. Error codes: '
+            raise StartupError(('Demo readiness timed out. Error codes: ' if args.demo else 'Live AWS readiness timed out. Error codes: ')
                                + (', '.join(last_codes) or 'no ready quotes received')
                                + '. Check .arbitr/backend.log and docs/STARTUP.md; no preview fallback was used.')
-        print('\nArbitr ready: http://127.0.0.1:3000\nSelect Backend data → Market.\n'
-              'Live prices; check forecast mode in the app; AWS capacity unknown.\n'
+        print(f'\nArbitr ready: http://127.0.0.1:{args.frontend_port}\nSelect Backend data → Overview to watch the queue.\n'
+              + ('SIMULATED demo: acquisition and completion are simulated. One hour = 10 seconds by default. No AWS/Docker required.\n' if args.demo else 'Live prices; check forecast mode in the app; AWS capacity unknown.\n')
               + ('ML historical inputs ready.\n' if args.ml else '') +
-              'Ctrl+C stops both servers. Logs: .arbitr/backend.log and .arbitr/frontend.log', flush=True)
+              f'Ctrl+C stops both servers. Logs: {log_dir}', flush=True)
         while True:
             check_processes(processes)
             time.sleep(1)

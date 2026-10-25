@@ -3,6 +3,7 @@ import { fileURLToPath } from "node:url";
 // Include the shared data/scenarios fixture outside the frontend directory.
 const repositoryRoot = fileURLToPath(new URL("..", import.meta.url));
 export default {
+  distDir: process.env.NEXT_DIST_DIR ?? '.next',
   turbopack: { root: repositoryRoot },
   outputFileTracingRoot: repositoryRoot,
   async rewrites() {

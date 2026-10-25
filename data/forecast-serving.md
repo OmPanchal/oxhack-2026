@@ -1,18 +1,32 @@
 # Person 1 selected-model serving handoff
 
-The selected CPU/GPU LightGBM models are now integrated with the persistent
-backend. Enable them with `./dev --setup --ml` on first setup, then `./dev --ml`.
-Use the engine's forecast selector to choose ML; the persisted mode is retained.
-The public `ForecastService.predict(ForecastRequest) -> list[Forecast]` contract
-remains unchanged; the integration adapter additionally receives the engine or
-replay UTC origin and maps slots without changing the model's training clock.
+## Implemented routing — 25 October 2026
 
-## Start and call
+The backend's existing `ModelLoader` now loads the fixed v2 router from
+[forecast-serving.json](forecast-serving.json). Its selected LightGBM models use
+31 leaves, 200 rounds, an L1/MAE objective and separate CPU/GPU residual models.
+The public forecast protocol and API schemas are unchanged.
 
-Install `.[dev,aws,ml]` and `botocore[crt]` in the backend environment. macOS also
-requires OpenMP (`brew install libomp`). `COMPUTE_ENABLE_ML=1` enables the selected
-provider for engine/replay when launching FastAPI directly. Without that setting,
-normal server planning uses persistence and explicit inference remains available.
+- Stockholm CPU: `models/public-region-001/CPU-model.json`.
+- Stockholm GPU: `models/error-reduction-001/GPU-model.json`.
+- CPU and GPU in us-east-1, us-west-2, eu-west-1, eu-west-2 and eu-central-1:
+  the corresponding model in `models/public-region-001/`.
+- Unknown keys, unsupported hardware/source pools, incomplete history and zero
+  current prices: explicit persistence fallback. Stockholm B200 is unsupported.
+
+The configuration selects 42 fixed source pools: one CPU source and one source
+per available GPU type in each region. This does not expose all 353 training
+pools or all 79 instance configurations simultaneously. Existing Stockholm source
+choices are preserved. Added CPU sources use m5.xlarge; added GPU choices use
+fixed instance types and lexically first recorded global AZ IDs, never hindsight
+cheapest prices. Supported types vary by region; see the full config/status.
+
+## Start and inspect
+
+Run `./dev --setup --ml` on first setup, then `./dev --ml`. Direct FastAPI startup
+uses `COMPUTE_ENABLE_ML=1` to enable the engine ML provider. Plain startup retains
+persistence. Select ML in the engine controls. No retraining or cloud provisioning
+is required. Existing read-only AWS history collection remains unchanged.
 
 ```sh
 curl -sS http://localhost:8000/api/models/status
@@ -20,105 +34,108 @@ curl -sS -X POST http://localhost:8000/api/forecasts -H 'Content-Type: applicati
 curl -sS http://localhost:8000/api/forecasts
 ```
 
-The packaged example is explicitly SIMULATED and exercises saved-model inference,
-not real execution or measured accuracy/savings. Its twelve forecasts use the
-native model clock. `POST /api/forecasts?forecastMode=NAIVE` selects persistence.
-POST inference does not mutate official live/replay state or replace GET results.
-`GET /api/forecasts` reads persisted engine forecasts, initially empty before its
-first tick. Generated forecasts now survive restart with the rest of engine state.
+The packaged example uses explicitly SIMULATED input at native slot 2200; it is
+an inference example, not measured accuracy or execution. Explicit POST inference
+is isolated and never replaces official engine forecasts. GET returns persisted
+engine forecasts, initially empty. `forecastMode=NAIVE` remains available.
 
-`GET /api/models/status` preserves the native serving/evaluation metadata and adds
-engine availability/mode. `GET /api/models/metrics` retains the strict backend
-held-out evaluation shape; the exploratory post-holdout report is not relabeled
-as a clean chronological test. It remains available in status and the original
-report file. This separates inference readiness from evaluation strength.
+The pulled backend's SQLite state, live history backfill, clock/GPU-name adapter,
+rolling scheduler, replay isolation and execution modules are preserved. Replay
+never receives retrospective live-history backfill. Risk probabilities and price
+intervals remain null because calibrated evidence is unavailable.
 
-Live ML uses the configured fixed instance/AZ sources, with explicit alias mapping
-between AWS hardware names and model identifiers. A regional minimum-price index
-is rejected as fixed-pool model history and receives a labeled persistence
-fallback. Existing index history is not retrospectively relabeled. The live provider automatically retrieves/persists missing historical boundary
-prices and combines 168 prior hours with the current quote. On rollover/restart it
-fetches only the missing span. See [automatic history](../docs/AUTOMATIC_HISTORY.md).
-Incomplete windows remain explicit fallbacks; retrospective receipts never enter
-earlier replay decisions.
+## Clock and leakage prevention
 
-## Configuration, identities and time
+Native UTC origin: **2026-07-28 00:00 UTC**. Explicit POST slots use this origin.
+The engine adapter maps its own UTC origin to this clock. Training labels stop
+before slot 1257. The new choice of routes used existing October diagnostics
+through slot 2135; therefore v2 inference is available only from **slot 2136,
+2026-10-25 00:00 UTC**. Earlier requests/replay fall back to persistence. Moving a
+SIMULATED test fixture beyond this cutoff does not create new observed outcomes.
+The original v1 config remains in [forecast-serving-stockholm-v1.json](forecast-serving-stockholm-v1.json)
+for reproducibility of the previous selection and its earlier availability date.
 
-The versioned [serving configuration](forecast-serving.json) loads
-`models/error-reduction-001/` and verifies both text weights and metadata against
-[the artifact receipt](error-model-artifacts.json). Only these four selected
-weight/metadata files are exempted from the model Git-ignore rule so a fresh
-checkout can load the default. Other datasets/models remain ignored. No pickle,
-retraining, live AWS access or cloud provisioning is needed for inference.
+Every inference needs 168 prior consecutive hourly prices plus the current price
+from the configured source, with its original resource units. Future, stale,
+conflicting and forecast-as-history inputs are rejected. Models are frozen; no
+online fitting or adaptive blending is performed.
 
-Optional environment overrides:
+## Live source limitations
 
-- `PRICE_FORECAST_CONFIG`: serving-config JSON path (absolute, or relative to the
-  process working directory).
-- `PRICE_MODEL_DIR`: relocated directory containing the exact selected artifacts
-  (absolute, or relative to the project root).
+Stockholm selections use account-specific AZ names, matching the existing live
+GPU feed. Public regional selections use **global AZ IDs**, such as `use1-az1`.
+These are not interchangeable with names such as `us-east-1a`. The fixed-pool
+reader now verifies global IDs with AWS `DescribeAvailabilityZones`, then queries
+and validates prices using the returned project-specific zone name. It keeps the
+model's global source identity in inference history and records the provider AZ
+name in provenance. Missing/denied mappings are never guessed.
 
-The scenario clock is **2026-07-28 00:00 UTC**. Explicit POST request slots must use this origin;
-the schema does not carry a separate origin. Model training ends before slot
-1257; selection uses labels through slot 1577. ML is permitted from slot 1578.
-Earlier historical requests return explicit `model-not-available` persistence.
-The metadata/status endpoint exposes these cutoffs and identities for Person 2
-and Person 3. All API history for a configured key must come from its one source
-instance, AZ and Linux product. Do not merge zones, substitute another CPU type,
-or reinterpret per-vCPU prices as whole-instance prices. Hardware compatibility
-and whole-instance allocation remain the optimizer/market adapter's responsibility.
+With ML enabled, selected CPU pools are also read using verified EC2 vCPU counts.
+Instance-hour prices are divided by that count; CPU requests and persisted history
+use per-vCPU-hour prices. The existing GPU quote API remains unchanged. Missing
+CPU/GPU backfill is retrieved and persisted automatically, using only the actual
+live hour. The fixed reader caches successful reads and backs off failed reads.
+`/api/models/status` reports per-pool read errors; Market shows these errors.
 
-The shared schema has only `(region, resourceType, gpuType)`, so the explicit
-configuration selects m5.xlarge in eu-north-1a for CPU, plus one source for each
-of T4, A10G, L4, L40S, A100, H100, H200 and B200 in Stockholm. The B200 source lacks
-training support and is intentionally persistence fallback. This schema cannot
-serve all 208 distinct source pools simultaneously without a coordinated contract
-extension. Selections are fixed configuration choices, not hindsight cheapest zones.
+Reads are limited to the AWS regions explicitly configured by the operator.
+`./dev --ml` retains its Stockholm default and now includes all configured model
+GPU instance types in that region, rather than limiting ML to T4/A10G. Additional
+model regions do not grant project permissions. Failed regional reads remain
+visible; supported pools can continue. No paid resources are provisioned.
+Live capacity stays unknown and the optimiser cannot dispatch against it.
 
-## Failure handling and provenance
+The **All model regions · CPU/GPU · simulated** replay preset exercises all 42
+configured pools, independently of AWS access. It includes 168 explicitly
+SIMULATED prior hours; workload arrivals occur only after that warmup. It starts
+at slot 168, exposes no later observations, and uses a post-selection UTC origin.
+All four strategies share the same prices/capacity and retain separate state.
+This is an integration fixture, not historical accuracy or measured savings.
 
-- 169 consecutive hourly prices are required (current plus 168 prior hours).
-- Cold history, unknown API pools, unsupported source pools, pre-selection
-  requests and zero current prices have explicit `persistence-v1:fallback-*`
-  versions. A supported pool uses `lightgbm-price-l1-v1-<resource>-<weight hash>`.
-- Stale/conflicting history yields HTTP 422. Future observations, forecast-as-
-  history, invalid horizons and unsupported mode values are rejected with 422.
-- Missing ML dependencies, missing/corrupt/incompatible artifacts, and invalid
-  serving configuration yield HTTP 503 `MODEL_UNAVAILABLE`. Such load failures
-  are never disguised as successful ML. Explicit NAIVE mode still works.
-- Model/feature-code hashes, UTC origin, selected source identities, dataset hash
-  and training/selection cutoffs are validated. Training and inference reuse the
-  same causal matrix builder; all requested horizons are inferred in one batch.
-- Price-only history does not supply capacity or interruption labels. Genuine
-  capacity observations are needed for an entirely OBSERVED market record;
-  hybrid observed-price/synthetic-capacity examples must be SIMULATED.
+## Artifacts, status and evaluation
 
-The `/api/models/metrics` response includes recorded evaluation metrics checked
-against these serving artifacts. These are previously evaluated test scores plus
-one forward day, not live performance or an untouched test. One-hour MAE remains
-slightly worse than persistence, seven CPU pools worsen on the original test, and
-no scheduling benefit for this new model is established.
+Both bundles' four native text/metadata files are checksum-verified against their
+original receipts, and inference verifies the feature implementation hash. The
+selected files are exempted from Git ignore so fresh checkouts can load them.
+Original experiment receipts retain their historical experimental status; the
+serving config is the record of selection. Selection evidence files also have
+pinned checksums. No pickle loading is used.
 
-## Validation and remaining ownership
+`GET /api/models/status` exposes the twelve resource/region routes, per-route
+weight/dataset hashes, global/account AZ identity kind, availability cutoff and
+selection-evidence references. The compatibility `models` summary describes
+Stockholm; `routes` is authoritative for other regions. There is no combined
+held-out evaluation object for this mixed router. `GET /api/models/metrics`
+correctly remains UNAVAILABLE without a genuinely disjoint metrics report.
 
-[Serving validation](forecast-serving-validation.json) reconciles all 54 forecasts
-for nine fixed pool keys at slot 2000 against archived evaluation outputs at
-absolute tolerance 1e-13. This includes six B200 fallback outputs. Thirty sequential
-warm inference runs (1,521 history rows, 54 forecasts, one process, CPU-only)
-measured p95 about 38 ms on this machine, below the plan's 250 ms target. Loading,
-source-data reads, HTTP overhead and concurrent traffic are excluded.
+Previously reported comparisons motivating this selection are **exploratory**:
+Stockholm CPU MAE was 11.40% below persistence with the augmented model; original
+Stockholm GPU MAE was 10.70% below persistence. Added-region September diagnostics
+were 4.00% lower for CPU and 6.52% lower for GPU. These aggregate research scores
+cover their original full cohorts, not just the 42 configured serving sources.
+They are not a new test of the router or guarantees of future gains. See
+[public-region comparison](public-region-comparison.md), [original model results](error-model.md)
+and [rejected policy experiment](regional-policy-experiment.md).
 
-```sh
-cd backend
-OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 python -m pytest tests/forecasting tests/engine tests/api -q
-```
+Next acceptance work: freeze this router, evaluate fresh chronological outcomes
+without retuning, calibrate intervals if justified, and run the same-optimizer
+ML-versus-persistence scheduling ablation. No scheduling savings are claimed here.
 
-Validation completed with **170 tests plus 53 subtests passing**, including the
-packaged CPU/GPU example traced from service output to API JSON. The API tests
-ran outside the sandbox because FastAPI TestClient timed out inside it.
+Optional overrides: `PRICE_FORECAST_CONFIG` selects a JSON config;
+`PRICE_MODEL_DIR` with v2 points to a parent containing `error-reduction-001/`
+and `public-region-001/`. With legacy v1 it points directly to its one bundle.
+Relative artifact directories resolve from the project root. Missing/corrupt
+artifacts yield MODEL_UNAVAILABLE/503; explicit NAIVE mode still works.
 
-Forecasting behavior resides in Person 1's modules/tests/data/artifacts. The small
-`main.py` integration and API tests are explicitly documented integration-owner
-changes requested by the user. No shared-schema or frontend edits were needed;
-existing GET response shapes are preserved. Person 2 still owns production
-optimizer/replay/execution/market state; Person 3 still owns frontend presentation.
+## Verification of this integration
+
+The full backend suite passed 386 tests and 53 subtests, with two skips. After
+the final history-grouping optimization, all 29 affected serving/API/replay tests
+passed again; all five launcher tests passed. AWS was mocked. The tests cover
+every configured route's parity with its exact saved native model, corrupt
+artifacts/evidence, pre-selection fallback, source mismatch, clock rebasing,
+SQLite restart and replay warmup/isolation.
+
+Thirty warm SIMULATED inference runs measured p95 36.1 ms for the nine Stockholm
+pools and 225.0 ms for all 42 pools (252 forecasts, including six unsupported
+Stockholm B200 persistence forecasts). Model loading is excluded. Conditions and
+hashes are recorded in [best-model-serving-validation.json](best-model-serving-validation.json).

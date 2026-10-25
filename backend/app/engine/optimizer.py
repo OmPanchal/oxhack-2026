@@ -323,6 +323,12 @@ class ConstrainedPortfolioOptimizer:
                 action, reason = "WAIT", "PORTFOLIO_CAPACITY_CONFLICT"
             explanation = (f"No allocation: {reason}. Latest-start slack {slack} hour(s). "
                            "Missing market/forecast coverage or an unaffordable window is not proof of permanent infeasibility.")
+            if reason == 'CAPACITY_UNKNOWN':
+                explanation = ('Execution blocked: compatible prices exist, but available resource units are unknown. '
+                    'A Spot price is not proof of capacity. '
+                    + ('This job must start now to meet its deadline; confirmed capacity is required immediately. '
+                       if slack == 0 else f'Latest-start slack {slack} hour(s). ')
+                    + 'This is not a decision to wait for a cheaper price. No resource capacity was invented.')
             return Decision(**base, action=action, reason_code=reason, explanation=explanation), DecisionEvidence(
                 slack, (), None, None, None)
         slack = job.deadline_slot - candidate.end - inputs.config.safety_buffer_slots

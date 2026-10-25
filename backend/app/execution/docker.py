@@ -1,5 +1,6 @@
 """Fixed local Docker adapter. No user-controlled image, command or mounts."""
 import os
+from pathlib import Path
 from datetime import datetime
 from app.api.execution_schemas import LocalTask
 from app.engine.forecast_bridge import EngineUnavailable
@@ -22,13 +23,28 @@ def docker_time(value):
 
 
 class DockerAdapter:
-    def client(self):
+    @staticmethod
+    def endpoint():
+        if os.name == 'nt':
+            return 'npipe:////./pipe/docker_engine'
+        # Docker Desktop has a separate daemon on Linux. Prefer its socket
+        # over the system daemon so containers appear in the Desktop UI.
+        sockets = [Path.home()/'.docker/desktop/docker.sock', Path.home()/'.docker/run/docker.sock',
+                   Path('/var/run/docker.sock')]
+        socket = next((path for path in sockets if path.exists()), sockets[-1])
+        return f'unix://{socket}'
+
+    def client(self, endpoint=None):
         # Explicit local socket: remote contexts/DOCKER_HOST cannot be labeled LOCAL.
         client = None
         try:
             import docker
-            client = docker.DockerClient(base_url=("npipe:////./pipe/docker_engine"
-                if os.name == "nt" else "unix:///var/run/docker.sock"), timeout=15)
+            # Docker Desktop commonly exposes a per-user local socket. Never
+            # inherit a remote DOCKER_HOST/context while labelling execution LOCAL.
+            endpoint = endpoint or self.endpoint()
+            if not endpoint.startswith(('unix:///', 'npipe:////./pipe/')):
+                raise ValueError('LOCAL execution requires a local Docker socket')
+            client = docker.DockerClient(base_url=endpoint, timeout=15)
             if client.info().get("OSType") != "linux":
                 raise ValueError("Local execution requires a Linux Docker engine")
             return client
@@ -38,7 +54,8 @@ class DockerAdapter:
             raise EngineUnavailable("DOCKER_UNAVAILABLE", str(exc)) from exc
 
     def prepare(self):
-        client = self.client()
+        self.prepared_endpoint = self.endpoint()
+        client = self.client(self.prepared_endpoint)
         try:
             from docker.errors import ImageNotFound
             try:
@@ -52,7 +69,7 @@ class DockerAdapter:
             client.close()
 
     def launch(self, execution):
-        client = self.client()
+        client = self.client(execution.docker_endpoint) if execution.docker_endpoint else self.client()
         try:
             container = client.containers.create(
                 execution.image_id, ["python", "-I", "-u", "-c", SCRIPT],
@@ -71,7 +88,7 @@ class DockerAdapter:
 
     def inspect(self, execution):
         from docker.errors import NotFound
-        client = self.client()
+        client = self.client(execution.docker_endpoint) if execution.docker_endpoint else self.client()
         try:
             try:
                 container = client.containers.get(execution.container_name)
@@ -100,7 +117,7 @@ class DockerAdapter:
             client.close()
 
     def kill(self, execution):
-        client = self.client()
+        client = self.client(execution.docker_endpoint) if execution.docker_endpoint else self.client()
         try:
             container = client.containers.get(execution.container_name)
             if container.attrs["Config"].get("Labels", {}).get("compute.execution") != execution.id:

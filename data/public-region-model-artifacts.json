@@ -1,0 +1,21 @@
+{
+  "status": "EXPERIMENTAL_NOT_DEPLOYED",
+  "files": [
+    {
+      "path": "models/public-region-001/CPU-model.json",
+      "sha256": "693370aec52887279921617ae2162b5504c33e19f4177c1962462316d745ee48"
+    },
+    {
+      "path": "models/public-region-001/CPU-scaled-l1-31.txt",
+      "sha256": "85ae8729d1e09fd399838fcc9401d0c189a07937c34b39c22356741f74639d6c"
+    },
+    {
+      "path": "models/public-region-001/GPU-model.json",
+      "sha256": "9fbfd314ff298a6d1b49dd34c18f740653710c68b3cfaacfd4de2397899d3dd5"
+    },
+    {
+      "path": "models/public-region-001/GPU-scaled-l1-31.txt",
+      "sha256": "363de7df3f4b7f1e7885d3af1f2490388bed9cc4e358f6d75ebc722b15c7ef83"
+    }
+  ]
+}

@@ -54,6 +54,31 @@ def make(tmp_path, client=None, now=None):
     return store, client, now
 
 
+def test_status_does_not_wait_for_a_slow_aws_history_fetch(tmp_path):
+    from concurrent.futures import ThreadPoolExecutor
+    from threading import Event
+    started, release = Event(), Event()
+    client = Client()
+    paginate = client.paginate
+    def slow(**params):
+        started.set()
+        assert release.wait(5)
+        yield from paginate(**params)
+    client.paginate = slow
+    store, _, _ = make(tmp_path, client)
+    with ThreadPoolExecutor(max_workers=2) as executor:
+        fetch = executor.submit(store.ensure, IDENTITY, QUOTE)
+        try:
+            assert started.wait(2)
+            status = executor.submit(store.status).result(timeout=1)
+            assert status['status'] == 'PARTIAL'
+            assert status['pools'][0]['availableHours'] == 0
+        finally:
+            release.set()
+        fetch.result(timeout=3)
+    assert store.status()['status'] == 'READY'
+
+
 def test_initial_backfill_pagination_normalization_and_restart_reuse(tmp_path):
     store, client, now = make(tmp_path)
     store.ensure(IDENTITY, QUOTE)

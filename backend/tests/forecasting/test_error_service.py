@@ -16,7 +16,7 @@ def service():
     return ErrorForecastService.from_config()
 
 
-def request(service, *, resource='GPU', gpu='NVIDIA T4', current=1791, full=True):
+def request(service, *, resource='GPU', gpu='NVIDIA T4', current=2200, full=True):
     identity=next(s for s in service.selections.values() if s.resource_type==resource and (resource=='CPU' or s.gpu_type==gpu))
     rows=[MarketSnapshot(slot=t, region=identity.region,resourceType=resource,
         gpuType=identity.gpu_type or None,priceUsdPerUnitHour=.05+(t%17)*.0001,
@@ -57,7 +57,7 @@ def test_explicit_fallbacks_and_empty_history(service):
     for row in data.history:
         row.region='unmapped-region'
     assert all(r.model_version.endswith('fallback-unmapped-pool') for r in service.predict(data))
-    assert service.predict(ForecastRequest(currentSlot=1791,history=[]))==[]
+    assert service.predict(ForecastRequest(currentSlot=2200,history=[]))==[]
 
 
 def test_rejects_stale_conflicting_and_forecast_history(service):
@@ -77,7 +77,7 @@ def test_config_refuses_duplicate_pool_and_corrupted_artifact(service,tmp_path):
     with pytest.raises(ValueError,match='one instance'):
         ErrorForecastService(service.models,[selected,selected],origin_utc=service.origin_utc,
                              available_from_slot=service.available_from_slot)
-    config=json.loads(DEFAULT_CONFIG.read_text())
+    config=json.loads((ROOT/'data/forecast-serving-stockholm-v1.json').read_text())
     config['modelsDirectory']=str(tmp_path)
     path=tmp_path/'config.json';path.write_text(json.dumps(config))
     for item in json.loads((ROOT/config['artifactReceipt']).read_text())['files']:
@@ -92,7 +92,9 @@ def test_model_status_has_clock_pool_identity_and_verified_metrics(service):
     status=service.status()
     assert status['defaultForecastMode']=='ML'
     assert status['originUtc']=='2026-07-28T00:00:00+00:00'
-    assert status['evaluation']['resources']['CPU']['designatedTest']['maeImprovementPct']>10
+    assert status['evaluation'] is None
+    assert len(status['routes']) == 12
+    assert status['availableFromSlot'] == 2136
     assert 'availabilityZone' in status['poolSelections'][0]
     assert 'availability_zone' not in status['poolSelections'][0]
 

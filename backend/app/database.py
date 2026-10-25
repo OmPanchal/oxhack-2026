@@ -4,6 +4,10 @@ from pathlib import Path
 import sqlite3
 
 SCHEMA = """
+CREATE TABLE IF NOT EXISTS simulation_config (id INTEGER PRIMARY KEY CHECK(id=1), payload TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS capacity_acquisitions (
+    job_id TEXT PRIMARY KEY REFERENCES jobs(id), payload TEXT NOT NULL
+);
 CREATE TABLE IF NOT EXISTS jobs (id TEXT PRIMARY KEY, payload TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS decisions (
     id INTEGER PRIMARY KEY AUTOINCREMENT,

@@ -1,3 +1,12 @@
+# Free working version
+
+Use `./dev --setup --demo` for the working simulated-acquisition version, then
+`./dev --demo`. No AWS CLI/login or Docker is required. The normal workload queue
+runs and completes simulated jobs using the selected models and optimiser.
+See [working demo instructions](WORKING_DEMO.md) for its clock, separate database,
+capacity limits and alternate ports. The live startup instructions below remain
+unchanged in purpose and still require AWS access.
+
 # Reliable local startup
 
 From the repository root on macOS/Linux:
@@ -123,3 +132,18 @@ The suite checks real occupied-port handling, child-failure cleanup, authenticat
 recovery messages, profile isolation and rejection of simulated/mismatched readiness.
 Live startup, Ctrl+C cleanup and repeat startup require the local network and an
 authenticated AWS profile; they are separate from these tests.
+
+## Expanded ML pools and legacy replay recovery
+
+`./dev --ml` now includes the model's configured GPU instance types in the
+selected region and reads the selected CPU source. CPU history uses verified
+per-vCPU-hour conversion. Missing pool/AZ permissions remain visible in Market
+model details. The launcher retains Stockholm as its default; model coverage
+does not change AWS regional permissions or provision capacity.
+
+After updating an older running app, restart it with `./dev --ml`. If an orange
+legacy-replay ledger error remains, press **Reset saved replay** beside the
+message. This resets simulated results only. To exercise all configured model
+pools without AWS access, choose **Replay & execution → All model regions ·
+CPU/GPU · simulated**, press Reset, then Step +1h or Play. Slot 168 is the first
+decision time because the fixture includes 168 prior simulated history hours.

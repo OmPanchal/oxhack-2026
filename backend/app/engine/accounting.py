@@ -36,6 +36,7 @@ def reconcile(session: ReplaySession, run: StrategyRun):
         raise AccountingError("Duplicate outcomes or starts for unknown jobs")
     history = {(row.slot, row.region, row.resource_type, row.gpu_type): row for row in session.history}
     seen = set()
+    allocated_models = {}
     for charge in run.charges:
         key = charge.job_id, charge.slot
         job, start = jobs.get(charge.job_id), starts.get(charge.job_id)
@@ -45,7 +46,26 @@ def reconcile(session: ReplaySession, run: StrategyRun):
         if (start.planned_start_slot is None or start.planned_end_slot is None
                 or not start.planned_start_slot <= charge.slot < start.planned_end_slot):
             raise AccountingError("Charge outside execution window")
-        row = history.get((charge.slot, start.region, job.resource_type, job.gpu_type))
+        gpu_type = charge.gpu_type
+        if job.resource_type == 'GPU':
+            allowed = job.allowed_gpu_types or ([job.gpu_type] if job.gpu_type else [])
+            if gpu_type is None:
+                # Old ledgers did not retain the selected model. Recover only
+                # an unambiguous compatible pool; never guess from its price.
+                candidates = [row.gpu_type for row in session.history if row.slot == charge.slot
+                              and row.region == start.region and row.resource_type == 'GPU'
+                              and (not allowed or row.gpu_type in allowed)]
+                if len(candidates) != 1:
+                    raise AccountingError('Legacy replay charge lacks its allocated GPU type; reset replay to regenerate the ledger')
+                gpu_type = candidates[0]
+            if allowed and gpu_type not in allowed:
+                raise AccountingError('Replay charge uses an incompatible GPU type')
+        elif gpu_type is not None:
+            raise AccountingError('CPU replay charge references a GPU pool')
+        if charge.job_id in allocated_models and allocated_models[charge.job_id] != gpu_type:
+            raise AccountingError('Replay job changed GPU pool during execution')
+        allocated_models[charge.job_id] = gpu_type
+        row = history.get((charge.slot, start.region, job.resource_type, gpu_type))
         if row is None:
             raise AccountingError("Charge lacks a realized market observation")
         if session.config.carbon_price_usd_per_kg and row.carbon_kg_per_unit_hour is None:

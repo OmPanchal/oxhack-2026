@@ -14,6 +14,7 @@ backend/state/
 *.egg-info/
 node_modules/
 .next/
+.next-*/
 out/
 *.tsbuildinfo
 *.sqlite*
@@ -31,3 +32,10 @@ models/*
 !models/error-reduction-001/GPU-model.json
 !models/error-reduction-001/CPU-scaled-l1-31.txt
 !models/error-reduction-001/GPU-scaled-l1-31.txt
+
+# Multi-region CPU/GPU serving bundle (selected fixed recipe).
+!models/public-region-001/
+!models/public-region-001/CPU-model.json
+!models/public-region-001/GPU-model.json
+!models/public-region-001/CPU-scaled-l1-31.txt
+!models/public-region-001/GPU-scaled-l1-31.txt

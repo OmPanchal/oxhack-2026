@@ -1,6 +1,7 @@
 """Clients select predefined tasks, never images or commands."""
 from datetime import datetime
 from typing import Literal
+from pydantic import Field
 from app.api.schemas import Contract
 
 class ExecuteRequest(Contract):
@@ -27,6 +28,8 @@ class LocalExecution(Contract):
     region: Literal["local"] = "local"
     status: Literal["STARTING", "RUNNING", "COMPLETED", "FAILED"] = "STARTING"
     container_name: str
+    # Persist and serve the same camelCase key; older records may omit it.
+    docker_endpoint: str | None = Field(default=None, alias="dockerEndpoint")
     container_id: str | None = None
     image_id: str
     requested_at_utc: datetime

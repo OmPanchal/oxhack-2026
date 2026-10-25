@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 import time
 
 from fastapi.testclient import TestClient
@@ -197,3 +197,19 @@ def test_explicit_origin_controls_wall_clock_slot_mapping(tmp_path, monkeypatch)
                      market_source=MemoryMarketSource([observation()]))
     app.state.engine.tick()
     assert app.state.engine.state().current_slot == 2
+
+
+def test_current_wall_clock_is_exposed_even_when_market_polling_fails(tmp_path):
+    now = [NOW]
+    class Offline:
+        def poll(self, slot):
+            raise OSError('offline fixture')
+    client = TestClient(create_app(tmp_path / 'clock.sqlite3', clock=lambda: now[0],
+                                  market_source=Offline(), tick_interval_seconds=0))
+    initial = client.get('/api/engine/state').json()
+    assert initial['wallClockSlot'] == initial['currentSlot'] == 0
+    now[0] += timedelta(hours=2)
+    assert client.post('/api/optimize', json={'currentSlot': 2}).status_code == 503
+    state = client.get('/api/engine/state').json()
+    assert state['wallClockSlot'] == 2
+    assert state['lastError']['code'] == 'MARKET_SOURCE_FAILED'

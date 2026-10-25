@@ -59,10 +59,13 @@ class JobStore:
             job = load_job(connection, job_id)
             if job.status != "PENDING":
                 raise ValueError("Only pending jobs can start")
+            allowed = job.allowed_gpu_types or ([job.gpu_type] if job.gpu_type else [])
+            compatible = (reservation.gpu_type is None if job.resource_type == 'CPU'
+                          else not allowed or reservation.gpu_type in allowed)
             if (reservation.job_id != job.id
                     or reservation.region not in job.allowed_regions
                     or reservation.resource_type != job.resource_type
-                    or reservation.gpu_type != job.gpu_type
+                    or not compatible
                     or reservation.resource_units != job.resource_units
                     or reservation.start_slot < job.arrival_slot
                     or reservation.end_slot > job.deadline_slot

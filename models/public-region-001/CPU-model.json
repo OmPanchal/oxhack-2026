@@ -1,0 +1,1818 @@
+{
+  "schemaVersion": "relative-price-error-model-v1",
+  "status": "EXPERIMENTAL_PUBLIC_REGION_AUGMENTATION",
+  "originUtc": "2026-07-28T00:00:00+00:00",
+  "datasetSha256": "e932632bcf73fa5c0af31c9372e6dd0fde0b7a5683c40af8d7c908604c0bf6b0",
+  "trainingEndExclusive": 1257,
+  "modelFile": "CPU-scaled-l1-31.txt",
+  "modelSha256": "85ae8729d1e09fd399838fcc9401d0c189a07937c34b39c22356741f74639d6c",
+  "identities": [
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "c6g.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "c6g.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "c6g.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "c6i.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "c6i.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "c6i.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "c7a.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "c7a.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "c7a.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "c7g.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "c7g.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "c7g.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "c7i.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "c7i.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "c7i.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "m5.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "m5.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "m5.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "m6g.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "m6g.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "m6g.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "m6i.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "m6i.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "m6i.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "m7a.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "m7a.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "m7a.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "m7g.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "m7g.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "m7g.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "m7i.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "m7i.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "m7i.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "r6g.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "r6g.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "r6g.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "r6i.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "r6i.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "r6i.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "r7a.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "r7a.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "r7a.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "r7g.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "r7g.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "r7g.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "r7i.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "r7i.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1a",
+      "instance_type": "r7i.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "c6g.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "c6g.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "c6g.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "c6i.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "c6i.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "c6i.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "c7a.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "c7a.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "c7a.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "c7g.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "c7g.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "c7g.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "c7i.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "c7i.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "c7i.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "m5.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "m5.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "m5.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "m6g.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "m6g.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "m6g.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "m6i.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "m6i.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "m6i.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "m7a.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "m7a.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "m7a.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "m7g.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "m7g.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "m7g.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "m7i.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "m7i.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "m7i.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "r6g.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "r6g.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "r6g.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "r6i.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "r6i.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "r6i.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "r7a.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "r7a.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "r7a.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "r7g.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "r7g.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "r7g.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "r7i.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "r7i.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1b",
+      "instance_type": "r7i.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "c6g.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "c6g.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "c6g.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "c6i.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "c6i.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "c6i.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "c7a.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "c7a.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "c7a.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "c7g.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "c7g.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "c7g.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "c7i.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "c7i.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "c7i.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "m5.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "m5.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "m5.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "m6g.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "m6g.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "m6g.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "m6i.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "m6i.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "m6i.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "m7a.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "m7a.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "m7a.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "m7g.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "m7g.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "m7g.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "m7i.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "m7i.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "m7i.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "r6g.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "r6g.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "r6g.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "r6i.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "r6i.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "r6i.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "r7a.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "r7a.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "r7a.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "r7g.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "r7g.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "r7g.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "r7i.2xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "r7i.4xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-north-1",
+      "availability_zone": "eu-north-1c",
+      "instance_type": "r7i.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-central-1",
+      "availability_zone": "euc1-az1",
+      "instance_type": "c6i.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-central-1",
+      "availability_zone": "euc1-az1",
+      "instance_type": "m5.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-central-1",
+      "availability_zone": "euc1-az1",
+      "instance_type": "r6i.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-central-1",
+      "availability_zone": "euc1-az2",
+      "instance_type": "c6i.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-central-1",
+      "availability_zone": "euc1-az2",
+      "instance_type": "m5.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-central-1",
+      "availability_zone": "euc1-az2",
+      "instance_type": "r6i.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-central-1",
+      "availability_zone": "euc1-az3",
+      "instance_type": "c6i.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-central-1",
+      "availability_zone": "euc1-az3",
+      "instance_type": "m5.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-central-1",
+      "availability_zone": "euc1-az3",
+      "instance_type": "r6i.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-west-1",
+      "availability_zone": "euw1-az1",
+      "instance_type": "c6i.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-west-1",
+      "availability_zone": "euw1-az1",
+      "instance_type": "m5.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-west-1",
+      "availability_zone": "euw1-az1",
+      "instance_type": "r6i.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-west-1",
+      "availability_zone": "euw1-az2",
+      "instance_type": "c6i.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-west-1",
+      "availability_zone": "euw1-az2",
+      "instance_type": "m5.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-west-1",
+      "availability_zone": "euw1-az2",
+      "instance_type": "r6i.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-west-1",
+      "availability_zone": "euw1-az3",
+      "instance_type": "c6i.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-west-1",
+      "availability_zone": "euw1-az3",
+      "instance_type": "m5.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-west-1",
+      "availability_zone": "euw1-az3",
+      "instance_type": "r6i.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-west-2",
+      "availability_zone": "euw2-az1",
+      "instance_type": "c6i.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-west-2",
+      "availability_zone": "euw2-az1",
+      "instance_type": "m5.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-west-2",
+      "availability_zone": "euw2-az1",
+      "instance_type": "r6i.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-west-2",
+      "availability_zone": "euw2-az2",
+      "instance_type": "c6i.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-west-2",
+      "availability_zone": "euw2-az2",
+      "instance_type": "m5.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-west-2",
+      "availability_zone": "euw2-az2",
+      "instance_type": "r6i.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-west-2",
+      "availability_zone": "euw2-az3",
+      "instance_type": "c6i.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-west-2",
+      "availability_zone": "euw2-az3",
+      "instance_type": "m5.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "eu-west-2",
+      "availability_zone": "euw2-az3",
+      "instance_type": "r6i.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "us-east-1",
+      "availability_zone": "use1-az1",
+      "instance_type": "c6i.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "us-east-1",
+      "availability_zone": "use1-az1",
+      "instance_type": "m5.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "us-east-1",
+      "availability_zone": "use1-az1",
+      "instance_type": "r6i.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "us-east-1",
+      "availability_zone": "use1-az2",
+      "instance_type": "c6i.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "us-east-1",
+      "availability_zone": "use1-az2",
+      "instance_type": "m5.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "us-east-1",
+      "availability_zone": "use1-az2",
+      "instance_type": "r6i.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "us-east-1",
+      "availability_zone": "use1-az4",
+      "instance_type": "c6i.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "us-east-1",
+      "availability_zone": "use1-az4",
+      "instance_type": "m5.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "us-east-1",
+      "availability_zone": "use1-az4",
+      "instance_type": "r6i.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "us-east-1",
+      "availability_zone": "use1-az5",
+      "instance_type": "c6i.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "us-east-1",
+      "availability_zone": "use1-az5",
+      "instance_type": "m5.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "us-east-1",
+      "availability_zone": "use1-az5",
+      "instance_type": "r6i.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "us-east-1",
+      "availability_zone": "use1-az6",
+      "instance_type": "c6i.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "us-east-1",
+      "availability_zone": "use1-az6",
+      "instance_type": "m5.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "us-east-1",
+      "availability_zone": "use1-az6",
+      "instance_type": "r6i.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "us-west-2",
+      "availability_zone": "usw2-az1",
+      "instance_type": "c6i.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "us-west-2",
+      "availability_zone": "usw2-az1",
+      "instance_type": "m5.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "us-west-2",
+      "availability_zone": "usw2-az1",
+      "instance_type": "r6i.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "us-west-2",
+      "availability_zone": "usw2-az2",
+      "instance_type": "c6i.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "us-west-2",
+      "availability_zone": "usw2-az2",
+      "instance_type": "m5.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "us-west-2",
+      "availability_zone": "usw2-az2",
+      "instance_type": "r6i.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "us-west-2",
+      "availability_zone": "usw2-az3",
+      "instance_type": "c6i.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "us-west-2",
+      "availability_zone": "usw2-az3",
+      "instance_type": "m5.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "us-west-2",
+      "availability_zone": "usw2-az3",
+      "instance_type": "r6i.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "us-west-2",
+      "availability_zone": "usw2-az4",
+      "instance_type": "c6i.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "us-west-2",
+      "availability_zone": "usw2-az4",
+      "instance_type": "m5.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    },
+    {
+      "region": "us-west-2",
+      "availability_zone": "usw2-az4",
+      "instance_type": "r6i.xlarge",
+      "product_description": "Linux/UNIX",
+      "resource_type": "CPU",
+      "gpu_type": ""
+    }
+  ],
+  "supportedPoolIndices": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
+    62,
+    63,
+    64,
+    65,
+    66,
+    67,
+    68,
+    69,
+    70,
+    71,
+    72,
+    73,
+    74,
+    75,
+    76,
+    77,
+    78,
+    79,
+    80,
+    81,
+    82,
+    83,
+    84,
+    85,
+    86,
+    87,
+    88,
+    89,
+    90,
+    91,
+    92,
+    93,
+    94,
+    95,
+    96,
+    97,
+    98,
+    99,
+    100,
+    101,
+    102,
+    103,
+    104,
+    105,
+    106,
+    107,
+    108,
+    109,
+    110,
+    111,
+    112,
+    113,
+    114,
+    115,
+    116,
+    117,
+    118,
+    119,
+    120,
+    121,
+    122,
+    123,
+    124,
+    125,
+    126,
+    127,
+    128,
+    129,
+    130,
+    131,
+    132,
+    133,
+    134,
+    135,
+    136,
+    137,
+    138,
+    139,
+    140,
+    141,
+    142,
+    143,
+    144,
+    145,
+    146,
+    147,
+    148,
+    149,
+    150,
+    151,
+    152,
+    153,
+    154,
+    155,
+    156,
+    157,
+    158,
+    159,
+    160,
+    161,
+    162,
+    163,
+    164,
+    165,
+    166,
+    167,
+    168,
+    169,
+    170,
+    171,
+    172,
+    173,
+    174,
+    175,
+    176,
+    177,
+    178,
+    179,
+    180,
+    181,
+    182,
+    183,
+    184,
+    185,
+    186,
+    187,
+    188,
+    189,
+    190,
+    191,
+    192,
+    193,
+    194,
+    195,
+    196,
+    197
+  ],
+  "hardware": [
+    "c6g",
+    "c6i",
+    "c7a",
+    "c7g",
+    "c7i",
+    "m5",
+    "m6g",
+    "m6i",
+    "m7a",
+    "m7g",
+    "m7i",
+    "r6g",
+    "r6i",
+    "r7a",
+    "r7g",
+    "r7i"
+  ],
+  "target": "scaled",
+  "weight": 1.0,
+  "scale": 0.01543125,
+  "featureSchema": "relative-price-error-features-v1",
+  "featureImplementationSha256": "e146323139c180c382b78695706d606003eaf352d3569ccaba89bc663648587f"
+}

@@ -1,5 +1,5 @@
 """Durable manual/scheduler dispatch and restart-safe local observation."""
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from math import ceil
 from threading import RLock
 from uuid import uuid4
@@ -15,6 +15,19 @@ TERMINAL = {"COMPLETED", "FAILED"}
 
 
 class LocalExecutionService:
+    @staticmethod
+    def _real_now():
+        return datetime.now(timezone.utc)
+
+    def _timeout_now(self):
+        return self._real_now() if self.engine.acquisition_provider is not None else self.engine._now()
+
+    def _observed_slot(self, timestamp, state):
+        if self.engine.acquisition_provider is not None:
+            origin = datetime.fromisoformat(state['originUtc'])
+            return max(state['currentSlot'], int((self.engine._now() - origin).total_seconds() // 3600))
+        origin = datetime.fromisoformat(state['originUtc'])
+        return max(0, ceil((timestamp - origin).total_seconds() / 3600))
     def __init__(self, database, engine, *, adapter=None):
         self.database, self.engine = database, engine
         self.adapter = adapter if adapter is not None else DockerAdapter()
@@ -53,14 +66,24 @@ class LocalExecutionService:
         state = self.engine._load_state(connection)
         self.engine._save_state(connection, state)
         now = self.engine._now()
-        slot = int((now - datetime.fromisoformat(state["originUtc"])).total_seconds() // 3600)
-        if slot < state["currentSlot"] or slot < job.arrival_slot:
+        origin = datetime.fromisoformat(state['originUtc'])
+        slot = int((now - origin).total_seconds() // 3600)
+        if self.engine.acquisition_provider is not None:
+            # The accelerated clock can lag a slot already persisted by a
+            # replan/restarted process. Use the same logical-clock floor as
+            # engine state/job creation; never weaken real live-clock checks.
+            slot = max(slot, state['currentSlot'])
+            now = max(now, origin + timedelta(hours=slot))
+        elif slot < state['currentSlot']:
             raise ValueError("Local execution requires current wall-clock scheduling time and an arrived job")
+        if slot < job.arrival_slot:
+            raise ValueError(f'Local task has not arrived: arrival slot {job.arrival_slot}, current slot {slot}')
         if slot + job.duration_slots + self.engine.config.safety_buffer_slots > job.deadline_slot:
             raise ValueError("Job cannot finish within its deadline and safety buffer")
         deadline = datetime.fromisoformat(state["originUtc"]) + timedelta(
             hours=job.deadline_slot - self.engine.config.safety_buffer_slots)
-        if now + timedelta(seconds=TASK.timeout_seconds) > deadline:
+        slot_seconds = getattr(self.engine.clock, 'slot_seconds', 3600)
+        if (deadline - now).total_seconds() * slot_seconds / 3600 < TASK.timeout_seconds:
             raise ValueError("Insufficient wall-clock time remains for the bounded local task")
         # Model the demonstration as zero billed compute, never as cloud savings.
         if self.engine.config.startup_cost_usd or self.engine.config.transfer_cost_usd:
@@ -121,8 +144,11 @@ class LocalExecutionService:
                     slot, now = self._validate(connection, job)
                     if decision_id is not None:
                         self._validate_ticket(connection, job_id, decision_id, plan_fingerprint)
+                    if self.engine.acquisition_provider is not None:
+                        now = self._real_now()
                     execution_id = uuid4().hex
                     record = LocalExecution(id=execution_id, job_id=job.id, task_id=TASK.id,
+                        docker_endpoint=getattr(self.adapter, 'prepared_endpoint', None),
                         image_id=image_id, container_name="compute-" + execution_id, requested_at_utc=now)
                     connection.execute("INSERT INTO local_executions (id, job_id, payload) VALUES (?, ?, ?)",
                                        (record.id, job.id, record.model_dump_json(by_alias=True)))
@@ -157,7 +183,7 @@ class LocalExecutionService:
             try:
                 observed = self.adapter.inspect(record)
                 if observed and observed["state"] == "running" and observed["started_at_utc"]:
-                    if (self.engine._now() - observed["started_at_utc"]).total_seconds() >= TASK.timeout_seconds:
+                    if (self._timeout_now() - observed["started_at_utc"]).total_seconds() >= TASK.timeout_seconds:
                         # Persist before kill, so a fast exit cannot be mistaken for success.
                         with self.database.transaction() as connection:
                             fresh = self._by_job(connection, record.job_id)
@@ -214,7 +240,7 @@ class LocalExecutionService:
                     if record.completed_at_utc:
                         origin = datetime.fromisoformat(self.engine._load_state(connection)["originUtc"])
                         # A finish just after an hourly deadline must count as late.
-                        payload["observedAtSlot"] = max(0, ceil((record.completed_at_utc - origin).total_seconds() / 3600))
+                        payload["observedAtSlot"] = self._observed_slot(record.completed_at_utc, self.engine._load_state(connection)) if self.engine.acquisition_provider is not None else max(0, ceil((record.completed_at_utc - origin).total_seconds() / 3600))
                     append_event(connection, "JOB_STATUS_CHANGED", job.id, payload, "LOCAL")
                 self._save(connection, record)
                 return record

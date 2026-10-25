@@ -1,3 +1,11 @@
+## Free working demo
+
+Run `./dev --setup --demo` once, then `./dev --demo`. Select **Backend data** to
+add jobs and watch planning → simulated acquisition → RUNNING → COMPLETED in the
+normal queue. One simulated hour takes ten seconds. It uses the saved ML models,
+a separate demo database, and no AWS credentials, paid instances or Docker.
+See [working demo instructions](docs/WORKING_DEMO.md). Live mode remains separate.
+
 # Arbitr
 
 Arbitr schedules a firm's asynchronous compute workloads to reduce expenditure
@@ -45,8 +53,9 @@ Docker dispatch. See [startup troubleshooting](docs/STARTUP.md).
 
 ## What the model actually receives
 
-The saved CPU/GPU LightGBM artifacts live in `models/error-reduction-001/`; their
-checksums and feature implementation are validated before use. The integration
+The fixed serving router uses `models/public-region-001/` for CPUs and the five
+added regions, and `models/error-reduction-001/` for Stockholm GPUs. Both bundles,
+selection evidence and feature implementation are checked before use. The integration
 maps the engine's persisted UTC origin to the model's July 28 origin and maps
 AWS names such as `T4` to configured model names such as `NVIDIA T4`, returning
 forecasts under the original API resource key.
@@ -55,6 +64,12 @@ With ML enabled, live GPU scheduling snapshots use the configured **fixed
 instance/AZ pools**, rather than the cheapest quote across AZs. The detailed AWS
 quote endpoint still returns all observed quotes. Without ML enabled, the
 existing regional minimum-price index remains the live price source.
+
+ML mode also reads the configured CPU sources with verified vCPU-hour conversion.
+Global AZ IDs are resolved through AWS metadata only in explicitly configured
+regions. Per-pool read failures appear in Market model details. To exercise all
+six model regions without AWS access, use the **All model regions · CPU/GPU ·
+simulated** replay preset. Its prices, capacity and outcomes are SIMULATED.
 
 The model requires **168 prior consecutive hourly observations plus the current
 observation**, from the matching source pool. With `--ml`, the app automatically

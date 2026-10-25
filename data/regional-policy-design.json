@@ -1,0 +1,86 @@
+{
+  "schemaVersion": "regional-policy-design-v1",
+  "status": "FROZEN_BOUNDED_POST_HOLDOUT_DEVELOPMENT",
+  "originUtc": "2026-07-28T00:00:00Z",
+  "folds": [
+    [
+      744,
+      1000
+    ],
+    [
+      1000,
+      1257
+    ]
+  ],
+  "finalTrainEndExclusive": 1257,
+  "families": [
+    "persistence",
+    "pooled",
+    "regional"
+  ],
+  "weights": [
+    0.0,
+    0.25,
+    0.5,
+    0.75,
+    1.0
+  ],
+  "parameters": {
+    "objective": "regression_l1",
+    "num_leaves": 31,
+    "learning_rate": 0.04,
+    "min_data_in_leaf": 100,
+    "lambda_l2": 1,
+    "num_boost_round": 200
+  },
+  "seed": 42,
+  "referencePolicy": "Stockholm GPU regional; all other resource-region groups pooled.",
+  "routingRule": "Choose the lowest aggregate rolling MAE family separately per resource-region. Exact ties prefer persistence, then pooled, then regional.",
+  "blendingRule": "For each resource and horizon, choose one global-across-regions correction weight from the fixed grid by aggregate rolling MAE. Exact ties prefer smaller weight.",
+  "selectionCandidates": [
+    "reference",
+    "reference-blend",
+    "validation-route-blend"
+  ],
+  "selectionRule": "Per resource, choose lowest aggregate rolling MAE candidate only if no rolling fold is worse than reference; exact ties prefer reference then reference-blend. Otherwise retain reference.",
+  "diagnostics": [
+    "persistence",
+    "reference",
+    "reference-blend",
+    "regional",
+    "validation-route-blend",
+    "selected"
+  ],
+  "evaluation": {
+    "stockholmTest": [
+      1791,
+      2112
+    ],
+    "stockholmForwardDay": [
+      2112,
+      2136
+    ],
+    "newRegionHistorical": [
+      1257,
+      1560
+    ]
+  },
+  "frozenInputs": {
+    "data/public-region-experiment-design.json": "298b9dc9eb7bf950c8b791d292e4692874f9201b5b08ce332b863f7176e76aa1",
+    "data/processed/public-region-hourly-001/manifest.json": "09b7fc171728ac29df51bfaed5c9508e05292378e2bfbdbf62bac476e8787f3b",
+    "data/error-model-artifacts.json": "68605935d3b4554fdadc68d9e622787ad4d0e55ebb718d1f64bb5ae0757e870e",
+    "data/public-region-model-artifacts.json": "69f4d6f7c4aa0aae38ba2c4cfb0139ad9331fae0da92414d8c45b5354c7e2c77"
+  },
+  "limitations": [
+    "All later diagnostic periods were previously examined. No fresh blind-test claim.",
+    "OOF labels fit policy choices, so reported selection errors are optimistic development metrics, not unbiased policy test results.",
+    "Recipe originated in earlier experiments; chronological data/label guards do not erase historical recipe-selection effects.",
+    "No serving changes or scheduling-savings claim."
+  ],
+  "futureEvaluation": {
+    "status": "RESERVED_NOT_FETCHED_OR_SCORED",
+    "newRegionalData": "Next available public archive dates on or after 2026-10-01, before any policy tuning on those regional outcomes.",
+    "stockholmData": "Newly collected dates on or after 2026-10-25; all existing October comparisons remain reused.",
+    "rule": "Freeze this policy before import/scoring; compare identical target cohorts against persistence and existing reference. No automatic deployment."
+  }
+}

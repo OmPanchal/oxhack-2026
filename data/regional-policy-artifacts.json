@@ -1,0 +1,94 @@
+{
+  "status": "EXPERIMENTAL_REJECTED_FOR_OVERALL_DEPLOYMENT",
+  "policySha256": "d94656fcc437dfaf7bc386614a193f3417c6c83b2ddf791cab96e51da482ef97",
+  "files": [
+    {
+      "path": "models/regional-policy-001/CPU-eu-central-1.json",
+      "sha256": "ad0c96ad69695bc4ac5d357817dd4659bd4121b43b5c30f4ed5e66c39ebab1f0"
+    },
+    {
+      "path": "models/regional-policy-001/CPU-eu-central-1.txt",
+      "sha256": "a6b6ce3eeef03196dd5435bffd3a1ac9685d34ac701c90de344a97fa60ea04d6"
+    },
+    {
+      "path": "models/regional-policy-001/CPU-eu-west-1.json",
+      "sha256": "ac00d05fe95951cbd9920295d1326a1cbd1856cffeae4f0a5e987b7a393319e1"
+    },
+    {
+      "path": "models/regional-policy-001/CPU-eu-west-1.txt",
+      "sha256": "1395aae83eadf4e3633d46d4974685ec7d03dafdaf5cfc9e79aba2abebbd7b3b"
+    },
+    {
+      "path": "models/regional-policy-001/CPU-eu-west-2.json",
+      "sha256": "cb42a5407de569b89602669e8423c4d9477c2924afeb25a07b8ad2007885c134"
+    },
+    {
+      "path": "models/regional-policy-001/CPU-eu-west-2.txt",
+      "sha256": "20adecd7a8ac8a94effa637bd90d321f31fa0a2261d701ed90e92c1c0c5d70e1"
+    },
+    {
+      "path": "models/regional-policy-001/CPU-us-east-1.json",
+      "sha256": "7bd97c0f541593a3c6aa62108fbd03eec8b1cc828bc2523d68cbe0da0683e7f6"
+    },
+    {
+      "path": "models/regional-policy-001/CPU-us-east-1.txt",
+      "sha256": "2f10e36e9460c0df642f0477cd3e2dc8c9e5545a5c3872feae154a25eb791c86"
+    },
+    {
+      "path": "models/regional-policy-001/CPU-us-west-2.json",
+      "sha256": "0b956b2e21b1dc676a4724a02f7e83a472bdbb046323f7f79583e47032c70e17"
+    },
+    {
+      "path": "models/regional-policy-001/CPU-us-west-2.txt",
+      "sha256": "ac21dcf08cf6e5acfe6f9b03a9878a40817edb116b427116493b68ef71a944a5"
+    },
+    {
+      "path": "models/regional-policy-001/GPU-eu-central-1.json",
+      "sha256": "7273e4de24a758733a954623947c9b69e61c1ba030eaf97b1bfd36999bc5d6ea"
+    },
+    {
+      "path": "models/regional-policy-001/GPU-eu-central-1.txt",
+      "sha256": "75990bd67e34ccd05a4a779e0e419370c38cfc620eb7217d4c59d4376a2c100f"
+    },
+    {
+      "path": "models/regional-policy-001/GPU-eu-west-1.json",
+      "sha256": "c70ab10f32071e762c7df8bd40da856c72871e1bd4b1f96bd67739260204d8fc"
+    },
+    {
+      "path": "models/regional-policy-001/GPU-eu-west-1.txt",
+      "sha256": "c9c280ab8a44f544e82b9f95100d3901f8877ab32f19a393a097b68f3ce9dc7d"
+    },
+    {
+      "path": "models/regional-policy-001/GPU-eu-west-2.json",
+      "sha256": "918cc436fc28545f3923e536a89e95a60f3119c9937c698164d0fcf646f35676"
+    },
+    {
+      "path": "models/regional-policy-001/GPU-eu-west-2.txt",
+      "sha256": "ebc527ee4e1ec50486614cbf4d1011ca4ccbaad91cdd0de1aaeb2cf843fd5103"
+    },
+    {
+      "path": "models/regional-policy-001/GPU-us-east-1.json",
+      "sha256": "a81c9623abe9e9d573813d184952f58c81e8f1085ae8931ff5eae11c17bd30af"
+    },
+    {
+      "path": "models/regional-policy-001/GPU-us-east-1.txt",
+      "sha256": "a11b51b7d5641a11b09e57e7982de9f1ea886ab224098ab981dd07e92746d636"
+    },
+    {
+      "path": "models/regional-policy-001/GPU-us-west-2.json",
+      "sha256": "64df02a5aead92b3821b5ff7ec29a1c95825382ff93775f610cb1045fbb41633"
+    },
+    {
+      "path": "models/regional-policy-001/GPU-us-west-2.txt",
+      "sha256": "bb4f5283dff8edb249cc961751760975def81bfd7a1b2b2cff56fa7e7de5bbf8"
+    },
+    {
+      "path": "models/regional-policy-001/policy.json",
+      "sha256": "d94656fcc437dfaf7bc386614a193f3417c6c83b2ddf791cab96e51da482ef97"
+    }
+  ],
+  "baseArtifactReceipts": [
+    "data/error-model-artifacts.json",
+    "data/public-region-model-artifacts.json"
+  ]
+}

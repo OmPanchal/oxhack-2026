@@ -37,6 +37,7 @@ def test_capacity_pressure_respects_every_pool_and_exposes_realized_failures(tmp
         state = replay.step()
         assert max(r.slot for r in state.observed_market) == slot
         assert all(r.data_kind == 'SIMULATED' and 'not AWS inventory' in r.source for r in state.observed_market)
+        assert replay.metrics().as_of_slot == slot + 1
     naive = state.strategy_states[2]
     assert naive.status == 'ACTIVE'
     assert [(d.decided_at_slot, d.action) for d in naive.decisions if d.job_id == 'needs-two'] == [

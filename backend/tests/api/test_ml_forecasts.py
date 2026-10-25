@@ -8,7 +8,7 @@ ROOT=Path(__file__).resolve().parents[3]
 
 
 def payload(*, full=True):
-    current=1791
+    current=2200
     return dict(currentSlot=current,horizonSlots=6,history=[dict(slot=t,
         region='eu-north-1',resourceType='GPU',gpuType='NVIDIA T4',
         priceUsdPerUnitHour=.05+(t%17)*.0001,availableUnits=1,
@@ -25,7 +25,7 @@ def test_explicit_ml_inference_does_not_replace_server_forecasts():
     rows=response.json()
     assert len(rows)==6
     assert all(r['modelVersion'].startswith('lightgbm-price-l1-v1-gpu-') for r in rows)
-    assert all(r['generatedAtSlot']==1791 for r in rows)
+    assert all(r['generatedAtSlot']==2200 for r in rows)
     assert all('predicted_price_usd_per_unit_hour' not in r for r in rows)
     assert client.get('/api/forecasts').json()==[]
     status=client.get('/api/models/status').json()
@@ -53,7 +53,7 @@ def test_fallback_validation_and_cache_atomicity():
     saved=client.get('/api/forecasts').json()
     bad=payload();bad['currentSlot']+=1
     assert client.post('/api/forecasts',json=bad).status_code==422
-    bad=payload();bad['history'][0]['slot']=2000
+    bad=payload();bad['history'][0]['slot']=2400
     assert client.post('/api/forecasts',json=bad).status_code==422
     assert client.get('/api/forecasts').json()==saved
     assert client.post('/api/forecasts?forecastMode=INVALID',json=payload()).status_code==422

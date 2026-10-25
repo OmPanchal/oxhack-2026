@@ -1,3 +1,28 @@
+# Follow-up wiring and display verification — 25 October 2026
+
+The current source was checked from the frontend API client through the Next.js
+proxy into FastAPI, plus browser interaction against an isolated SIMULATED
+fixture. This supersedes older browser-verification-pending statements below;
+older live AWS/Docker records remain historical evidence, not new live checks.
+
+Fixed gaps include wall-clock versus processed scheduling time for job creation
+and replanning, the default quote-kind filter for backend-fed simulated prices,
+retention/warnings for transient auxiliary failures, mismatched metric snapshots,
+late polling responses overwriting replay mutations, and live controls appearing
+inside replay. GPU alternatives now also pass the persistent JobStore start check.
+
+The browser verified Overview counts, CPU RUN versus GPU capacity BLOCKED reasons,
+linked evidence, job creation and refreshed decisions, timeline bars, six-region
+market quotes, replay stepping, policy totals/model versions and empty execution
+telemetry. The fixture produced 42 completed jobs per policy after its first
+execution interval; this is a SIMULATED integration check, not a savings benchmark.
+No AWS reads, cloud provisioning or genuine Docker execution were performed.
+
+Validation: 408 backend tests and 53 subtests passed (one skipped); frontend type
+checking, tests and production build passed. The actual frontend HTTP client
+passed through the running proxy, and the saved disposable fixture was separately
+verified. See [reproduction instructions](../docs/INTEGRATION_CHECKS.md).
+
 # Current ML merge integration
 
 Selected LightGBM artifacts are now present. Use `./dev --ml`, then select ML in

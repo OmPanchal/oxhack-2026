@@ -1,5 +1,11 @@
 # Current code audit — 2026-10-25
 
+> Historical backend milestone snapshot. Later frontend/API integration and live
+> AWS verification supersede its pending-handoff statements. See
+> [current integration evidence](../frontend/INTEGRATION.md) and the
+> [pre-ML plan](PRE_ML_MILESTONES.md). Test counts and Docker evidence below belong
+> to the original run; they have not been repeated for this documentation update.
+
 Audited the current `codex/backend` checkout against AGENTS.md and the milestone
 contracts. Scope included backend source, schemas, persistence, forecasting seam,
 AWS adapter, optimizer, scheduling, replay/accounting, execution/control/monitoring,

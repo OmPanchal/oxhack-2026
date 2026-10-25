@@ -1,3 +1,4 @@
+import type { DecisionDetail, EngineState, MarketCapabilities, ReplayMetrics, ReplayShock, ReplayStrategy, TaskCatalog, LocalExecution, LiveMetrics, ModelMetrics } from "./backend-types";
 // Person 3 owns this mirror of backend/app/api/schemas.py. Coordinate contract edits.
 export type ResourceType = "CPU" | "GPU";
 export type JobStatus = "PENDING" | "RUNNING" | "COMPLETED" | "FAILED" | "INFEASIBLE";
@@ -12,7 +13,7 @@ export type Job = {
 export type JobCreate = Omit<Job, "status">;
 export type MarketSnapshot = {
   slot: number; region: string; resourceType: ResourceType; gpuType?: string | null;
-  priceUsdPerUnitHour: number; availableUnits: number; carbonKgPerUnitHour: number | null;
+  priceUsdPerUnitHour: number; availableUnits: number | null; carbonKgPerUnitHour: number | null;
   source: string; dataKind: "OBSERVED" | "FORECAST" | "SIMULATED";
 };
 export type Forecast = {
@@ -32,10 +33,16 @@ export type ReplayStepRequest = { slots?: number };
 export type ShockRequest = {
   kind: "PRICE_SPIKE" | "CAPACITY_SHORTAGE" | "INTERRUPTION" | "DEADLINE_PRESSURE" | "JOB_ARRIVAL";
   slot: number; region?: string | null; magnitude?: number; dataKind?: "SIMULATED";
+  durationSlots?: number; resourceType?: ResourceType | null; gpuType?: string | null; jobId?: string | null; job?: JobCreate;
 };
 export type ReplayState = {
   status: "NOT_IMPLEMENTED" | "READY" | "RUNNING" | "COMPLETED";
   currentSlot: number; seed: number; strategies: Strategy[];
+  initialized?: boolean; scenarioId?: string | null; description?: string | null; originUtc?: string | null; endSlot?: number | null;
+  executionMode?: "SIMULATED"; dataKind?: "SIMULATED"; strategyStates?: ReplayStrategy[]; events?: ReplayShock[]; observedMarket?: MarketSnapshot[];
 };
 export type Health = { status: "ok"; stage: "SCAFFOLD" };
-export type TerminalData = { jobs: Job[]; market: MarketSnapshot[]; forecasts: Forecast[]; decisions: Decision[]; replay: ReplayState };
+export type TerminalData = { jobs: Job[]; market: MarketSnapshot[]; forecasts: Forecast[]; decisions: Decision[]; replay: ReplayState;
+  engine?: EngineState; capabilities?: MarketCapabilities; decisionDetails?: DecisionDetail[];
+  taskCatalog?: TaskCatalog; executions?: LocalExecution[]; replayMetrics?: ReplayMetrics; liveMetrics?: LiveMetrics;
+  modelMetrics?: ModelMetrics; errors?: string[] };

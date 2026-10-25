@@ -1,25 +1,53 @@
 # Milestone 4b: read-only AWS ingestion
 
 The GPU catalog, regional/AZ offerings, Spot prices and frontend capabilities
-endpoint are implemented. All 124 tests pass, including real SDK request-shape
-validation using botocore Stubber. The SDK credential chain returns no credentials
-on this machine, so authenticated live AWS access is not verified. Test responses
-are synthetic; no real prices, benchmark results or cloud execution are claimed.
+endpoint are implemented. Authenticated live reads were verified on 25 October
+2026 through the actual Next.js API proxy: AWS reported READY, two offerings
+(T4/A10G), five instance/AZ quotes, two OBSERVED regional price indices and twelve
+persistence forecasts. Engine state had no source error. This is price-feed
+verification, not cloud execution, capacity evidence or ML evaluation.
 
-## Activation
+## Activation on macOS — current project
 
-From backend on Windows, after configuring an AWS profile/SSO session or IAM role:
+The new AWS experience uses project browser login, not the Identity Center setup
+for a conventional organization. Profile `arbitr` has selected region `eu-north-1`.
+The AWS Agent Toolkit was installed and its MCP entries configured to use that
+profile. Toolkit installation is separate from running the application backend.
 
-```powershell
-.\.venv\Scripts\python.exe -m pip install -e '.[dev,aws]'
-$env:COMPUTE_MARKET_SOURCE = 'aws'
-$env:COMPUTE_AWS_REGIONS = 'eu-west-1,eu-central-1'
-# Optional, using an already configured profile:
-# $env:AWS_PROFILE = 'your-profile'
-# Optional instance-type restriction:
-# $env:COMPUTE_AWS_INSTANCE_TYPES = 'g5.xlarge,p4d.24xlarge'
-.\.venv\Scripts\python.exe -m uvicorn app.main:app --reload --port 8000
+From `backend`, with your Python environment active:
+
+```sh
+python -m pip install -e '.[dev,aws]'
+python -m pip install 'botocore[crt]'
+aws login --region eu-north-1 --profile arbitr
+aws sts get-caller-identity --profile arbitr
+export AWS_PROFILE=arbitr
+export COMPUTE_MARKET_SOURCE=aws
+export COMPUTE_AWS_REGIONS=eu-north-1
+export COMPUTE_AWS_INSTANCE_TYPES=g4dn.xlarge,g5.xlarge
+python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
 ```
+
+Stop any existing server using port 8000 before replacing it. The current `aws`
+extra installs boto3 but not its optional browser-login dependency. Without
+`botocore[crt]`, the backend reports `MissingDependencyException` even when CLI
+login works. This dependency was installed and the successful live read repeated.
+
+Open the frontend at http://127.0.0.1:3000, select Backend data, then Market.
+`GET /api/capabilities` and `GET /api/market/aws/spot` expose READY/PARTIAL/error
+status. The backend must be running for these local URLs to work.
+
+Renew an expired session with `aws login --region eu-north-1 --profile arbitr`.
+AWS documents 12-hour credentials with renewal for up to 90 days before browser
+reauthorization. Do not copy keys, tokens or login URLs into source or chat.
+The selected region can be checked in AWS Settings → View all projects → Overview
+→ Additional Info → Region. Additional-region access must be checked before
+expanding this project's live configuration; a comma-separated setting alone
+does not grant regional permissions.
+
+For Windows, activate the appropriate environment and set the same variables
+with PowerShell's `$env:NAME = 'value'` syntax. Conventional AWS profiles, SSO
+sessions and IAM roles can also be supplied through the normal credential chain.
 
 The adapter uses boto3's standard credential chain. It accepts no frontend keys
 and exposes no credentials, raw SDK errors or signed requests. The only required
@@ -47,7 +75,7 @@ JSON mode remains available with COMPUTE_MARKET_SOURCE=json. The default remains
 unconfigured; the app does not silently connect to AWS or substitute fixtures.
 No provisioning operation is implemented.
 
-## Frontend handoff — Person 3
+## Frontend integration
 
 GET /api/capabilities returns provider, status, fetchedAtUtc, configuredRegions,
 **allowedGpuTypes**, allowedRegions, offerings, capacityStatus and regional errors.
@@ -77,11 +105,11 @@ be derived from already-ingested configured market rows.
 MarketSnapshot.availableUnits is now **number | null**. Existing nonnegative
 integers retain their behavior; null means unknown, not zero or unlimited.
 
-Person 3 should change frontend/lib/types.ts to `availableUnits: number | null`
-and display an unknown state. Frontend-owned files are unchanged. Person 1 should
-preserve missing capacity or handle it with documented missing-value features;
-do not convert it into observed zero capacity or a calibrated risk estimate.
-OpenAPI reflects the backend change. No actual team agreement is claimed here.
+The frontend now mirrors `availableUnits: number | null`, displays unknown
+capacity and excludes it from current-opportunity ranking. OpenAPI reflects the
+backend contract. Forecasting must preserve missing capacity or handle it with
+documented missing-value features; do not convert it into observed zero capacity
+or a calibrated risk estimate.
 
 ## Pricing and scheduling behavior
 
@@ -123,9 +151,15 @@ effective prices, future/product/location filtering, cache rollover, partial
 failures, sanitized errors, invalid prices/timestamps, environment configuration,
 API serialization, unknown-capacity waiting and replay rejection. CI installs
 the AWS extra so the offline SDK Stubber test runs. The existing Starlette/httpx
-warning remains. No authenticated AWS request was possible without credentials.
+warning remains in the earlier recorded suite. The original 124-test result was
+a milestone snapshot, not a new test run. Current integration evidence and its
+recorded checks are in [frontend/INTEGRATION.md](../frontend/INTEGRATION.md).
+No tests were rerun for this documentation update.
 
 Official AWS references:
+
+- [New-experience project connection](https://docs.aws.amazon.com/accounts/latest/reference/connect-ai-coding-tool.html)
+- [CLI browser sign-in](https://docs.aws.amazon.com/signin/latest/userguide/command-line-sign-in.html)
 
 - [Instance metadata](https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeInstanceTypes.html)
 - [GPU model/count metadata](https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_GpuDeviceInfo.html)

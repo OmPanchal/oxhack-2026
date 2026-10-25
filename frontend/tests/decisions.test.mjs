@@ -4,7 +4,7 @@ import { readFile } from "node:fs/promises";
 import ts from "typescript";
 const source = await readFile(new URL("../lib/decisions.ts", import.meta.url), "utf8");
 const js = ts.transpileModule(source, { compilerOptions: { target: ts.ScriptTarget.ES2020, module: ts.ModuleKind.ESNext } }).outputText;
-const { latestDecision, slotLabel, deadlineBuffer } = await import(`data:text/javascript;base64,${Buffer.from(js).toString("base64")}`);
+const { latestDecision, slotLabel, deadlineBuffer, linkedDecisionDetail } = await import(`data:text/javascript;base64,${Buffer.from(js).toString("base64")}`);
 
 test("plan selection excludes future decisions and selects the newest issue for this job", () => {
   const old = { jobId: "a", decidedAtSlot: 4, action: "RUN" };
@@ -31,4 +31,19 @@ test("deadline buffer accepts exact deadlines and preserves missing or late plan
   assert.equal(deadlineBuffer(14, 16), "2h after deadline");
   assert.equal(deadlineBuffer(14, null), "Unavailable");
   assert.equal(deadlineBuffer(0, 0), "Ends at deadline");
+});
+
+test("same-slot replans select the latest persisted decision instead of the first", () => {
+  const rows = [{ jobId: "a", decidedAtSlot: 8, action: "WAIT" }, { jobId: "a", decidedAtSlot: 8, action: "RUN" }];
+  assert.equal(latestDecision(rows, "a", 8), rows[1]);
+});
+
+
+test("decision evidence requires a complete matching ordered snapshot", () => {
+  const a = { jobId: "a", decidedAtSlot: 8, executionMode: "PAPER" };
+  const b = { jobId: "b", decidedAtSlot: 8, executionMode: "PAPER" };
+  const details = [{ ...a, decisionId: 4 }, { ...b, decisionId: 5 }];
+  assert.equal(linkedDecisionDetail([a, b], details, b), details[1]);
+  assert.equal(linkedDecisionDetail([a, b], details.slice(0, 1), b), undefined);
+  assert.equal(linkedDecisionDetail([a, b], [{ ...details[0], executionMode: "LOCAL" }, details[1]], b), undefined);
 });

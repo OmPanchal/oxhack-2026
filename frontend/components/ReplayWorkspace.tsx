@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useId, useState } from "react";
-import type { ReplayState } from "@/lib/types";
+import { BackendReplayWorkspace } from "./BackendReplayWorkspace";
+import type { ReplayState, TerminalData } from "@/lib/types";
 import { replayScenarios } from "@/lib/preview";
 import { nextFrame } from "@/lib/replay-view";
 import { ReplayPanel } from "./ReplayPanel";
@@ -10,7 +11,7 @@ import { PolicyComparison } from "./PolicyComparison";
 
 const views = ["Replay", "Policy comparison", "Execution"] as const;
 
-export function ReplayWorkspace({ preview, state, active }: { preview: boolean; state: ReplayState; active: boolean }) {
+export function ReplayWorkspace({ preview, state, active, backendData, onRefresh = () => {} }: { preview: boolean; state: ReplayState; active: boolean; backendData?: TerminalData; onRefresh?: () => void }) {
   const [scenarioId, setScenarioId] = useState("normal");
   const [index, setIndex] = useState(0);
   const [playing, setPlaying] = useState(false);
@@ -29,6 +30,7 @@ export function ReplayWorkspace({ preview, state, active }: { preview: boolean; 
   }, [active, preview, playing, complete, index, speed, scenario, view]);
   function reset() { setPlaying(false); setIndex(0); }
   function selectScenario(id: string) { reset(); setScenarioId(id); }
+  if (!preview) return backendData ? <BackendReplayWorkspace data={backendData} active={active} onRefresh={onRefresh} /> : <p className="empty">Loading replay state…</p>;
   return <div className="stack replay-simple">
     <div className="tabs replay-view-tabs" role="tablist" aria-label="Replay and execution views">
       {views.map((label, i) => <button key={label} id={`${viewId}-tab-${i}`} role="tab" aria-selected={view === i} aria-controls={`${viewId}-panel-${i}`} tabIndex={view === i ? 0 : -1} onClick={() => setView(i)} onKeyDown={event => {

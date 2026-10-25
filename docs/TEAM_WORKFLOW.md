@@ -97,26 +97,25 @@ merging. Update both mirrors, API checks and affected fixtures together.
 2. Person 2 implements/test-drives portfolio constraints using manually constructed
    Forecast inputs, then integrates Person 1's service in `main.py` (or a new
    Person 2-owned composition module). Person 1 need not edit the API routes.
-3. Person 3 uses `NEXT_PUBLIC_USE_MOCKS=true` and edits independent components.
-   The shared fixture is `data/scenarios/demo.json`; coordinate fixture changes
-   with Person 1. Switch to API mode for integration, where empty state is expected.
-4. Person 2 coordinates remaining API response contracts with Person 3 before
-   adding official metric and execution displays. Connect replay controls only
-   after replay semantics and response shapes exist.
-5. Finish model/frontend integration and rehearse the three-minute demo. A genuine
-   local Docker task was verified in Milestone 7a. Milestone 7b implements persistent
-   pause/resume (BACKEND_DISPATCH.md); Person 3 still needs to connect its controls.
-   Milestone 8 adds verified opt-in autonomous local execution (MILESTONE_8.md).
-
+3. Person 3 maintains isolated Design preview and explicit Backend data modes.
+   The frontend now consumes runtime, replay/shock, metrics, dispatch and execution
+   APIs. Preview-created jobs remain in memory and never reach FastAPI.
+4. Person 2 coordinates shared API/schema changes with Person 3. API integration,
+   restart persistence and seeded replay have recorded verification; browser flows
+   still need checking. See [integration evidence](../frontend/INTEGRATION.md).
+5. Follow the [pre-ML milestones](PRE_ML_MILESTONES.md): repeatable live startup,
+   model-compatible retained history, explicit capacity scenarios, baseline results
+   and the forecast handoff. Earlier backend LOCAL Docker smoke evidence remains
+   valid for those runs; a current UI/Mac execution check and full demo remain.
 
 ### Additive GPU alternatives contract
 
 The Add job multi-select uses `allowedGpuTypes` on Job/JobCreate. Python schemas,
 the TypeScript mirror, and contract checks include this field. Legacy singular
 `gpuType` requests normalize to one allowed model; multiple alternatives keep
-`gpuType` null and must not be interpreted as unrestricted hardware. Person 2:
-implement compatibility as membership in the alternatives list (falling back to
-legacy `gpuType` only when needed). Allocate the requested number of one model,
+`gpuType` null and must not be interpreted as unrestricted hardware. The optimizer and immediate policies now check membership in the alternatives
+list (falling back to legacy `gpuType` when needed), and committed reservations
+retain the selected model. Allocate the requested number of one model,
 not a mixture, and do not duplicate the workload per selected model. CPU requests
 must contain no GPU requirements. Other forecast/market/resource contracts retain
 singular `gpuType` because each observation or forecast describes one model.

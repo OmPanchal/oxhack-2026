@@ -1,3 +1,4 @@
+import type { LocalTask } from "./backend-types";
 import type { Job, JobCreate } from "./types";
 
 export function formatTimeLeft(deadlineSlot: number, currentSlot: number): string {
@@ -13,7 +14,8 @@ export type JobDraft = {
 };
 export type DraftErrors = Partial<Record<keyof JobDraft | "clock", string>>;
 
-export function prepareJob(draft: JobDraft, currentSlot: number, id: string): { payload: JobCreate | null; errors: DraftErrors } {
+export function prepareJob(draft: JobDraft, currentSlot: number, id: string, task?: LocalTask): { payload: JobCreate | null; errors: DraftErrors } {
+  if (task) draft = { ...draft, resourceType: task.resourceType, resourceUnits: String(task.resourceUnits), gpuTypes: [], regions: [task.region] };
   const errors: DraftErrors = {};
   if (!Number.isSafeInteger(currentSlot) || currentSlot < 0) errors.clock = "The current scheduling slot is unavailable. Refresh and try again.";
   const units = Number(draft.resourceUnits);
@@ -42,7 +44,7 @@ export function prepareJob(draft: JobDraft, currentSlot: number, id: string): { 
     gpuType: draft.resourceType === "GPU" && gpuTypes.length === 1 ? gpuTypes[0] : null,
     allowedGpuTypes: draft.resourceType === "GPU" ? gpuTypes : [],
     durationSlots: hours, arrivalSlot: currentSlot, deadlineSlot, allowedRegions: regions,
-    maxBudgetUsd: budget, priority, dockerTaskId: null,
+    maxBudgetUsd: budget, priority, dockerTaskId: task?.id ?? null,
   } };
 }
 

@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import type { ModelMetrics } from "@/lib/backend-types";
 import type { Forecast, MarketSnapshot } from "@/lib/types";
 import { compareRegions, forecastRuns, lowestCurrentQuote, marketResources, plotPoints, price, regionName, resourceKey, resourceLabel, upcomingPoints } from "@/lib/market";
 import type { QuoteKind } from "@/lib/market";
@@ -8,7 +9,7 @@ import { SlotPriceChart } from "./SlotPriceChart";
 import { ValuePulse } from "./ValuePulse";
 import { MarketModal } from "./MarketModal";
 
-export function MarketChart({ market, forecasts, preview, currentSlot }: { market: MarketSnapshot[]; forecasts: Forecast[]; preview: boolean; currentSlot: number }) {
+export function MarketChart({ market, forecasts, preview, currentSlot, modelMetrics }: { market: MarketSnapshot[]; forecasts: Forecast[]; preview: boolean; currentSlot: number; modelMetrics?: ModelMetrics }) {
   const resources = marketResources(market, forecasts, currentSlot);
   const [resourceChoice, setResourceChoice] = useState("");
   const [kind, setKind] = useState<QuoteKind>(preview ? "SIMULATED" : "OBSERVED");
@@ -32,6 +33,7 @@ export function MarketChart({ market, forecasts, preview, currentSlot }: { marke
   const selectedQuote = rows.find(row => row.region === region)?.quote;
   function selectRegion(value: string) { setRegionChoice(value); setRunChoice(""); setSlotChoice(null); }
   return <div className="market-workspace">
+    {!preview && modelMetrics && <details className="model-metrics"><summary>Model evaluation · {modelMetrics.status}</summary>{modelMetrics.evaluation ? <div className="panel-body"><p>{modelMetrics.evaluation.modelVersion} · {modelMetrics.evaluation.sampleCount} samples · {modelMetrics.evaluation.dataSource}</p><p>MAE {modelMetrics.evaluation.mae.toFixed(6)} · Persistence MAE {modelMetrics.evaluation.persistenceMae.toFixed(6)} · RMSE {modelMetrics.evaluation.rmse.toFixed(6)}</p><p className="muted">Forecast evaluation is separate from scheduling savings.</p></div> : <p className="panel-body muted">{modelMetrics.reason ?? "No model evaluation supplied."}</p>}</details>}
     <section aria-labelledby="regional-comparison-title">
       <div className="panel-heading"><h2 id="regional-comparison-title">Regional comparison</h2><span className="muted">As of slot {currentSlot} · USD / unit-hour</span></div>
       <div className="market-filters">
@@ -41,9 +43,9 @@ export function MarketChart({ market, forecasts, preview, currentSlot }: { marke
       </div>
       <p className="comparison-finding" role="status">{!validUnits ? "Enter a positive whole number of units to compare capacity." : best ? <><strong>{regionName(best.region)}</strong> has the lowest current quote that covers {units} {units === 1 ? "unit" : "units"}: <strong>{price(best.quote!.priceUsdPerUnitHour)}</strong> / unit-hour.</> : "No current quote in this view covers the requested capacity."}</p>
       <div className="table-scroll"><table className="regional-table"><thead><tr><th>Region</th><th className="numeric">Current quote</th><th className="numeric">Available units</th><th className="numeric">Next hour forecast</th><th>Quote age</th><th>Data</th></tr></thead>
-        <tbody>{rows.map(row => { const quote = row.quote; const age = quote ? currentSlot - quote.slot : null; const capacity = quote && validUnits && quote.availableUnits < units; return <tr key={row.region} className={row.region === region ? "selected" : ""}>
+        <tbody>{rows.map(row => { const quote = row.quote; const age = quote ? currentSlot - quote.slot : null; const capacity = quote && quote.availableUnits != null && validUnits && quote.availableUnits < units; return <tr key={row.region} className={row.region === region ? "selected" : ""}>
           <td><button className="row-select region-select" aria-haspopup="dialog" aria-pressed={row.region === region} onClick={() => { selectRegion(row.region); setShowDetails(true); }}>{regionName(row.region)}<span className="cell-note muted">{row.region}</span></button>{best?.region === row.region && <span className="cell-note muted">Lowest current quote</span>}</td>
-          <td className="numeric" data-label="Current quote">{price(quote?.priceUsdPerUnitHour)}</td><td className="numeric" data-label="Available units"><span className={capacity ? "attention" : ""}>{quote?.availableUnits.toLocaleString("en-US") ?? "—"}</span>{capacity && <span className="cell-note attention">Below request</span>}</td>
+          <td className="numeric" data-label="Current quote">{price(quote?.priceUsdPerUnitHour)}</td><td className="numeric" data-label="Available units"><span className={capacity ? "attention" : ""}>{quote?.availableUnits?.toLocaleString("en-US") ?? "—"}</span>{capacity && <span className="cell-note attention">Below request</span>}</td>
           <td className="numeric" data-label="Next hour forecast">{price(row.next?.predictedPriceUsdPerUnitHour)}{row.next && row.issued !== null && row.issued < currentSlot && <span className="cell-note muted">Issue {currentSlot - row.issued}h old</span>}</td>
           <td data-label="Quote age" className={age !== null && age > 0 ? "attention" : "muted"}>{age === null ? "No quote" : age === 0 ? "Current" : `${age}h old`}</td><td data-label="Data" className="muted">{quote ? quote.dataKind === "OBSERVED" ? "Observed" : "Simulated" : "Unavailable"}</td>
         </tr>; })}</tbody></table></div>

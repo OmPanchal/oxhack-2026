@@ -1,4 +1,6 @@
 import { useId } from "react";
+import type { DecisionDetail } from "@/lib/backend-types";
+import { probability } from "@/lib/market";
 import type { Decision, Job } from "@/lib/types";
 import { deadlineBuffer, slotLabel } from "@/lib/decisions";
 
@@ -10,8 +12,8 @@ const actions: Record<Decision["action"], { title: string; detail: string }> = {
   INFEASIBLE: { title: "No feasible execution plan", detail: "The supplied decision cannot meet the workload requirements." },
 };
 
-export function DecisionInspector({ decision, job, preview, currentSlot }: {
-  decision?: Decision; job?: Job; preview: boolean; currentSlot: number;
+export function DecisionInspector({ decision, job, evidence, preview, currentSlot }: {
+  decision?: Decision; job?: Job; evidence?: DecisionDetail; preview: boolean; currentSlot: number;
 }) {
   const headingId = useId();
   const plan = job && decision?.jobId === job.id && decision.decidedAtSlot <= currentSlot ? decision : undefined;
@@ -28,6 +30,7 @@ export function DecisionInspector({ decision, job, preview, currentSlot }: {
         <p>{actions[plan.action].detail}</p>
         {age > 0 && <p className="attention">Decided {age}h ago. This plan may need to be refreshed.</p>}
       </div>
+      {evidence?.dispatchBlocked && <p className="notice attention">New starts are paused. This is a plan, not an execution.</p>}
       <div className="plan-reason"><h3>Why this action</h3><p>{plan.explanation || "No explanation supplied."}</p></div>
       <dl className="key-values">
         <div><dt>Selected region</dt><dd>{plan.region ?? "Unavailable"}</dd></div>
@@ -41,11 +44,15 @@ export function DecisionInspector({ decision, job, preview, currentSlot }: {
         <dl className="key-values">
           <div className="wide-detail"><dt>Decision issued</dt><dd>{slotLabel(plan.decidedAtSlot, currentSlot)}</dd></div>
           <div><dt>Execution mode</dt><dd>{plan.executionMode}</dd></div>
-          <div><dt>Forecast / model used</dt><dd>Not supplied</dd></div>
-          <div><dt>Availability</dt><dd>Unknown</dd></div><div><dt>Interruption risk</dt><dd>Unknown</dd></div>
+          <div><dt>Forecast / model used</dt><dd>{evidence?.forecastsUsed.length ? [...new Set(evidence.forecastsUsed.map(row => row.modelVersion))].join(", ") : evidence?.forecastMode ?? "Not supplied"}</dd></div>
+          <div><dt>Availability</dt><dd>{probability(evidence?.availabilityProbability ?? null)}</dd></div><div><dt>Interruption risk</dt><dd>{probability(evidence?.interruptionProbability ?? null)}</dd></div>
+          {evidence && <><div><dt>Supplied deadline slack</dt><dd>{evidence.deadlineSlackSlots === null ? "Unknown" : `${evidence.deadlineSlackSlots}h`}</dd></div><div><dt>Data kind</dt><dd>{evidence.dataKind ?? "Unknown"}</dd></div><div className="wide-detail"><dt>Market sources</dt><dd>{evidence.marketSources.join(", ") || "Not supplied"}</dd></div>
+          {evidence.pricingAssumption && <div className="wide-detail"><dt>Pricing assumption</dt><dd>{evidence.pricingAssumption}</dd></div>}
+          {Object.entries(evidence.costBreakdown ?? {}).map(([key, cost]) => <div key={key}><dt>{key.replace(/([a-z])([A-Z])/g, "$1 $2")}</dt><dd>${cost.toFixed(4)}</dd></div>)}
+          {evidence.forecastsUsed.map((forecast, index) => <div className="wide-detail" key={index}><dt>Forecast · slot {forecast.targetSlot} · {forecast.region}</dt><dd>${forecast.predictedPriceUsdPerUnitHour.toFixed(4)} / unit-hour · issued slot {forecast.generatedAtSlot} · Bounds {forecast.priceLowerBound ?? "Unknown"}–{forecast.priceUpperBound ?? "Unknown"}</dd></div>)}</>}
           <div className="wide-detail"><dt>Reason code</dt><dd>{plan.reasonCode}</dd></div>
         </dl>
-        <p className="plan-evidence-note">No linked forecast, uncertainty bounds, or risk estimates were supplied with this decision.</p>
+        {!evidence && <p className="plan-evidence-note">No linked forecast or risk evidence is available for this decision.</p>}
       </details>
       <div className="panel-footer">{preview ? "Illustrative plan. No workload has executed." : "Projected cost is an estimate. Execution is reported separately."}</div>
     </>}

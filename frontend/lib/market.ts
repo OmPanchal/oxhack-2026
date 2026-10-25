@@ -42,7 +42,7 @@ export function compareRegions(market: MarketSnapshot[], forecasts: Forecast[], 
 }
 export function lowestCurrentQuote(rows: RegionQuote[], currentSlot: number, units: number): RegionQuote | null {
   if (!Number.isSafeInteger(units) || units < 1) return null;
-  return [...rows].filter(row => row.quote && row.quote.slot === currentSlot && row.quote.availableUnits >= units)
+  return [...rows].filter(row => row.quote && row.quote.slot === currentSlot && row.quote.availableUnits != null && row.quote.availableUnits >= units)
     .sort((a, b) => a.quote!.priceUsdPerUnitHour - b.quote!.priceUsdPerUnitHour || a.region.localeCompare(b.region))[0] ?? null;
 }
 export function price(value: number | null | undefined): string {

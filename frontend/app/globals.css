@@ -445,3 +445,17 @@ input::placeholder { color: var(--muted); opacity: 1; }
 .replay-playback-options > summary { padding: 0 16px 12px; }
 .replay-playback-options > label { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 0 16px 16px; color: var(--muted); font-size: 13px; }
 .replay-playback-options select { padding-right: 32px; background-color: var(--white); }
+
+/* Backend controls use the established neutral controls and spacing. */
+.engine-controls { margin-bottom: 24px; border: 1px solid var(--line); background: var(--surface); }
+.engine-controls .control-row { align-items: center; gap: 12px 16px; }
+.engine-controls label, .execution-record-picker { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); }
+.engine-controls select, .execution-record-picker select { padding-right: 32px; background-color: var(--white); }
+.engine-controls .notice { margin: 0 16px 12px; }
+.model-metrics { border: 1px solid var(--line); background: var(--surface); }
+.model-metrics > summary { padding: 12px 16px; cursor: pointer; color: var(--slate); font-size: 13px; }
+.shock-form { display: flex; flex-wrap: wrap; gap: 12px; padding: 16px; align-items: flex-end; }
+.shock-form label { display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--muted); flex: 1 1 160px; }
+.shock-form select, .shock-form input { background-color: var(--white); min-height: 40px; }
+.shock-form select { padding-right: 32px; }
+.execution-record-picker select { max-width: 100%; }

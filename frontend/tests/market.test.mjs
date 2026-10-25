@@ -84,3 +84,10 @@ test("resources and axis ticks remain honest for empty, flat and very cheap data
     assert.ok(!values.length || ticks[ticks.length - 1] >= Math.max(...values));
   }
 });
+
+test("unknown capacity remains unavailable and can never qualify as a current opportunity", () => {
+  const rows = compareRegions([quote({ region: "unknown", availableUnits: null, priceUsdPerUnitHour: 0 }),
+    quote({ region: "known", availableUnits: 1 })], [], resource, "OBSERVED", 8);
+  assert.equal(rows.find(row => row.region === "unknown").quote.availableUnits, null);
+  assert.equal(lowestCurrentQuote(rows, 8, 1).region, "known");
+});

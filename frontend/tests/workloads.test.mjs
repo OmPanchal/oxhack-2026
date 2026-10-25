@@ -91,3 +91,16 @@ test("submission rebases the full window onto the latest backend slot", () => {
   assert.equal(formatTimeLeft(8, 8), "Due now");
   assert.equal(formatTimeLeft(7, 8), "1h past deadline");
 });
+
+
+test("allowlisted local tasks map to their fixed CPU requirements without stale GPU constraints", () => {
+  const task = { id: "cpu-hash-v1", name: "Local hash", resourceType: "CPU", resourceUnits: 1, region: "local" };
+  const result = prepareJob({ ...draft, gpuTypes: ["H100"], regions: [] }, 12, "local-job", task);
+  assert.ok(result.payload);
+  assert.equal(result.payload.dockerTaskId, task.id);
+  assert.equal(result.payload.resourceType, "CPU");
+  assert.equal(result.payload.resourceUnits, 1);
+  assert.deepEqual(result.payload.allowedRegions, ["local"]);
+  assert.deepEqual(result.payload.allowedGpuTypes, []);
+  assert.equal(result.payload.gpuType, null);
+});

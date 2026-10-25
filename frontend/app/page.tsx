@@ -1,8 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
-import { api } from "@/lib/api";
+import { api, loadBackendTerminal } from "@/lib/api";
 import { previewData } from "@/lib/preview";
-import { latestDecision } from "@/lib/decisions";
+import { latestDecision, linkedDecisionDetail } from "@/lib/decisions";
 import type { Job, JobCreate, TerminalData } from "@/lib/types";
 import { AddJobModal } from "@/components/AddJobModal";
 import { WorkloadModal } from "@/components/WorkloadModal";
@@ -13,6 +13,7 @@ import { MarketChart } from "@/components/MarketChart";
 import { JobBlotter } from "@/components/JobBlotter";
 import { ReplayWorkspace } from "@/components/ReplayWorkspace";
 import { WorkloadTimeline } from "@/components/WorkloadTimeline";
+import { EngineControls } from "@/components/EngineControls";
 
 const tabs = [
   { id: "overview", label: "Overview", description: "A quick read on your portfolio and upcoming work." },
@@ -37,22 +38,28 @@ export default function Home() {
   const [selectedId, setSelectedId] = useState<string | null>(previewData.jobs[0]?.id ?? null);
   const [refresh, setRefresh] = useState(0);
   useEffect(() => {
+    if (preview) { setError(null); return; }
     let active = true;
-    setError(null);
-    if (preview) { setSelectedId(previewJobs[0]?.id ?? null); return; }
-    setData(null);
-    // Explicit backend mode bypasses environment mock settings and never falls back.
-    Promise.all([api.jobs(), api.market(), api.forecasts(), api.decisions(), api.replayState()])
-      .then(([jobs, market, forecasts, decisions, replay]) => {
-        if (active) { setData({ jobs, market, forecasts, decisions, replay }); setSelectedId(jobs[0]?.id ?? null); }
-      }).catch((error: unknown) => { if (active) setError(String(error)); });
-    return () => { active = false; };
+    let timer: ReturnType<typeof setTimeout>;
+    async function read() {
+      try {
+        const next = await loadBackendTerminal();
+        if (active) {
+          setData(next); setError(null);
+          setSelectedId(current => next.jobs.some(job => job.id === current) ? current : next.jobs[0]?.id ?? null);
+        }
+      } catch (error) { if (active) setError(error instanceof Error ? error.message : String(error)); }
+      finally { if (active) timer = setTimeout(read, 5000); }
+    }
+    void read();
+    return () => { active = false; clearTimeout(timer); };
   }, [preview, refresh]);
   // Hide previous-mode data immediately while the effect starts the new request.
   const visible = preview ? { ...previewData, jobs: previewJobs } : data;
-  const currentSlot = visible?.replay.currentSlot ?? 0;
-  const regions = [...new Set([...(visible?.market.map(row => row.region) ?? []), ...(visible?.jobs.flatMap(row => row.allowedRegions) ?? [])])].sort();
+  const currentSlot = preview ? previewData.replay.currentSlot : data?.engine?.currentSlot ?? 0;
+  const regions = [...new Set([...(visible?.capabilities?.allowedRegions ?? []),...(visible?.market.map(row => row.region) ?? []), ...(visible?.jobs.flatMap(row => row.allowedRegions) ?? [])])].sort();
   const gpuTypes = [...new Set([
+    ...(visible?.capabilities?.allowedGpuTypes ?? []),
     ...(visible?.market.flatMap(row => row.gpuType ? [row.gpuType] : []) ?? []),
     ...(visible?.jobs.flatMap(row => row.allowedGpuTypes?.length ? row.allowedGpuTypes : row.gpuType ? [row.gpuType] : []) ?? []),
     ...(preview ? ["A100", "H100", "L4"] : []), // Illustrative preview catalog, not observed capacity.
@@ -65,9 +72,9 @@ export default function Home() {
       setPreviewJobs(jobs => [...jobs, job]);
       setNotice(`Added “${job.name}” to the preview. This is an example job; reload resets preview changes.`);
     } else {
-      const clock = await api.replayState();
+      const clock = await api.engineState();
       const job = await api.createJob(rebaseJob(payload, clock.currentSlot));
-      setData(current => current ? { ...current, replay: clock, jobs: [...current.jobs.filter(row => row.id !== job.id), job] } : current);
+      setData(current => current ? { ...current, engine: clock, jobs: [...current.jobs.filter(row => row.id !== job.id), job] } : current);
       setNotice(`Added “${job.name}” to the backend portfolio.`);
     }
     setSelectedId(payload.id); setActiveTab("workloads"); setWorkloadView("queue");
@@ -97,16 +104,18 @@ export default function Home() {
     <div className="view-context"><p>{activeTab === "overview" && visible ? `${attentionJobs.length} ${attentionJobs.length === 1 ? "workload needs" : "workloads need"} attention · ${visible.jobs.filter(row => row.status === "PENDING").length} pending` : currentTab.description}</p><div className="view-actions"><span className="muted">{visible ? activeTab === "replay" && preview ? "Separate preview scenario · 1h slots" : `Slot ${currentSlot} · 1h intervals` : "Connecting…"}</span>{visible && (activeTab === "overview" || activeTab === "workloads") && <button className="primary-button" onClick={() => setShowAddJob(true)}>Add job</button>}</div></div>
     {notice && <div className="success-note" role="status"><span>{notice}</span><button className="text-button" onClick={() => setNotice(null)}>Dismiss</button></div>}
     {!preview && error && <div role="alert" className="notice error">{error}</div>}
+    {!preview && data?.errors?.map(message => <div key={message} role="alert" className="notice error">{message}</div>)}
+    {!preview && data?.engine && <EngineControls state={data.engine} onRefresh={() => setRefresh(n => n + 1)} />}
     {!visible && !error && <p className="empty" role="status">Connecting to backend…</p>}
     {visible && <div id={`panel-${activeTab}`} role="tabpanel" aria-labelledby={`tab-${activeTab}`}>
       {activeTab === "overview" && <div className="view-enter">
-        <Portfolio jobs={visible.jobs} preview={preview} currentSlot={currentSlot} />
+        <Portfolio jobs={visible.jobs} preview={preview} currentSlot={currentSlot} metrics={preview ? undefined : visible.liveMetrics} />
         <div className="overview-workloads">
         {attentionJobs.length > 0 && <section className="attention-list"><div className="panel-heading"><h2>Needs attention</h2><span className="muted">{attentionJobs.length} jobs</span></div>{attentionJobs.map(row => <div className="attention-item" key={row.id}><button className="text-button" onClick={() => inspect(row.id)}>{row.name}</button><span className="attention">{deadlineAttention(row, currentSlot)}</span></div>)}</section>}
         <section><div className="panel-heading"><h2>Upcoming workloads</h2><button className="text-button" onClick={() => setActiveTab("workloads")}>View all workloads →</button></div>
           <div className="table-scroll"><table><thead><tr><th>Workload</th><th>Resource</th><th>Time left</th><th>Plan</th></tr></thead><tbody>
             {[...visible.jobs].filter(row => row.status === "PENDING").sort((a, b) => a.deadlineSlot - b.deadlineSlot || a.id.localeCompare(b.id)).slice(0, 4).map(row => {
-              const plan = visible.decisions.find(d => d.jobId === row.id);
+              const plan = latestDecision(visible.decisions, row.id, currentSlot);
               return <tr key={row.id}><td><button className="row-select" onClick={() => inspect(row.id)}>{row.name}</button></td><td className="muted">{row.resourceUnits} × {jobHardware(row)}</td><td>{formatTimeLeft(row.deadlineSlot, currentSlot)}</td><td className={plan?.action === "WAIT" ? "attention" : "muted"}>{plan?.action ?? "Awaiting plan"}</td></tr>;
             })}
           </tbody></table></div>
@@ -128,11 +137,11 @@ export default function Home() {
           {workloadView === "timeline" && <WorkloadTimeline jobs={visible.jobs} decisions={visible.decisions} currentSlot={currentSlot} selectedId={selectedId} onSelect={inspect} preview={preview} />}
         </div>
       </div>}
-      {activeTab === "market" && <div className="view-enter"><MarketChart market={visible.market} forecasts={visible.forecasts} preview={preview} currentSlot={currentSlot} /></div>}
-      <div className={activeTab === "replay" ? "view-enter" : undefined} hidden={activeTab !== "replay"}><ReplayWorkspace key={preview ? "preview" : "backend"} preview={preview} state={visible.replay} active={activeTab === "replay"} /></div>
+      {activeTab === "market" && <div className="view-enter"><MarketChart market={visible.market} forecasts={visible.forecasts} preview={preview} currentSlot={currentSlot} modelMetrics={preview ? undefined : visible.modelMetrics} /></div>}
+      <div className={activeTab === "replay" ? "view-enter" : undefined} hidden={activeTab !== "replay"}><ReplayWorkspace key={preview ? "preview" : "backend"} preview={preview} state={visible.replay} active={activeTab === "replay"} backendData={preview ? undefined : data ?? undefined} onRefresh={() => setRefresh(n => n + 1)} /></div>
     </div>}
-    {showAddJob && visible && <AddJobModal preview={preview} currentSlot={currentSlot} regions={regions} gpuTypes={gpuTypes} onClose={() => setShowAddJob(false)} onSubmit={createJob} />}
-    {showJobDetails && job && <WorkloadModal job={job} decision={decision} currentSlot={currentSlot} preview={preview} onClose={() => setShowJobDetails(false)} />}
+    {showAddJob && visible && <AddJobModal preview={preview} currentSlot={currentSlot} regions={regions} gpuTypes={gpuTypes} tasks={preview ? [] : visible.taskCatalog?.tasks} onClose={() => setShowAddJob(false)} onSubmit={createJob} />}
+    {showJobDetails && job && <WorkloadModal job={job} decision={decision} evidence={linkedDecisionDetail(visible?.decisions ?? [], visible?.decisionDetails ?? [], decision)} currentSlot={currentSlot} preview={preview} onClose={() => setShowJobDetails(false)} />}
     <footer className="statusbar"><span>{preview ? "Hand-authored preview fixtures" : "FastAPI"}</span><span>Hourly scheduling · No paid cloud provisioning</span></footer>
   </main>;
 }

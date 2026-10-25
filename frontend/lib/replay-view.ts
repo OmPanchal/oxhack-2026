@@ -16,3 +16,11 @@ export type ReplayScenario = { id: string; name: string; description: string; fr
 export function nextFrame(index: number, count: number): number {
   return Math.min(index + 1, Math.max(0, count - 1));
 }
+
+export function replayCapacityAtSlot(market: MarketSnapshot[], nextSlot: number): MarketSnapshot[] {
+  // Replay's clock points at the next unprocessed interval, not an observation.
+  if (nextSlot <= 0) return [];
+  return market.filter(row => row.slot === nextSlot - 1)
+    .sort((a, b) => a.region.localeCompare(b.region) || a.resourceType.localeCompare(b.resourceType)
+      || (a.gpuType ?? "").localeCompare(b.gpuType ?? ""));
+}

@@ -13,7 +13,7 @@ from app.engine.optimizer import ConstrainedPortfolioOptimizer, resource_key
 from app.engine.policies import immediate_policy
 from app.engine.money import decimal_usd, total_usd, within_budget
 from app.engine.accounting import replay_totals as totals
-from app.engine.replay_scenarios import demo_scenario
+from app.engine.replay_scenarios import capacity_pressure_scenario, demo_scenario
 from app.forecasting.interfaces import ForecastService
 
 
@@ -22,7 +22,9 @@ class ReplayService:
                  forecast_services: dict[ForecastMode, ForecastService] | None = None,
                  config: OptimizerConfig | None = None):
         self.database = database
-        self.scenarios = scenarios if scenarios is not None else {"demo": demo_scenario()}
+        self.scenarios = scenarios if scenarios is not None else {
+            "demo": demo_scenario(), "capacity-pressure": capacity_pressure_scenario(),
+        }
         self.templates = {"NAIVE": PersistenceForecastProvider(), **(forecast_services or {})}
         self.providers = {}
         self.config = config or OptimizerConfig()

@@ -20,6 +20,21 @@ and live AWS verification. The [backend code audit](docs/FINAL_AUDIT.md) is an e
 snapshot with backend fixes and execution evidence. The [pre-Milestone-6 audit](docs/PRE_M6_AUDIT.md) and older
 milestone test counts are historical snapshots.
 
+## Start everything
+
+From the repository root on macOS/Linux:
+
+```sh
+./dev
+```
+
+First-time dependency installation: `./dev --setup`. Expired/missing AWS login:
+`./dev --login`. Check prerequisites without starting servers: `./dev --check`.
+Defaults use profile `arbitr` and region `eu-north-1`. Wait for `Arbitr ready`,
+then open http://127.0.0.1:3000 and select Backend data. Ctrl+C stops both servers.
+See [startup and troubleshooting](docs/STARTUP.md) for logs, port conflicts and
+configuration. The manual backend/frontend commands below remain available.
+
 ## Start the backend
 
 Python 3.11+:
@@ -132,10 +147,15 @@ npm run build
   decision details and runtime state, and automatic replanning on relevant changes.
 - Read-only AWS EC2 GPU catalog, Availability Zone offerings and Spot prices,
   cached with explicit partial/error status and unknown capacity handling.
+- Durable exact AWS instance/AZ quote batches and a read-only hourly history/gap
+  export with receipt-time cutoffs. See [price-history audit](docs/PRICE_HISTORY.md).
 - Deterministic replay with FIFO, cheapest-now and the optimizer using naive or
   injected ML forecasts, independent policy state, seeded simulated shocks,
   realized hourly charges and visible failed/unfinished work. Missing ML is
   explicitly UNAVAILABLE rather than substituted.
+- A selectable [Capacity pressure scenario](docs/CAPACITY_SCENARIOS.md) demonstrates
+  explicitly simulated GPU pools, shortages/recovery and competing workloads.
+  Live AWS capacity remains unknown.
 - Official replay cost reconciliation and guarded policy comparisons through
   `/api/metrics`, separate live projections with `?scope=LIVE`, and an evaluated
   model-report adapter through `/api/models/metrics`. Missing model reports are

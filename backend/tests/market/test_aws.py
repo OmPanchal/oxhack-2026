@@ -57,6 +57,22 @@ def source(client=None, **changes):
     return AwsSpotMarket(["eu-west-1"], client_factory=lambda region: client, clock=lambda: NOW, **changes)
 
 
+def test_api_archives_refreshed_quotes_and_preserves_them_on_restart(tmp_path):
+    from app.database import Database
+    from app.market.history import AwsQuoteArchive
+    path = tmp_path / 'archive.sqlite3'
+    clock = [NOW]
+    aws = AwsSpotMarket(['eu-west-1'], client_factory=lambda _: FakeEc2(), clock=lambda: clock[0])
+    client = TestClient(create_app(path, aws_market=aws, clock=lambda: clock[0], tick_interval_seconds=0))
+    assert client.get('/api/market/aws/spot').json()['status'] == 'READY'
+    client.get('/api/market/aws/spot')
+    clock[0] += timedelta(minutes=2)
+    client.get('/api/market/aws/spot')
+    reopened = AwsQuoteArchive(Database(path))
+    assert len(reopened.batches(clock[0])) == 2
+    assert len(reopened.batches(NOW)) == 1
+
+
 def test_catalog_gpu_names_are_discovered_and_paginated():
     client = FakeEc2()
     catalog = source(client).capabilities()

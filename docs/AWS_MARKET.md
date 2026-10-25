@@ -9,6 +9,10 @@ verification, not cloud execution, capacity evidence or ML evaluation.
 
 ## Activation on macOS — current project
 
+For normal use, run `./dev` from the repository root. First-time setup is
+`./dev --setup`; reauthentication is `./dev --login`. See
+[the startup guide](STARTUP.md). Manual commands follow for independent operation.
+
 The new AWS experience uses project browser login, not the Identity Center setup
 for a conventional organization. Profile `arbitr` has selected region `eu-north-1`.
 The AWS Agent Toolkit was installed and its MCP entries configured to use that
@@ -110,6 +114,16 @@ capacity and excludes it from current-opportunity ranking. OpenAPI reflects the
 backend contract. Forecasting must preserve missing capacity or handle it with
 documented missing-value features; do not convert it into observed zero capacity
 or a calibrated risk estimate.
+
+## Durable detailed history
+
+FastAPI now archives freshly fetched exact instance/AZ quote batches in SQLite
+`aws_quote_batches`, including response status/errors and archival receipt time.
+Cached repeats are not new observations; refreshed flat prices are retained.
+Existing scheduler indices remain separate and still upsert per region/GPU/hour.
+See [PRICE_HISTORY.md](PRICE_HISTORY.md) for the read-only export command, gap
+coverage, receipt-time cutoffs and outstanding model-target agreement. Earlier
+cached quotes cannot be reconstructed retrospectively from regional indices.
 
 ## Pricing and scheduling behavior
 

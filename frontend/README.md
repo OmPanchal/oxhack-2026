@@ -1,6 +1,9 @@
 # arbitr — compute execution terminal
 
-Run `npm ci` and `npm run dev`, then open http://localhost:3000.
+From the repository root, use `./dev` to start both servers with live AWS data.
+See [startup instructions](../docs/STARTUP.md) for `--setup`, `--login` and `--check`.
+To run only the frontend, use `npm ci` and `npm run dev` here, then open
+http://localhost:3000.
 
 The page starts in **Design preview**, using labeled hand-authored examples in
 `lib/preview.ts`. Preview job creation remains in page memory; examples are never
@@ -50,7 +53,10 @@ allocation; simulated replay remains separate. No cloud provisioning is implemen
 - **Replay & execution:** Replay, Policy comparison and Execution views. Backend
   reset, step, playback and simulated shocks use the independent replay clock.
   Accounting and comparison eligibility come from the server. Real LOCAL task
-  records stay separate from simulated replay and prepared preview states.
+  records stay separate from simulated replay and prepared preview states. Choose
+  Capacity pressure for shared GPU pools, shortages/recovery and competing jobs.
+  The capacity table shows only the last processed slot. All scenario prices and
+  capacity are simulated; live AWS inventory remains unknown.
 
 The accepted light theme, IBM Plex Sans, BROKEN PIXELS wordmark, square borders,
 neutral panels, Blue Slate controls and restrained coral charts/deadlines remain.

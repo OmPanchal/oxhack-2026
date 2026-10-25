@@ -21,6 +21,10 @@ CREATE TABLE IF NOT EXISTS market_observations (
     series_key TEXT NOT NULL, slot INTEGER NOT NULL, payload TEXT NOT NULL,
     PRIMARY KEY (series_key, slot)
 );
+CREATE TABLE IF NOT EXISTS aws_quote_batches (
+    fingerprint TEXT PRIMARY KEY, recorded_at_utc TEXT NOT NULL, payload TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS aws_quote_batches_time ON aws_quote_batches(recorded_at_utc);
 CREATE TABLE IF NOT EXISTS engine_state (
     id INTEGER PRIMARY KEY CHECK (id = 1), payload TEXT NOT NULL
 );

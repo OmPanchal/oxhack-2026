@@ -26,6 +26,7 @@ from app.engine.simulator import ReplayService
 from app.forecasting.interfaces import ForecastService
 from app.market.adapter import JsonMarketSource, MarketSource
 from app.market.aws import AwsSpotMarket
+from app.market.history import AwsQuoteArchive
 from app.jobs.store import DecisionStore, JobStore
 from app.api.execution_schemas import ExecuteRequest, LocalExecution, TaskCatalog
 from app.execution.docker import TASK
@@ -93,6 +94,8 @@ def create_app(database_path: str | Path | None = None, *,
             instance_types=[name.strip() for name in os.getenv("COMPUTE_AWS_INSTANCE_TYPES", "").split(",") if name.strip()], clock=clock)
     if source_mode == "json" and not source_path and market_source is None and aws_market is None:
         raise ValueError("JSON market mode requires COMPUTE_MARKET_FILE")
+    if aws_market is not None and aws_market.quote_archive is None:
+        aws_market.quote_archive = AwsQuoteArchive(database)
     source = market_source if market_source is not None else aws_market if aws_market is not None else (
         JsonMarketSource(source_path) if source_mode == "json" else None)
     origin = datetime.fromisoformat(os.environ["COMPUTE_ORIGIN_UTC"]) if os.getenv("COMPUTE_ORIGIN_UTC") else None

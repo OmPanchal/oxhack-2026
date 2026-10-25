@@ -94,7 +94,8 @@ Backend mutations:
 The UI exposes three regional replay shock kinds. The backend's JOB_ARRIVAL and
 DEADLINE_PRESSURE payloads are typed in the client, but have no dedicated form.
 The current backend has no scenario-list endpoint: the UI accepts a registered
-scenario ID, default `demo`, and displays a useful error for unknown IDs.
+scenario ID, defaulting to `capacity-pressure` when no replay exists. The named selector
+also offers `demo` and custom IDs, with useful errors for unknown registrations.
 
 Decision responses have no ID. Evidence is displayed only when ordered decision
 and detail collections form a complete one-to-one matching snapshot by job, slot
@@ -150,3 +151,15 @@ The temporary scripts/database/results are under
   audit did not launch a real container or paid cloud resources.
 - Same-origin proxy access is verified. An explicit cross-origin
   NEXT_PUBLIC_API_BASE_URL still requires the corresponding backend CORS origin.
+
+## Capacity pressure scenario — 25 October 2026
+
+Added the server-registered `capacity-pressure` simulation with seven workloads,
+three region/GPU pools and eight hourly intervals. The frontend offers named
+presets/custom IDs and shows last-processed-slot pool capacity. It never exposes
+future capacity and preserves zero/unknown values. Live AWS state stays isolated.
+See [scenario assumptions and checks](../docs/CAPACITY_SCENARIOS.md).
+
+Recorded checks: backend 184 passed / 1 skipped; frontend logic 40 passed;
+production build passed compilation, types and prerendering. These are separate from the earlier test counts and do not establish a browser
+interaction walkthrough or a new genuine Docker run.

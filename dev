@@ -1,0 +1,3 @@
+#!/bin/sh
+# Resolve the repository even when invoked from another directory.
+exec python3 "$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)/scripts/dev.py" "$@"

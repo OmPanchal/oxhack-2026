@@ -8,12 +8,14 @@ from typing import Callable
 from app.api.market_schemas import AwsSpotPrices, AwsSpotQuote, GpuOffering, MarketCapabilities, ProviderError
 from app.api.schemas import MarketSnapshot
 from app.engine.forecast_bridge import EngineUnavailable
+from app.market.history import AwsQuoteArchive
 
 
 class AwsSpotMarket:
     def __init__(self, regions: list[str], *, client_factory: Callable | None = None,
                  instance_types: list[str] | None = None, clock: Callable | None = None,
-                 catalog_ttl_seconds: float = 3600, price_ttl_seconds: float = 60):
+                 catalog_ttl_seconds: float = 3600, price_ttl_seconds: float = 60,
+                 quote_archive: AwsQuoteArchive | None = None):
         self.regions = sorted(set(region.strip() for region in regions if region.strip()))
         if not self.regions:
             raise ValueError("Configure at least one AWS region")
@@ -28,6 +30,7 @@ class AwsSpotMarket:
         self.catalog_cache = None
         self.price_cache = None
         self.lock = RLock()
+        self.quote_archive = quote_archive
 
     @staticmethod
     def _boto_client(region):
@@ -178,7 +181,10 @@ class AwsSpotMarket:
                     quotes.extend(regional)
                 except Exception as exc:
                     errors.append(self._error(region, exc))
-            self.price_cache = AwsSpotPrices(status=self._status(errors, bool(quotes)), fetched_at_utc=now, quotes=quotes, errors=errors)
+            batch = AwsSpotPrices(status=self._status(errors, bool(quotes)), fetched_at_utc=now, quotes=quotes, errors=errors)
+            if self.quote_archive is not None:
+                self.quote_archive.record(batch, self._now())
+            self.price_cache = batch
             return self.price_cache.model_copy(deep=True)
 
     def poll(self, current_slot: int) -> list[MarketSnapshot]:

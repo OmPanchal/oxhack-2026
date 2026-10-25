@@ -795,8 +795,17 @@ Update statuses only when the corresponding behavior has actually been verified.
 
 **Current pre-ML delivery plan:** see [Pre-ML readiness milestones](docs/PRE_ML_MILESTONES.md).
 Live AWS price ingestion is verified for the `arbitr` profile in `eu-north-1`.
-Next: repeatable startup, retained/model-compatible history, explicit capacity
-scenarios, a baseline benchmark and the model handoff contract. Existing API
+Reliable startup is now verified through `./dev` (`--setup`, `--login`, `--check`);
+see [startup instructions](docs/STARTUP.md). Next: retained/model-compatible history,
+explicit capacity scenarios, a baseline benchmark and the model handoff contract.
+Exact AWS quote archival and a point-in-time hourly/gap export are now implemented;
+see [price-history audit and model handoff](docs/PRICE_HISTORY.md). Model target,
+history requirements and artifacts still need Person 1/2 agreement.
+The `capacity-pressure` replay scenario now demonstrates explicit simulated GPU
+capacity, shortages, recovery and competing workloads; see
+[capacity scenarios](docs/CAPACITY_SCENARIOS.md). Live capacity remains unknown.
+Next: baseline walkthrough/results, current UI/local execution verification and
+the remaining model-input handoff. Existing API
 integration evidence is recorded in [frontend/INTEGRATION.md](frontend/INTEGRATION.md).
 Earlier backend milestones record genuine LOCAL Docker runs; execution through
 the current frontend on this Mac and browser interaction verification remain outstanding.
